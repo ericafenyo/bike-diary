@@ -3,4 +3,5 @@
   <dimen name="text_size_h1">22sp</dimen>
   <dimen name="text_size_h2">20sp</dimen>
   <dimen name="text_size_h3">18sp</dimen>
+  <dimen name="bottom_navigation_elevation">8dp</dimen>
 </resources>
