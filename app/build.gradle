@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+
 }
 
 android {
@@ -53,6 +57,9 @@ dependencies {
     def nav_version = "2.3.1"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Firebase Crashlytics
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
 
     // Data binding delegate
     implementation 'com.github.wada811:DataBinding-ktx:5.0.0'
