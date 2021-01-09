@@ -23,23 +23,12 @@
   SOFTWARE.
   -->
 
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ericafenyo.bikediary.tracker">
-
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <application>
-    <service android:name=".StateMachineService" />
-    <receiver android:name=".StateMachineReceiver" android:exported="false">
-      <intent-filter>
-        <action android:name="tracker.action.initialize" />
-        <action android:name="tracker.action.start" />
-        <action android:name="tracker.action.paused" />
-        <action android:name="tracker.action.resume" />
-        <action android:name="tracker.action.stop" />
-        <action android:name="tracker.action.disable" />
-        <action android:name="tracker.action.enable" />
-      </intent-filter>
-    </receiver>
-  </application>
-</manifest>
+<resources>
+  <string name="tracker_action_initialize">tracker.action.initialize</string>
+  <string name="tracker_action_start">tracker.action.start</string>
+  <string name="tracker_action_paused">tracker.action.paused</string>
+  <string name="tracker_action_resume">tracker.action.resume</string>
+  <string name="tracker_action_stop">tracker.action.stop</string>
+  <string name="tracker_action_disable">tracker.action.disable</string>
+  <string name="tracker_action_enable">tracker.action.enable</string>
+</resources>
