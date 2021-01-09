@@ -1,2 +1,3 @@
+include ':tracker'
 include ':app', 'bom'
-rootProject.name = "Habit Diary"
+rootProject.name = "Bike Diary"

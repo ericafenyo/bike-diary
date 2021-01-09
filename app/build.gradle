@@ -88,6 +88,6 @@ dependencies {
     kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
 
     // Glide
-    implementation(Libs.GLIDE)
-    kapt(Libs.GLIDE_COMPILER)
+    implementation(Lib.GLIDE)
+    kapt(Lib.GLIDE_COMPILER)
 }
