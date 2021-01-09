@@ -28,4 +28,5 @@ object Version {
   const val ROOM = "2.2.5"
   const val KOTLIN = "1.4.20"
   const val JUNIT = "4.13"
+  const val GOOGLE_PLAY_SERVICES_LOCATION = "17.1.0"
 }

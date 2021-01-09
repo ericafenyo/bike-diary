@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,19 @@
  * SOFTWARE.
  */
 
-object Lib {
-  const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib"
-  const val GLIDE = "com.github.bumptech.glide:glide"
-  const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler"
-  const val TIMBER = "com.jakewharton.timber:timber"
-  const val ROOM_COMPILER = "androidx.room:room-compiler"
-  const val ROOM_KTX = "androidx.room:room-ktx"
-  const val ROOM_RUNTIME = "androidx.room:room-runtime"
-  const val ROOM_TESTING = "androidx.room:room-testing"
-  const val JUNIT = "junit:junit"
-  const val GOOGLE_PLAY_SERVICES_LOCATION = "com.google.android.gms:play-services-location"
+package com.ericafenyo.bikediary.tracker.location
+
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.widget.Toast
+
+/**
+ * Receiver for broadcasts sent by {@link LocationUpdatesAction}.
+ */
+class LocationUpdatesReceiver : BroadcastReceiver() {
+  override fun onReceive(context: Context, intent: Intent) {
+    Toast.makeText(context, "onReceive Location updated", Toast.LENGTH_SHORT).show()
+    // TODO: 1/9/21 Save location data to database
+  }
 }

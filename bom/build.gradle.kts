@@ -41,6 +41,8 @@ dependencies {
     api("${Lib.ROOM_COMPILER}:${Version.ROOM}")
     api("${Lib.ROOM_TESTING}:${Version.ROOM}")
 
+    api("${Lib.GOOGLE_PLAY_SERVICES_LOCATION}:${Version.GOOGLE_PLAY_SERVICES_LOCATION}")
+
     api("${Lib.TIMBER}:${Version.TIMBER}")
   }
 }

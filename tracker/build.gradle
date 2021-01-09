@@ -72,4 +72,8 @@ dependencies {
     implementation(Lib.ROOM_RUNTIME)
     kapt(Lib.ROOM_COMPILER)
     testImplementation(Lib.ROOM_TESTING)
+
+    // Play Services
+    implementation(Lib.GOOGLE_PLAY_SERVICES_LOCATION)
+    
 }
