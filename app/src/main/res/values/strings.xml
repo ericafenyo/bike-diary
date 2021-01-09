@@ -1,8 +1,29 @@
 <resources>
-    <string name="app_name" translatable="false">Habit Diary</string>
+  <string name="app_name" translatable="false">Habit Diary</string>
 
-    <string name="title_home">Home</string>
-    <string name="title_profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="title_home">Home</string>
+  <string name="title_profile">Profile</string>
+
+  <string name="settings_theme_title">Choose theme</string>
+  <string name="settings_theme_system">System default</string>
+  <string name="settings_theme_light">Light</string>
+  <string name="settings_theme_dark">Dark</string>
+  <string name="settings_theme_battery">Set by Battery Saver</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+  <string name="title_settings">settings</string>
+  <string name="title_diary">Diary</string>
+  <string name="title_dashboard">Dashboard</string>
+
+  <!-- Gender -->
+  <string name="gender_male">Male</string>
+  <string name="gender_female">Female</string>
+  <string name="gender_other">Other</string>
+
+  <string-array name="gender">
+    <item>@string/gender_male</item>
+    <item>@string/gender_female</item>
+    <item>@string/gender_other</item>
+  </string-array>
 </resources>

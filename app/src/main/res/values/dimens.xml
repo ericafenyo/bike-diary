@@ -4,4 +4,5 @@
   <dimen name="text_size_h2">20sp</dimen>
   <dimen name="text_size_h3">18sp</dimen>
   <dimen name="bottom_navigation_elevation">8dp</dimen>
+  <dimen name="nav_avatar_size">48dp</dimen>
 </resources>
