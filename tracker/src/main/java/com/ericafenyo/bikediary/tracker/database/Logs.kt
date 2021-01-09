@@ -25,9 +25,11 @@
 package com.ericafenyo.bikediary.tracker.database
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "logs")
 data class Logs(
+  @PrimaryKey
   val id: Int = 0,
   val ts: String,
   val level: String,

@@ -25,9 +25,12 @@
 package com.ericafenyo.bikediary.tracker.database
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "store")
 data class Store(
+  @PrimaryKey
+  val id: Int,
   val ts: String,
   val timezone: String,
   val type: String,
