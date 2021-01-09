@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,32 @@
  * SOFTWARE.
  */
 
-object Libs {
-  const val GLIDE = "com.github.bumptech.glide:glide"
-  const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler"
+package com.ericafenyo.bikediary.tracker.database
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+
+@Database(entities = [], version = 1, exportSchema = false)
+abstract class TrackerDatabase : RoomDatabase() {
+
+  companion object {
+    private const val DATABASE_NAME = "com.ericafenyo.biketracker.DataStore"
+
+    @Volatile
+    private var INSTANCE: TrackerDatabase? = null
+
+    @JvmStatic
+    fun getInstance(context: Context): TrackerDatabase {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: createDatabase(context)
+          .also { INSTANCE = it }
+      }
+    }
+
+    private fun createDatabase(context: Context): TrackerDatabase {
+      return Room.databaseBuilder(context, TrackerDatabase::class.java, DATABASE_NAME).build()
+    }
+  }
 }

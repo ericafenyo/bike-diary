@@ -27,13 +27,21 @@ plugins {
   id("maven-publish")
 }
 
-val glide = "4.11.0"
-
 @Suppress("UnstableApiUsage")
 dependencies {
   constraints {
-    api("${Libs.GLIDE}:$glide")
-    api("${Libs.GLIDE_COMPILER}:$glide")
+    api("${Lib.JUNIT}:${Version.JUNIT}")
+    api("${Lib.KOTLIN_STDLIB}:${Version.KOTLIN}")
+
+    api("${Lib.GLIDE}:${Version.GLIDE}")
+    api("${Lib.GLIDE_COMPILER}:${Version.GLIDE}")
+
+    api("${Lib.ROOM_KTX}:${Version.ROOM}")
+    api("${Lib.ROOM_RUNTIME}:${Version.ROOM}")
+    api("${Lib.ROOM_COMPILER}:${Version.ROOM}")
+    api("${Lib.ROOM_TESTING}:${Version.ROOM}")
+
+    api("${Lib.TIMBER}:${Version.TIMBER}")
   }
 }
 

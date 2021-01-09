@@ -22,54 +22,15 @@
  * SOFTWARE.
  */
 
-plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-}
+package com.ericafenyo.bikediary.tracker.database
 
-android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+import androidx.room.Entity
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}
-
-dependencies {
-    implementation(platform(project(":bom")))
-    kapt(platform(project(":bom")))
-
-    // Junit Test
-    testImplementation(Lib.JUNIT)
-
-    // Kotlin
-    implementation(Lib.KOTLIN_STDLIB)
-
-    // Room
-    implementation(Lib.ROOM_KTX)
-    implementation(Lib.ROOM_RUNTIME)
-    kapt(Lib.ROOM_COMPILER)
-    testImplementation(Lib.ROOM_TESTING)
-}
+@Entity(tableName = "store")
+data class Store(
+  val ts: String,
+  val timezone: String,
+  val type: String,
+  val key: String,
+  val data: String
+)
