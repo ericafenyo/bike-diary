@@ -75,5 +75,6 @@ dependencies {
 
     // Play Services
     implementation(Lib.GOOGLE_PLAY_SERVICES_LOCATION)
-    
+
+    implementation(Lib.PREFERENCE_DATA_STORE)
 }

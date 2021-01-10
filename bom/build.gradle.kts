@@ -36,6 +36,8 @@ dependencies {
     api("${Lib.GLIDE}:${Version.GLIDE}")
     api("${Lib.GLIDE_COMPILER}:${Version.GLIDE}")
 
+    api("${Lib.PREFERENCE_DATA_STORE}:${Version.PREFERENCE_DATA_STORE}")
+
     api("${Lib.ROOM_KTX}:${Version.ROOM}")
     api("${Lib.ROOM_RUNTIME}:${Version.ROOM}")
     api("${Lib.ROOM_COMPILER}:${Version.ROOM}")

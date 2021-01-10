@@ -34,7 +34,7 @@
       <intent-filter>
         <action android:name="tracker.action.initialize" />
         <action android:name="tracker.action.start" />
-        <action android:name="tracker.action.paused" />
+        <action android:name="tracker.action.pause" />
         <action android:name="tracker.action.resume" />
         <action android:name="tracker.action.stop" />
         <action android:name="tracker.action.disable" />

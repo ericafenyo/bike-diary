@@ -27,10 +27,29 @@ package com.ericafenyo.bikediary.tracker
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import com.ericafenyo.bikediary.tracker.logger.Logger
 
 class StateMachineReceiver : BroadcastReceiver() {
+
   override fun onReceive(context: Context, intent: Intent) {
-    Log.i("StateMachineReceiver", "onReceive: $intent")
+    Logger.debug(context, TAG, "onReceive(Context $context, Intent $intent)")
+
+    if (intent.action == context.getString(R.string.tracker_action_initialize)) {
+      // TODO: 1/9/21
+      //  1. Check for consent
+      //  2. Check for location permission
+      //  3. break if the above condition is not satisfied
+    }
+
+    // we should only get here if the user has consented
+    // Start the State machine service
+    val startIntent: Intent = StateMachineService.getStartIntent(context)
+    startIntent.action = intent.action
+    context.startService(startIntent)
+  }
+
+
+  companion object {
+    private const val TAG = "StateMachineReceiver"
   }
 }

@@ -24,11 +24,20 @@
   -->
 
 <resources>
+  <!-- Machine states -->
+  <string name="tracker_state_start">tracker.state.start</string>
+  <string name="tracker_state_ready">tracker.state.ready</string>
+  <string name="tracker_state_ongoing">tracker.state.ongoing</string>
+  <string name="tracker_state_disabled">tracker.state.disabled</string>
+
+  <!--  Machine actions-->
   <string name="tracker_action_initialize">tracker.action.initialize</string>
   <string name="tracker_action_start">tracker.action.start</string>
-  <string name="tracker_action_paused">tracker.action.paused</string>
+  <string name="tracker_action_pause">tracker.action.pause</string>
   <string name="tracker_action_resume">tracker.action.resume</string>
   <string name="tracker_action_stop">tracker.action.stop</string>
   <string name="tracker_action_disable">tracker.action.disable</string>
   <string name="tracker_action_enable">tracker.action.enable</string>
+
+    <string name="tracker_current_state_key">tracker_current_state</string>
 </resources>

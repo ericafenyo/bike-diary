@@ -24,14 +24,36 @@
 
 package com.ericafenyo.bikediary.tracker.database
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.content.Context
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.createDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-@Entity(tableName = "logs")
-data class Logs(
-  @PrimaryKey
-  val id: Int = 0,
-  val ts: String,
-  val level: String,
-  val message: String
-)
+class PreferenceDataStore private constructor(context: Context) {
+  private val dataStore = context.createDataStore(name = "tracker_data_store")
+
+  suspend fun putString(key: String, value: String) {
+    dataStore.edit { preference ->
+      preference[preferencesKey(key)] = value
+    }
+  }
+
+  fun getString(key: String, defaultValue: String): Flow<String> {
+    return dataStore.data.map { preference -> preference[preferencesKey(key)] ?: defaultValue }
+  }
+
+  companion object {
+    @Volatile
+    private var INSTANCE: PreferenceDataStore? = null
+
+    @JvmStatic
+    fun getInstance(context: Context): PreferenceDataStore {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: PreferenceDataStore(context)
+          .also { INSTANCE = it }
+      }
+    }
+  }
+}
