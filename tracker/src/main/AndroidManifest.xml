@@ -41,5 +41,6 @@
         <action android:name="tracker.action.enable" />
       </intent-filter>
     </receiver>
+    <receiver android:name=".location.LocationUpdatesReceiver" />
   </application>
 </manifest>

@@ -27,7 +27,11 @@ package com.ericafenyo.bikediary.tracker.location
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Looper
+import com.ericafenyo.bikediary.tracker.logger.Logger
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 
@@ -35,12 +39,23 @@ import com.google.android.gms.tasks.Task
  * This class contains methods for starting and stopping a location update.
  */
 class LocationUpdatesAction(private val context: Context) {
+  private val tag = "LocationUpdatesAction"
+  private var locationCallback = object : LocationCallback() {
+    override fun onLocationResult(locationResult: LocationResult?) {
+      Logger.debug(context, tag, "locationResult: $locationResult")
+    }
+  }
 
   fun start(): Task<Void>? {
     return try {
       LocationServices.getFusedLocationProviderClient(context)
-        .requestLocationUpdates(locationRequest, pendingIntent)
-    } catch (e: SecurityException) {
+        .requestLocationUpdates(locationRequest, getPendingIntent())
+    } catch (exception: SecurityException) {
+      Logger.error(
+        context,
+        tag,
+        "Security error: ${exception.message} while starting location updates"
+      )
       null
     }
   }
@@ -49,18 +64,15 @@ class LocationUpdatesAction(private val context: Context) {
     .setInterval(TEN_SECONDS)
     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 
-  fun stop(): Task<Void>? {
-    return LocationServices.getFusedLocationProviderClient(context)
-      .removeLocationUpdates(pendingIntent)
-  }
+  fun stop(): Task<Void>? = LocationServices.getFusedLocationProviderClient(context)
+    .removeLocationUpdates(getPendingIntent())
 
-  private val pendingIntent: PendingIntent
-    get() {
-      val intent = Intent(context, LocationUpdatesReceiver::class.java)
-      // FLAG_UPDATE_CURRENT replaces any existing broadcast.
-      // We want to handle one location update at a time.
-      return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
+  private fun getPendingIntent(): PendingIntent {
+    val intent = Intent(context, LocationUpdatesReceiver::class.java)
+    // FLAG_UPDATE_CURRENT replaces any existing broadcast.
+    // We want to handle one location update at a time.
+    return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+  }
 
   companion object {
     const val THIRTY_SECONDS: Long = 30 * 1000

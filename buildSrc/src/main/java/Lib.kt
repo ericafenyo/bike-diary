@@ -33,5 +33,5 @@ object Lib {
   const val ROOM_TESTING = "androidx.room:room-testing"
   const val JUNIT = "junit:junit"
   const val GOOGLE_PLAY_SERVICES_LOCATION = "com.google.android.gms:play-services-location"
-  const val PREFERENCE_DATA_STORE = ""androidx.datastore:datastore-preferences""
+  const val PREFERENCE_DATA_STORE = "androidx.datastore:datastore-preferences"
 }

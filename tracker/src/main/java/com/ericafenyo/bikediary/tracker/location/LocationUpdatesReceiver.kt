@@ -27,14 +27,20 @@ package com.ericafenyo.bikediary.tracker.location
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
+import com.ericafenyo.bikediary.tracker.logger.Logger
+import com.google.android.gms.location.LocationResult
 
 /**
  * Receiver for broadcasts sent by {@link LocationUpdatesAction}.
  */
 class LocationUpdatesReceiver : BroadcastReceiver() {
+  private val tag = "LocationUpdatesReceiver"
+
   override fun onReceive(context: Context, intent: Intent) {
-    Toast.makeText(context, "onReceive Location updated", Toast.LENGTH_SHORT).show()
+    Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
+    Log.d(tag, "Location updates: ${LocationResult.extractResult(intent)}")
     // TODO: 1/9/21 Save location data to database
   }
 }
