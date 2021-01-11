@@ -24,35 +24,16 @@
 
 package com.ericafenyo.bikediary.tracker.database
 
-import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.ericafenyo.bikediary.tracker.logger.LogDao
-import com.ericafenyo.bikediary.tracker.logger.LogEntity
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
-@Database(entities = [Store::class, LogEntity::class], version = 1, exportSchema = false)
-abstract class TrackerDatabase : RoomDatabase() {
+@Dao
+interface StoreDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(document: Store)
 
-  abstract fun logTable(): LogDao
-  abstract fun storeTable(): StoreDao
-
-  companion object {
-    private const val DATABASE_NAME = "com.ericafenyo.biketracker.DataStore"
-
-    @Volatile
-    private var INSTANCE: TrackerDatabase? = null
-
-    @JvmStatic
-    fun getInstance(context: Context): TrackerDatabase {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: createDatabase(context)
-          .also { INSTANCE = it }
-      }
-    }
-
-    private fun createDatabase(context: Context): TrackerDatabase {
-      return Room.databaseBuilder(context, TrackerDatabase::class.java, DATABASE_NAME).build()
-    }
-  }
+  @Query("DELETE FROM logs")
+  suspend fun clear()
 }
