@@ -30,4 +30,5 @@ object Version {
   const val JUNIT = "4.13"
   const val GOOGLE_PLAY_SERVICES_LOCATION = "17.1.0"
   const val PREFERENCE_DATA_STORE = "1.0.0-alpha05"
+  const val MAP_BOX = "9.2.0"
 }

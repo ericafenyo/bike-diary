@@ -46,6 +46,7 @@ dependencies {
     api("${Lib.GOOGLE_PLAY_SERVICES_LOCATION}:${Version.GOOGLE_PLAY_SERVICES_LOCATION}")
 
     api("${Lib.TIMBER}:${Version.TIMBER}")
+    api("${Lib.MAP_BOX}:${Version.MAP_BOX}")
   }
 }
 

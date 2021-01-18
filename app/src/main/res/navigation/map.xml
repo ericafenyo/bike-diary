@@ -22,17 +22,16 @@
   SOFTWARE.
   -->
 
-<resources>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    app:startDestination="@id/mapFragment">
 
-  <string name="title_map">Carte</string>
-  <string name="title_profile">Profil</string>
-  <string name="title_diary">Diary</string>
-  <string name="title_dashboard">Dashboard</string>
-  <string name="title_settings">settings</string>
-
-  <string name="settings_theme_title">Sélectionner un thème</string>
-  <string name="settings_theme_system">Thème par défaut su système</string>
-  <string name="settings_theme_light">Clair</string>
-  <string name="settings_theme_dark">Sombre</string>
-  <string name="settings_theme_battery">Défini par l\'économiseur de batterie</string>
-</resources>
+  <fragment
+      android:id="@+id/mapFragment"
+      android:name="com.ericafenyo.habitdiary.MapFragment"
+      android:label="fragment_map"
+      tools:layout="@layout/fragment_map" />
+</navigation>
