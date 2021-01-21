@@ -27,6 +27,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField('String', 'MAPBOX_ACCESS_TOKEN', MAPBOX_ACCESS_TOKEN)
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -49,6 +53,7 @@ android {
 dependencies {
 
     api(platform(project(":bom")))
+    implementation project(path: ':tracker')
     kapt(platform(project(":bom")))
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -90,4 +95,7 @@ dependencies {
     // Glide
     implementation(Lib.GLIDE)
     kapt(Lib.GLIDE_COMPILER)
+
+    //map
+    implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:9.2.0')
 }

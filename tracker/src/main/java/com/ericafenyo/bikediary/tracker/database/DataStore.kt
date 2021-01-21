@@ -22,27 +22,37 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker
+package com.ericafenyo.bikediary.tracker.database
 
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.ericafenyo.bikediary.tracker.logger.LogDao
+import com.ericafenyo.bikediary.tracker.logger.LogEntity
 
-import org.junit.Test
-import org.junit.runner.RunWith
+@Database(entities = [Record::class, LogEntity::class], version = 1, exportSchema = false)
+abstract class DataStore : RoomDatabase() {
 
-import org.junit.Assert.*
+  abstract fun logs(): LogDao
+  abstract fun getRecords(): RecordDao
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-@RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
-  @Test
-  fun useAppContext() {
-    // Context of the app under test.
-    val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    assertEquals("com.ericafenyo.bikediary.tracker.test", appContext.packageName)
+  companion object {
+    private const val DATABASE_NAME = "com.ericafenyo.tracker.DataStore"
+
+    @Volatile
+    private var INSTANCE: DataStore? = null
+
+    @JvmStatic
+    fun getInstance(context: Context): DataStore {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: createDatabase(context)
+          .also { INSTANCE = it }
+      }
+    }
+
+    private fun createDatabase(context: Context): DataStore {
+      return Room.databaseBuilder(context, DataStore::class.java, DATABASE_NAME).build()
+    }
   }
 }

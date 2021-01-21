@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
-  Copyright (C) 2021 Eric Afenyo
+  Copyright (C) 2020 Eric Afenyo
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +22,16 @@
   SOFTWARE.
   -->
 
-<manifest
+<navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ericafenyo.bikediary.tracker">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    app:startDestination="@id/mapFragment">
 
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <application>
-    <service android:name=".StateMachineService" />
-
-    <receiver
-        android:name=".StateMachineReceiver"
-        android:exported="false">
-      <intent-filter>
-        <action android:name="tracker.intent.action.INITIALIZE" />
-        <action android:name="tracker.intent.action.START" />
-        <action android:name="tracker.intent.action.PAUSE" />
-        <action android:name="tracker.intent.action.RESUME" />
-        <action android:name="tracker.intent.action.STOP" />
-        <action android:name="tracker.intent.action.DISABLE" />
-        <action android:name="tracker.intent.action.ENABLE" />
-      </intent-filter>
-    </receiver>
-    <receiver android:name=".location.LocationUpdatesReceiver" />
-  </application>
-</manifest>
+  <fragment
+      android:id="@+id/mapFragment"
+      android:name="com.ericafenyo.habitdiary.MapFragment"
+      android:label="fragment_map"
+      tools:layout="@layout/fragment_map" />
+</navigation>

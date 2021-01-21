@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -22,27 +23,17 @@
   SOFTWARE.
   -->
 
-<manifest
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ericafenyo.bikediary.tracker">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DiaryFragment">
 
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <application>
-    <service android:name=".StateMachineService" />
+  <!-- TODO: Update blank fragment layout -->
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:text="@string/hello_blank_fragment" />
 
-    <receiver
-        android:name=".StateMachineReceiver"
-        android:exported="false">
-      <intent-filter>
-        <action android:name="tracker.intent.action.INITIALIZE" />
-        <action android:name="tracker.intent.action.START" />
-        <action android:name="tracker.intent.action.PAUSE" />
-        <action android:name="tracker.intent.action.RESUME" />
-        <action android:name="tracker.intent.action.STOP" />
-        <action android:name="tracker.intent.action.DISABLE" />
-        <action android:name="tracker.intent.action.ENABLE" />
-      </intent-filter>
-    </receiver>
-    <receiver android:name=".location.LocationUpdatesReceiver" />
-  </application>
-</manifest>
+</FrameLayout>

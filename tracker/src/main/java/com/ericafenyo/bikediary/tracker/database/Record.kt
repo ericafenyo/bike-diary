@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,18 @@
  * SOFTWARE.
  */
 
-object Version {
-  const val GLIDE = "4.11.0"
-  const val TIMBER = "4.7.1"
-  const val ROOM = "2.2.5"
-  const val KOTLIN = "1.4.20"
-  const val JUNIT = "4.13"
-  const val GOOGLE_PLAY_SERVICES_LOCATION = "17.1.0"
-  const val PREFERENCE_DATA_STORE = "1.0.0-alpha05"
-  const val MAP_BOX = "9.2.0"
-  const val GSON = "2.8.6"
-  const val HILT = "2.29.1-alpha"
-  val HILT_JETPACK = "1.0.0-alpha02"
-}
+package com.ericafenyo.bikediary.tracker.database
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "store")
+data class Record(
+  @PrimaryKey(autoGenerate = true)
+  val id: Int = 0,
+  val ts: Double,
+  val timezone: String,
+  val type: String,
+  val key: String,
+  val data: String
+)

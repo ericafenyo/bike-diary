@@ -38,6 +38,14 @@ dependencies {
 
     api("${Lib.PREFERENCE_DATA_STORE}:${Version.PREFERENCE_DATA_STORE}")
 
+    api("${Lib.HILT_ANDROID}:${Version.HILT}")
+    api("${Lib.HILT_ANDROID}:${Version.HILT}")
+    api("${Lib.HILT_COMPILER}:${Version.HILT}")
+    api("${Lib.HILT_TESTING}:${Version.HILT}")
+    api("${Lib.ANDROIDX_HILT_COMPILER}:${Version.HILT_JETPACK}")
+    api("${Lib.HILT_VIEWMODEL}:${Version.HILT_JETPACK}")
+
+
     api("${Lib.ROOM_KTX}:${Version.ROOM}")
     api("${Lib.ROOM_RUNTIME}:${Version.ROOM}")
     api("${Lib.ROOM_COMPILER}:${Version.ROOM}")
@@ -46,6 +54,8 @@ dependencies {
     api("${Lib.GOOGLE_PLAY_SERVICES_LOCATION}:${Version.GOOGLE_PLAY_SERVICES_LOCATION}")
 
     api("${Lib.TIMBER}:${Version.TIMBER}")
+    api("${Lib.MAP_BOX}:${Version.MAP_BOX}")
+    api("${Lib.GSON}:${Version.GSON}")
   }
 }
 

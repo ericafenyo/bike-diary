@@ -24,16 +24,18 @@
 
 package com.ericafenyo.bikediary.tracker.database
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import com.google.gson.GsonBuilder
+import org.json.JSONObject
 
-@Entity(tableName = "store")
-data class Store(
-  @PrimaryKey
-  val id: Int,
-  val ts: String,
-  val timezone: String,
-  val type: String,
-  val key: String,
-  val data: String
-)
+class TypeConverters {
+  val gson = GsonBuilder().create()
+
+  @TypeConverter
+  fun fromObject(value: Any): String = gson.toJson(value)
+
+  @TypeConverter
+  fun toObject(value: String): Any {
+    return JSONObject(value)
+  }
+}

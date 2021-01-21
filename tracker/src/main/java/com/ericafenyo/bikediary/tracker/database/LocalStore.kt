@@ -24,10 +24,10 @@
 
 package com.ericafenyo.bikediary.tracker.database
 
-interface LocalStore {
-  fun putSensorData(key: Int, value: Any)
-  fun putMessage(key: Int, value: Any)
-  fun putDocument(key: Int, value: Any)
+interface Cache {
+  fun putSensorData(key: String, value: Any)
+  fun putMessage(key: String, value: Any)
+  fun putDocument(key: String, value: Any)
 
   fun clear()
 }
