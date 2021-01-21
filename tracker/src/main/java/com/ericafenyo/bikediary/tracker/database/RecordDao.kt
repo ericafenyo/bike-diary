@@ -30,10 +30,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface StoreDao {
+interface RecordDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(document: Store)
+  fun save(record: Record)
 
   @Query("DELETE FROM logs")
-  suspend fun clear()
+  fun clear()
 }

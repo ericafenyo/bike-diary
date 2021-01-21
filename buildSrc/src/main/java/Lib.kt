@@ -35,4 +35,10 @@ object Lib {
   const val GOOGLE_PLAY_SERVICES_LOCATION = "com.google.android.gms:play-services-location"
   const val PREFERENCE_DATA_STORE = "androidx.datastore:datastore-preferences"
   const val MAP_BOX = "com.mapbox.mapboxsdk:mapbox-android-sdk"
+  const val GSON = "com.google.code.gson:gson"
+  const val HILT_ANDROID = "com.google.dagger:hilt-android"
+  const val HILT_VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel"
+  const val HILT_COMPILER = "com.google.dagger:hilt-android-compiler"
+  const val HILT_TESTING = "com.google.dagger:hilt-android-testing"
+  const val ANDROIDX_HILT_COMPILER = "androidx.hilt:hilt-compiler"
 }

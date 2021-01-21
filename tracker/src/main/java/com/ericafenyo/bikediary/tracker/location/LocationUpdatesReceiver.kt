@@ -28,9 +28,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
+import com.ericafenyo.bikediary.tracker.database.RecordCache
 import com.ericafenyo.bikediary.tracker.logger.Logger
 import com.google.android.gms.location.LocationResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
 /**
  * Receiver for broadcasts sent by {@link LocationUpdatesAction}.
@@ -40,7 +42,15 @@ class LocationUpdatesReceiver : BroadcastReceiver() {
 
   override fun onReceive(context: Context, intent: Intent) {
     Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
+    val result = LocationResult.extractResult(intent)
     Log.d(tag, "Location updates: ${LocationResult.extractResult(intent)}")
-    // TODO: 1/9/21 Save location data to database
+    if (result != null) {
+      val location = result.lastLocation.simplify()
+      runBlocking(Dispatchers.IO) {
+        RecordCache.getInstance(context).putSensorData(
+          RecordCache.KEY_LOCATION, location
+        )
+      }
+    }
   }
 }

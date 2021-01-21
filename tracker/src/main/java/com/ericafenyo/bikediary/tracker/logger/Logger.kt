@@ -26,14 +26,14 @@ package com.ericafenyo.bikediary.tracker.logger
 
 import android.content.Context
 import android.util.Log
-import com.ericafenyo.bikediary.tracker.database.TrackerDatabase
+import com.ericafenyo.bikediary.tracker.database.DataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import java.io.PrintWriter
 import java.io.StringWriter
 
 object Logger {
-  private fun database(context: Context) = TrackerDatabase.getInstance(context).logTable()
+  private fun database(context: Context) = DataStore.getInstance(context).logs()
   private val IOContext = Dispatchers.IO
 
   fun clear(context: Context) = runBlocking(IOContext) { database(context).clear() }

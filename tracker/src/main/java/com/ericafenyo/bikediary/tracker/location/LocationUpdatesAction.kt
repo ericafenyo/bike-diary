@@ -27,7 +27,6 @@ package com.ericafenyo.bikediary.tracker.location
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Looper
 import com.ericafenyo.bikediary.tracker.logger.Logger
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -62,6 +61,7 @@ class LocationUpdatesAction(private val context: Context) {
 
   private val locationRequest: LocationRequest = LocationRequest.create()
     .setInterval(TEN_SECONDS)
+    .setSmallestDisplacement(10F) // In meters
     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 
   fun stop(): Task<Void>? = LocationServices.getFusedLocationProviderClient(context)

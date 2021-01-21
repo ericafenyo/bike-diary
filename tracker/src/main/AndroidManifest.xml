@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -30,15 +29,18 @@
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <application>
     <service android:name=".StateMachineService" />
-    <receiver android:name=".StateMachineReceiver" android:exported="false">
+
+    <receiver
+        android:name=".StateMachineReceiver"
+        android:exported="false">
       <intent-filter>
-        <action android:name="tracker.action.initialize" />
-        <action android:name="tracker.action.start" />
-        <action android:name="tracker.action.pause" />
-        <action android:name="tracker.action.resume" />
-        <action android:name="tracker.action.stop" />
-        <action android:name="tracker.action.disable" />
-        <action android:name="tracker.action.enable" />
+        <action android:name="tracker.intent.action.INITIALIZE" />
+        <action android:name="tracker.intent.action.START" />
+        <action android:name="tracker.intent.action.PAUSE" />
+        <action android:name="tracker.intent.action.RESUME" />
+        <action android:name="tracker.intent.action.STOP" />
+        <action android:name="tracker.intent.action.DISABLE" />
+        <action android:name="tracker.intent.action.ENABLE" />
       </intent-filter>
     </receiver>
     <receiver android:name=".location.LocationUpdatesReceiver" />

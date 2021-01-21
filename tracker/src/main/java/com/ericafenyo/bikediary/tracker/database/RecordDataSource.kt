@@ -25,34 +25,52 @@
 package com.ericafenyo.bikediary.tracker.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.ericafenyo.bikediary.tracker.logger.LogDao
-import com.ericafenyo.bikediary.tracker.logger.LogEntity
+import com.google.gson.Gson
+import java.util.*
 
-@Database(entities = [Store::class, LogEntity::class], version = 1, exportSchema = false)
-abstract class TrackerDatabase : RoomDatabase() {
+class RecordCache private constructor(context: Context) : Cache {
+  private val records = DataStore.getInstance(context).getRecords()
 
-  abstract fun logTable(): LogDao
-  abstract fun storeTable(): StoreDao
+  override fun putSensorData(key: String, value: Any) {
+    createRecord(SENSOR_DATA_TYPE, key, value).also { records.save(it) }
+  }
+
+  override fun putMessage(key: String, value: Any) {
+    createRecord(MESSAGE_TYPE, key, value).also { records.save(it) }
+  }
+
+  override fun putDocument(key: String, value: Any) {
+    createRecord(DOCUMENT_TYPE, key, value).also { records.save(it) }
+  }
+
+  override fun clear() {
+    records.clear()
+  }
+
+  private fun createRecord(type: String, key: String, data: Any) = Record(
+    ts = (System.currentTimeMillis() / 1000).toDouble(),
+    timezone = TimeZone.getDefault().id,
+    type = type,
+    key = key,
+    data = Gson().toJson(data)
+  )
 
   companion object {
-    private const val DATABASE_NAME = "com.ericafenyo.biketracker.DataStore"
+    private const val SENSOR_DATA_TYPE = "sensor-data"
+    private const val MESSAGE_TYPE = "message"
+    private const val DOCUMENT_TYPE = "document"
+
+    const val KEY_LOCATION = "background/location"
 
     @Volatile
-    private var INSTANCE: TrackerDatabase? = null
+    private var INSTANCE: RecordCache? = null
 
     @JvmStatic
-    fun getInstance(context: Context): TrackerDatabase {
+    fun getInstance(context: Context): Cache {
       return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: createDatabase(context)
+        INSTANCE ?: RecordCache(context)
           .also { INSTANCE = it }
       }
-    }
-
-    private fun createDatabase(context: Context): TrackerDatabase {
-      return Room.databaseBuilder(context, TrackerDatabase::class.java, DATABASE_NAME).build()
     }
   }
 }
