@@ -22,12 +22,20 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.database
 
-interface Cache {
-  fun putSensorData(key: String, value: Any)
-  fun putMessage(key: String, value: Any)
-  fun putDocument(key: String, value: Any)
+import androidx.room.TypeConverter
+import com.google.gson.GsonBuilder
+import org.json.JSONObject
 
-  fun clear()
+class TypeConverters {
+  val gson = GsonBuilder().create()
+
+  @TypeConverter
+  fun fromObject(value: Any): String = gson.toJson(value)
+
+  @TypeConverter
+  fun toObject(value: String): Any {
+    return JSONObject(value)
+  }
 }

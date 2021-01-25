@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.database
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

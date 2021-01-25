@@ -22,26 +22,35 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.location
+package com.ericafenyo.tracker.location
 
-import android.location.Location
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import com.ericafenyo.tracker.database.RecordCache
+import com.ericafenyo.tracker.logger.Logger
+import com.google.android.gms.location.LocationResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
-class SimpleLocation(
-  val latitude: Double,
-  val longitude: Double,
-  val altitude: Double,
-  val ts: Double,
-  val speed: Float,
-  val accuracy: Float,
-  val bearing: Float
-)
+/**
+ * Receiver for broadcasts sent by {@link LocationUpdatesAction}.
+ */
+class LocationUpdatesReceiver : BroadcastReceiver() {
+  private val tag = "LocationUpdatesReceiver"
 
-fun Location.simplify() = SimpleLocation(
-  latitude = latitude,
-  longitude = longitude,
-  altitude = altitude,
-  ts = time.toDouble(),
-  speed = speed,
-  accuracy = accuracy,
-  bearing = bearing
-)
+  override fun onReceive(context: Context, intent: Intent) {
+    Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
+    val result = LocationResult.extractResult(intent)
+    Log.d(tag, "Location updates: ${LocationResult.extractResult(intent)}")
+    if (result != null) {
+      val location = result.lastLocation.simplify()
+      runBlocking(Dispatchers.IO) {
+        RecordCache.getInstance(context).putSensorData(
+          RecordCache.KEY_LOCATION, location
+        )
+      }
+    }
+  }
+}

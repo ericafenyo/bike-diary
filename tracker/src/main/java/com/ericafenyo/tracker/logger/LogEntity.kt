@@ -22,37 +22,15 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.logger
 
-import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.ericafenyo.bikediary.tracker.logger.LogDao
-import com.ericafenyo.bikediary.tracker.logger.LogEntity
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Database(entities = [Record::class, LogEntity::class], version = 1, exportSchema = false)
-abstract class DataStore : RoomDatabase() {
-
-  abstract fun logs(): LogDao
-  abstract fun getRecords(): RecordDao
-
-  companion object {
-    private const val DATABASE_NAME = "com.ericafenyo.tracker.DataStore"
-
-    @Volatile
-    private var INSTANCE: DataStore? = null
-
-    @JvmStatic
-    fun getInstance(context: Context): DataStore {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: createDatabase(context)
-          .also { INSTANCE = it }
-      }
-    }
-
-    private fun createDatabase(context: Context): DataStore {
-      return Room.databaseBuilder(context, DataStore::class.java, DATABASE_NAME).build()
-    }
-  }
-}
+@Entity(tableName = "logs")
+data class LogEntity(
+  @PrimaryKey(autoGenerate = true) val id: Int = 0,
+  val ts: Double = (System.currentTimeMillis() / 1000).toDouble(),
+  val level: String,
+  val message: String
+)

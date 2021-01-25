@@ -22,34 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker
+package com.ericafenyo.tracker.database
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import com.ericafenyo.bikediary.tracker.logger.Logger
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class StateMachineReceiver : BroadcastReceiver() {
-
-  override fun onReceive(context: Context, intent: Intent) {
-    Logger.debug(context, TAG, "onReceive(Context $context, Intent $intent)")
-
-    if (intent.action == context.getString(R.string.tracker_action_initialize)) {
-      // TODO: 1/9/21
-      //  1. Check for consent
-      //  2. Check for location permission
-      //  3. break if the above condition is not satisfied
-    }
-
-    // we should only get here if the user has consented
-    // Start the State machine service
-    val startIntent: Intent = StateMachineService.getStartIntent(context)
-    startIntent.action = intent.action
-    context.startService(startIntent)
-  }
-
-
-  companion object {
-    private const val TAG = "StateMachineReceiver"
-  }
-}
+@Entity(tableName = "store")
+data class Record(
+  @PrimaryKey(autoGenerate = true)
+  val id: Int = 0,
+  val ts: Double,
+  val timezone: String,
+  val type: String,
+  val key: String,
+  val data: String
+)

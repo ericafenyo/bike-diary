@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -33,6 +33,9 @@ import androidx.room.Query
 interface RecordDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun save(record: Record)
+
+  @Query("SELECT * FROM store WHERE `key` IN (:keys) ORDER BY id ASC")
+  fun read(keys: List<String>): List<Record>
 
   @Query("DELETE FROM logs")
   fun clear()

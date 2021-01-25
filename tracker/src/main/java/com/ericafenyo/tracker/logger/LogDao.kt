@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.logger
+package com.ericafenyo.tracker.logger
 
 import androidx.room.Dao
 import androidx.room.Insert

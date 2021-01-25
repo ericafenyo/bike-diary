@@ -22,22 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker
+package com.ericafenyo.tracker
 
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import com.ericafenyo.bikediary.tracker.database.PreferenceDataStore
-import com.ericafenyo.bikediary.tracker.location.LocationUpdatesAction
-import com.ericafenyo.bikediary.tracker.logger.Logger
+import com.ericafenyo.tracker.database.PreferenceDataStore
+import com.ericafenyo.tracker.database.RecordCache
+import com.ericafenyo.tracker.location.LocationUpdatesAction
+import com.ericafenyo.tracker.logger.Logger
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlin.coroutines.CoroutineContext
 
 class StateMachineService : Service(), CoroutineScope {
   private val tag = "StateMachineService"
+
   private val ioContext = Dispatchers.IO
   private val job = Job()
 
@@ -89,6 +91,8 @@ class StateMachineService : Service(), CoroutineScope {
       return
     }
 
+    // Exit if current
+
     when (action) {
       getString(R.string.tracker_action_initialize) -> handleInitialize(currentState, action)
       getString(R.string.tracker_action_start) -> handleStart(currentState, action)
@@ -98,12 +102,9 @@ class StateMachineService : Service(), CoroutineScope {
 
   private fun handleInitialize(currentState: String, action: String) {
     Logger.debug(this, tag, "handleInitialize(currentState: $currentState, action: $action)")
-
-    // Get current location
-
     // Exit quickly if tracking is disabled
     exitOnTrackingDisabled(currentState)
-    setNewState(this, getString(R.string.tracker_state_ready), false)
+    setNewState(this, currentState, getString(R.string.tracker_state_ready))
   }
 
   private fun handleStart(currentState: String, action: String) {
@@ -117,24 +118,39 @@ class StateMachineService : Service(), CoroutineScope {
     if (currentState == getString(R.string.tracker_state_ready)) {
       // Start the location-updates request
       LocationUpdatesAction(this).start()?.addOnSuccessListener { request ->
-        // If the request is successful, change the current state to ongoing
+        // On success, add trip start message
+
+        runBlocking(Dispatchers.IO) {
+          RecordCache.getInstance(this@StateMachineService).putMessage(
+            RecordCache.KEY_TRIP_STARTED, "{ action: Trip started }"
+          )
+        }
+
+        //Change the current state to ongoing
         // We should now get location updates at a particular interval
-        setNewState(this, getString(R.string.tracker_state_ongoing), false)
+        setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
       }?.addOnFailureListener {
-        Logger.debug(this, tag, "Location request unsuccessful")
+        Logger.error(this, tag, "Start location request unsuccessful: $it")
       }
     }
   }
 
   private fun handleStop(currentState: String, action: String) {
+    Logger.debug(this, tag, "handleStop(currentState: $currentState, action: $action)")
+    // Stop the location-updates request
     LocationUpdatesAction(this).stop()?.addOnSuccessListener {
-      // Stop the location-updates request
+      // On success, add trip stopped message
+      runBlocking(Dispatchers.IO) {
+        RecordCache.getInstance(this@StateMachineService).putMessage(
+          RecordCache.KEY_TRIP_STOPPED, "{ action: Trip stropped }"
+        )
+      }
       // If the request is successful, change the current state to ongoing
       // We should now get location updates at a particular interval
-      setNewState(this, getString(R.string.tracker_state_ready), false)
+      setNewState(this, currentState, getString(R.string.tracker_state_ready))
     }?.addOnFailureListener {
       Log.e(tag, "Error", it)
-      Logger.debug(this, tag, "Stop Location updates request unsuccessful")
+      Logger.error(this, tag, "Stop Location updates request unsuccessful: $it")
     }
   }
 
@@ -145,8 +161,18 @@ class StateMachineService : Service(), CoroutineScope {
     }
   }
 
-  private fun setNewState(context: Context, newState: String, doChecks: Boolean) {
+  private fun exitOnEqualState(currentState: String, newState: String) {
+    if (currentState == newState) {
+      Logger.debug(this, tag, "Already in the state: $newState, exiting")
+      return
+    }
+  }
+
+  private fun setNewState(context: Context, currentState: String, newState: String) {
     Logger.debug(context, tag, "New state after handling action is $newState")
+
+    //Exit quickly if current state is same as state ready
+    exitOnEqualState(currentState, newState)
 
     // TODO: 1/10/21  exit if new state is same as current state
     runBlocking {

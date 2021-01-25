@@ -22,20 +22,26 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.location
 
-import androidx.room.TypeConverter
-import com.google.gson.GsonBuilder
-import org.json.JSONObject
+import android.location.Location
 
-class TypeConverters {
-  val gson = GsonBuilder().create()
+data class SimpleLocation(
+  val latitude: Double,
+  val longitude: Double,
+  val altitude: Double,
+  val ts: Double,
+  val speed: Float,
+  val accuracy: Float,
+  val bearing: Float
+)
 
-  @TypeConverter
-  fun fromObject(value: Any): String = gson.toJson(value)
-
-  @TypeConverter
-  fun toObject(value: String): Any {
-    return JSONObject(value)
-  }
-}
+fun Location.simplify() = SimpleLocation(
+  latitude = latitude,
+  longitude = longitude,
+  altitude = altitude,
+  ts = time.toDouble(),
+  speed = speed,
+  accuracy = accuracy,
+  bearing = bearing
+)

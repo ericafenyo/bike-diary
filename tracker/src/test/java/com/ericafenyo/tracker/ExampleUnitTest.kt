@@ -22,15 +22,20 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.logger
+package com.ericafenyo.tracker
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import org.junit.Test
 
-@Entity(tableName = "logs")
-data class LogEntity(
-  @PrimaryKey(autoGenerate = true) val id: Int = 0,
-  val ts: Double = (System.currentTimeMillis() / 1000).toDouble(),
-  val level: String,
-  val message: String
-)
+import org.junit.Assert.*
+
+/**
+ * Example local unit test, which will execute on the development machine (host).
+ *
+ * See [testing documentation](http://d.android.com/tools/testing).
+ */
+class ExampleUnitTest {
+  @Test
+  fun addition_isCorrect() {
+    assertEquals(4, 2 + 2)
+  }
+}
