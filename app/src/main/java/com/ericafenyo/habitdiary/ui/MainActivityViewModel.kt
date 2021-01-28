@@ -28,13 +28,24 @@ import android.net.Uri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.habitdiary.data.settings.SetThemeUseCase
+import com.ericafenyo.habitdiary.model.Theme
 import com.ericafenyo.habitdiary.ui.theme.ThemeDelegate
+import kotlinx.coroutines.launch
 
 class MainActivityViewModel @ViewModelInject constructor(
-  private val themeDelegate: ThemeDelegate
+  private val themeDelegate: ThemeDelegate,
+  private val switchTheme: SetThemeUseCase,
 ) : ViewModel(), ThemeDelegate by themeDelegate {
 
   val currentUserImageUri = MutableLiveData<Uri>()
 
   fun onProfileClicked() {}
+
+  fun setTheme(theme: Theme) {
+    viewModelScope.launch {
+      switchTheme(theme)
+    }
+  }
 }

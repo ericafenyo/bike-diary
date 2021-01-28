@@ -22,10 +22,14 @@
   <string name="gender_female">Female</string>
   <string name="gender_other">Other</string>
 
-
   <string-array name="gender">
     <item>@string/gender_male</item>
     <item>@string/gender_female</item>
     <item>@string/gender_other</item>
   </string-array>
+
+  <string name="profile_lable_dark_mode">Dark mode</string>
+  <string name="a11y_profile_enable_dark_mode">Enable dark mode</string>
+  <string name="a11y_profile_disable_dark_mode">Disable mode</string>
+
 </resources>

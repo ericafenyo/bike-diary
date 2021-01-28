@@ -48,7 +48,7 @@ class RecordCache private constructor(context: Context) : Cache {
 
   override fun getSensorData(keys: List<String>): List<*> {
     return runBlocking(Dispatchers.IO) {
-       records.read(keys)
+      records.read(keys)
     }
   }
 

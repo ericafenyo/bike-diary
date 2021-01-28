@@ -62,7 +62,7 @@ class SharedPreferenceStorage(context: Context) : PreferenceStorage {
   }
 
   override var selectedTheme: String by StringPreference(
-    prefs, PREF_DARK_MODE_ENABLED, Theme.SYSTEM.storageKey
+    prefs, PREF_DARK_MODE_ENABLED, Theme.DARK.storageKey
   )
 
   override var observableSelectedTheme: Flow<String>

@@ -55,13 +55,13 @@ class ApplicationThemeDelegate @Inject constructor(
 ) : ThemeDelegate {
   override val theme: LiveData<Theme> = liveData {
     observeTheme(Unit).collect {
-      emit(it.successOr(Theme.SYSTEM))
+      emit(it.successOr(Theme.LIGHT))
     }
   }
   override val currentTheme: Theme
     get() = runBlocking {
       getTheme(Unit).let {
-        if (it is Success) it.data else Theme.SYSTEM
+        if (it is Success) it.data else Theme.LIGHT
       }
     }
 }

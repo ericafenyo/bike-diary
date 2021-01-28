@@ -42,11 +42,12 @@ import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.ericafenyo.habitdiary.databinding.FragmentProfileBinding
 import com.ericafenyo.habitdiary.ui.MainActivityViewModel
+import com.ericafenyo.habitdiary.ui.profile.ProfileViewModel
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Display the user's profile information
+ * The class contains the user's profile information and general app settings.
  *
  * @author Eric
  * @since 1.0
@@ -57,11 +58,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
   private val binding: FragmentProfileBinding by dataBinding()
   private val activityModel: MainActivityViewModel by viewModels()
+  private val profileModel: ProfileViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     binding.toolbar.setupProfileAvatar(activityModel, this)
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.model = profileModel
   }
 }
 
@@ -83,7 +87,8 @@ fun Toolbar.setupProfileAvatar(
   })
 }
 
-fun MenuItem.asGlideTarget(size: Int): Target<Drawable> = object : CustomTarget<Drawable>(size, size) {
+fun MenuItem.asGlideTarget(size: Int): Target<Drawable> =
+  object : CustomTarget<Drawable>(size, size) {
 
     override fun onLoadStarted(placeholder: Drawable?) {
       icon = placeholder

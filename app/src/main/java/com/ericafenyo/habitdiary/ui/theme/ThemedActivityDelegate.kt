@@ -56,7 +56,7 @@ class DefaultThemedActivityDelegate(
 ) : ThemedActivityDelegate {
     override val theme: LiveData<Theme> = liveData {
         observeThemeInteractor.invoke(Unit)
-            .collect { emit(it.successOr(Theme.SYSTEM)) }
+            .collect { emit(it.successOr(Theme.LIGHT)) }
     }
     override val currentTheme: Theme
         get() = TODO("Not yet implemented")

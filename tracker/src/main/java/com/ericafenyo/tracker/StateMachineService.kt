@@ -33,8 +33,10 @@ import com.ericafenyo.tracker.database.PreferenceDataStore
 import com.ericafenyo.tracker.database.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.logger.Logger
+import com.google.gson.JsonObject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import org.json.JSONObject
 import kotlin.coroutines.CoroutineContext
 
 class StateMachineService : Service(), CoroutineScope {
@@ -121,8 +123,10 @@ class StateMachineService : Service(), CoroutineScope {
         // On success, add trip start message
 
         runBlocking(Dispatchers.IO) {
+          val actionObject = JsonObject()
+          actionObject.addProperty("action", "Trip start")
           RecordCache.getInstance(this@StateMachineService).putMessage(
-            RecordCache.KEY_TRIP_STARTED, "{ action: Trip started }"
+            RecordCache.KEY_TRIP_STARTED, actionObject
           )
         }
 
@@ -141,8 +145,10 @@ class StateMachineService : Service(), CoroutineScope {
     LocationUpdatesAction(this).stop()?.addOnSuccessListener {
       // On success, add trip stopped message
       runBlocking(Dispatchers.IO) {
+        val actionObject = JsonObject()
+        actionObject.addProperty("action", "Trip stop")
         RecordCache.getInstance(this@StateMachineService).putMessage(
-          RecordCache.KEY_TRIP_STOPPED, "{ action: Trip stropped }"
+          RecordCache.KEY_TRIP_STOPPED, actionObject
         )
       }
       // If the request is successful, change the current state to ongoing

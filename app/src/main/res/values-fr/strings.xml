@@ -40,4 +40,8 @@
   <string name="settings_theme_light">Clair</string>
   <string name="settings_theme_dark">Sombre</string>
   <string name="settings_theme_battery">Défini par l\'économiseur de batterie</string>
+
+  <string name="profile_lable_dark_mode">Dark mode</string>
+  <string name="a11y_profile_enable_dark_mode">Activer le mode sombre</string>
+  <string name="a11y_profile_disable_dark_mode">Désactiver le mode sombre</string>
 </resources>
