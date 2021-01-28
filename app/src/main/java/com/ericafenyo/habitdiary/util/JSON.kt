@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2020 Transway
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +22,46 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.location
+package com.ericafenyo.habitdiary.util
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.util.Log
-import com.ericafenyo.bikediary.tracker.database.RecordCache
-import com.ericafenyo.bikediary.tracker.logger.Logger
-import com.google.android.gms.location.LocationResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import com.google.gson.GsonBuilder
+import java.io.IOException
+import java.lang.reflect.Type
+import java.nio.charset.Charset
+import kotlin.reflect.KClass
 
-/**
- * Receiver for broadcasts sent by {@link LocationUpdatesAction}.
- */
-class LocationUpdatesReceiver : BroadcastReceiver() {
-  private val tag = "LocationUpdatesReceiver"
+object JSON {
+  private val gson = GsonBuilder().create()
 
-  override fun onReceive(context: Context, intent: Intent) {
-    Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
-    val result = LocationResult.extractResult(intent)
-    Log.d(tag, "Location updates: ${LocationResult.extractResult(intent)}")
-    if (result != null) {
-      val location = result.lastLocation.simplify()
-      runBlocking(Dispatchers.IO) {
-        RecordCache.getInstance(context).putSensorData(
-          RecordCache.KEY_LOCATION, location
-        )
-      }
+  fun stringify(entity: Any): String {
+    return gson.toJson(entity)
+  }
+
+  // User for debug only
+  fun prettify(entity: Any): String {
+    return gson.newBuilder().setPrettyPrinting().create().toJson(entity)
+  }
+
+  fun <T : Any> parse(jsonString: String, clazz: KClass<T>): T {
+    return gson.fromJson(jsonString, clazz.java)
+  }
+
+  fun <T : Any> parse(jsonString: String, type: Type): T {
+    return gson.fromJson(jsonString, type)
+  }
+
+  fun fromAsset(context: Context, filename: String): String {
+    return try {
+      val inputStream = context.assets.open(filename)
+      val size: Int = inputStream.available()
+      val buffer = ByteArray(size)
+      inputStream.read(buffer)
+      inputStream.close()
+      String(buffer, Charset.forName("UTF-8"))
+    } catch (exception: IOException) {
+      exception.printStackTrace()
+      ""
     }
   }
 }

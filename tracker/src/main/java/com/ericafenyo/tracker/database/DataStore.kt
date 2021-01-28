@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,37 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.habitdiary.data.settings
+package com.ericafenyo.tracker.database
 
-import com.ericafenyo.habitdiary.data.CoroutineInteractor
-import com.ericafenyo.habitdiary.di.qualifier.DefaultDispatcher
-import com.ericafenyo.habitdiary.model.Theme
-import com.ericafenyo.habitdiary.model.themeFromStorageKey
-import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
-import javax.inject.Singleton
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.ericafenyo.tracker.logger.LogDao
+import com.ericafenyo.tracker.logger.LogEntity
 
-@Singleton
-class GetThemeInteractor @Inject constructor(
-  @DefaultDispatcher dispatcher: CoroutineDispatcher,
-  private val preferenceStorage: PreferenceStorage
-) : CoroutineInteractor<Unit, Theme>(dispatcher) {
+@Database(entities = [Record::class, LogEntity::class], version = 1, exportSchema = false)
+abstract class DataStore : RoomDatabase() {
 
-  override suspend fun execute(parameters: Unit): Theme {
-    val selectedTheme = preferenceStorage.selectedTheme
-    return themeFromStorageKey(selectedTheme) ?: Theme.LIGHT
+  abstract fun logs(): LogDao
+  abstract fun getRecords(): RecordDao
+
+  companion object {
+    private const val DATABASE_NAME = "com.ericafenyo.tracker.DataStore"
+
+    @Volatile
+    private var INSTANCE: DataStore? = null
+
+    @JvmStatic
+    fun getInstance(context: Context): DataStore {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: createDatabase(context)
+          .also { INSTANCE = it }
+      }
+    }
+
+    private fun createDatabase(context: Context): DataStore {
+      return Room.databaseBuilder(context, DataStore::class.java, DATABASE_NAME).build()
+    }
   }
 }

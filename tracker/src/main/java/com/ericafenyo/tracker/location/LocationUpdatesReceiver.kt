@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,35 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.habitdiary.data.settings
+package com.ericafenyo.tracker.location
 
-import com.ericafenyo.habitdiary.data.CoroutineInteractor
-import com.ericafenyo.habitdiary.di.qualifier.DefaultDispatcher
-import com.ericafenyo.habitdiary.model.Theme
-import com.ericafenyo.habitdiary.model.themeFromStorageKey
-import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
-import javax.inject.Singleton
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import com.ericafenyo.tracker.database.RecordCache
+import com.ericafenyo.tracker.logger.Logger
+import com.google.android.gms.location.LocationResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
-@Singleton
-class GetThemeInteractor @Inject constructor(
-  @DefaultDispatcher dispatcher: CoroutineDispatcher,
-  private val preferenceStorage: PreferenceStorage
-) : CoroutineInteractor<Unit, Theme>(dispatcher) {
+/**
+ * Receiver for broadcasts sent by {@link LocationUpdatesAction}.
+ */
+class LocationUpdatesReceiver : BroadcastReceiver() {
+  private val tag = "LocationUpdatesReceiver"
 
-  override suspend fun execute(parameters: Unit): Theme {
-    val selectedTheme = preferenceStorage.selectedTheme
-    return themeFromStorageKey(selectedTheme) ?: Theme.LIGHT
+  override fun onReceive(context: Context, intent: Intent) {
+    Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
+    val result = LocationResult.extractResult(intent)
+    Log.d(tag, "Location updates: ${LocationResult.extractResult(intent)}")
+    if (result != null) {
+      val location = result.lastLocation.simplify()
+      runBlocking(Dispatchers.IO) {
+        RecordCache.getInstance(context).putSensorData(
+          RecordCache.KEY_LOCATION, location
+        )
+      }
+    }
   }
 }

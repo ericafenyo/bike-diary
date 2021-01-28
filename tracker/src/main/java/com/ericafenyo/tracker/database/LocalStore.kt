@@ -22,18 +22,13 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+interface Cache {
+  fun putSensorData(key: String, value: Any)
+  fun putMessage(key: String, value: Any)
+  fun putDocument(key: String, value: Any)
+  fun getSensorData(keys: List<String>): List<*>
 
-@Dao
-interface RecordDao {
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun save(record: Record)
-
-  @Query("DELETE FROM logs")
   fun clear()
 }

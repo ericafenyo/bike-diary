@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,34 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.habitdiary.data.settings
+package com.ericafenyo.tracker
 
-import com.ericafenyo.habitdiary.data.CoroutineInteractor
-import com.ericafenyo.habitdiary.di.qualifier.DefaultDispatcher
-import com.ericafenyo.habitdiary.model.Theme
-import com.ericafenyo.habitdiary.model.themeFromStorageKey
-import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
-import javax.inject.Singleton
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import com.ericafenyo.tracker.logger.Logger
 
-@Singleton
-class GetThemeInteractor @Inject constructor(
-  @DefaultDispatcher dispatcher: CoroutineDispatcher,
-  private val preferenceStorage: PreferenceStorage
-) : CoroutineInteractor<Unit, Theme>(dispatcher) {
+class StateMachineReceiver : BroadcastReceiver() {
 
-  override suspend fun execute(parameters: Unit): Theme {
-    val selectedTheme = preferenceStorage.selectedTheme
-    return themeFromStorageKey(selectedTheme) ?: Theme.LIGHT
+  override fun onReceive(context: Context, intent: Intent) {
+    Logger.debug(context, TAG, "onReceive(Context $context, Intent $intent)")
+
+    if (intent.action == context.getString(R.string.tracker_action_initialize)) {
+      // TODO: 1/9/21
+      //  1. Check for consent
+      //  2. Check for location permission
+      //  3. break if the above condition is not satisfied
+    }
+
+    // we should only get here if the user has consented
+    // Start the State machine service
+    val startIntent: Intent = StateMachineService.getStartIntent(context)
+    startIntent.action = intent.action
+    context.startService(startIntent)
+  }
+
+
+  companion object {
+    private const val TAG = "StateMachineReceiver"
   }
 }

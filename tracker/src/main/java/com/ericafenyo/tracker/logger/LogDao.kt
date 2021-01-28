@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.logger
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
-@Entity(tableName = "store")
-data class Record(
-  @PrimaryKey(autoGenerate = true)
-  val id: Int = 0,
-  val ts: Double,
-  val timezone: String,
-  val type: String,
-  val key: String,
-  val data: String
-)
+@Dao
+interface LogDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(log: LogEntity)
+
+  @Query("DELETE FROM logs")
+  suspend fun clear()
+}

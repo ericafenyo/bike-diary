@@ -42,11 +42,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    Mapbox.getInstance(requireContext(), BuildConfig.MAPBOX_ACCESS_TOKEN)
+
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    Mapbox.getInstance(requireContext(), BuildConfig.MAPBOX_ACCESS_TOKEN)
     binding.mapView.onCreate(savedInstanceState)
     binding.mapView.getMapAsync { map -> setupMap(map) }
   }
@@ -89,7 +90,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    binding.mapView.onSaveInstanceState(outState)
+    //binding.mapView.onSaveInstanceState(outState)
   }
 
   override fun onLowMemory() {

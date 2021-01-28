@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.location
+package com.ericafenyo.tracker.location
 
 import android.location.Location
 
-class SimpleLocation(
+data class SimpleLocation(
   val latitude: Double,
   val longitude: Double,
   val altitude: Double,

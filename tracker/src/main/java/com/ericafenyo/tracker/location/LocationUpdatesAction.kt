@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.location
+package com.ericafenyo.tracker.location
 
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.ericafenyo.bikediary.tracker.logger.Logger
+import com.ericafenyo.tracker.logger.Logger
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult

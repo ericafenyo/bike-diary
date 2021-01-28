@@ -24,7 +24,6 @@
 
 package com.ericafenyo.habitdiary.data.settings
 
-import android.os.Build
 import com.ericafenyo.habitdiary.Result
 import com.ericafenyo.habitdiary.data.FlowInteractor
 import com.ericafenyo.habitdiary.di.qualifier.DefaultDispatcher
@@ -44,10 +43,7 @@ class ObserveThemeInteractor @Inject constructor(
 
   override fun execute(parameters: Unit): Flow<Result<Theme>> {
     return preferenceStorage.observableSelectedTheme.map {
-      val theme = themeFromStorageKey(it) ?: when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> Theme.SYSTEM
-        else -> Theme.BATTERY_SAVER
-      }
+      val theme = themeFromStorageKey(it) ?: Theme.LIGHT
       Result.Success(theme)
     }
   }

@@ -29,11 +29,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.ericafenyo.habitdiary.R
 import com.ericafenyo.habitdiary.databinding.ActivityMainBinding
 import com.ericafenyo.habitdiary.model.Theme
 import com.ericafenyo.habitdiary.util.setupWithNavController
+import com.ericafenyo.tracker.analysis.Analyser
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,6 +59,15 @@ class MainActivity : AppCompatActivity() {
     if (savedInstanceState == null) {
       setupBottomNavigationBar()
     } // Else, need to wait for onRestoreInstanceState
+
+
+    viewModel.theme.observe(this, Observer(::updateForTheme))
+
+  }
+
+  override fun onResume() {
+    super.onResume()
+    Analyser.getInstance(this).analyse()
   }
 
   override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -73,7 +84,7 @@ class MainActivity : AppCompatActivity() {
       R.navigation.dashboard,
       R.navigation.profile,
       R.navigation.diary,
-      R.navigation.map
+      // R.navigation.map
     )
 
     // Setup the bottom navigation view with a list of navigation graphs
@@ -97,6 +108,4 @@ class MainActivity : AppCompatActivity() {
 fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
   Theme.DARK -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
   Theme.LIGHT -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
-  Theme.SYSTEM -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-  Theme.BATTERY_SAVER -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
 }

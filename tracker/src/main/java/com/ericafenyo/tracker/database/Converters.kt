@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,20 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.habitdiary.data.settings
+package com.ericafenyo.tracker.database
 
-import com.ericafenyo.habitdiary.data.CoroutineInteractor
-import com.ericafenyo.habitdiary.di.qualifier.DefaultDispatcher
-import com.ericafenyo.habitdiary.model.Theme
-import com.ericafenyo.habitdiary.model.themeFromStorageKey
-import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
-import javax.inject.Singleton
+import androidx.room.TypeConverter
+import com.google.gson.GsonBuilder
+import org.json.JSONObject
 
-@Singleton
-class GetThemeInteractor @Inject constructor(
-  @DefaultDispatcher dispatcher: CoroutineDispatcher,
-  private val preferenceStorage: PreferenceStorage
-) : CoroutineInteractor<Unit, Theme>(dispatcher) {
+class TypeConverters {
+  val gson = GsonBuilder().create()
 
-  override suspend fun execute(parameters: Unit): Theme {
-    val selectedTheme = preferenceStorage.selectedTheme
-    return themeFromStorageKey(selectedTheme) ?: Theme.LIGHT
+  @TypeConverter
+  fun fromObject(value: Any): String = gson.toJson(value)
+
+  @TypeConverter
+  fun toObject(value: String): Any {
+    return JSONObject(value)
   }
 }

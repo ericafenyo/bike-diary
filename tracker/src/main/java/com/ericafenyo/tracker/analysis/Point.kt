@@ -22,15 +22,13 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.logger
+package com.ericafenyo.tracker.analysis
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "logs")
-data class LogEntity(
-  @PrimaryKey(autoGenerate = true) val id: Int = 0,
-  val ts: Double = (System.currentTimeMillis() / 1000).toDouble(),
-  val level: String,
-  val message: String
-)
+class Point(
+  val coordinates: List<Double>,
+  override val type: String = "Point"
+) : Geometry {
+  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
+    return Feature(properties = properties, geometry = this)
+  }
+}

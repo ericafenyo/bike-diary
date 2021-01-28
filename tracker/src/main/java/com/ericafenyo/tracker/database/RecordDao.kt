@@ -22,12 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.database
 
-interface Cache {
-  fun putSensorData(key: String, value: Any)
-  fun putMessage(key: String, value: Any)
-  fun putDocument(key: String, value: Any)
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
+@Dao
+interface RecordDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun save(record: Record)
+
+  @Query("SELECT * FROM store WHERE `key` IN (:keys) ORDER BY id ASC")
+  fun read(keys: List<String>): List<Record>
+
+  @Query("DELETE FROM logs")
   fun clear()
 }

@@ -22,53 +22,36 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.tracker.database
 
 import android.content.Context
-import com.google.gson.Gson
-import java.util.*
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.createDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class RecordCache private constructor(context: Context) : Cache {
-  private val records = DataStore.getInstance(context).getRecords()
+class PreferenceDataStore private constructor(context: Context) {
+  private val dataStore = context.createDataStore(name = "tracker_data_store")
 
-  override fun putSensorData(key: String, value: Any) {
-    createRecord(SENSOR_DATA_TYPE, key, value).also { records.save(it) }
+  suspend fun putString(key: String, value: String) {
+    dataStore.edit { preference ->
+      preference[preferencesKey(key)] = value
+    }
   }
 
-  override fun putMessage(key: String, value: Any) {
-    createRecord(MESSAGE_TYPE, key, value).also { records.save(it) }
+  fun getString(key: String, defaultValue: String): Flow<String> {
+    return dataStore.data.map { preference -> preference[preferencesKey(key)] ?: defaultValue }
   }
-
-  override fun putDocument(key: String, value: Any) {
-    createRecord(DOCUMENT_TYPE, key, value).also { records.save(it) }
-  }
-
-  override fun clear() {
-    records.clear()
-  }
-
-  private fun createRecord(type: String, key: String, data: Any) = Record(
-    ts = (System.currentTimeMillis() / 1000).toDouble(),
-    timezone = TimeZone.getDefault().id,
-    type = type,
-    key = key,
-    data = Gson().toJson(data)
-  )
 
   companion object {
-    private const val SENSOR_DATA_TYPE = "sensor-data"
-    private const val MESSAGE_TYPE = "message"
-    private const val DOCUMENT_TYPE = "document"
-
-    const val KEY_LOCATION = "background/location"
-
     @Volatile
-    private var INSTANCE: RecordCache? = null
+    private var INSTANCE: PreferenceDataStore? = null
 
     @JvmStatic
-    fun getInstance(context: Context): Cache {
+    fun getInstance(context: Context): PreferenceDataStore {
       return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: RecordCache(context)
+        INSTANCE ?: PreferenceDataStore(context)
           .also { INSTANCE = it }
       }
     }

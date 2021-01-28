@@ -22,37 +22,19 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker.database
+package com.ericafenyo.habitdiary.data.settings
 
-import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.ericafenyo.bikediary.tracker.logger.LogDao
-import com.ericafenyo.bikediary.tracker.logger.LogEntity
+import com.ericafenyo.habitdiary.data.CoroutineInteractor
+import com.ericafenyo.habitdiary.di.qualifier.IODispatcher
+import com.ericafenyo.habitdiary.model.Theme
+import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Inject
 
-@Database(entities = [Record::class, LogEntity::class], version = 1, exportSchema = false)
-abstract class DataStore : RoomDatabase() {
-
-  abstract fun logs(): LogDao
-  abstract fun getRecords(): RecordDao
-
-  companion object {
-    private const val DATABASE_NAME = "com.ericafenyo.tracker.DataStore"
-
-    @Volatile
-    private var INSTANCE: DataStore? = null
-
-    @JvmStatic
-    fun getInstance(context: Context): DataStore {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: createDatabase(context)
-          .also { INSTANCE = it }
-      }
-    }
-
-    private fun createDatabase(context: Context): DataStore {
-      return Room.databaseBuilder(context, DataStore::class.java, DATABASE_NAME).build()
-    }
+class SetThemeUseCase @Inject constructor(
+  private val preferenceStorage: PreferenceStorage,
+  @IODispatcher dispatcher: CoroutineDispatcher,
+) : CoroutineInteractor<Theme, Unit>(dispatcher) {
+  override suspend fun execute(parameters: Theme) {
+    preferenceStorage.selectedTheme = parameters.storageKey
   }
 }

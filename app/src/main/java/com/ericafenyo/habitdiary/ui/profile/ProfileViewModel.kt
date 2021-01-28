@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,39 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.habitdiary.data.settings
+package com.ericafenyo.habitdiary.ui.profile
 
-import com.ericafenyo.habitdiary.data.CoroutineInteractor
-import com.ericafenyo.habitdiary.di.qualifier.DefaultDispatcher
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.habitdiary.data
+import com.ericafenyo.habitdiary.data.settings.ObserveThemeInteractor
+import com.ericafenyo.habitdiary.data.settings.SetThemeUseCase
 import com.ericafenyo.habitdiary.model.Theme
-import com.ericafenyo.habitdiary.model.themeFromStorageKey
-import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
-import javax.inject.Singleton
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-@Singleton
-class GetThemeInteractor @Inject constructor(
-  @DefaultDispatcher dispatcher: CoroutineDispatcher,
-  private val preferenceStorage: PreferenceStorage
-) : CoroutineInteractor<Unit, Theme>(dispatcher) {
+class ProfileViewModel @ViewModelInject constructor(
+  private val observeTheme: ObserveThemeInteractor,
+  private val setTheme: SetThemeUseCase,
+) : ViewModel() {
+  private val _isDarkTheme = MutableLiveData<Boolean>()
+  val isDarkTheme: LiveData<Boolean> get() = _isDarkTheme
 
-  override suspend fun execute(parameters: Unit): Theme {
-    val selectedTheme = preferenceStorage.selectedTheme
-    return themeFromStorageKey(selectedTheme) ?: Theme.LIGHT
+  init {
+    viewModelScope.launch {
+      observeTheme(Unit).collect {
+        _isDarkTheme.value = it.data == Theme.DARK
+      }
+    }
+  }
+
+  fun onEnableDarkThemeEvent(enabled: Boolean) {
+    viewModelScope.launch {
+      val theme = if (enabled) Theme.DARK else Theme.LIGHT
+      setTheme(theme)
+    }
   }
 }

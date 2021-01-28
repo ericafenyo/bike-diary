@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- We use a light scrim on API 23+ since we use a light status bar -->
-  <!--<color name="status_bar_scrim">@color/system_ui_scrim_light</color>-->
+  <color name="color_primary">@color/blue_600</color>
+  <color name="color_accent">@color/blue_600</color>
+  <color name="color_surface">#1D2733</color>
+  <color name="color_background">#151E27</color>
+
+  <!-- Scrim colors -->
+  <color name="system_ui_scrim_light">#2EFFFFFF</color> <!-- 18% white -->
+  <color name="system_ui_scrim_black">#B3000000</color> <!-- 70% black -->
+
+  <!-- In dark mode without light status bar we can use transparent -->
+  <color name="status_bar_scrim">@color/transparent</color>
+
 </resources>

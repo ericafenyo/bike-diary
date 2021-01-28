@@ -22,34 +22,20 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.tracker
+package com.ericafenyo.tracker
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import com.ericafenyo.bikediary.tracker.logger.Logger
+import org.junit.Test
 
-class StateMachineReceiver : BroadcastReceiver() {
+import org.junit.Assert.*
 
-  override fun onReceive(context: Context, intent: Intent) {
-    Logger.debug(context, TAG, "onReceive(Context $context, Intent $intent)")
-
-    if (intent.action == context.getString(R.string.tracker_action_initialize)) {
-      // TODO: 1/9/21
-      //  1. Check for consent
-      //  2. Check for location permission
-      //  3. break if the above condition is not satisfied
-    }
-
-    // we should only get here if the user has consented
-    // Start the State machine service
-    val startIntent: Intent = StateMachineService.getStartIntent(context)
-    startIntent.action = intent.action
-    context.startService(startIntent)
-  }
-
-
-  companion object {
-    private const val TAG = "StateMachineReceiver"
+/**
+ * Example local unit test, which will execute on the development machine (host).
+ *
+ * See [testing documentation](http://d.android.com/tools/testing).
+ */
+class ExampleUnitTest {
+  @Test
+  fun addition_isCorrect() {
+    assertEquals(4, 2 + 2)
   }
 }
