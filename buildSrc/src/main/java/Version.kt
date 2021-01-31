@@ -33,5 +33,6 @@ object Version {
   const val MAP_BOX = "9.2.0"
   const val GSON = "2.8.6"
   const val HILT = "2.29.1-alpha"
-  val HILT_JETPACK = "1.0.0-alpha02"
+  const val HILT_JETPACK = "1.0.0-alpha02"
+  const val THREETENABP = "1.2.4"
 }

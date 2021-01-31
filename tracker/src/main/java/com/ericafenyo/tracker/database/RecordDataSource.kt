@@ -73,6 +73,7 @@ class RecordCache private constructor(context: Context) : Cache {
     const val KEY_LOCATION = "background/location"
     const val KEY_TRIP_STARTED = "action/start"
     const val KEY_TRIP_STOPPED = "action/stop"
+    const val KEY_COLLECTION = "cache/trip"
 
     @Volatile
     private var INSTANCE: RecordCache? = null

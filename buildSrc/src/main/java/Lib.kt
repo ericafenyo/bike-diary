@@ -41,4 +41,5 @@ object Lib {
   const val HILT_COMPILER = "com.google.dagger:hilt-android-compiler"
   const val HILT_TESTING = "com.google.dagger:hilt-android-testing"
   const val ANDROIDX_HILT_COMPILER = "androidx.hilt:hilt-compiler"
+  const val THREETENABP = "com.jakewharton.threetenabp:threetenabp"
 }

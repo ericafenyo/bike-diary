@@ -56,6 +56,8 @@ dependencies {
     api("${Lib.TIMBER}:${Version.TIMBER}")
     api("${Lib.MAP_BOX}:${Version.MAP_BOX}")
     api("${Lib.GSON}:${Version.GSON}")
+
+    api("${Lib.THREETENABP}:${Version.THREETENABP}")
   }
 }
 

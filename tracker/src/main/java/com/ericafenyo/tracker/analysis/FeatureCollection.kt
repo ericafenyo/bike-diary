@@ -24,7 +24,10 @@
 
 package com.ericafenyo.tracker.analysis
 
+import java.util.*
+
 data class FeatureCollection(
   override val type: String = "FeatureCollection",
-  val features: List<Feature>
+  val features: List<Feature>,
+  val id: String = UUID.randomUUID().toString()
 ) : GeoJson

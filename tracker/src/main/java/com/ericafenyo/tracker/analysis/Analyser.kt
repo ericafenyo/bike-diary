@@ -31,12 +31,15 @@ import com.ericafenyo.tracker.database.RecordCache
 import com.ericafenyo.tracker.location.SimpleLocation
 import com.ericafenyo.tracker.logger.Logger
 import com.ericafenyo.tracker.util.JSON
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
 
 class Analyser private constructor(private val context: Context) {
 
   fun analyse() {
-    generateDocuments()
+    val features = generateDocuments()
+    //saveDocuments(features)
   }
 
   private fun getRecords(): List<Record> {
@@ -120,9 +123,8 @@ class Analyser private constructor(private val context: Context) {
   private fun generateDocuments(): List<FeatureCollection> {
     val segments = segmentRecords(getRecords())
 
-    val features: List<Feature> = mutableListOf()
+    val features: MutableList<FeatureCollection> = mutableListOf()
     for (segment in segments) {
-
       // Create start feature point
       val startCoordinates = getCoordinate(segment.first().data)
       val startFeature = Point(startCoordinates).toFeature()
@@ -133,14 +135,16 @@ class Analyser private constructor(private val context: Context) {
 
       // Create LineString feature for trip path
       val coordinates = segment.map { getCoordinate(it.data) }
-      val lineStringFeature = LineString(coordinates = coordinates).toFeature()
+      val properties = generateProperties(segment)
+      val lineStringFeature = LineString(coordinates = coordinates).toFeature(properties)
       val collections = FeatureCollection(
         features = listOf(startFeature, endFeature, lineStringFeature)
       )
-      Log.d("Analyser", "generateDocuments ${JSON.prettify(collections)}")
+      features.add(collections)
+      // Log.d("Analyser", "generateDocuments ${JSON.prettify(collections)}")
     }
 
-    return emptyList()
+    return features
   }
 
   private fun getCoordinate(data: String): List<Double> {
@@ -148,8 +152,59 @@ class Analyser private constructor(private val context: Context) {
     return listOf(location.longitude, location.latitude)
   }
 
-  private fun saveDocuments(collects: List<FeatureCollection>) {
+  private fun saveDocuments(collections: List<FeatureCollection>) {
+    runBlocking(Dispatchers.IO) {
+      RecordCache.getInstance(context).putDocument(RecordCache.KEY_COLLECTION, collections)
+    }
+  }
 
+  private fun generateProperties(records: List<Record>): LinkedHashMap<String, Any> {
+    val properties = linkedMapOf<String, Any>()
+
+    val distances = mutableListOf<Float>()
+    for (index in records.indices) {
+      if (index != records.size - 1) {
+        val location = JSON.parse(records[index].data, SimpleLocation::class)
+        val nextLocation = JSON.parse(records[index + 1].data, SimpleLocation::class)
+        location.distanceTo(nextLocation).also { distances.add(it) }
+      }
+    }
+
+    val times = records.map { it.ts }
+
+    val timeDeltas = mutableListOf<Double>()
+    var index = 0
+    while (index < (times.size - 1)) {
+      timeDeltas.add(times[index + 1] - times[index]);
+      index++
+    }
+
+    if (distances.size != timeDeltas.size) {
+      throw RuntimeException("distances size: ${distances.size} != timeDeltas size: ${timeDeltas.size}")
+    }
+
+    val speeds = mutableListOf<Double>()
+    for (i in distances.indices) {
+      speeds.add(distances[i] / timeDeltas[i])
+    }
+
+    // Duration
+    val startTs = locationFromRecord(records.first()).ts
+    val endTs = locationFromRecord(records.last()).ts
+    val duration = endTs - startTs
+
+    properties["speed"] = (speeds.average() * 3.6)
+    properties["duration"] = duration
+    properties["distance"] = (distances.sum() * 0.001)
+    properties["calories"] = 0
+
+    Log.d(TAG, "generateProperties${timeDeltas.sum()}")
+
+    return properties
+  }
+
+  private fun locationFromRecord(record: Record): SimpleLocation {
+    return JSON.parse(record.data, SimpleLocation::class)
   }
 
   companion object {

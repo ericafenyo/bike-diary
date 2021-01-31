@@ -34,7 +34,18 @@ data class SimpleLocation(
   val speed: Float,
   val accuracy: Float,
   val bearing: Float
-)
+) {
+
+  /**
+   * Computes the distance in meters between this and the given destination location.
+   * @param dest the destination location
+   */
+  fun distanceTo(dest: SimpleLocation): Float {
+    val results = FloatArray(1)
+    Location.distanceBetween(latitude, longitude, dest.latitude, dest.longitude, results)
+    return results[0]
+  }
+}
 
 fun Location.simplify() = SimpleLocation(
   latitude = latitude,
