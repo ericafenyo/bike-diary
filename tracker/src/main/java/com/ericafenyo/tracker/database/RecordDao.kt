@@ -28,15 +28,32 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data access object for the [Record] entity
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-01-30
+ */
 @Dao
 interface RecordDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun save(record: Record)
+  fun insert(record: Record)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun bulkInsert(recodes: List<Record>)
 
   @Query("SELECT * FROM store WHERE `key` IN (:keys) ORDER BY id ASC")
   fun read(keys: List<String>): List<Record>
 
-  @Query("DELETE FROM logs")
+  @Query("SELECT * FROM store WHERE `key` IN (:keys) ORDER BY id ASC")
+  fun observeRecords(keys: List<String>): Flow<List<Record>>
+
+  @Query("DELETE FROM store")
   fun clear()
+
+  @Query("DELETE FROM store WHERE `key` IN (:keys)")
+  fun clear(keys: List<String>)
 }

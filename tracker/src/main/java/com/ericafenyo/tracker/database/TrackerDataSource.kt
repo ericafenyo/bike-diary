@@ -22,18 +22,23 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.tracker.database
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
+import android.content.Context
+import kotlinx.coroutines.flow.Flow
+
+/**
+ * Exposes methods for accessing the records database.
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-01-31
+ */
+class TrackerDataSource(context: Context) {
+  private val records = RecordCache.getInstance(context)
+
+  fun getRecords(): Flow<List<Record>> {
+    return records.getDocuments(listOf(RecordCache.KEY_COLLECTION))
   }
 }
-
-data class Coordinate(
-  val longitude: Double,
-  val latitude: Double
-)

@@ -27,7 +27,7 @@ package com.ericafenyo.tracker.analysis
 class Point(
   val coordinates: List<Double>,
   override val type: String = "Point"
-) : Geometry {
+) : Geometry(type) {
   fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
     return Feature(properties = properties, geometry = this)
   }

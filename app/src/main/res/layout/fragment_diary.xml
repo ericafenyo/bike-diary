@@ -23,17 +23,33 @@
   SOFTWARE.
   -->
 
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".DiaryFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
+  <data>
+
+  </data>
+
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:text="@string/hello_blank_fragment" />
+      android:orientation="vertical"
+      tools:context=".ui.diary.DiaryFragment">
 
-</FrameLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/title_diary" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/diary_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+  </LinearLayout>
+</layout>

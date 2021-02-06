@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2020 Eric Afenyo
@@ -75,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:checked="@{model.isDarkTheme}"
                 android:drawableStart="@drawable/brightness_medium_24px"
-                android:drawablePadding="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_2"
                 android:fontFamily="sans-serif-medium"
                 android:onCheckedChanged="@{(_, checked) -> model.onEnableDarkThemeEvent(checked)}"
                 android:text="@string/profile_lable_dark_mode"

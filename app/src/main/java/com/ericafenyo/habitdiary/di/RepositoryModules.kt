@@ -22,18 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.habitdiary.di
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
-  }
+import com.ericafenyo.habitdiary.data.trip.TripRepository
+import com.ericafenyo.habitdiary.data.trip.TripRepositoryImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class RepositoryModules {
+
+  @Binds
+  @Singleton
+  abstract fun bindTripRepository(repository: TripRepositoryImpl): TripRepository
 }
-
-data class Coordinate(
-  val longitude: Double,
-  val latitude: Double
-)

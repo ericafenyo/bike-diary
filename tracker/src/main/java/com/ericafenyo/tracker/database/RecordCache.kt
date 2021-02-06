@@ -28,32 +28,53 @@ import android.content.Context
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
-class RecordCache private constructor(context: Context) : Cache {
+/**
+ * An implementation of the [Cache] interface providing methods for performing
+ * operations on [Record] objects.
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-01-25
+ */
+class RecordCache private constructor(context: Context) : Cache<Record> {
   private val records = DataStore.getInstance(context).getRecords()
 
   override fun putSensorData(key: String, value: Any) {
-    createRecord(SENSOR_DATA_TYPE, key, value).also { records.save(it) }
+    createRecord(SENSOR_DATA_TYPE, key, value).also { records.insert(it) }
   }
 
-  override fun putMessage(key: String, value: Any) {
-    createRecord(MESSAGE_TYPE, key, value).also { records.save(it) }
-  }
-
-  override fun putDocument(key: String, value: Any) {
-    createRecord(DOCUMENT_TYPE, key, value).also { records.save(it) }
-  }
-
-  override fun getSensorData(keys: List<String>): List<*> {
+  override fun getSensorData(keys: List<String>): List<Record> {
     return runBlocking(Dispatchers.IO) {
       records.read(keys)
     }
   }
 
+  override fun putMessage(key: String, value: Any) {
+    createRecord(MESSAGE_TYPE, key, value).also { records.insert(it) }
+  }
+
+  override fun putDocuments(key: String, values: List<Any>) {
+    val recodeList = values.map { value -> createRecord(DOCUMENT_TYPE, key, value) }
+    records.bulkInsert(recodeList)
+  }
+
+  override fun getDocuments(keys: List<String>): Flow<List<Record>> = flow {
+    emitAll(records.observeRecords(keys))
+  }
+
   override fun clear() {
     records.clear()
+  }
+
+  override fun clear(keys: List<String>) {
+    records.clear(keys)
   }
 
   @WorkerThread
@@ -79,7 +100,7 @@ class RecordCache private constructor(context: Context) : Cache {
     private var INSTANCE: RecordCache? = null
 
     @JvmStatic
-    fun getInstance(context: Context): Cache {
+    fun getInstance(context: Context): Cache<Record> {
       return INSTANCE ?: synchronized(this) {
         INSTANCE ?: RecordCache(context)
           .also { INSTANCE = it }

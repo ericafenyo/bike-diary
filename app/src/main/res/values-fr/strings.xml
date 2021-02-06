@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2020 Eric Afenyo
@@ -24,6 +25,9 @@
 
 <resources>
 
+  <!-- Format strings -->
+  <string name="format_trip_metrics">%.2f km en %s</string>
+
   <string name="title_map">Carte</string>
   <string name="title_profile">Profil</string>
   <string name="title_diary">Diary</string>
@@ -44,4 +48,5 @@
   <string name="profile_lable_dark_mode">Dark mode</string>
   <string name="a11y_profile_enable_dark_mode">Activer le mode sombre</string>
   <string name="a11y_profile_disable_dark_mode">Désactiver le mode sombre</string>
+
 </resources>

@@ -25,38 +25,51 @@
 package com.ericafenyo.tracker.analysis
 
 import android.content.Context
-import android.util.Log
 import com.ericafenyo.tracker.database.Record
 import com.ericafenyo.tracker.database.RecordCache
 import com.ericafenyo.tracker.location.SimpleLocation
 import com.ericafenyo.tracker.logger.Logger
 import com.ericafenyo.tracker.util.JSON
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-
+/**
+ * This class contain methods for reading raw gps data and converting them into a GeoJson data.
+ * Our gps data is stored in a local SQLite database as a list of [SimpleLocation] with some metadata.
+ *
+ * @see generateDocuments
+ * @see getCoordinate
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-01-25
+ */
 class Analyser private constructor(private val context: Context) {
+  private val computation = Dispatchers.Default
+  private val io = Dispatchers.IO
 
-  fun analyse() {
-    val features = generateDocuments()
-    //saveDocuments(features)
+  // These keys points to a location in the database.
+  // 1. We first get all fields containing any of the keys. (@see getRecords())
+  // 2. Then after the analysis, we used them to clear the database.
+  private val keys = listOf(
+    RecordCache.KEY_LOCATION,
+    RecordCache.KEY_TRIP_STARTED,
+    RecordCache.KEY_TRIP_STOPPED,
+  )
+
+  suspend fun analyse() {
+    generateDocuments().also { saveDocuments(it) }
   }
 
   private fun getRecords(): List<Record> {
     Logger.debug(context, TAG, "***Retrieving records***")
     // Suppress Return should be lifted out of 'try'
-    try {
-      val keys = listOf(
-        RecordCache.KEY_LOCATION,
-        RecordCache.KEY_TRIP_STARTED,
-        RecordCache.KEY_TRIP_STOPPED,
-      )
-      return RecordCache.getInstance(context)
-        .getSensorData(keys)
-        .filterIsInstance<Record>()
+    return try {
+      RecordCache.getInstance(context).getSensorData(keys)
     } catch (exception: Exception) {
       Logger.error(context, TAG, "Error occurred while retrieving records: $exception")
-      return emptyList()
+      emptyList()
     }
   }
 
@@ -120,7 +133,7 @@ class Analyser private constructor(private val context: Context) {
     }
   }
 
-  private fun generateDocuments(): List<FeatureCollection> {
+  private suspend fun generateDocuments(): List<FeatureCollection> = withContext(computation) {
     val segments = segmentRecords(getRecords())
 
     val features: MutableList<FeatureCollection> = mutableListOf()
@@ -141,10 +154,9 @@ class Analyser private constructor(private val context: Context) {
         features = listOf(startFeature, endFeature, lineStringFeature)
       )
       features.add(collections)
-      // Log.d("Analyser", "generateDocuments ${JSON.prettify(collections)}")
     }
 
-    return features
+    return@withContext features
   }
 
   private fun getCoordinate(data: String): List<Double> {
@@ -152,9 +164,10 @@ class Analyser private constructor(private val context: Context) {
     return listOf(location.longitude, location.latitude)
   }
 
-  private fun saveDocuments(collections: List<FeatureCollection>) {
-    runBlocking(Dispatchers.IO) {
-      RecordCache.getInstance(context).putDocument(RecordCache.KEY_COLLECTION, collections)
+  private suspend fun saveDocuments(collections: List<FeatureCollection>) = withContext(io) {
+    RecordCache.getInstance(context).run {
+      putDocuments(RecordCache.KEY_COLLECTION, collections)
+      clear(keys)
     }
   }
 
@@ -197,8 +210,6 @@ class Analyser private constructor(private val context: Context) {
     properties["duration"] = duration
     properties["distance"] = (distances.sum() * 0.001)
     properties["calories"] = 0
-
-    Log.d(TAG, "generateProperties${timeDeltas.sum()}")
 
     return properties
   }
