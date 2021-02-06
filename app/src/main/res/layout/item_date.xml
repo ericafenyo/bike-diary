@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
-  Copyright (C) 2020 Eric Afenyo
+  Copyright (C) 2021 Eric Afenyo
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -25,28 +24,14 @@
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-  <FrameLayout
+  <TextView
+      android:id="@+id/text_date"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      tools:context=".ui.MainActivity">
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?attr/colorSurface"
-        app:elevation="@dimen/bottom_navigation_elevation"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/navigation" />
-  </FrameLayout>
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing_2"
+      android:layout_marginTop="@dimen/spacing_3"
+      android:layout_marginEnd="16dp"
+      tools:text="Yesterday" />
 </layout>

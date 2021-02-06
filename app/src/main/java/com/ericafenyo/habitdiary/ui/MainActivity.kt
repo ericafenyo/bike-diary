@@ -38,6 +38,8 @@ import com.ericafenyo.habitdiary.util.setupWithNavController
 import com.ericafenyo.tracker.analysis.Analyser
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -67,7 +69,9 @@ class MainActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    Analyser.getInstance(this).analyse()
+    GlobalScope.launch {
+      Analyser.getInstance(this@MainActivity).analyse()
+    }
   }
 
   override fun onRestoreInstanceState(savedInstanceState: Bundle) {

@@ -27,6 +27,18 @@ package com.ericafenyo.tracker.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * A Record is like a key-value pair data structure containing additional metadata.
+ * In this case:
+ * [key] = key
+ * [data] = value
+ * The rest are just additional information
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-01-30
+ */
 @Entity(tableName = "store")
 data class Record(
   @PrimaryKey(autoGenerate = true)

@@ -22,18 +22,13 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.habitdiary.model
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
-  }
-}
-
-data class Coordinate(
-  val longitude: Double,
-  val latitude: Double
+data class Trip(
+  val image: String,
+  val title: String,
+  val speed: Double,
+  val duration: Double,
+  val distance: Double,
+  val calories: Double
 )

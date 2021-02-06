@@ -1,6 +1,10 @@
 <resources>
   <string name="app_name" translatable="false">Habit Diary</string>
 
+  <!-- Format strings -->
+  <string name="format_trip_metrics">%.2f km in %s</string>
+  <string name="format_trip_calories" translatable="false">%s kcal</string>
+
   <string name="title_map">Map</string>
   <string name="title_dashboard">Dashboard</string>
   <string name="title_settings">settings</string>

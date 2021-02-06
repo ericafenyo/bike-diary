@@ -22,18 +22,36 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.habitdiary.ui.diary
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.ericafenyo.habitdiary.R
+import com.ericafenyo.habitdiary.databinding.FragmentDiaryBinding
+import com.wada811.databinding.dataBinding
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+
+
+@AndroidEntryPoint
+class DiaryFragment : Fragment(R.layout.fragment_diary) {
+  private val binding: FragmentDiaryBinding by dataBinding()
+  private val model: DiaryViewModel by viewModels()
+  private val diaryAdapter = DiaryAdapter()
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    binding.diaryRecyclerView.adapter = diaryAdapter
+  }
+
+  override fun onResume() {
+    super.onResume()
+    model.trips.observe(viewLifecycleOwner, { trips ->
+      diaryAdapter.submitList(trips)
+      diaryAdapter.notifyDataSetChanged()
+      Timber.d("Trippps $trips")
+    })
   }
 }
-
-data class Coordinate(
-  val longitude: Double,
-  val latitude: Double
-)

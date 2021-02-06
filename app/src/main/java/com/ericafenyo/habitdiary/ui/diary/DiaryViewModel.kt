@@ -22,13 +22,30 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.database
+package com.ericafenyo.habitdiary.ui.diary
 
-interface Cache {
-  fun putSensorData(key: String, value: Any)
-  fun putMessage(key: String, value: Any)
-  fun putDocument(key: String, value: Any)
-  fun getSensorData(keys: List<String>): List<*>
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.habitdiary.data
+import com.ericafenyo.habitdiary.data.trip.GetTripsUseCase
+import com.ericafenyo.habitdiary.model.Trip
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
-  fun clear()
+class DiaryViewModel @ViewModelInject constructor(
+  private val observeTrips: GetTripsUseCase
+) : ViewModel() {
+  private val _trips = MutableLiveData<List<Trip>>()
+  val trips: LiveData<List<Trip>> get() = _trips
+
+  init {
+    loadTrips()
+  }
+
+  private fun loadTrips() {
+    observeTrips(Unit).onEach { _trips.value = it.data }.launchIn(viewModelScope)
+  }
 }

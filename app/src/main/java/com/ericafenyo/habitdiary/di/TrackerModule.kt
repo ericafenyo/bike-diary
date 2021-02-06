@@ -22,18 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.habitdiary.di
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
+import android.content.Context
+import com.ericafenyo.tracker.database.TrackerDataSource
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object TrackerModule {
+
+  @Provides
+  @Singleton
+  fun provideTrackerDataSource(@ApplicationContext context: Context): TrackerDataSource {
+    return TrackerDataSource(context)
   }
 }
-
-data class Coordinate(
-  val longitude: Double,
-  val latitude: Double
-)

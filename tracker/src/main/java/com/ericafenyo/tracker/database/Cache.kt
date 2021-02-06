@@ -22,18 +22,27 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.tracker.database
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
-  }
+import kotlinx.coroutines.flow.Flow
+
+/**
+ * Contains variety of query methods that maps keys to values.
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-01-30
+ */
+interface Cache<T : Any> {
+  fun putSensorData(key: String, value: Any)
+  fun getSensorData(keys: List<String>): List<T>
+
+  fun putMessage(key: String, value: Any)
+
+  fun putDocuments(key: String, values: List<Any>)
+  fun getDocuments(keys: List<String>): Flow<List<T>>
+
+  fun clear()
+  fun clear(keys: List<String>)
 }
-
-data class Coordinate(
-  val longitude: Double,
-  val latitude: Double
-)

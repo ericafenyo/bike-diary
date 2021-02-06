@@ -33,11 +33,14 @@ import com.ericafenyo.tracker.database.PreferenceDataStore
 import com.ericafenyo.tracker.database.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.logger.Logger
+//import com.ericafenyo.tracker.util.NotificationConfig
+//import com.ericafenyo.tracker.util.NotificationUtil
 import com.google.gson.JsonObject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import org.json.JSONObject
 import kotlin.coroutines.CoroutineContext
+
+const val ONGOING_NOTIFICATION_ID: Int = 437853468
 
 class StateMachineService : Service(), CoroutineScope {
   private val tag = "StateMachineService"
@@ -133,6 +136,13 @@ class StateMachineService : Service(), CoroutineScope {
         //Change the current state to ongoing
         // We should now get location updates at a particular interval
         setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
+
+//        val notificationConfig = NotificationConfig(
+//          notificationId = ONGOING_NOTIFICATION_ID,
+//          title = "Ongoing trip",
+//          message = "",
+//        )
+//        NotificationUtil.createNotification(this, notificationConfig)
       }?.addOnFailureListener {
         Logger.error(this, tag, "Start location request unsuccessful: $it")
       }
@@ -193,6 +203,7 @@ class StateMachineService : Service(), CoroutineScope {
   }
 
   companion object {
+
     @JvmStatic
     fun getStartIntent(context: Context): Intent {
       return Intent(context, StateMachineService::class.java)

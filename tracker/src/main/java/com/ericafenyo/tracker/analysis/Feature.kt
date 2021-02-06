@@ -26,11 +26,11 @@ package com.ericafenyo.tracker.analysis
 
 import java.util.*
 
-class Feature(
+data class Feature(
   override val type: String = "Feature",
   val geometry: Geometry,
   val properties: LinkedHashMap<String, Any> = LinkedHashMap(),
   val id: String = UUID.randomUUID().toString(),
 ) : GeoJson
 
-interface Geometry : GeoJson
+open class Geometry(override val type: String) : GeoJson

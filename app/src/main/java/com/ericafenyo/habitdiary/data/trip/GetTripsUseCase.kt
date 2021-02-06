@@ -22,18 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.habitdiary.data.trip
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
+import com.ericafenyo.habitdiary.Result
+import com.ericafenyo.habitdiary.data.FlowInteractor
+import com.ericafenyo.habitdiary.di.qualifier.IODispatcher
+import com.ericafenyo.habitdiary.model.Trip
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+
+class GetTripsUseCase @Inject constructor(
+  private val repository: TripRepository,
+  @IODispatcher dispatcher: CoroutineDispatcher
+) : FlowInteractor<Unit, List<Trip>>(dispatcher) {
+  override fun execute(parameters: Unit): Flow<Result<List<Trip>>> {
+    return repository.observeTrips().map { Result.Success(it) }
   }
 }
-
-data class Coordinate(
-  val longitude: Double,
-  val latitude: Double
-)
