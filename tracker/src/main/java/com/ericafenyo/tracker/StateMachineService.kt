@@ -33,8 +33,7 @@ import com.ericafenyo.tracker.database.PreferenceDataStore
 import com.ericafenyo.tracker.database.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.logger.Logger
-//import com.ericafenyo.tracker.util.NotificationConfig
-//import com.ericafenyo.tracker.util.NotificationUtil
+import com.ericafenyo.tracker.util.Notifications
 import com.google.gson.JsonObject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -77,7 +76,6 @@ class StateMachineService : Service(), CoroutineScope {
       handleAction(currentState, intent.action)
     }
 
-
     // Return START_REDELIVER_INTENT to scheduled for a restart with the same Intent
     // if the service's process is killed while it is started.
     // https://developer.android.com/reference/android/app/Service#START_REDELIVER_INTENT
@@ -95,8 +93,6 @@ class StateMachineService : Service(), CoroutineScope {
       Logger.debug(this, tag, "action is null, exiting")
       return
     }
-
-    // Exit if current
 
     when (action) {
       getString(R.string.tracker_action_initialize) -> handleInitialize(currentState, action)
@@ -137,12 +133,13 @@ class StateMachineService : Service(), CoroutineScope {
         // We should now get location updates at a particular interval
         setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
 
-//        val notificationConfig = NotificationConfig(
-//          notificationId = ONGOING_NOTIFICATION_ID,
-//          title = "Ongoing trip",
-//          message = "",
-//        )
-//        NotificationUtil.createNotification(this, notificationConfig)
+        val notificationConfig = Notifications.Config(
+          notificationId = ONGOING_NOTIFICATION_ID,
+          message = getString(R.string.tracking_notification_content_text),
+          title = getString(R.string.tracking_notification_title_text),
+          icon = R.drawable.ic_bike
+        )
+        Notifications.create(this, notificationConfig)
       }?.addOnFailureListener {
         Logger.error(this, tag, "Start location request unsuccessful: $it")
       }
@@ -164,6 +161,7 @@ class StateMachineService : Service(), CoroutineScope {
       // If the request is successful, change the current state to ongoing
       // We should now get location updates at a particular interval
       setNewState(this, currentState, getString(R.string.tracker_state_ready))
+      Notifications.cancel(this, ONGOING_NOTIFICATION_ID)
     }?.addOnFailureListener {
       Log.e(tag, "Error", it)
       Logger.error(this, tag, "Stop Location updates request unsuccessful: $it")
