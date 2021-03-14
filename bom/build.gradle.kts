@@ -30,34 +30,72 @@ plugins {
 @Suppress("UnstableApiUsage")
 dependencies {
   constraints {
-    api("${Lib.JUNIT}:${Version.JUNIT}")
-    api("${Lib.KOTLIN_STDLIB}:${Version.KOTLIN}")
-
-    api("${Lib.GLIDE}:${Version.GLIDE}")
-    api("${Lib.GLIDE_COMPILER}:${Version.GLIDE}")
-
-    api("${Lib.PREFERENCE_DATA_STORE}:${Version.PREFERENCE_DATA_STORE}")
-
+    // Dagger Hilt
+    api("${Lib.ANDROIDX_HILT_COMPILER}:${Version.ANDROIDX_HILT_COMPILER}")
+    api("${Lib.ANDROIDX_ANNOTATIONS}:${Version.ANDROIDX_ANNOTATIONS}")
     api("${Lib.HILT_ANDROID}:${Version.HILT}")
     api("${Lib.HILT_ANDROID}:${Version.HILT}")
     api("${Lib.HILT_COMPILER}:${Version.HILT}")
     api("${Lib.HILT_TESTING}:${Version.HILT}")
-    api("${Lib.ANDROIDX_HILT_COMPILER}:${Version.HILT_JETPACK}")
-    api("${Lib.HILT_VIEWMODEL}:${Version.HILT_JETPACK}")
+    api("${Lib.HILT_VIEWMODEL}:${Version.ANDROIDX_HILT_COMPILER}")
+    api("${Lib.MAP_BOX}:${Version.MAP_BOX}")
+    api("${Lib.MAP_BOX_ANNOTATIONS}:${Version.MAP_BOX_ANNOTATIONS}")
+
+    api("${Lib.APPCOMPAT}:${Version.APPCOMPAT}")
+    api("${Lib.BROWSER}:${Version.BROWSER}")
+    api("${Lib.CONSTRAINT_LAYOUT}:${Version.CONSTRAINT_LAYOUT}")
+    api("${Lib.DATABINDING_KTX}:${Version.DATABINDING_KTX}")
+    api("${Lib.MATERIAL}:${Version.MATERIAL}")
+    api("${Lib.PREFERENCE}:${Version.PREFERENCE}")
+    api("${Lib.PREFERENCE_DATA_STORE}:${Version.PREFERENCE_DATA_STORE}")
 
 
+    api("${Lib.LIFECYCLE_LIVE_DATA_KTX}:${Version.LIFECYCLE}")
+    api("${Lib.LIFECYCLE_VIEW_MODEL_KTX}:${Version.LIFECYCLE}")
+    api("${Lib.LIFECYCLE_COMPILER}:${Version.LIFECYCLE}")
+    api("${Lib.NAVIGATION_FRAGMENT_KTX}:${Version.NAVIGATION}")
+    api("${Lib.NAVIGATION_UI_KTX}:${Version.NAVIGATION}")
     api("${Lib.ROOM_KTX}:${Version.ROOM}")
     api("${Lib.ROOM_RUNTIME}:${Version.ROOM}")
     api("${Lib.ROOM_COMPILER}:${Version.ROOM}")
-    api("${Lib.ROOM_TESTING}:${Version.ROOM}")
 
+    api("${Lib.APPCOMPAT}:${Version.APPCOMPAT}")
+    api("${Lib.ARCH_TESTING}:${Version.archTesting}")
+    api("${Lib.CORE_KTX}:${Version.CORE_KTX}")
+    api("${Lib.COROUTINES}:${Version.COROUTINES}")
+    api("${Lib.COROUTINES_TEST}:${Version.COROUTINES}")
+    api("${Lib.ESPRESSO_CORE}:${Version.ESPRESSO}")
+    api("${Lib.ESPRESSO_CONTRIB}:${Version.ESPRESSO}")
+
+    // Firebase
+    api("${Lib.FIREBASE_DATABASE}:${Version.FIREBASE_DATABASE}")
+    api("${Lib.FIREBASE_MESSAGING}:${Version.FIREBASE_MESSAGING}")
+    api("${Lib.FIREBASE_CRASHLYTICS}:${Version.FIREBASE_CRASHLYTICS}")
+
+    api("${Lib.FRAGMENT_KTX}:${Version.FRAGMENT}")
+    api("${Lib.GLIDE}:${Version.GLIDE}")
+    api("${Lib.GSON}:${Version.GSON}")
+    api("${Lib.GLIDE_COMPILER}${Version.GSON}")
+
+    api("${Lib.JUNIT}:${Version.JUNIT}")
+    api("${Lib.EXT_JUNIT}:${Version.EXT_JUNIT}")
+    api("${Lib.KOTLIN_STDLIB}:${Version.KOTLIN}")
+
+    api("${Lib.NAVIGATION_FRAGMENT_KTX}:${Version.NAVIGATION}")
+    api("${Lib.NAVIGATION_UI_KTX}:${Version.NAVIGATION}")
+
+    api("${Lib.OKHTTP}:${Version.OKHTTP}")
+    api("${Lib.OKHTTP_LOGGING_INTERCEPTOR}:${Version.OKHTTP}")
+    api("${Lib.RUNNER}:${Version.runner}")
+    api("${Lib.THREETENABP}:${Version.THREETENABP}")
+    api("${Lib.TIMBER}:${Version.TIMBER}")
+    api("${Lib.VIEWPAGER}:${Version.VIEWPAGER}")
+    api("${Lib.RETROFIT}:${Version.RETROFIT}")
+    api("${Lib.RETROFIT_GSON_CONVERTER}:${Version.RETROFIT}")
+    api("${Lib.LOCAL_BROADCAST_MANAGER}:${Version.LOCAL_BROADCAST_MANAGER}")
     api("${Lib.GOOGLE_PLAY_SERVICES_LOCATION}:${Version.GOOGLE_PLAY_SERVICES_LOCATION}")
 
-    api("${Lib.TIMBER}:${Version.TIMBER}")
-    api("${Lib.MAP_BOX}:${Version.MAP_BOX}")
-    api("${Lib.GSON}:${Version.GSON}")
-
-    api("${Lib.THREETENABP}:${Version.THREETENABP}")
+    api("${Lib.SECURITY_CRYPTO}:${Version.SECURITY_CRYPTO}")
   }
 }
 

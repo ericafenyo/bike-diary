@@ -30,8 +30,8 @@
       android:id="@+id/text_date"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spacing_2"
-      android:layout_marginTop="@dimen/spacing_3"
+      android:layout_marginStart="@dimen/space_normal"
+      android:layout_marginTop="@dimen/spacing_medium"
       android:layout_marginEnd="16dp"
       tools:text="Yesterday" />
 </layout>

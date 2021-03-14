@@ -29,6 +29,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ericafenyo.habitdiary.R
+import com.ericafenyo.habitdiary.data.mockTrips
 import com.ericafenyo.habitdiary.databinding.FragmentDiaryBinding
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,10 +49,10 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
   override fun onResume() {
     super.onResume()
-    model.trips.observe(viewLifecycleOwner, { trips ->
-      diaryAdapter.submitList(trips)
-      diaryAdapter.notifyDataSetChanged()
-      Timber.d("Trippps $trips")
-    })
+      model.trips.observe(viewLifecycleOwner, { trips ->
+        diaryAdapter.submitList(trips)
+        diaryAdapter.notifyDataSetChanged()
+        Timber.d("Trippps $trips")
+      })
   }
 }

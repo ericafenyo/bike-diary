@@ -28,12 +28,9 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.ericafenyo.habitdiary.data
+import com.ericafenyo.habitdiary.data.mockTrips
 import com.ericafenyo.habitdiary.data.trip.GetTripsUseCase
 import com.ericafenyo.habitdiary.model.Trip
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 class DiaryViewModel @ViewModelInject constructor(
   private val observeTrips: GetTripsUseCase
@@ -46,6 +43,6 @@ class DiaryViewModel @ViewModelInject constructor(
   }
 
   private fun loadTrips() {
-    observeTrips(Unit).onEach { _trips.value = it.data }.launchIn(viewModelScope)
+    _trips.value = mockTrips
   }
 }

@@ -25,6 +25,7 @@
 package com.ericafenyo.habitdiary.data.trip
 
 import com.ericafenyo.habitdiary.model.Trip
+import com.ericafenyo.habitdiary.model.User
 import com.ericafenyo.tracker.analysis.FeatureCollection
 import com.ericafenyo.tracker.database.Record
 import com.ericafenyo.tracker.database.TrackerDataSource
@@ -68,7 +69,7 @@ class TripRepositoryImpl @Inject constructor(
           val speed = properties["duration"] as Double
           val duration = properties["duration"] as Double
           val distance = properties["distance"] as Double
-          val calories = properties["calories"] as Double
+          val calories = properties["calories"] as Int
           Timber.d("Features oo $speed $duration $distance $calories")
           val trip = Trip(
             image = "",
@@ -77,6 +78,8 @@ class TripRepositoryImpl @Inject constructor(
             duration = duration,
             distance = distance,
             speed = speed,
+            date = "",
+            owner = User("", "", "")
           )
           trips.add(trip)
         } else {

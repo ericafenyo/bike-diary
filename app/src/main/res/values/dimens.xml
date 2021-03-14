@@ -9,13 +9,13 @@
 
 
   <!-- 8 grid spacing -->
-  <dimen name="spacing_0_5">4dp</dimen>
-  <dimen name="spacing_1">8dp</dimen>
-  <dimen name="spacing_2">16dp</dimen>
-  <dimen name="spacing_3">24dp</dimen>
-  <dimen name="spacing_4">32dp</dimen>
-  <dimen name="spacing_5">40dp</dimen>
-  <dimen name="spacing_6">48dp</dimen>
+  <dimen name="space_micro">4dp</dimen>
+  <dimen name="space_small">8dp</dimen>
+  <dimen name="space_normal">16dp</dimen>
+  <dimen name="spacing_medium">24dp</dimen>
+  <dimen name="spacing_large">32dp</dimen>
+  <dimen name="spacing_huge">40dp</dimen>
+  <dimen name="spacing_xlarge">48dp</dimen>
 
   <dimen name="a11y_min_touch_target">48dp</dimen>
 

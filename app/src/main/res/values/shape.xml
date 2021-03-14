@@ -24,6 +24,10 @@
 
 <resources>
 
+  <style name="ShapeAppearance.HabitDiary.Circular" parent="ShapeAppearance.MaterialComponents">
+    <item name="cornerSize">50%</item>
+  </style>
+
   <style name="ShapeAppearance.HabitDiary.SmallComponent" parent="ShapeAppearance.MaterialComponents">
     <item name="cornerSize">8dp</item>
   </style>

@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:checked="@{model.isDarkTheme}"
                 android:drawableStart="@drawable/brightness_medium_24px"
-                android:drawablePadding="@dimen/spacing_2"
+                android:drawablePadding="@dimen/space_normal"
                 android:fontFamily="sans-serif-medium"
                 android:onCheckedChanged="@{(_, checked) -> model.onEnableDarkThemeEvent(checked)}"
                 android:text="@string/profile_lable_dark_mode"

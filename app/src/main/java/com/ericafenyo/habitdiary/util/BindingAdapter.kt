@@ -22,21 +22,14 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.habitdiary.model
+package com.ericafenyo.habitdiary.util
 
-data class Trip(
-  val image: String,
-  val title: String,
-  val speed: Double,
-  val duration: Double,
-  val distance: Double,
-  val calories: Int,
-  val date: String,
-  val owner: User
-)
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 
-data class User(
-  val uid: String,
-  val name: String,
-  val avatar: String,
-)
+
+@BindingAdapter("image")
+fun ImageView.bindImage(url: String) {
+  Glide.with(context).load(url).into(this)
+}
