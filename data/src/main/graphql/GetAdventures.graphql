@@ -1,0 +1,13 @@
+query getAdventures {
+  adventures {
+    id
+    title
+    speed
+    duration
+    calories
+    date
+    images
+    geojson
+    createdAt
+  }
+}
