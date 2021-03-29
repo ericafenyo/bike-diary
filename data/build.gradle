@@ -25,6 +25,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'com.apollographql.apollo'
 }
 
@@ -48,6 +49,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField('String', 'BIKE_DIARY_SERVER_URL', BIKE_DIARY_SERVER_URL)
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -58,17 +64,23 @@ android {
 }
 
 dependencies {
+    api(platform(project(":bom")))
+    implementation project(path: ':shared')
+    kapt(platform(project(":bom")))
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    // Kotlin
+    implementation(Lib.KOTLIN_STDLIB)
+
+    // Tests
+    testImplementation(Lib.JUNIT)
+
+    // Dagger Hilt
+    implementation(Lib.HILT_ANDROID)
+    kapt(Lib.HILT_COMPILER)
+
 
     // The core runtime dependencies
-    implementation("com.apollographql.apollo:apollo-runtime:2.5.4")
+    api("com.apollographql.apollo:apollo-runtime:2.5.4")
     // Coroutines extensions for easier asynchronicity handling
     implementation("com.apollographql.apollo:apollo-coroutines-support:2.5.4")
 

@@ -24,16 +24,19 @@
 
 package com.ericafenyo.habitdiary.ui.diary
 
+import android.content.Context
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ericafenyo.habitdiary.R
-import com.ericafenyo.habitdiary.data.mockTrips
 import com.ericafenyo.habitdiary.databinding.FragmentDiaryBinding
+import com.ericafenyo.habitdiary.util.SpaceItemDecoration
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
@@ -44,15 +47,37 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    binding.diaryRecyclerView.adapter = diaryAdapter
+
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.model = model
+
+    binding.diaryRecyclerView.apply {
+      adapter = diaryAdapter
+      setHasFixedSize(true)
+      addItemDecoration(SpaceItemDecoration(requireContext().dp2px(6), requireContext().dp2px(12)))
+    }
   }
 
   override fun onResume() {
     super.onResume()
-      model.trips.observe(viewLifecycleOwner, { trips ->
-        diaryAdapter.submitList(trips)
-        diaryAdapter.notifyDataSetChanged()
-        Timber.d("Trippps $trips")
-      })
+    model.adventures.observe(viewLifecycleOwner, { trips ->
+      diaryAdapter.submitList(trips)
+      diaryAdapter.notifyDataSetChanged()
+      Timber.d("Trippps $trips")
+    })
   }
+
+  override fun onDestroyView() {
+    diaryAdapter.setListener(null)
+    binding.diaryRecyclerView.adapter = null
+    super.onDestroyView()
+  }
+}
+
+fun Context.dp2px(dp: Int): Int {
+  return TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    dp.toFloat(),
+    resources.displayMetrics
+  ).roundToInt()
 }

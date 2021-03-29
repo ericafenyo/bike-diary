@@ -24,9 +24,14 @@
 
 package com.ericafenyo.data.api
 
+import com.ericafenyo.data.BuildConfig
 import com.ericafenyo.data.model.Adventure
 
 
 interface BikeDiaryService {
   suspend fun getAdventures(): List<Adventure>
+
+  companion object {
+    const val ENDPOINT: String = "${BuildConfig.BIKE_DIARY_SERVER_URL}/graphql"
+  }
 }

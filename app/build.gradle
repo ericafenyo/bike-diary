@@ -52,8 +52,12 @@ android {
 
 dependencies {
     api(platform(project(":bom")))
+    implementation project(path: ':shared')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt(platform(project(":bom")))
 
+    implementation project(path: ':data')
     implementation project(path: ':tracker')
 
     // Kotlin
@@ -72,9 +76,9 @@ dependencies {
     implementation(Lib.NAVIGATION_UI_KTX)
     implementation(Lib.LIFECYCLE_LIVE_DATA_KTX)
     implementation(Lib.HILT_ANDROID)
-    implementation(Lib.HILT_VIEWMODEL)
+    //implementation(Lib.HILT_VIEWMODEL)
     kapt(Lib.HILT_COMPILER)
-    kapt(Lib.ANDROIDX_HILT_COMPILER)
+    //kapt(Lib.ANDROIDX_HILT_COMPILER)
     implementation(Lib.PREFERENCE)
 
     // Firebase
@@ -87,4 +91,5 @@ dependencies {
 
     // Others
     implementation(Lib.MAP_BOX)
+
 }

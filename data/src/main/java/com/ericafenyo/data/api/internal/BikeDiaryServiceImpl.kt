@@ -26,16 +26,41 @@ package com.ericafenyo.data.api.internal
 
 
 import GetAdventuresQuery
+import android.util.Log
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.ericafenyo.data.api.BikeDiaryService
 import com.ericafenyo.data.model.Adventure
 
-class BikeDiaryServiceImpl(private val client: ApolloClient) : BikeDiaryService {
+
+class BikeDiaryServiceImpl(
+  private val client: ApolloClient
+) : BikeDiaryService {
+
   override suspend fun getAdventures(): List<Adventure> {
-    try {
-      val adventures = client.query(GetAdventuresQuery()).await().data?.adventures()
-    } catch (exception: Exception) {
+    return try {
+      client.query(GetAdventuresQuery())
+        .await()
+        .data?.adventures()
+        ?.map(::toAdventure) ?: emptyList()
+    } catch (exception: ApolloHttpException) {
+      Log.e("TAG", "An error occurred while fetching adventures ${exception.message()}")
+      emptyList()
     }
+  }
+
+  private fun toAdventure(result: GetAdventuresQuery.Adventure): Adventure {
+    return Adventure(
+      id = result.id(),
+      title = result.title(),
+      speed = result.speed(),
+      duration = result.duration(),
+      calories = result.calories(),
+      date = result.date(),
+      geojson = result.geojson(),
+      images = result.images(),
+      distance = 0.0
+    )
   }
 }

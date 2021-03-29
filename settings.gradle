@@ -1,3 +1,5 @@
+include ':shared'
+include ':data'
 include ':tracker'
 include ':app', 'bom'
 rootProject.name = "Bike Diary"

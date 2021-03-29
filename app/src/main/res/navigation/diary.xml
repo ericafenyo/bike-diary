@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2020 Eric Afenyo
@@ -33,5 +34,14 @@
       android:id="@+id/diaryFragment"
       android:name="com.ericafenyo.habitdiary.ui.diary.DiaryFragment"
       android:label="fragment_diary"
-      tools:layout="@layout/fragment_diary" />
+      tools:layout="@layout/fragment_diary">
+    <action
+        android:id="@+id/action_diaryFragment_to_adventureDetailsFragment"
+        app:destination="@id/adventureDetailsFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/adventureDetailsFragment"
+      android:name="com.ericafenyo.habitdiary.AdventureDetailsFragment"
+      android:label="fragment_adventure_details"
+      tools:layout="@layout/fragment_adventure_details" />
 </navigation>

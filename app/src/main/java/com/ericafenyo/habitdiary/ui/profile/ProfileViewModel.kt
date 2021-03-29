@@ -24,7 +24,6 @@
 
 package com.ericafenyo.habitdiary.ui.profile
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,10 +32,14 @@ import com.ericafenyo.habitdiary.data
 import com.ericafenyo.habitdiary.data.settings.ObserveThemeInteractor
 import com.ericafenyo.habitdiary.data.settings.SetThemeUseCase
 import com.ericafenyo.habitdiary.model.Theme
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel @ViewModelInject constructor(
+
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
   private val observeTheme: ObserveThemeInteractor,
   private val setTheme: SetThemeUseCase,
 ) : ViewModel() {

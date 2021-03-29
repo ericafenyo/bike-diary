@@ -24,25 +24,48 @@
 
 package com.ericafenyo.habitdiary.ui.diary
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ericafenyo.habitdiary.data.mockTrips
-import com.ericafenyo.habitdiary.data.trip.GetTripsUseCase
-import com.ericafenyo.habitdiary.model.Trip
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.data.data
+import com.ericafenyo.data.domain.GetAdventuresUseCase
+import com.ericafenyo.data.model.Adventure
+import com.ericafenyo.data.succeeded
+import com.ericafenyo.habitdiary.model.UIState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DiaryViewModel @ViewModelInject constructor(
-  private val observeTrips: GetTripsUseCase
+@HiltViewModel
+class DiaryViewModel @Inject constructor(
+  private val getAdventures: GetAdventuresUseCase
 ) : ViewModel() {
-  private val _trips = MutableLiveData<List<Trip>>()
-  val trips: LiveData<List<Trip>> get() = _trips
+  private val _state = MutableLiveData<UIState>()
+  val state: LiveData<UIState> get() = _state
+
+  private val _adventures = MutableLiveData<List<Adventure>>()
+  val adventures: LiveData<List<Adventure>> get() = _adventures
 
   init {
-    loadTrips()
+    loadAdventures()
   }
 
-  private fun loadTrips() {
-    _trips.value = mockTrips
+  private fun loadAdventures() {
+    viewModelScope.launch {
+      _state.value = UIState(loading = true)
+      getAdventures(Unit).run {
+        if (succeeded) {
+          _adventures.value = this.data!!
+          if (this.data?.size!! < 1) {
+            _state.value = UIState(empty = true)
+          } else {
+            _state.value = UIState(success = true)
+          }
+        } else {
+          _state.value = UIState(error = true)
+        }
+      }
+    }
   }
 }

@@ -26,10 +26,14 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
+    <variable
+        name="model"
+        type="com.ericafenyo.habitdiary.ui.diary.DiaryViewModel" />
   </data>
 
   <LinearLayout
@@ -44,12 +48,32 @@
         android:layout_height="?attr/actionBarSize"
         app:title="@string/title_diary" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/diary_recycler_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_height="wrap_content">
 
+      <include
+          layout="@layout/loading"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:visibility="gone"
+          bind:showIf="@{model.state.loading}" />
+
+      <include
+          layout="@layout/no_adventure"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:visibility="gone"
+          bind:showIf="@{model.state.empty}" />
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/diary_recycler_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:focusable="false"
+          android:visibility="gone"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          bind:showIf="@{model.state.success}" />
+    </FrameLayout>
   </LinearLayout>
 </layout>

@@ -35,5 +35,7 @@
   <string name="profile_lable_dark_mode">Dark mode</string>
   <string name="a11y_profile_enable_dark_mode">Enable dark mode</string>
   <string name="a11y_profile_disable_dark_mode">Disable mode</string>
+  <string name="label_oops">Oops!</string>
+  <string name="diary_adventures_empty">Your adventure list is empty, recorded adventures will appear here.</string>
 
 </resources>

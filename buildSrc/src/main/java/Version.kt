@@ -34,8 +34,7 @@ object Version {
   const val GOOGLE_SERVICES_GRADLE = "4.3.4"
   const val CRASHLYTICS_GRADLE = "2.4.1"
 
-  const val KOTLIN = "1.4.21"
-  const val ANDROIDX_HILT_COMPILER = "1.0.0-alpha02"
+  const val KOTLIN = "1.4.31"
   const val BROWSER = "1.2.0"
   const val LIFECYCLE = "2.3.0"
   const val archTesting = "2.1.0"
@@ -64,7 +63,7 @@ object Version {
   const val PREFERENCE_DATA_STORE = "1.0.0-alpha05"
   const val MAP_BOX = "9.2.0"
   const val GSON = "2.8.6"
-  const val HILT = "2.29.1-alpha"
+  const val HILT = "2.33-beta"
   const val MATERIAL = "1.3.0"
   const val APPCOMPAT = "1.2.0"
   const val CORE_KTX = "1.3.2"

@@ -25,16 +25,18 @@
 package com.ericafenyo.habitdiary.ui
 
 import android.net.Uri
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericafenyo.habitdiary.data.settings.SetThemeUseCase
 import com.ericafenyo.habitdiary.model.Theme
 import com.ericafenyo.habitdiary.ui.theme.ThemeDelegate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainActivityViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(
   private val themeDelegate: ThemeDelegate,
   private val switchTheme: SetThemeUseCase,
 ) : ViewModel(), ThemeDelegate by themeDelegate {

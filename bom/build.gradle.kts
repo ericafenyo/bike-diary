@@ -31,13 +31,12 @@ plugins {
 dependencies {
   constraints {
     // Dagger Hilt
-    api("${Lib.ANDROIDX_HILT_COMPILER}:${Version.ANDROIDX_HILT_COMPILER}")
-    api("${Lib.ANDROIDX_ANNOTATIONS}:${Version.ANDROIDX_ANNOTATIONS}")
-    api("${Lib.HILT_ANDROID}:${Version.HILT}")
+    //api("${Lib.ANDROIDX_HILT_COMPILER}:${Version.ANDROIDX_HILT_COMPILER}")
+    // api("${Lib.ANDROIDX_ANNOTATIONS}:${Version.ANDROIDX_ANNOTATIONS}")
     api("${Lib.HILT_ANDROID}:${Version.HILT}")
     api("${Lib.HILT_COMPILER}:${Version.HILT}")
     api("${Lib.HILT_TESTING}:${Version.HILT}")
-    api("${Lib.HILT_VIEWMODEL}:${Version.ANDROIDX_HILT_COMPILER}")
+    //api("${Lib.HILT_VIEWMODEL}:${Version.ANDROIDX_HILT_COMPILER}")
     api("${Lib.MAP_BOX}:${Version.MAP_BOX}")
     api("${Lib.MAP_BOX_ANNOTATIONS}:${Version.MAP_BOX_ANNOTATIONS}")
 

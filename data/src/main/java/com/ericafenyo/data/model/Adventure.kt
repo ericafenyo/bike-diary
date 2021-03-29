@@ -27,11 +27,11 @@ package com.ericafenyo.data.model
 data class Adventure(
   val id: String,
   val title: String,
-  val speed: Float,
-  val duration: Float,
-  val calories: Float,
+  val speed: Double,
+  val duration: Double,
+  val distance: Double,
+  val calories: Double,
   val date: String,
   val geojson: String,
-  val images: List<String>,
-  val createdAt: String,
+  val images: List<String>
 )

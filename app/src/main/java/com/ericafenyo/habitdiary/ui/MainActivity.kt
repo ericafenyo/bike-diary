@@ -31,6 +31,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import com.ericafenyo.data.domain.GetAdventuresUseCase
 import com.ericafenyo.habitdiary.R
 import com.ericafenyo.habitdiary.databinding.ActivityMainBinding
 import com.ericafenyo.habitdiary.model.Theme
@@ -40,12 +41,17 @@ import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
   private val binding: ActivityMainBinding by dataBinding()
   private val viewModel: MainActivityViewModel by viewModels()
+
+  @Inject
+  lateinit var getAdventuresUseCase: GetAdventuresUseCase
 
   private var currentNavController: LiveData<NavController>? = null
 
@@ -65,6 +71,9 @@ class MainActivity : AppCompatActivity() {
 
     viewModel.theme.observe(this, Observer(::updateForTheme))
 
+    GlobalScope.launch {
+      Timber.d("onCreate: ${getAdventuresUseCase(Unit)}")
+    }
   }
 
   override fun onResume() {

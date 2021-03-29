@@ -25,15 +25,21 @@
 package com.ericafenyo.habitdiary.ui.diary
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ericafenyo.data.model.Adventure
 import com.ericafenyo.habitdiary.databinding.ItemDateBinding
 import com.ericafenyo.habitdiary.databinding.ItemTripBinding
-import com.ericafenyo.habitdiary.model.Trip
 
 class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var _items: List<Any> = emptyList()
   private val items get() = _items
+  private var _clickListener: OnItemClickListener? = null
+
+  fun setListener(listener: OnItemClickListener?) {
+    this._clickListener = listener
+  }
 
   fun submitList(newItems: List<Any>) {
     this._items = newItems
@@ -60,13 +66,13 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (getItemViewType(position)) {
       DATE_TYPE -> (holder as DateViewHolder).bind()
-      TRIP_TYPE -> (holder as TripViewHolder).bind(items[position] as Trip)
+      TRIP_TYPE -> (holder as TripViewHolder).bind(items[position] as Adventure)
     }
   }
 
   override fun getItemViewType(position: Int): Int {
     return when {
-      items[position] is Trip -> TRIP_TYPE
+      items[position] is Adventure -> TRIP_TYPE
       items[position] is String -> DATE_TYPE
       else -> -1
     }
@@ -77,8 +83,9 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   inner class TripViewHolder(
     private val binding: ItemTripBinding
   ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(trip: Trip) {
-      binding.trip = trip
+    fun bind(adventure: Adventure) {
+      binding.adventure = adventure
+      binding.listener = _clickListener
     }
   }
 
@@ -89,7 +96,12 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun bind() {
       val date = (items[adapterPosition] as String)
       binding.textDate.text = date
+
     }
+  }
+
+  interface OnItemClickListener {
+    fun onItemClick(view: View, adventureId: String)
   }
 
   companion object {

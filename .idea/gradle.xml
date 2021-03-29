@@ -16,6 +16,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/bom" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/tracker" />
           </set>
         </option>
