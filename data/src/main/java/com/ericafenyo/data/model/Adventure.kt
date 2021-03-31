@@ -33,5 +33,5 @@ data class Adventure(
   val calories: Double,
   val date: String,
   val geojson: String,
-  val images: List<String>
+  val images: List<String>,
 )
