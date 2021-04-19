@@ -22,13 +22,16 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.habitdiary.util
 
-class Point(
-  val coordinates: List<Double>,
-  override val type: String = "Point"
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
-  }
+import android.util.TypedValue
+import androidx.fragment.app.Fragment
+import kotlin.math.roundToInt
+
+fun Fragment.dp2px(dp: Int): Int {
+  return TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    dp.toFloat(),
+    resources.displayMetrics
+  ).roundToInt()
 }

@@ -31,6 +31,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.ericafenyo.data.api.BikeDiaryService
+import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
 import com.ericafenyo.data.model.Adventure
 
 
@@ -48,6 +49,10 @@ class BikeDiaryServiceImpl(
       Log.e("TAG", "An error occurred while fetching adventures ${exception.message()}")
       emptyList()
     }
+  }
+
+  override suspend fun saveAdventures(): SaveAdventureResponse {
+    TODO("Not yet implemented")
   }
 
   private fun toAdventure(result: GetAdventuresQuery.Adventure): Adventure {

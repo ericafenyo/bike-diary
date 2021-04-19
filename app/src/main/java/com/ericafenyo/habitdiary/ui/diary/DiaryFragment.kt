@@ -24,20 +24,17 @@
 
 package com.ericafenyo.habitdiary.ui.diary
 
-import android.content.Context
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ericafenyo.habitdiary.R
 import com.ericafenyo.habitdiary.databinding.FragmentDiaryBinding
 import com.ericafenyo.habitdiary.util.SpaceItemDecoration
+import com.ericafenyo.habitdiary.util.dp2px
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import kotlin.math.roundToInt
-
 
 @AndroidEntryPoint
 class DiaryFragment : Fragment(R.layout.fragment_diary) {
@@ -54,8 +51,13 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     binding.diaryRecyclerView.apply {
       adapter = diaryAdapter
       setHasFixedSize(true)
-      addItemDecoration(SpaceItemDecoration(requireContext().dp2px(6), requireContext().dp2px(12)))
+      addItemDecoration(SpaceItemDecoration(dp2px(6), dp2px(12)))
     }
+
+    model.state.observe(viewLifecycleOwner, {
+      Timber.d("Observing state")
+      Timber.d("$it")
+    })
   }
 
   override fun onResume() {
@@ -63,7 +65,6 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     model.adventures.observe(viewLifecycleOwner, { trips ->
       diaryAdapter.submitList(trips)
       diaryAdapter.notifyDataSetChanged()
-      Timber.d("Trippps $trips")
     })
   }
 
@@ -72,12 +73,4 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     binding.diaryRecyclerView.adapter = null
     super.onDestroyView()
   }
-}
-
-fun Context.dp2px(dp: Int): Int {
-  return TypedValue.applyDimension(
-    TypedValue.COMPLEX_UNIT_DIP,
-    dp.toFloat(),
-    resources.displayMetrics
-  ).roundToInt()
 }

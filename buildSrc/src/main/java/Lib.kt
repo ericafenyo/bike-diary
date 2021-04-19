@@ -53,7 +53,7 @@ object Lib {
   const val HILT_COMPILER = "com.google.dagger:hilt-android-compiler"
   const val HILT_TESTING = "com.google.dagger:hilt-android-testing"
   const val JUNIT = "junit:junit"
-  const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+  const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
   const val LIFECYCLE_COMPILER = "androidx.lifecycle:lifecycle-compiler"
   const val LIFECYCLE_EXTENSIONS = "androidx.lifecycle:lifecycle-extensions"
   const val LIFECYCLE_LIVE_DATA_KTX = "androidx.lifecycle:lifecycle-livedata-ktx"

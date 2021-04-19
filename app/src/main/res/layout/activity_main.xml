@@ -27,7 +27,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-  <FrameLayout
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       tools:context=".ui.MainActivity">
@@ -46,7 +46,31 @@
         android:layout_gravity="bottom"
         android:background="?attr/colorSurface"
         app:elevation="@dimen/bottom_navigation_elevation"
-        app:labelVisibilityMode="labeled"
         app:menu="@menu/navigation" />
-  </FrameLayout>
+
+    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_active"
+        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/fab_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="66dp"
+        app:layout_anchor="@id/bottom_navigation"
+        app:layout_anchorGravity="end"
+        app:layout_behavior="@string/speeddial_scrolling_view_snackbar_behavior"
+        app:sdMainFabClosedBackgroundColor="@color/white"
+        app:sdMainFabClosedIconColor="@color/black_inactive"
+        app:sdMainFabClosedSrc="@drawable/ic_add"
+        app:sdMainFabOpenedBackgroundColor="@color/white"
+        app:sdMainFabOpenedIconColor="@color/black_inactive"
+        app:sdMainFabOpenedSrc="@drawable/ic_close"
+        app:sdOverlayLayout="@id/overlay" />
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

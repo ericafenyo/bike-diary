@@ -24,20 +24,25 @@
 
 package com.ericafenyo.data.domain
 
+import com.ericafenyo.data.Result
 import com.ericafenyo.data.model.Adventure
 import com.ericafenyo.data.repository.AdventureRepository
-import com.ericafenyo.util.CoroutineDispatchers
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
-import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 
-class GetAdventuresUseCase @Inject constructor(
+ public class GetAdventuresUseCase @Inject constructor(
   private val repository: AdventureRepository,
-  //val dispatchers: CoroutineDispatchers
-) : CoroutineUseCase<Unit, List<Adventure>>(Dispatchers.Main) {
-
-  override suspend fun execute(parameters: Unit): List<Adventure> {
-    return repository.getAdventures()
+  // val dispatchers: CoroutineDispatchers
+) : FlowUseCaseWithoutParams<List<Adventure>>(Dispatchers.IO) {
+  override fun execute(): Flow<Result<List<Adventure>>> = flow {
+    try {
+      repository.getAdventures().map { adventures -> Result.Success(adventures) }
+    } catch (e: Exception) {
+      emit(Result.Error(e))
+    }
   }
 }

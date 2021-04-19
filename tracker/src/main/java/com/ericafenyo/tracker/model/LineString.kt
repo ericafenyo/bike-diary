@@ -22,12 +22,16 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.tracker.model
 
-import java.util.*
+import com.ericafenyo.tracker.model.Feature
+import com.ericafenyo.tracker.model.Geometry
 
-data class FeatureCollection(
-  override val type: String = "FeatureCollection",
-  val features: List<Feature>,
-  val id: String = UUID.randomUUID().toString()
-) : GeoJson
+data class LineString(
+  override val type: String = "LineString",
+  val coordinates: List<List<Double>>
+) : Geometry {
+  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
+    return Feature(properties = properties, geometry = this)
+  }
+}

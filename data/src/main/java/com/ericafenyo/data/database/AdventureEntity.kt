@@ -24,6 +24,18 @@
 
 package com.ericafenyo.data.database
 
-class AdventureEntity {
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-}
+@Entity(tableName = "adventures")
+data class AdventureEntity(
+  @PrimaryKey val id: Int,
+  val title: String,
+  val speed: Double,
+  val duration: Double,
+  val distance: Double,
+  val calories: Double,
+  val date: String,
+  val geojson: String,
+  //val images: List<String>
+)

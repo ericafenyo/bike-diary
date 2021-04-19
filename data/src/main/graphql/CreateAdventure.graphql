@@ -1,0 +1,13 @@
+mutation createAdventure($input: AdventureInput!) {
+  adventure(input: $input) {
+    id
+    title
+    speed
+    duration
+    date
+    images
+    geojson
+    createdAt
+    calories
+  }
+}

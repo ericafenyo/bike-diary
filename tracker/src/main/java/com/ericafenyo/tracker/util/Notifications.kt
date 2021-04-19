@@ -9,7 +9,9 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.Builder
 import androidx.core.app.NotificationManagerCompat
+import com.ericafenyo.tracker.R
 import com.ericafenyo.tracker.logger.Logger
 
 object Notifications {
@@ -17,28 +19,58 @@ object Notifications {
   private const val DEFAULT_CHANNEL_ID = "TrackerNotificationChannel"
   private const val DEFAULT_CHANNEL_DESCRIPTION = "Notification channel used the tracker"
 
-  fun create(context: Context, config: Config) {
-    val (notificationId, title, message, icon) = config
+  private fun notificationBuilder(context: Context, config: Config): Builder {
+    val (_, title, message, icon) = config
 
     val notificationStyle = NotificationCompat.BigTextStyle()
       .bigText(message)
       .setBigContentTitle(title)
 
-    val activityIntent = getLauncherIntent(context)
-    val activityPendingIntent = PendingIntent.getActivity(
-      context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT
-    )
-
     createNotificationChannel(context)
 
-    NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
+    return Builder(context, DEFAULT_CHANNEL_ID)
       .setSmallIcon(icon)
       .setStyle(notificationStyle)
-      .setContentIntent(activityPendingIntent)
       .setContentTitle(title)
       .setPriority(NotificationCompat.PRIORITY_DEFAULT)
       .setContentText(message)
-      .setOngoing(true)
+  }
+
+  fun create(
+    context: Context,
+    config: Config,
+    pendingIntent: PendingIntent = defaultPendingIntent(context)
+  ) {
+    val (notificationId, _, message, _, cancellable) = config
+
+    notificationBuilder(context, config)
+      .setContentIntent(pendingIntent)
+      .setOngoing(!cancellable)
+      .build()
+      .also {
+        NotificationManagerCompat.from(context).notify(notificationId, it)
+      }
+    Logger.debug(
+      context, TAG, "Generating notify with id $notificationId and message $message"
+    )
+  }
+
+  private fun defaultPendingIntent(context: Context): PendingIntent = PendingIntent.getActivity(
+    context, 0, getLauncherIntent(context), PendingIntent.FLAG_UPDATE_CURRENT
+  )
+
+  fun createWithAction(
+    context: Context,
+    config: Config,
+    action: NotificationCompat.Action
+  ) {
+    val (notificationId, _, message, _, cancellable) = config
+
+    notificationBuilder(context, config)
+      .setContentIntent(action.getActionIntent())
+      .setOngoing(!cancellable)
+      .setAutoCancel(true)
+      .addAction(action)
       .build()
       .also {
         NotificationManagerCompat.from(context).notify(notificationId, it)
@@ -85,6 +117,7 @@ object Notifications {
     val notificationId: Int,
     val title: String,
     val message: String,
-    @DrawableRes val icon: Int
+    @DrawableRes val icon: Int = R.drawable.ic_bike,
+    val cancellable: Boolean = true,
   )
 }

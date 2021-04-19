@@ -22,15 +22,6 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.habitdiary.model
 
-import java.util.*
-
-data class Feature(
-  override val type: String = "Feature",
-  val geometry: Geometry,
-  val properties: LinkedHashMap<String, Any> = LinkedHashMap(),
-  val id: String = UUID.randomUUID().toString(),
-) : GeoJson
-
-open class Geometry(override val type: String) : GeoJson
+enum class AchievementBadge { ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE }

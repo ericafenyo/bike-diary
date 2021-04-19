@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'org.jetbrains.dokka'
 }
 
 android {
@@ -40,8 +41,8 @@ android {
         freeCompilerArgs += [
                 "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi",
-                "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
-
+                "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
+                "-Xopt-in=kotlin.RequiresOptIn"
         ]
     }
 
@@ -53,15 +54,13 @@ android {
 dependencies {
     api(platform(project(":bom")))
     implementation project(path: ':shared')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt(platform(project(":bom")))
 
     implementation project(path: ':data')
     implementation project(path: ':tracker')
 
     // Kotlin
-    implementation(Lib.KOTLIN_STDLIB)
+    implementation(libs.kotlin.stdlib)
 
     // Tests
     testImplementation(Lib.JUNIT)
@@ -92,4 +91,6 @@ dependencies {
     // Others
     implementation(Lib.MAP_BOX)
 
+    implementation(libs.slimChart)
+    implementation "com.leinardi.android:speed-dial:3.1.0"
 }

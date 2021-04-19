@@ -27,14 +27,14 @@ object Version {
   const val TARGET_SDK = 30
   const val MIN_SDK = 21
 
-  const val APP_VERSION_CODE = 202103090
+  const val APP_VERSION_CODE = 202103091
   const val APP_VERSION_NAME = "1.0.4-rc1"
 
   const val ANDROID_GRADLE_PLUGIN = "4.1.2"
   const val GOOGLE_SERVICES_GRADLE = "4.3.4"
   const val CRASHLYTICS_GRADLE = "2.4.1"
 
-  const val KOTLIN = "1.4.31"
+  const val KOTLIN = "1.4.32"
   const val BROWSER = "1.2.0"
   const val LIFECYCLE = "2.3.0"
   const val archTesting = "2.1.0"
@@ -73,4 +73,5 @@ object Version {
   const val FIREBASE_CRASHLYTICS = "17.4.0"
   const val DATABINDING_KTX = "5.0.1"
   const val PREFERENCE = "1.1.1"
+  const val DOKKA = "1.4.30"
 }

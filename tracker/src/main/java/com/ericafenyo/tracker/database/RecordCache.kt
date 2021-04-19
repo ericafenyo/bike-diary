@@ -25,14 +25,16 @@
 package com.ericafenyo.tracker.database
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.WorkerThread
+import com.ericafenyo.tracker.logger.Logger
 import com.google.gson.Gson
+import java.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
-import java.util.*
 
 /**
  * An implementation of the [Cache] interface providing methods for performing
@@ -43,7 +45,7 @@ import java.util.*
  *
  * created on 2021-01-25
  */
-class RecordCache private constructor(context: Context) : Cache<Record> {
+class RecordCache private constructor(private val context: Context) : Cache<Record> {
   private val records = DataStore.getInstance(context).getRecords()
 
   override fun putSensorData(key: String, value: Any) {
@@ -61,7 +63,9 @@ class RecordCache private constructor(context: Context) : Cache<Record> {
   }
 
   override fun putDocuments(key: String, values: List<Any>) {
+    Logger.debug(context, TAG, "Adding document with key: $key")
     val recodeList = values.map { value -> createRecord(DOCUMENT_TYPE, key, value) }
+    Log.d(TAG, "putDocuments: $recodeList")
     records.bulkInsert(recodeList)
   }
 
@@ -87,6 +91,8 @@ class RecordCache private constructor(context: Context) : Cache<Record> {
   )
 
   companion object {
+    private const val TAG = "RecordCache"
+
     private const val SENSOR_DATA_TYPE = "sensor-data"
     private const val MESSAGE_TYPE = "message"
     private const val DOCUMENT_TYPE = "document"
