@@ -22,33 +22,8 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.util
+package com.ericafenyo.tracker.model
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlin.reflect.KClass
-
-class JsonUtil {
-  private val moshi = Moshi.Builder()
-    .addLast(KotlinJsonAdapterFactory())
-    .build()
-
-  @Throws(AssertionError::class)
-  fun <T : Any> stringify(entity: T, clazz: KClass<T>): String {
-    val adapter = moshi.adapter(clazz.java)
-    return adapter.toJson(entity)
-  }
-
-  companion object {
-    @Volatile
-    private var INSTANCE: JsonUtil? = null
-
-    @JvmStatic
-    fun getInstance(): JsonUtil {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: JsonUtil()
-          .also { INSTANCE = it }
-      }
-    }
-  }
+interface Geometry {
+  val type: String
 }

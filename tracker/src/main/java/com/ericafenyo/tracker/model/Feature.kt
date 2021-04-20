@@ -24,7 +24,8 @@
 
 package com.ericafenyo.tracker.model
 
-import java.util.*
+import java.util.UUID
+import kotlin.collections.LinkedHashMap
 
 data class Feature(
   val type: String = "Feature",
@@ -32,7 +33,3 @@ data class Feature(
   val properties: LinkedHashMap<String, Any> = LinkedHashMap(),
   val id: String = UUID.randomUUID().toString().replace("-", ""),
 )
-
-interface Geometry {
-  val type: String
-}

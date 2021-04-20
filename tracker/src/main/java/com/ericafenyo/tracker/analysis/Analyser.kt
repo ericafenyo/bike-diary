@@ -34,7 +34,6 @@ import com.ericafenyo.tracker.model.FeatureCollection
 import com.ericafenyo.tracker.model.LineString
 import com.ericafenyo.tracker.model.Point
 import com.ericafenyo.tracker.util.JSON
-import com.ericafenyo.tracker.util.JsonUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -55,7 +54,6 @@ import model.ExplicitIntent
 class Analyser private constructor(private val context: Context) {
   private val computation = Dispatchers.Default
   private val io = Dispatchers.IO
-  private val json = JsonUtil.getInstance()
 
   // These keys points to a location in the database.
   // 1. We first get all fields containing any of the keys. (@see getRecords())
