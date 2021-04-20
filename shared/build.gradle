@@ -58,17 +58,11 @@ android {
 }
 
 dependencies {
-    api(platform(project(":bom")))
-    kapt(platform(project(":bom")))
+    testImplementation libs.junit
 
-    // Kotlin
-    implementation(Lib.KOTLIN_STDLIB)
-    implementation(Lib.COROUTINES)
+    implementation libs.kotlin.stdlib
+    implementation libs.kotlin.coroutines.core
 
-    // Dagger Hilt
-    implementation(Lib.HILT_ANDROID)
-    kapt(Lib.HILT_COMPILER)
-
-    // Test
-    testImplementation(Lib.JUNIT)
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 }

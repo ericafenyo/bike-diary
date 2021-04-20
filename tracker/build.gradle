@@ -59,35 +59,21 @@ android {
 }
 
 dependencies {
-    implementation(platform(project(":bom")))
     implementation project(path: ':shared')
-    kapt(platform(project(":bom")))
 
-    // Junit Test
-    testImplementation(Lib.JUNIT)
+    testImplementation libs.junit
 
-    // Kotlin
-    implementation(Lib.KOTLIN_STDLIB)
+    implementation libs.kotlin.stdlib
 
-    // Room
-    implementation(Lib.ROOM_KTX)
-    implementation(Lib.ROOM_RUNTIME)
-    kapt(Lib.ROOM_COMPILER)
-    //testImplementation(Lib.ROOM_TESTING)
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    kapt libs.androidx.room.compiler
 
-    // Play Services
-    implementation(Lib.GOOGLE_PLAY_SERVICES_LOCATION)
+    implementation libs.androidx.datastore
 
-    // GSON
-    implementation(Lib.GSON)
+    implementation libs.google.gms.location
 
-    // preference data store
-    implementation(Lib.PREFERENCE_DATA_STORE)
+    implementation libs.gson
 
-    // Date and time API.
-    implementation(Lib.THREETENABP)
-
-    implementation("com.squareup.moshi:moshi:1.11.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.11.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
+    implementation libs.threetenabp
 }
