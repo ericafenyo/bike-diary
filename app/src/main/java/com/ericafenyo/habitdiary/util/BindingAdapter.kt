@@ -26,8 +26,12 @@ package com.ericafenyo.habitdiary.util
 
 import android.view.View
 import android.widget.ImageView
+import androidx.core.graphics.ColorUtils
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputEditText
+import com.mancj.slimchart.SlimChart
 
 
 @BindingAdapter("image")
@@ -43,4 +47,20 @@ fun View.bindShowIf(show: Boolean) {
 @BindingAdapter("goneIf")
 fun View.bindGoneIf(gone: Boolean) {
   visibility = if (gone) View.GONE else View.VISIBLE
+}
+
+@BindingAdapter("onTextChanged")
+fun TextInputEditText.bindOnTextChanged(block: (view: View, text: String) -> Unit) {
+  doOnTextChanged { text, _, _, _ -> block(this, text.toString()) }
+}
+
+@BindingAdapter("starts")
+fun SlimChart.bindStarts(progress: Int = 0) {
+  stats = floatArrayOf(progress.toFloat(), 100F)
+}
+
+@BindingAdapter("color")
+fun SlimChart.bindColor(color: Int) {
+  val track = ColorUtils.setAlphaComponent(color, 50)
+  colors = intArrayOf(color, track)
 }

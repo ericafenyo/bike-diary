@@ -11,6 +11,7 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
       android:theme="@style/Theme.HabitDiary">
+    <activity android:name=".ui.diary.EditAdventureActivity" />
     <activity android:name=".SettingsActivity" />
     <activity android:name=".ui.MainActivity">
       <intent-filter>
@@ -23,6 +24,13 @@
     <meta-data
         android:name="preloaded_fonts"
         android:resource="@array/preloaded_fonts" />
+    <receiver
+        android:name=".AnalysisEndReceiver"
+        android:exported="false">
+      <intent-filter>
+        <action android:name="tracker.intent.action.END_ANALYSIS" />
+      </intent-filter>
+    </receiver>
   </application>
 
 </manifest>

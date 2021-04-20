@@ -22,7 +22,38 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.di
+package com.ericafenyo.tracker.analysis
 
-class CoroutineModule {
+import android.content.Context
+import android.content.Intent
+import androidx.core.app.JobIntentService
+import com.ericafenyo.tracker.logger.Logger
+
+class AnalysisJobIntentService : JobIntentService() {
+
+  override fun onHandleWork(intent: Intent) {
+    Logger.debug(applicationContext, TAG, "onHandleWork(intent: $intent)")
+    Analyser.getInstance(applicationContext).startAnalysis()
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    Logger.debug(applicationContext, TAG, "onDestroy() All work complete")
+  }
+
+  companion object {
+    const val TAG = "AnalysisJobIntentService"
+
+    /**
+     * Unique job ID for this service.
+     */
+    const val JOB_ID = 1000
+
+    /**
+     * Convenience method for enqueuing work in to this service.
+     */
+    fun enqueueWork(context: Context, work: Intent) {
+      enqueueWork(context, AnalysisJobIntentService::class.java, JOB_ID, work)
+    }
+  }
 }

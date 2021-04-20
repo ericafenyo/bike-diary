@@ -22,18 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.data.repository
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry(type) {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
-  }
+/**
+ * * A simple functional interface that accepts one argument and returns a result.
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-04-17
+ */
+interface Mapper<T, R> {
+  /**
+   * Invoke this function to the provided argument.
+   *
+   * @param params the function argument
+   * @return the function result
+   */
+  suspend fun map(params: T): R
 }
-
-data class Coordinate(
-  val longitude: Double,
-  val latitude: Double
-)

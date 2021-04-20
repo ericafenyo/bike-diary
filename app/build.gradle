@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'org.jetbrains.dokka'
 }
 
 android {
@@ -40,8 +41,8 @@ android {
         freeCompilerArgs += [
                 "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi",
-                "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
-
+                "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
+                "-Xopt-in=kotlin.RequiresOptIn"
         ]
     }
 
@@ -51,45 +52,41 @@ android {
 }
 
 dependencies {
-    api(platform(project(":bom")))
     implementation project(path: ':shared')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt(platform(project(":bom")))
-
     implementation project(path: ':data')
     implementation project(path: ':tracker')
 
-    // Kotlin
-    implementation(Lib.KOTLIN_STDLIB)
+    testImplementation libs.junit
+    androidTestImplementation(libs.androidx.junitExt)
+    androidTestImplementation(libs.androidx.espresso)
 
-    // Tests
-    testImplementation(Lib.JUNIT)
-    androidTestImplementation(Lib.EXT_JUNIT)
-    androidTestImplementation(Lib.ESPRESSO_CORE)
+    implementation(libs.kotlin.stdlib)
 
-    // Android Jetpack
-    implementation(Lib.CORE_KTX)
-    implementation(Lib.MATERIAL)
-    implementation(Lib.CONSTRAINT_LAYOUT)
-    implementation(Lib.NAVIGATION_FRAGMENT_KTX)
-    implementation(Lib.NAVIGATION_UI_KTX)
-    implementation(Lib.LIFECYCLE_LIVE_DATA_KTX)
-    implementation(Lib.HILT_ANDROID)
-    //implementation(Lib.HILT_VIEWMODEL)
-    kapt(Lib.HILT_COMPILER)
-    //kapt(Lib.ANDROIDX_HILT_COMPILER)
-    implementation(Lib.PREFERENCE)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.constraintlayout)
 
-    // Firebase
-    implementation(Lib.FIREBASE_CRASHLYTICS)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
 
-    // Utils
-    implementation(Lib.TIMBER)
-    implementation(Lib.DATABINDING_KTX)
-    implementation(Lib.GLIDE)
+    implementation(libs.androidx.lifecycle.livedata)
 
-    // Others
-    implementation(Lib.MAP_BOX)
+    implementation(libs.androidx.preference)
 
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+
+    implementation libs.crashlytics.ktx
+
+    implementation libs.mapbox.android
+    //implementation libs.mapbox.annotation
+
+    implementation(libs.timber)
+    implementation(libs.databinding)
+    implementation(libs.glide)
+
+    implementation libs.slimChart
+    implementation libs.speedDial
+
+    // debugImplementation libs.leakCanary
 }

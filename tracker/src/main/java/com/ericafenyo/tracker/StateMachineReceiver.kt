@@ -30,7 +30,6 @@ import android.content.Intent
 import com.ericafenyo.tracker.logger.Logger
 
 class StateMachineReceiver : BroadcastReceiver() {
-
   override fun onReceive(context: Context, intent: Intent) {
     Logger.debug(context, TAG, "onReceive(Context $context, Intent $intent)")
 
@@ -38,7 +37,7 @@ class StateMachineReceiver : BroadcastReceiver() {
       // TODO: 1/9/21
       //  1. Check for consent
       //  2. Check for location permission
-      //  3. break if the above condition is not satisfied
+      //  3. break if the above conditions are not satisfied
     }
 
     // we should only get here if the user has consented

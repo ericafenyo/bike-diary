@@ -37,5 +37,17 @@
   <string name="a11y_profile_disable_dark_mode">Disable mode</string>
   <string name="label_oops">Oops!</string>
   <string name="diary_adventures_empty">Your adventure list is empty, recorded adventures will appear here.</string>
+  <string name="label_adventure_title">Adventure title</string>
+  <string name="label_adventure_date">Date</string>
+  <string name="label_calories">Calories</string>
+  <string name="label_kilometers">Kilometers</string>
+  <string name="label_start_time">Start time</string>
+  <string name="label_end_time">End time</string>
+  <string name="label_adventure_note">Note</string>
+  <string name="title_edit_adventure">Edit adventure</string>
+  <string name="title_save">Save</string>
+  <string name="content_description_add_trip">Add trip</string>
+  <string name="kilometers_remaining">Km left</string>
+  <string name="action_upload_picture">Upload picture</string>
 
 </resources>

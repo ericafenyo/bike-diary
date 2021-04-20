@@ -29,12 +29,19 @@ import com.ericafenyo.data.model.Adventure
 import com.ericafenyo.data.repository.AdventureRepository
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapLatest
 
 @Singleton
+@OptIn(ExperimentalCoroutinesApi::class)
 class AdventureRepositoryImpl @Inject constructor(
-  private val service: BikeDiaryService
+  private val service: BikeDiaryService,
+  private val mapper: AdventureMapper,
+  private val remoteDataSource: AdventureLocalDataSource,
 ) : AdventureRepository {
-  override suspend fun getAdventures(): List<Adventure> {
-    return service.getAdventures()
+  override suspend fun getAdventures(): Flow<List<Adventure>> {
+    return remoteDataSource.getAdventures()
+      .mapLatest { adventures -> adventures.map { mapper.map(it) } }
   }
 }

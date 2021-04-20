@@ -24,22 +24,29 @@
 
 package com.ericafenyo.tracker
 
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.IBinder
+import android.provider.Settings
 import android.util.Log
+import androidx.core.app.NotificationCompat.Action
+import com.ericafenyo.tracker.analysis.AnalysisJobIntentService
 import com.ericafenyo.tracker.database.PreferenceDataStore
 import com.ericafenyo.tracker.database.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.logger.Logger
+import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID
 import com.ericafenyo.tracker.util.Notifications
+import com.ericafenyo.tracker.util.Notifications.Config
+import com.ericafenyo.tracker.util.ONGOING_NOTIFICATION_ID
+import com.ericafenyo.tracker.util.PermissionsManager
 import com.google.gson.JsonObject
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlin.coroutines.CoroutineContext
-
-const val ONGOING_NOTIFICATION_ID: Int = 437853468
 
 class StateMachineService : Service(), CoroutineScope {
   private val tag = "StateMachineService"
@@ -133,17 +140,51 @@ class StateMachineService : Service(), CoroutineScope {
         // We should now get location updates at a particular interval
         setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
 
-        val notificationConfig = Notifications.Config(
+        val notificationConfig = Config(
           notificationId = ONGOING_NOTIFICATION_ID,
           message = getString(R.string.tracking_notification_content_text),
           title = getString(R.string.tracking_notification_title_text),
-          icon = R.drawable.ic_bike
+          icon = R.drawable.ic_bike,
+          cancellable = false
         )
+
         Notifications.create(this, notificationConfig)
       }?.addOnFailureListener {
         Logger.error(this, tag, "Start location request unsuccessful: $it")
+        if (!PermissionsManager.isForegroundLocationPermissionGranted(this)) {
+          showNotificationToAppSettings()
+        }
       }
     }
+  }
+
+  private fun showNotificationToAppSettings() {
+    val config = Config(
+      LOCATION_REQUIRED_NOTIFICATION_ID,
+      "Location permission required",
+      "Click here to enable it",
+      R.drawable.ic_bike
+    )
+
+    val permissionAction = Action(
+      R.drawable.ic_bike,
+      "Change Permissions",
+      appSettingsPendingIntent()
+    )
+
+    Notifications.createWithAction(this, config, permissionAction)
+  }
+
+  private fun appSettingsPendingIntent(): PendingIntent? {
+    val intent = Intent().run {
+      action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+      addCategory(Intent.CATEGORY_DEFAULT)
+      data = Uri.parse("package:$packageName")
+      addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+      addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+    }
+    return PendingIntent.getActivity(this, 0, intent, 0)
   }
 
   private fun handleStop(currentState: String, action: String) {
@@ -162,6 +203,10 @@ class StateMachineService : Service(), CoroutineScope {
       // We should now get location updates at a particular interval
       setNewState(this, currentState, getString(R.string.tracker_state_ready))
       Notifications.cancel(this, ONGOING_NOTIFICATION_ID)
+
+      // Notify trip end so we can analyse and parse
+      // Start the trip analysis process
+      AnalysisJobIntentService.enqueueWork(this, Intent(this, AnalysisJobIntentService::class.java))
     }?.addOnFailureListener {
       Log.e(tag, "Error", it)
       Logger.error(this, tag, "Stop Location updates request unsuccessful: $it")

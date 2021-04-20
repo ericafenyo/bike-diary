@@ -25,7 +25,8 @@
 package com.ericafenyo.data.repository
 
 import com.ericafenyo.data.model.Adventure
+import kotlinx.coroutines.flow.Flow
 
 interface AdventureRepository {
-  suspend fun getAdventures(): List<Adventure>
+  suspend fun getAdventures(): Flow<List<Adventure>>
 }

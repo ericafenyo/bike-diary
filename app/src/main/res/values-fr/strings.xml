@@ -48,5 +48,6 @@
   <string name="profile_lable_dark_mode">Dark mode</string>
   <string name="a11y_profile_enable_dark_mode">Activer le mode sombre</string>
   <string name="a11y_profile_disable_dark_mode">Désactiver le mode sombre</string>
+  <string name="title_edit_adventure">Modifier l\'aventure</string>
 
 </resources>

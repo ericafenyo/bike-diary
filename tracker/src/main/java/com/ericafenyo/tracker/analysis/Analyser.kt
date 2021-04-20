@@ -25,13 +25,19 @@
 package com.ericafenyo.tracker.analysis
 
 import android.content.Context
+import com.ericafenyo.tracker.R
 import com.ericafenyo.tracker.database.Record
 import com.ericafenyo.tracker.database.RecordCache
 import com.ericafenyo.tracker.location.SimpleLocation
 import com.ericafenyo.tracker.logger.Logger
+import com.ericafenyo.tracker.model.FeatureCollection
+import com.ericafenyo.tracker.model.LineString
+import com.ericafenyo.tracker.model.Point
 import com.ericafenyo.tracker.util.JSON
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import model.ExplicitIntent
 
 /**
  * This class contain methods for reading raw gps data and converting them into a GeoJson data.
@@ -58,105 +64,113 @@ class Analyser private constructor(private val context: Context) {
     RecordCache.KEY_TRIP_STOPPED,
   )
 
-  suspend fun analyse() {
+  fun startAnalysis() = runBlocking {
     generateDocuments().also { saveDocuments(it) }
   }
 
-  private fun getRecords(): List<Record> {
+  private fun getAllRecords(): List<Record> {
     Logger.debug(context, TAG, "***Retrieving records***")
     // Suppress Return should be lifted out of 'try'
     return try {
       RecordCache.getInstance(context).getSensorData(keys)
     } catch (exception: Exception) {
-      Logger.error(context, TAG, "Error occurred while retrieving records: $exception")
+      Logger.error(context, TAG, "An error occurred while trying to retrieve records: $exception")
       emptyList()
     }
   }
 
-  private fun segmentRecords(records: List<Record>): List<List<Record>> {
-    Logger.debug(context, TAG, "***Segmenting records into trips***")
+  private fun getLastRecord(): List<Record> {
+    Logger.debug(context, TAG, "***Getting last record***")
 
+    val records = getAllRecords()
     try {
-      val trips = mutableListOf<List<Record>>()
-      var canBeginTrip = true
       var startIndex = 0
       var endIndex = 0
-      var processingIndex = 0
+      var canBeginTrip = true
+      var processing = true
+      val trips = mutableListOf<Record>()
 
-      while (processingIndex < records.size) {
+      while (processing) {
         if (canBeginTrip) {
           // Look for the trip start and store its index in the startIndex variable
-          records.slice(processingIndex until records.size)
-            .indexOfFirst { record -> record.key == RecordCache.KEY_TRIP_STARTED }
+          records.indexOfLast { record -> record.key == RecordCache.KEY_TRIP_STARTED }
             .also { foundStartIndex ->
               if (foundStartIndex == -1) {
                 // Properly log the right message
-                if (trips.isEmpty()) {
-                  Logger.debug(context, TAG, "Trip start not found, exiting")
-                } else {
-                  Logger.debug(context, TAG, "No further trip start found, exiting")
-                }
-                processingIndex = records.size
+                Logger.debug(context, TAG, "Trip start not found, exiting")
+                return emptyList()
               } else {
                 // Set appropriate properties
                 startIndex = foundStartIndex + 1 // +1 because next index contains the actual data
                 Logger.debug(context, TAG, "Found trip starting at index: $startIndex")
-                processingIndex += (startIndex)
                 canBeginTrip = false
+                processing = true
               }
             }
         } else {
           // Already processed trip start, move on to trip end
-          records.slice(processingIndex until records.size)
-            .indexOfFirst { record -> record.key == RecordCache.KEY_TRIP_STOPPED }
+          records.indexOfLast { record -> record.key == RecordCache.KEY_TRIP_STOPPED }
             .also { foundEndIndex ->
               if (foundEndIndex == -1) {
                 Logger.debug(context, TAG, "Can't find end for trip starting at index: $startIndex")
-                processingIndex = records.size
+                // break the while loop
+                processing = false
               } else {
                 // Set appropriate properties
                 endIndex = foundEndIndex - 1 // -1 because the previous index have the actual data
                 Logger.debug(context, TAG, "Found trip ending at index: $endIndex")
-                processingIndex += (endIndex)
-
-                val trip = records.slice(startIndex..endIndex)
-                trips.add(trip)
                 canBeginTrip = true
+                processing = false
+                val results = records.slice(startIndex..endIndex)
+                trips.clear()
+                trips.addAll(results)
               }
             }
         }
       }
       return trips
     } catch (exception: Exception) {
-      Logger.error(context, TAG, "Error occurred while segmenting records: $exception")
+      Logger.error(context, TAG, "An error occurred while trying to get last record: $exception")
       return emptyList()
     }
   }
 
   private suspend fun generateDocuments(): List<FeatureCollection> = withContext(computation) {
-    val segments = segmentRecords(getRecords())
+    val segment = getLastRecord()
 
-    val features: MutableList<FeatureCollection> = mutableListOf()
-    for (segment in segments) {
+
+    // We need at least two records to build our starting and ending Point features
+    try {
+      if (segment.size < 2) {
+        Logger.debug(context, TAG, "Invalid record list, returning empty list")
+        return@withContext emptyList()
+      }
+
+      val features: MutableList<FeatureCollection> = mutableListOf()
+
       // Create start feature point
-      val startCoordinates = getCoordinate(segment.first().data)
-      val startFeature = Point(startCoordinates).toFeature()
+      val startFeature = getCoordinate(segment.first().data).run {
+        Point(coordinates = this).toFeature()
+      }
 
       // Create destination feature point
-      val endCoordinates = getCoordinate(segment.last().data)
-      val endFeature = Point(endCoordinates).toFeature()
+      val endFeature = getCoordinate(segment.last().data).run {
+        Point(coordinates = this).toFeature()
+      }
 
       // Create LineString feature for trip path
       val coordinates = segment.map { getCoordinate(it.data) }
       val properties = generateProperties(segment)
       val lineStringFeature = LineString(coordinates = coordinates).toFeature(properties)
-      val collections = FeatureCollection(
-        features = listOf(startFeature, endFeature, lineStringFeature)
-      )
-      features.add(collections)
+      FeatureCollection(
+        features = listOf(startFeature, endFeature, lineStringFeature),
+        metadata = properties
+      ).also { features.add(it) }
+      return@withContext features
+    } catch (exception: Exception) {
+      Logger.error(context, TAG, "An error occurred while trying to get last record: $exception")
+      emptyList()
     }
-
-    return@withContext features
   }
 
   private fun getCoordinate(data: String): List<Double> {
@@ -165,9 +179,17 @@ class Analyser private constructor(private val context: Context) {
   }
 
   private suspend fun saveDocuments(collections: List<FeatureCollection>) = withContext(io) {
-    RecordCache.getInstance(context).run {
-      putDocuments(RecordCache.KEY_COLLECTION, collections)
-      clear(keys)
+    try {
+      if (collections.isEmpty()){
+        // Result(Exception(""))
+      }
+      RecordCache.getInstance(context).apply {
+        putDocuments(RecordCache.KEY_COLLECTION, collections)
+        clear(keys)
+      }
+      context.sendBroadcast(ExplicitIntent(context, R.string.tracker_action_end_analysis))
+    } catch (exception: Exception) {
+      Logger.error(context, TAG, "An error occurred while trying to save documents: $exception")
     }
   }
 
@@ -201,7 +223,7 @@ class Analyser private constructor(private val context: Context) {
       speeds.add(distances[i] / timeDeltas[i])
     }
 
-    // Duration
+// Duration
     val startTs = locationFromRecord(records.first()).ts
     val endTs = locationFromRecord(records.last()).ts
     val duration = endTs - startTs

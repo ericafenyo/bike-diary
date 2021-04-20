@@ -63,7 +63,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    binding.toolbar.setupProfileAvatar(activityModel, this)
+    //binding.appbar.setupProfileAvatar(activityModel, this)
     binding.lifecycleOwner = viewLifecycleOwner
     binding.model = profileModel
   }

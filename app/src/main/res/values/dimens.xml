@@ -4,7 +4,7 @@
   <dimen name="text_size_h2">20sp</dimen>
   <dimen name="text_size_h3">18sp</dimen>
 
-  <dimen name="bottom_navigation_elevation">8dp</dimen>
+  <dimen name="bottom_navigation_elevation">4dp</dimen>
   <dimen name="nav_avatar_size">48dp</dimen>
 
 
@@ -19,5 +19,7 @@
 
   <dimen name="a11y_min_touch_target">48dp</dimen>
   <dimen name="bottom_nav_height">56dp</dimen>
+  <dimen name="floating_action_button_elevation">10</dimen>
+  <dimen name="progress_indicator_corner_radius">8dp</dimen>
 
 </resources>

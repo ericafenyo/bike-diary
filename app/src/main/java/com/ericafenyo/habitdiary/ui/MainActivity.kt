@@ -28,6 +28,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -35,14 +36,15 @@ import com.ericafenyo.data.domain.GetAdventuresUseCase
 import com.ericafenyo.habitdiary.R
 import com.ericafenyo.habitdiary.databinding.ActivityMainBinding
 import com.ericafenyo.habitdiary.model.Theme
+import com.ericafenyo.habitdiary.ui.diary.EditAdventureActivity
 import com.ericafenyo.habitdiary.util.setupWithNavController
-import com.ericafenyo.tracker.analysis.Analyser
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -68,18 +70,46 @@ class MainActivity : AppCompatActivity() {
       setupBottomNavigationBar()
     } // Else, need to wait for onRestoreInstanceState
 
+    setupFab(binding.fabMain)
 
     viewModel.theme.observe(this, Observer(::updateForTheme))
 
-    GlobalScope.launch {
-      Timber.d("onCreate: ${getAdventuresUseCase(Unit)}")
-    }
+    EditAdventureActivity.getStartIntent(this).also { startActivity(it) }
   }
+
+  // Extend SpeedDialView
+  private fun setupFab(fabMain: SpeedDialView) {
+    val tripItem = SpeedDialActionItem.Builder(R.id.fab_item_trip, R.drawable.ic_bike)
+      .setLabel("Add trip")
+      .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.color_accent, theme))
+      .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.white, theme))
+      .create()
+
+    val weightItem = SpeedDialActionItem.Builder(R.id.fab_item_weight, R.drawable.ic_monitor_weight)
+      .setLabel("Add weight")
+      .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.color_accent, theme))
+      .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.white, theme))
+      .create()
+
+    val waterItem = SpeedDialActionItem.Builder(R.id.fab_item_drink, R.drawable.ic_local_drink)
+      .setLabel("Drink water map")
+      .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.color_accent, theme))
+      .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.white, theme))
+      .create()
+
+    fabMain.addAllActionItems(listOf(waterItem, weightItem, tripItem))
+    fabMain.setOnActionSelectedListener { actionItem -> handleFabItemClick(actionItem) }
+  }
+
+  private fun handleFabItemClick(item: SpeedDialActionItem?): Boolean {
+    return true
+  }
+
 
   override fun onResume() {
     super.onResume()
     GlobalScope.launch {
-      Analyser.getInstance(this@MainActivity).analyse()
+      // Analyser.getInstance(this@MainActivity).startAnalysis()
     }
   }
 
@@ -115,9 +145,6 @@ class MainActivity : AppCompatActivity() {
   }
 }
 
-/**
- * Having to suppress lint. Bug raised: 128789886
- */
 fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
   Theme.DARK -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
   Theme.LIGHT -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO

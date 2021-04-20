@@ -26,7 +26,7 @@ package com.ericafenyo.habitdiary.data.trip
 
 import com.ericafenyo.habitdiary.model.Trip
 import com.ericafenyo.habitdiary.model.User
-import com.ericafenyo.tracker.analysis.FeatureCollection
+import com.ericafenyo.tracker.model.FeatureCollection
 import com.ericafenyo.tracker.database.Record
 import com.ericafenyo.tracker.database.TrackerDataSource
 import com.ericafenyo.tracker.util.JSON
