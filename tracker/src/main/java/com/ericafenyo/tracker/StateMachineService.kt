@@ -34,8 +34,8 @@ import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat.Action
 import com.ericafenyo.tracker.analysis.AnalysisJobIntentService
-import com.ericafenyo.tracker.database.PreferenceDataStore
-import com.ericafenyo.tracker.database.RecordCache
+import com.ericafenyo.tracker.datastore.PreferenceDataStore
+import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.logger.Logger
 import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID

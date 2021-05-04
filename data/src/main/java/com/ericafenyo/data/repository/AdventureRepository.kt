@@ -29,4 +29,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface AdventureRepository {
   suspend fun getAdventures(): Flow<List<Adventure>>
+  suspend fun draftAdventures(): String
 }

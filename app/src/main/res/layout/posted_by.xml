@@ -31,7 +31,7 @@
 
     <variable
         name="owner"
-        type="com.ericafenyo.habitdiary.model.User" />
+        type="com.ericafenyo.bikediary.model.User" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout

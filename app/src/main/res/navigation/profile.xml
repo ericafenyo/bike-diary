@@ -31,12 +31,12 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.ericafenyo.habitdiary.ProfileFragment"
+        android:name="com.ericafenyo.bikediary.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.ericafenyo.habitdiary.SettingsFragment"
+        android:name="com.ericafenyo.bikediary.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

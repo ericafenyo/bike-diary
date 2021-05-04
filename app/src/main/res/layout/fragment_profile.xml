@@ -32,7 +32,7 @@
 
     <variable
         name="model"
-        type="com.ericafenyo.habitdiary.ui.profile.ProfileViewModel" />
+        type="com.ericafenyo.bikediary.ui.profile.ProfileViewModel" />
   </data>
 
   <LinearLayout

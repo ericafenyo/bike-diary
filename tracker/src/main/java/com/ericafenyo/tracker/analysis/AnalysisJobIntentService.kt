@@ -42,7 +42,7 @@ class AnalysisJobIntentService : JobIntentService() {
   }
 
   companion object {
-    const val TAG = "AnalysisJobIntentService"
+   private const val TAG = "AnalysisJobIntentService"
 
     /**
      * Unique job ID for this service.

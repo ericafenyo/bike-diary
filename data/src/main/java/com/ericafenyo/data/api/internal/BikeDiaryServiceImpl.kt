@@ -26,22 +26,33 @@ package com.ericafenyo.data.api.internal
 
 
 import GetAdventuresQuery
+import android.content.Context
 import android.util.Log
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloHttpException
+import com.ericafenyo.data.BuildConfig
 import com.ericafenyo.data.api.BikeDiaryService
 import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
 import com.ericafenyo.data.model.Adventure
-
+import java.io.File
+import java.util.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okio.BufferedSink
+import okio.buffer
+import okio.sink
+import timber.log.Timber
 
 class BikeDiaryServiceImpl(
-  private val client: ApolloClient
+  private val apolloClient: ApolloClient,
+  private val httpClient: OkHttpClient,
+  private val context: Context
 ) : BikeDiaryService {
 
   override suspend fun getAdventures(): List<Adventure> {
     return try {
-      client.query(GetAdventuresQuery())
+      apolloClient.query(GetAdventuresQuery())
         .await()
         .data?.adventures()
         ?.map(::toAdventure) ?: emptyList()
@@ -67,5 +78,39 @@ class BikeDiaryServiceImpl(
       images = result.images(),
       distance = 0.0
     )
+  }
+
+  @Suppress("BlockingMethodInNonBlockingContext")
+  override suspend fun getStaticMap(geojson: String): String {
+    val mapboxBaseUrl = BuildConfig.MAPBOX_STATIC_MAP_URL
+    val geojsonSource = "/geojson($geojson)"
+    val path = "/auto/360x240@2x?access_token=${BuildConfig.MAPBOX_ACCESS_TOKEN}"
+    val staticMapUrl = "$mapboxBaseUrl$geojsonSource$path"
+
+    val request = Request.Builder()
+      .url(staticMapUrl)
+      .get()
+      .build()
+
+    try {
+      val response = httpClient.newCall(request).execute()
+      val responseBody = response.body()
+      when {
+        response.isSuccessful && responseBody != null -> {
+          val fileName = "${UUID.randomUUID()}.png".replace("-", "")
+          val downloadedFile = File(context.cacheDir, fileName)
+          val sink: BufferedSink = downloadedFile.sink().buffer()
+          sink.writeAll(responseBody.source())
+          sink.close()
+          return fileName
+        }
+        else -> {
+          return ""
+        }
+      }
+    } catch (e: Exception) {
+      Timber.e(e, "response")
+      return ""
+    }
   }
 }

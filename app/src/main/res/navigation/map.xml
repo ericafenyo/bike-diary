@@ -31,7 +31,7 @@
 
   <fragment
       android:id="@+id/mapFragment"
-      android:name="com.ericafenyo.habitdiary.MapFragment"
+      android:name="com.ericafenyo.bikediary.MapFragment"
       android:label="fragment_map"
       tools:layout="@layout/fragment_map" />
 </navigation>

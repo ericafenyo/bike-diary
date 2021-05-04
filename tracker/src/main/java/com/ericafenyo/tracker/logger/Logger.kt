@@ -26,7 +26,7 @@ package com.ericafenyo.tracker.logger
 
 import android.content.Context
 import android.util.Log
-import com.ericafenyo.tracker.database.DataStore
+import com.ericafenyo.tracker.datastore.DataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import java.io.PrintWriter

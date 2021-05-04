@@ -24,9 +24,6 @@
 
 package com.ericafenyo.tracker.model
 
-import com.ericafenyo.tracker.model.Feature
-import com.ericafenyo.tracker.model.Geometry
-
 data class LineString(
   override val type: String = "LineString",
   val coordinates: List<List<Double>>

@@ -28,7 +28,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.ericafenyo.tracker.database.RecordCache
+import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.logger.Logger
 import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.Dispatchers

@@ -26,6 +26,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlinx-serialization'
     id 'com.apollographql.apollo'
 }
 
@@ -52,6 +53,8 @@ android {
 
     buildTypes.each {
         it.buildConfigField('String', 'BIKE_DIARY_SERVER_URL', BIKE_DIARY_SERVER_URL)
+        it.buildConfigField('String', 'MAPBOX_ACCESS_TOKEN', MAPBOX_ACCESS_TOKEN)
+        it.buildConfigField('String', 'MAPBOX_STATIC_MAP_URL', MAPBOX_STATIC_MAP_URL)
     }
 
     compileOptions {
@@ -71,6 +74,7 @@ android {
 
 dependencies {
     implementation project(path: ':shared')
+    implementation project(path: ':tracker')
 
     testImplementation libs.junit
 
@@ -85,4 +89,8 @@ dependencies {
 
     api libs.apollo.runtime
     implementation libs.apollo.coroutines
+
+    implementation libs.timber
+
+    implementation libs.kotlin.serialization.json
 }

@@ -44,6 +44,9 @@ interface AdventureDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun bulkInsert(adventures: List<AdventureEntity>)
 
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(adventure: AdventureEntity)
+
   @Query("SELECT * FROM adventures")
-  fun getAdventures(): Flow<List<AdventureEntity>>
+  suspend fun getAdventures(): List<AdventureEntity>
 }

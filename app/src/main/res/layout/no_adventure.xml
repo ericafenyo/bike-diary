@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -23,46 +22,59 @@
   SOFTWARE.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
-  <ImageView
-      android:id="@+id/image_globe"
-      android:layout_width="120dp"
-      android:layout_height="120dp"
-      android:layout_marginTop="48dp"
-      android:src="@drawable/ic_globe"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.498"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+  <data>
 
-  <TextView
-      android:id="@+id/text_adventures_empty_title"
-      android:layout_width="wrap_content"
+    <variable
+        name="show"
+        type="java.lang.Boolean" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:text="@string/label_oops"
-      android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-      app:layout_constraintEnd_toEndOf="@+id/image_globe"
-      app:layout_constraintStart_toStartOf="@+id/image_globe"
-      app:layout_constraintTop_toBottomOf="@+id/image_globe" />
+      android:visibility="gone"
+      bind:showIf="@{show}">
 
-  <TextView
-      android:id="@+id/text_adventures_empty_content"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="8dp"
-      android:layout_marginEnd="16dp"
-      android:text="@string/diary_adventures_empty"
-      android:textAlignment="center"
-      android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/text_adventures_empty_title" />
+    <ImageView
+        android:id="@+id/image_globe"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/ic_globe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/text_adventures_empty_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/label_oops"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintEnd_toEndOf="@+id/image_globe"
+        app:layout_constraintStart_toStartOf="@+id/image_globe"
+        app:layout_constraintTop_toBottomOf="@+id/image_globe" />
+
+    <TextView
+        android:id="@+id/text_adventures_empty_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/diary_adventures_empty"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_adventures_empty_title" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

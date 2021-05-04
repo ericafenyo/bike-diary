@@ -27,12 +27,15 @@ package com.ericafenyo.data.api
 import com.ericafenyo.data.BuildConfig
 import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
 import com.ericafenyo.data.model.Adventure
+import java.io.File
 
 
 interface BikeDiaryService {
   suspend fun getAdventures(): List<Adventure>
 
   suspend fun saveAdventures(): SaveAdventureResponse
+
+  suspend fun getStaticMap(geojson: String): String
 
   companion object {
     const val ENDPOINT: String = "${BuildConfig.BIKE_DIARY_SERVER_URL}/graphql"

@@ -32,7 +32,7 @@
 
   <fragment
       android:id="@+id/diaryFragment"
-      android:name="com.ericafenyo.habitdiary.ui.diary.DiaryFragment"
+      android:name="com.ericafenyo.bikediary.ui.diary.DiaryFragment"
       android:label="fragment_diary"
       tools:layout="@layout/fragment_diary">
     <action
@@ -41,7 +41,7 @@
   </fragment>
   <fragment
       android:id="@+id/adventureDetailsFragment"
-      android:name="com.ericafenyo.habitdiary.AdventureDetailsFragment"
+      android:name="com.ericafenyo.bikediary.AdventureDetailsFragment"
       android:label="fragment_adventure_details"
       tools:layout="@layout/fragment_adventure_details" />
 </navigation>

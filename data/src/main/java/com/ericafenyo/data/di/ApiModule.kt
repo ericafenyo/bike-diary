@@ -24,14 +24,17 @@
 
 package com.ericafenyo.data.di
 
+import android.content.Context
 import com.apollographql.apollo.ApolloClient
 import com.ericafenyo.data.api.BikeDiaryService
 import com.ericafenyo.data.api.internal.BikeDiaryServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import okhttp3.OkHttpClient
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -46,7 +49,15 @@ abstract class ApiModule {
 
     @Provides
     @Singleton
-    fun provideBikeDiaryService(client: ApolloClient): BikeDiaryService =
-      BikeDiaryServiceImpl(client)
+    fun provideHttpClient(): OkHttpClient = OkHttpClient()
+
+    @Provides
+    @Singleton
+    fun provideBikeDiaryService(
+      client: ApolloClient,
+      httpClient: OkHttpClient,
+      @ApplicationContext context: Context
+    ): BikeDiaryService =
+      BikeDiaryServiceImpl(client, httpClient,context )
   }
 }

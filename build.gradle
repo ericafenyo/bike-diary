@@ -1,8 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext {
-        kotlin_version = '1.4.31'
-    }
+    ext.buildConfig = [
+            'compileSdk': 30,
+            'minSdk'    : 21,
+            'targetSdk' : 30,
+    ]
     repositories {
         google()
         jcenter()
@@ -11,6 +13,7 @@ buildscript {
     dependencies {
         classpath libs.android.gradlePlugin
         classpath libs.kotlin.gradlePlugin
+        classpath libs.kotlin.serialization.gradlePlugin
         classpath libs.hilt.gradlePlugin
         classpath libs.google.gms.services
         classpath libs.crashlytics.gradlePlugin

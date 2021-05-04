@@ -25,12 +25,15 @@
 package com.ericafenyo.tracker.analysis
 
 import android.content.Context
+import com.ericafenyo.ktx.toFixed
+import com.ericafenyo.tracker.BuildConfig
 import com.ericafenyo.tracker.R
-import com.ericafenyo.tracker.database.Record
-import com.ericafenyo.tracker.database.RecordCache
+import com.ericafenyo.tracker.datastore.Record
+import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.SimpleLocation
 import com.ericafenyo.tracker.logger.Logger
 import com.ericafenyo.tracker.model.FeatureCollection
+import com.ericafenyo.tracker.model.LatLng
 import com.ericafenyo.tracker.model.LineString
 import com.ericafenyo.tracker.model.Point
 import com.ericafenyo.tracker.util.JSON
@@ -38,6 +41,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import model.ExplicitIntent
+import timber.log.Timber
 
 /**
  * This class contain methods for reading raw gps data and converting them into a GeoJson data.
@@ -135,9 +139,8 @@ class Analyser private constructor(private val context: Context) {
     }
   }
 
-  private suspend fun generateDocuments(): List<FeatureCollection> = withContext(computation) {
+  private suspend fun generateDocuments(): List<Any> = withContext(computation) {
     val segment = getLastRecord()
-
 
     // We need at least two records to build our starting and ending Point features
     try {
@@ -146,27 +149,35 @@ class Analyser private constructor(private val context: Context) {
         return@withContext emptyList()
       }
 
-      val features: MutableList<FeatureCollection> = mutableListOf()
-
-      // Create start feature point
-      val startFeature = getCoordinate(segment.first().data).run {
-        Point(coordinates = this).toFeature()
-      }
-
-      // Create destination feature point
-      val endFeature = getCoordinate(segment.last().data).run {
-        Point(coordinates = this).toFeature()
-      }
-
+      val featureCollection: MutableList<Any> = mutableListOf()
       // Create LineString feature for trip path
       val coordinates = segment.map { getCoordinate(it.data) }
+      val fivePointAccuracyCoordinates = coordinates.map { lnglat ->
+        val (lng, lat) = lnglat
+        LatLng(lat.toFixed(5), lng.toFixed(5))
+      }
+
+      val mapboxBaseUrl = "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static"
+      val geojsonSource = "/path-5+f44(${PolylineEncoding.encode(fivePointAccuracyCoordinates)})"
+      val path = "/auto/360x240@2x?access_token=${BuildConfig.MAPBOX_ACCESS_TOKEN}"
+      val staticMapUrl = "$mapboxBaseUrl$geojsonSource$path"
+
+      Timber.d("FivePointAccuracyCoordinates $fivePointAccuracyCoordinates")
+      Timber.d("FivePointAccuracyCoordinates $staticMapUrl")
+
+      // Create start feature point
+      val startFeature = coordinates.first().run { Point(coordinates = this).toFeature() }
+      val endFeature = coordinates.last().run { Point(coordinates = this).toFeature() }
+      val lineStringFeature = LineString(coordinates = coordinates).toFeature()
       val properties = generateProperties(segment)
-      val lineStringFeature = LineString(coordinates = coordinates).toFeature(properties)
-      FeatureCollection(
-        features = listOf(startFeature, endFeature, lineStringFeature),
-        metadata = properties
-      ).also { features.add(it) }
-      return@withContext features
+      val features = FeatureCollection(listOf(startFeature, endFeature, lineStringFeature))
+
+      val dataPack = LinkedHashMap<String, Any>()
+      dataPack["data"] = features
+      dataPack["metadata"] = properties
+      featureCollection.add(dataPack)
+      return@withContext featureCollection
+
     } catch (exception: Exception) {
       Logger.error(context, TAG, "An error occurred while trying to get last record: $exception")
       emptyList()
@@ -178,9 +189,9 @@ class Analyser private constructor(private val context: Context) {
     return listOf(location.longitude, location.latitude)
   }
 
-  private suspend fun saveDocuments(collections: List<FeatureCollection>) = withContext(io) {
+  private suspend fun saveDocuments(collections: List<Any>) = withContext(io) {
     try {
-      if (collections.isEmpty()){
+      if (collections.isEmpty()) {
         // Result(Exception(""))
       }
       RecordCache.getInstance(context).apply {
@@ -210,7 +221,7 @@ class Analyser private constructor(private val context: Context) {
     val timeDeltas = mutableListOf<Double>()
     var index = 0
     while (index < (times.size - 1)) {
-      timeDeltas.add(times[index + 1] - times[index]);
+      timeDeltas.add(times[index + 1] - times[index])
       index++
     }
 
@@ -223,16 +234,16 @@ class Analyser private constructor(private val context: Context) {
       speeds.add(distances[i] / timeDeltas[i])
     }
 
-// Duration
+    // Duration
     val startTs = locationFromRecord(records.first()).ts
     val endTs = locationFromRecord(records.last()).ts
     val duration = endTs - startTs
+    val averageSpeed = speeds.average()
 
-    properties["speed"] = (speeds.average() * 3.6)
+    properties["speed"] = averageSpeed.toFixed(2)
     properties["duration"] = duration
     properties["distance"] = (distances.sum() * 0.001)
-    properties["calories"] = 0
-
+    properties["calories"] = Metrics.getCalories(averageSpeed, duration)
     return properties
   }
 

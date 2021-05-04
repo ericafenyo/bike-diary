@@ -35,11 +35,11 @@
 
     <variable
         name="onTextChangedListener"
-        type="com.ericafenyo.habitdiary.OnTextChangedListener" />
+        type="com.ericafenyo.bikediary.OnTextChangedListener" />
     
     <variable
         name="model"
-        type="com.ericafenyo.habitdiary.ui.diary.EditAdventureViewModel" />
+        type="com.ericafenyo.bikediary.ui.diary.EditAdventureViewModel" />
   </data>
 
   <LinearLayout

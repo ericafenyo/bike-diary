@@ -27,8 +27,7 @@ package com.ericafenyo.tracker.model
 import java.util.*
 
 data class FeatureCollection(
-  val type: String = "FeatureCollection",
   val features: List<Feature>,
-  val id: String = UUID.randomUUID().toString().replace("-", ""),
-  val metadata: LinkedHashMap<String, Any> = LinkedHashMap(),
+  val type: String = "FeatureCollection",
+  val id: String = UUID.randomUUID().toString().replace("-", "")
 )

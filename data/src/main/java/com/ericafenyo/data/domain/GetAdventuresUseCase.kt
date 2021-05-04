@@ -24,24 +24,30 @@
 
 package com.ericafenyo.data.domain
 
+import android.util.Log
 import com.ericafenyo.data.Result
 import com.ericafenyo.data.model.Adventure
 import com.ericafenyo.data.repository.AdventureRepository
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 
 
- public class GetAdventuresUseCase @Inject constructor(
+class GetAdventuresUseCase @Inject constructor(
   private val repository: AdventureRepository,
   // val dispatchers: CoroutineDispatchers
 ) : FlowUseCaseWithoutParams<List<Adventure>>(Dispatchers.IO) {
   override fun execute(): Flow<Result<List<Adventure>>> = flow {
     try {
-      repository.getAdventures().map { adventures -> Result.Success(adventures) }
+      repository.getAdventures().collect { adventures ->
+        Log.d("TAG", "execute: $adventures")
+        emit(Result.Success(adventures))
+      }
     } catch (e: Exception) {
+      Log.e("Tag", "execute", e)
       emit(Result.Error(e))
     }
   }

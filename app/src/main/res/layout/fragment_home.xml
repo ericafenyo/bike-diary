@@ -33,7 +33,7 @@
 
     <variable
         name="achievement"
-        type="com.ericafenyo.habitdiary.model.Achievement" />
+        type="com.ericafenyo.bikediary.model.Achievement" />
   </data>
 
   <LinearLayout

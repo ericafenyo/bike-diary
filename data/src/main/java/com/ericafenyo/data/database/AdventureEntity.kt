@@ -29,7 +29,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "adventures")
 data class AdventureEntity(
-  @PrimaryKey val id: Int,
+  @PrimaryKey val id: String,
   val title: String,
   val speed: Double,
   val duration: Double,
@@ -37,5 +37,6 @@ data class AdventureEntity(
   val calories: Double,
   val date: String,
   val geojson: String,
+  val staticMap: String,
   //val images: List<String>
 )
