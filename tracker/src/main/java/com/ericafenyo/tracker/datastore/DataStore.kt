@@ -28,16 +28,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.ericafenyo.tracker.logger.LogDao
-import com.ericafenyo.tracker.logger.LogEntity
 
-@Database(entities = [Record::class, LogEntity::class], version = 1, exportSchema = false)
+@Database(entities = [Record::class], version = 1, exportSchema = false)
 internal abstract class DataStore : RoomDatabase() {
-  abstract fun logs(): LogDao
   abstract fun getRecords(): RecordDao
 
   companion object {
-    private const val DATABASE_NAME = "com.ericafenyo.tracker.DataStore"
+    private const val DATABASE_NAME = "com.ericafenyo.tracker.Cache"
 
     @Volatile
     private var INSTANCE: DataStore? = null

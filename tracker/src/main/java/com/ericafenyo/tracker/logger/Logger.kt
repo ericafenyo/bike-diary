@@ -25,15 +25,14 @@
 package com.ericafenyo.tracker.logger
 
 import android.content.Context
-import android.util.Log
-import com.ericafenyo.tracker.datastore.DataStore
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import java.io.PrintWriter
 import java.io.StringWriter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 object Logger {
-  private fun database(context: Context) = DataStore.getInstance(context).logs()
+  private fun database(context: Context) = LoggerDatabase.getInstance(context).logs()
   private val IOContext = Dispatchers.IO
 
   fun clear(context: Context) = runBlocking(IOContext) { database(context).clear() }
@@ -44,31 +43,30 @@ object Logger {
 
   fun debug(context: Context, tag: String, message: String) {
     log(context, "DEBUG", tag, message)
-    Log.d(tag, message)
+    Timber.tag(tag).d(message)
   }
 
   fun info(context: Context, tag: String, message: String) {
     log(context, "INFO", tag, message)
-    Log.i(tag, message)
+    Timber.tag(tag).i(message)
   }
 
   fun warn(context: Context, tag: String, message: String) {
     log(context, "WARN", tag, message)
-    Log.w(tag, message)
+    Timber.tag(tag).w(message)
   }
 
   fun error(context: Context, tag: String, message: String) {
     log(context, "ERROR", tag, message)
-    Log.e(tag, message)
+    Timber.tag(tag).e(message)
   }
 
   fun exception(context: Context, tag: String, exception: Exception) {
     try {
       val stringWriter = StringWriter()
       val printWriter = PrintWriter(stringWriter)
-      exception.printStackTrace(printWriter)
       error(context, tag, printWriter.toString())
-      Log.e(tag, printWriter.toString())
+      Timber.tag(tag).e(exception)
     } catch (e: Exception) {
       e.printStackTrace()
     }
