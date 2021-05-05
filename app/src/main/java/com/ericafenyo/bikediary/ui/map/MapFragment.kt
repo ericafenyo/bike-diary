@@ -22,38 +22,52 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary
+package com.ericafenyo.bikediary.ui.map
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.ericafenyo.bikediary.R
+import com.ericafenyo.bikediary.R.layout
 import com.ericafenyo.bikediary.databinding.FragmentMapBinding
-import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
 import com.wada811.databinding.dataBinding
+import dagger.hilt.android.AndroidEntryPoint
+import model.getExplicitIntent
 
 
-class MapFragment : Fragment(R.layout.fragment_map) {
+@AndroidEntryPoint
+class MapFragment : Fragment(layout.fragment_map) {
   private val binding: FragmentMapBinding by dataBinding()
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-  }
+  private val mapModel: MapViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    Mapbox.getInstance(requireContext(), BuildConfig.MAPBOX_ACCESS_TOKEN)
+
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.model = mapModel
+
     binding.mapView.onCreate(savedInstanceState)
     binding.mapView.getMapAsync { map -> setupMap(map) }
+
+    binding.trackingEvent = object : OnTrackingEvent {
+      override fun onClick(isOngoing: Boolean) {
+        if (isOngoing) {
+          requireActivity().sendBroadcast(requireActivity().getExplicitIntent(R.string.tracker_action_stop))
+        } else {
+          requireActivity().sendBroadcast(requireActivity().getExplicitIntent(R.string.tracker_action_start))
+        }
+      }
+    }
   }
 
   private fun setupMap(map: MapboxMap) {
-    map.setStyle(Style.OUTDOORS) { style ->
+    map.setStyle(Style.MAPBOX_STREETS) { style ->
       val nantesCoordinates = LatLng(47.2192144, -1.5942779)
       navigateCamera(map, nantesCoordinates)
     }

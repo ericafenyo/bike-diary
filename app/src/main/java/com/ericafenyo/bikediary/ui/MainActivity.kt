@@ -25,7 +25,6 @@
 package com.ericafenyo.bikediary.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -47,7 +46,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -73,8 +71,6 @@ class MainActivity : AppCompatActivity() {
       setupBottomNavigationBar()
     } // Else, need to wait for onRestoreInstanceState
 
-    setupFab(binding.fabMain)
-
     viewModel.theme.observe(this, Observer(::updateForTheme))
 
     // sendBroadcast(ExplicitIntent(this, string.tracker_action_end_analysis))
@@ -87,34 +83,6 @@ class MainActivity : AppCompatActivity() {
       //val fileName = service.getStaticMap(gj)
       //Timber.d("fileNamefileName $fileName")
     }
-  }
-
-  // Extend SpeedDialView
-  private fun setupFab(fabMain: SpeedDialView) {
-    val tripItem = SpeedDialActionItem.Builder(R.id.fab_item_trip, R.drawable.ic_bike)
-      .setLabel("Add trip")
-      .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.color_accent, theme))
-      .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.white, theme))
-      .create()
-
-    val weightItem = SpeedDialActionItem.Builder(R.id.fab_item_weight, R.drawable.ic_monitor_weight)
-      .setLabel("Add weight")
-      .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.color_accent, theme))
-      .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.white, theme))
-      .create()
-
-    val waterItem = SpeedDialActionItem.Builder(R.id.fab_item_drink, R.drawable.ic_local_drink)
-      .setLabel("Drink water map")
-      .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.color_accent, theme))
-      .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.white, theme))
-      .create()
-
-    fabMain.addAllActionItems(listOf(waterItem, weightItem, tripItem))
-    fabMain.setOnActionSelectedListener { actionItem -> handleFabItemClick(actionItem) }
-  }
-
-  private fun handleFabItemClick(item: SpeedDialActionItem?): Boolean {
-    return true
   }
 
   override fun onRestoreInstanceState(savedInstanceState: Bundle) {

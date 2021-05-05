@@ -25,6 +25,7 @@
 
   <color name="color_orange">#ff9800</color>
   <color name="color_green">#4caf50</color>
+  <color name="red">#D32F2F</color>
   <color name="color_violet">#9c27b0</color>
 
   <color name="white">#fff</color>

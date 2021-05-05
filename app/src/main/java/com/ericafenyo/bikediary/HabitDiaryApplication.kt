@@ -27,12 +27,12 @@ package com.ericafenyo.bikediary
 import android.app.Application
 import android.os.StrictMode
 import com.ericafenyo.bikediary.util.CrashlyticsTree
+import com.mapbox.mapboxsdk.Mapbox
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 @HiltAndroidApp
 class HabitDiaryApplication : Application() {
-
   override fun onCreate() {
     // Enable strict mode before Dagger creates graph
     if (BuildConfig.DEBUG) {
@@ -45,6 +45,9 @@ class HabitDiaryApplication : Application() {
     } else {
       Timber.plant(CrashlyticsTree())
     }
+
+    // setup mapbox sdk
+    Mapbox.getInstance(applicationContext, BuildConfig.MAPBOX_ACCESS_TOKEN)
   }
 
   private fun enableStrictMode() {

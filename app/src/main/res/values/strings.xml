@@ -49,5 +49,7 @@
   <string name="content_description_add_trip">Add trip</string>
   <string name="kilometers_remaining">Km left</string>
   <string name="action_upload_picture">Upload picture</string>
+  <string name="action_start_adventure">Start adventure</string>
+  <string name="action_stop_adventure">End adventure</string>
 
 </resources>

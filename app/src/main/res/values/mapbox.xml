@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
-  Copyright (C) 2020 Eric Afenyo
+  Copyright (C) 2021 Eric Afenyo
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +23,6 @@
   SOFTWARE.
   -->
 
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    app:startDestination="@id/mapFragment">
-
-  <fragment
-      android:id="@+id/mapFragment"
-      android:name="com.ericafenyo.bikediary.ui.map.MapFragment"
-      android:label="fragment_map"
-      tools:layout="@layout/fragment_map" />
-</navigation>
+<resources>
+  <string name="mapbox_access_token" translatable="false"> </string>
+</resources>

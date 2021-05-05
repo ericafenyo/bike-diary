@@ -27,7 +27,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField('String', 'MAPBOX_ACCESS_TOKEN', MAPBOX_ACCESS_TOKEN)
+        it.buildConfigField('String', 'MAPBOX_ACCESS_TOKEN', "\"$MAPBOX_ACCESS_TOKEN\"")
     }
 
     compileOptions {

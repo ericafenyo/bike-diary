@@ -22,31 +22,12 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.di
+package com.ericafenyo.bikediary.model
 
-import android.content.Context
-import com.ericafenyo.tracker.datastore.DataStoreModel
-import com.ericafenyo.tracker.datastore.PreferenceDataStore
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 
-@Module
-@InstallIn(SingletonComponent::class)
-object TrackerModule {
-
-  @Provides
-  @Singleton
-  fun provideTrackerDataSource(@ApplicationContext context: Context): DataStoreModel {
-    return DataStoreModel(context)
-  }
-
-  @Provides
-  @Singleton
-  fun providePreferenceDataStore(@ApplicationContext context: Context): PreferenceDataStore {
-    return PreferenceDataStore.getInstance(context)
-  }
-}
+data class TextedDrawable(
+  @StringRes val text: Int,
+  @DrawableRes val icon: Int,
+)

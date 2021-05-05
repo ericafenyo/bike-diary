@@ -22,31 +22,38 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.di
+package com.ericafenyo.bikediary.ui.map
 
-import android.content.Context
-import com.ericafenyo.tracker.datastore.DataStoreModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.tracker.R
 import com.ericafenyo.tracker.datastore.PreferenceDataStore
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
-@Module
-@InstallIn(SingletonComponent::class)
-object TrackerModule {
+@HiltViewModel
+class MapViewModel @Inject constructor(
+  private val dataStore: PreferenceDataStore
+) : ViewModel() {
+  private val _isTrackingOngoing = MutableLiveData<Boolean>()
+  val isTrackingOngoing: LiveData<Boolean> get() = _isTrackingOngoing
 
-  @Provides
-  @Singleton
-  fun provideTrackerDataSource(@ApplicationContext context: Context): DataStoreModel {
-    return DataStoreModel(context)
-  }
-
-  @Provides
-  @Singleton
-  fun providePreferenceDataStore(@ApplicationContext context: Context): PreferenceDataStore {
-    return PreferenceDataStore.getInstance(context)
+  init {
+    viewModelScope.launch {
+      val context = dataStore.context
+      dataStore.getString(
+        context.getString(R.string.tracker_current_state_key),
+        context.getString(R.string.tracker_state_start)
+      ).collect { currentState ->
+        Timber.d("PreferenceDataStore $currentState")
+        _isTrackingOngoing.value = currentState == context.getString(R.string.tracker_state_ongoing)
+      }
+    }
   }
 }

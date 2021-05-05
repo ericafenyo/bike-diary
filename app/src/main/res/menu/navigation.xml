@@ -35,13 +35,13 @@
   <item
       android:id="@+id/diary"
       android:contentDescription="@string/title_profile"
-      android:icon="@drawable/ic_nav_diary"
+      android:icon="@drawable/brightness_medium_24px"
       android:title="@string/title_diary" />
 
   <item
       android:id="@+id/map"
       android:contentDescription="@string/title_map"
-      android:icon="@drawable/ic_nav_map"
+      android:icon="@drawable/brightness_medium_24px"
       android:title="@string/title_map" />
 
   <item
