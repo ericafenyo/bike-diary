@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,33 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary
+package com.ericafenyo.tracker.logger
 
-import android.app.Application
-import android.os.StrictMode
-import com.ericafenyo.bikediary.util.CrashlyticsTree
-import com.jakewharton.threetenabp.AndroidThreeTen
-import com.mapbox.mapboxsdk.Mapbox
-import dagger.hilt.android.HiltAndroidApp
-import timber.log.Timber
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 
-@HiltAndroidApp
-class HabitDiaryApplication : Application() {
-  override fun onCreate() {
-    // Initialize the timezone information for
-    AndroidThreeTen.init(this);
-    // setup mapbox sdk
-    Mapbox.getInstance(applicationContext, BuildConfig.MAPBOX_ACCESS_TOKEN)
+@Database(entities = [LogEntity::class], version = 1, exportSchema = false)
+abstract class LoggerDatabase : RoomDatabase() {
+  abstract fun logs(): LogDao
 
-    // Enable strict mode before Dagger creates graph
-    if (BuildConfig.DEBUG) {
-      enableStrictMode()
+  companion object {
+    private const val DATABASE_NAME = "com.ericafenyo.tracker.Logger"
+
+    @Volatile
+    private var INSTANCE: LoggerDatabase? = null
+
+    @JvmStatic
+    fun getInstance(context: Context): LoggerDatabase {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: createDatabase(context)
+          .also { INSTANCE = it }
+      }
     }
 
-    super.onCreate()
-    if (BuildConfig.DEBUG) {
-      Timber.plant(Timber.DebugTree())
-    } else {
-      Timber.plant(CrashlyticsTree())
+    private fun createDatabase(context: Context): LoggerDatabase {
+      return Room.databaseBuilder(context, LoggerDatabase::class.java, DATABASE_NAME).build()
     }
-  }
-
-  private fun enableStrictMode() {
-    StrictMode.setThreadPolicy(
-      StrictMode.ThreadPolicy.Builder()
-        .detectDiskReads()
-        .detectDiskWrites()
-        .detectNetwork()
-        .penaltyLog()
-        .build()
-    )
   }
 }

@@ -90,5 +90,7 @@ dependencies {
 
     implementation libs.materialratingbar
 
+    implementation libs.threetenabp
+
     // debugImplementation libs.leakCanary
 }
