@@ -24,24 +24,28 @@
 
 package com.ericafenyo.tracker.datastore
 
+import kotlinx.coroutines.flow.Flow
+
+
 /**
- * Contains variety of query methods that maps keys to values.
+ * Abstract object with variety of query methods.
+ * This is used to
+ *
+ * @param T the type of data to be passed to the declared methods
  *
  * @author Eric
  * @since 1.0
  *
+ * @see [RecordCache]
+ *
  * created on 2021-01-30
  */
 interface Cache<T : Any> {
-  fun putSensorData(key: String, value: Any)
-  fun getSensorData(keys: List<String>): List<T>
-
-  fun putMessage(key: String, value: Any)
-
-  fun putDocuments(key: String, values: List<Any>)
-  fun getDocuments(keys: List<String>): List<T>
-  fun getDocument(keys: List<String>): T?
-
+  suspend fun put(value: T)
+  suspend fun putMany(values: List<T>)
+  suspend fun getAll(): List<T>
+  suspend fun streams(): Flow<List<T>>
+  suspend fun single(): Flow<T>
+  suspend fun getLatest(): T
   fun clear()
-  fun clear(keys: List<String>)
 }

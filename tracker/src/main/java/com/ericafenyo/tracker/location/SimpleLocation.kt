@@ -25,7 +25,9 @@
 package com.ericafenyo.tracker.location
 
 import android.location.Location
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SimpleLocation(
   val latitude: Double,
   val longitude: Double,
@@ -45,6 +47,11 @@ data class SimpleLocation(
     Location.distanceBetween(latitude, longitude, dest.latitude, dest.longitude, results)
     return results[0]
   }
+
+  /**
+   * Returns a list containing the Location's [longitude] and [latitude]
+   */
+  fun getCoordinate(): List<Double> = listOf(longitude, latitude)
 }
 
 fun Location.simplify() = SimpleLocation(

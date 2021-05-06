@@ -40,23 +40,23 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecordDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insert(record: Record)
+  suspend fun insert(record: Record)
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun bulkInsert(recodes: List<Record>)
+  suspend fun bulkInsert(recodes: List<Record>)
 
-  @Query("SELECT * FROM store WHERE `key` IN (:keys) ORDER BY id ASC")
-  fun read(keys: List<String>): List<Record>
+  @Query("SELECT * FROM records ORDER BY id ASC")
+  suspend fun getAll(): List<Record>
 
-  @Query("SELECT * FROM store WHERE `key` IN (:keys) ORDER BY id DESC Limit 1")
-  fun getLatestRecord(keys: List<String>): Record
+  @Query("SELECT * FROM records ORDER BY id ASC")
+  fun streams(): Flow<List<Record>>
 
-  @Query("SELECT * FROM store WHERE `key` IN (:keys) ORDER BY id ASC")
-  fun observeRecords(keys: List<String>): Flow<List<Record>>
+  @Query("SELECT * FROM records ORDER BY id DESC Limit 1")
+  suspend fun getLatest(): Record
 
-  @Query("DELETE FROM store")
+  @Query("SELECT * FROM records ORDER BY id DESC Limit 1")
+  fun single(): Flow<Record>
+
+  @Query("DELETE FROM records")
   fun clear()
-
-  @Query("DELETE FROM store WHERE `key` IN (:keys)")
-  fun clear(keys: List<String>)
 }
