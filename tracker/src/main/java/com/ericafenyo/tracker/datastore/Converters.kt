@@ -24,37 +24,16 @@
 
 package com.ericafenyo.tracker.datastore
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
 import com.ericafenyo.tracker.location.SimpleLocation
-import java.util.TimeZone
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-/**
- * A Record is a room database [Entity] containing location data with additional metadata.
- *
- * @property id an auto generated int for identifying a specific Record
- * @property ts the time in seconds at which the Record object was written to the database
- * @property timezone the devices current timezone code. Example Europe/Paris
- * @property location a [SimpleLocation] object
- *
- * @author Eric
- * @since 1.0
- *
- * created on 2021-01-30
- */
-@Entity(tableName = "records")
-data class Record(
-  @PrimaryKey(autoGenerate = true)
-  val id: Int = 0,
-  val ts: Double,
-  val timezone: String,
-  val location: SimpleLocation
-) {
-  companion object {
-    fun fromSimpleLocation(location: SimpleLocation): Record = Record(
-      ts = (System.currentTimeMillis() / 1000).toDouble(),
-      timezone = TimeZone.getDefault().id,
-      location = location
-    )
-  }
+class Converters {
+  @TypeConverter
+  fun fromSimpleLocation(value: SimpleLocation): String = Json.encodeToString(value)
+
+  @TypeConverter
+  fun toSimpleLocation(value: String): SimpleLocation = Json.decodeFromString(value)
 }

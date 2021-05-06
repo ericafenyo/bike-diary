@@ -25,13 +25,7 @@
 package com.ericafenyo.tracker.datastore
 
 import android.content.Context
-import android.util.Log
-import androidx.annotation.WorkerThread
-import com.ericafenyo.tracker.logger.Logger
-import com.google.gson.Gson
-import java.util.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.Flow
 
 /**
  * An implementation of the [Cache] interface providing methods for performing
@@ -42,75 +36,41 @@ import kotlinx.coroutines.runBlocking
  *
  * created on 2021-01-25
  */
-internal class RecordCache private constructor(private val context: Context) : Cache<Record> {
+internal class RecordCache private constructor(context: Context) : Cache<Record> {
   private val records = DataStore.getInstance(context).getRecords()
 
-  override fun putSensorData(key: String, value: Any) {
-    createRecord(SENSOR_DATA_TYPE, key, value).also { records.insert(it) }
-  }
+  override suspend fun put(value: Record) = records.insert(value)
 
-  override fun getSensorData(keys: List<String>): List<Record> {
-    return runBlocking(Dispatchers.IO) {
-      records.read(keys)
-    }
-  }
+  override suspend fun putMany(values: List<Record>) = records.bulkInsert(values)
 
-  override fun putMessage(key: String, value: Any) {
-    createRecord(MESSAGE_TYPE, key, value).also { records.insert(it) }
-  }
+  override suspend fun getAll(): List<Record> = records.getAll()
 
-  override fun putDocuments(key: String, values: List<Any>) {
-    Logger.debug(context, TAG, "Adding document with key: $key")
-    val recodeList = values.map { value -> createRecord(DOCUMENT_TYPE, key, value) }
-    Log.d(TAG, "putDocuments: $recodeList")
-    records.bulkInsert(recodeList)
-  }
+  override suspend fun getLatest(): Record = records.getLatest()
 
-  override fun getDocuments(keys: List<String>): List<Record> {
-    return records.read(keys)
-  }
+  override suspend fun streams(): Flow<List<Record>> = records.streams()
 
-  override fun getDocument(keys: List<String>): Record {
-    return records.getLatestRecord(keys)
-  }
+  override suspend fun single(): Flow<Record> = records.single()
 
-  override fun clear() {
-    records.clear()
-  }
-
-  override fun clear(keys: List<String>) {
-    records.clear(keys)
-  }
-
-  @WorkerThread
-  private fun createRecord(type: String, key: String, data: Any) = Record(
-    ts = (System.currentTimeMillis() / 1000).toDouble(),
-    timezone = TimeZone.getDefault().id,
-    type = type,
-    key = key,
-    data = Gson().toJson(data)
-  )
+  override fun clear() = records.clear()
 
   companion object {
-    private const val TAG = "RecordCache"
-
-    private const val SENSOR_DATA_TYPE = "sensor-data"
-    private const val MESSAGE_TYPE = "message"
-    private const val DOCUMENT_TYPE = "document"
-
-    const val KEY_LOCATION = "background/location"
-    const val KEY_TRIP_STARTED = "action/start"
-    const val KEY_TRIP_STOPPED = "action/stop"
-    const val KEY_COLLECTION = "cache/trip"
-
     @Volatile
-    private var INSTANCE: RecordCache? = null
+    private var INSTANCE: Cache<Record>? = null
+
+    /**
+     * Use this to replace the current [RecordCache] with a custom implementation
+     * with
+     *
+     * @param cache a custom [Cache] implementation
+     */
+    fun swap(cache: Cache<Record>?) {
+      INSTANCE = cache
+    }
 
     @JvmStatic
     fun getInstance(context: Context): Cache<Record> {
       return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: RecordCache(context)
-          .also { INSTANCE = it }
+        INSTANCE ?: RecordCache(context).also { INSTANCE = it }
       }
     }
   }
