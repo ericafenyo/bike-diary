@@ -24,7 +24,7 @@
 
 package com.ericafenyo.data.repository
 
-import com.ericafenyo.data.model.Adventure
+import com.ericafenyo.tracker.data.Adventure
 import kotlinx.coroutines.flow.Flow
 
 interface AdventureRepository {

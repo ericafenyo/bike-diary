@@ -26,8 +26,7 @@ package com.ericafenyo.data.api
 
 import com.ericafenyo.data.BuildConfig
 import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
-import com.ericafenyo.data.model.Adventure
-import java.io.File
+import com.ericafenyo.tracker.data.Adventure
 
 
 interface BikeDiaryService {

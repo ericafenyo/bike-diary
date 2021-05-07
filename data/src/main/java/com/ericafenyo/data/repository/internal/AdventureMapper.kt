@@ -26,7 +26,7 @@ package com.ericafenyo.data.repository.internal
 
 import com.ericafenyo.data.api.internal.response.GetAdventuresResponse
 import com.ericafenyo.data.database.AdventureEntity
-import com.ericafenyo.data.model.Adventure
+import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.data.repository.Mapper
 import javax.inject.Inject
 import javax.inject.Singleton

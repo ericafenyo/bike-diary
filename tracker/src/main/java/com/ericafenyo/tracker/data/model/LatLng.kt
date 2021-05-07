@@ -22,31 +22,19 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.domain
+package com.ericafenyo.tracker.data.model
 
-import android.util.Log
-import com.ericafenyo.tracker.data.Adventure
-import com.ericafenyo.data.repository.AdventureRepository
-import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.Serializable
 
 
-class GetAdventuresUseCase @Inject constructor(
-  private val repository: AdventureRepository,
-  // val dispatchers: CoroutineDispatchers
-) : FlowUseCaseWithoutParams<List<Adventure>>(Dispatchers.IO) {
-  override fun execute(): Flow<Result<List<Adventure>>> = flow {
-    try {
-      repository.getAdventures().collect { adventures ->
-        Log.d("TAG", "execute: $adventures")
-        emit(Result.Success(adventures))
-      }
-    } catch (e: Exception) {
-      Log.e("Tag", "execute", e)
-      emit(Result.Error(e))
-    }
-  }
-}
+/**
+ * A place on Earth, represented by a latitude/longitude pair.
+ *
+ * @property lat The latitude of this location
+ * @property lng The longitude of this location.
+ */
+@Serializable
+data class LatLng(
+  val lat: Double,
+  val lng: Double
+)

@@ -27,7 +27,7 @@ package com.ericafenyo.data.repository.internal
 import android.util.Log
 import com.ericafenyo.data.api.BikeDiaryService
 import com.ericafenyo.data.database.AdventureEntity
-import com.ericafenyo.data.model.Adventure
+import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.data.repository.AdventureRepository
 import com.ericafenyo.tracker.datastore.DataStoreModel
 import com.ericafenyo.tracker.util.JSON
