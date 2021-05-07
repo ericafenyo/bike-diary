@@ -34,7 +34,7 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.ericafenyo.data.BuildConfig
 import com.ericafenyo.data.api.BikeDiaryService
 import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
-import com.ericafenyo.data.model.Adventure
+import com.ericafenyo.tracker.data.Adventure
 import java.io.File
 import java.util.*
 import okhttp3.OkHttpClient

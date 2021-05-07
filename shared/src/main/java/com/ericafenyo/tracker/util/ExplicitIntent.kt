@@ -22,31 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.domain
+package com.ericafenyo.tracker.util
 
-import android.util.Log
-import com.ericafenyo.tracker.data.Adventure
-import com.ericafenyo.data.repository.AdventureRepository
-import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
+import android.content.Context
+import android.content.Intent
+import androidx.annotation.StringRes
 
-
-class GetAdventuresUseCase @Inject constructor(
-  private val repository: AdventureRepository,
-  // val dispatchers: CoroutineDispatchers
-) : FlowUseCaseWithoutParams<List<Adventure>>(Dispatchers.IO) {
-  override fun execute(): Flow<Result<List<Adventure>>> = flow {
-    try {
-      repository.getAdventures().collect { adventures ->
-        Log.d("TAG", "execute: $adventures")
-        emit(Result.Success(adventures))
-      }
-    } catch (e: Exception) {
-      Log.e("Tag", "execute", e)
-      emit(Result.Error(e))
-    }
+/**
+ * Create an explicit intent that sets the package name correctly and converts it to an implicit intent.
+ */
+class ExplicitIntent(
+  context: Context, @StringRes actionId: Int
+) : Intent(context.getString(actionId)) {
+  init {
+    setPackage(context.packageName)
   }
 }
+
+fun Context.getExplicitIntent(@StringRes actionId: Int) = ExplicitIntent(this, actionId)

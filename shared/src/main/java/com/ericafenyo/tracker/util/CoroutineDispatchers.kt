@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ericafenyo.util
+package com.ericafenyo.tracker.util
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.Default

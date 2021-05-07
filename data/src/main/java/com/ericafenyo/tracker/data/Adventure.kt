@@ -22,8 +22,19 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.model
+package com.ericafenyo.tracker.data
 
-interface Geometry {
-  val type: String
+data class Adventure(
+  val id: String,
+  val title: String,
+  val speed: Double,
+  val duration: Double,
+  val distance: Double,
+  val calories: Int,
+  val startedAt: String,
+  val completedAt: String,
+  val geojson: String,
+  val imageUrl: String,
+) {
+  fun isPushed() = !id.contains("Unprocessed")
 }

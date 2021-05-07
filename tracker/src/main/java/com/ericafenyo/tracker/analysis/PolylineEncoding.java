@@ -13,7 +13,7 @@ package com.ericafenyo.tracker.analysis;/*
  * permissions and limitations under the License.
  */
 
-import com.ericafenyo.tracker.model.LatLng;
+import com.ericafenyo.tracker.data.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;

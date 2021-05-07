@@ -22,16 +22,19 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.model
+package com.ericafenyo.tracker.data
 
-data class Adventure(
-  val id: String,
-  val title: String,
+import kotlinx.serialization.Serializable
+
+/**
+ * Metrics contains information about an [Adventure]
+ */
+@Serializable
+data class Metrics(
   val speed: Double,
   val duration: Double,
   val distance: Double,
-  val calories: Double,
-  val date: String,
-  val geojson: String,
-  val images: List<String>,
+  val calories: Int,
+  val startedAt: String,
+  val completedAt: String,
 )

@@ -28,10 +28,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ericafenyo.data.Result
 import com.ericafenyo.data.data
 import com.ericafenyo.data.domain.GetAdventuresUseCase
-import com.ericafenyo.data.model.Adventure
+import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.bikediary.model.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
