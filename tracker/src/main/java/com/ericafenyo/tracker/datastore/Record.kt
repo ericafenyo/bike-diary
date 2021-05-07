@@ -28,6 +28,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ericafenyo.tracker.location.SimpleLocation
 import java.util.TimeZone
+import org.threeten.bp.LocalDateTime
 
 /**
  * A Record is a room database [Entity] containing location data with additional metadata.
@@ -47,12 +48,14 @@ data class Record(
   @PrimaryKey(autoGenerate = true)
   val id: Int = 0,
   val ts: Double,
+  val fmt: String,
   val timezone: String,
   val location: SimpleLocation
 ) {
   companion object {
     fun fromSimpleLocation(location: SimpleLocation): Record = Record(
       ts = (System.currentTimeMillis() / 1000).toDouble(),
+      fmt = LocalDateTime.now().toString(),
       timezone = TimeZone.getDefault().id,
       location = location
     )

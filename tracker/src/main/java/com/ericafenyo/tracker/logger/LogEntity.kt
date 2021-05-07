@@ -31,7 +31,7 @@ import org.threeten.bp.LocalDateTime
 @Entity(tableName = "logs")
 data class LogEntity(
   @PrimaryKey(autoGenerate = true) val id: Int = 0,
-  val fts: String = LocalDateTime.now().toString(),
+  val fmt: String = LocalDateTime.now().toString(),
   val ts: Double = (System.currentTimeMillis() / 1000).toDouble(),
   val level: String,
   val message: String
