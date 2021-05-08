@@ -33,7 +33,7 @@ class AnalysisJobIntentService : JobIntentService() {
 
   override fun onHandleWork(intent: Intent) {
     Logger.debug(applicationContext, TAG, "onHandleWork(intent: $intent)")
-    Analyser.getInstance(applicationContext).startAnalysis()
+    Analyser(applicationContext).startAnalysis()
   }
 
   override fun onDestroy() {
@@ -42,7 +42,7 @@ class AnalysisJobIntentService : JobIntentService() {
   }
 
   companion object {
-   private const val TAG = "AnalysisJobIntentService"
+    private const val TAG = "AnalysisJobIntentService"
 
     /**
      * Unique job ID for this service.

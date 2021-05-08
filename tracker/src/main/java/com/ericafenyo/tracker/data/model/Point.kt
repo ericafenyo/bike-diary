@@ -22,14 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.model
+package com.ericafenyo.tracker.data.model
 
-import java.util.UUID
-import kotlin.collections.LinkedHashMap
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
-data class Feature(
-  val type: String = "Feature",
-  val geometry: Geometry,
-  val properties: LinkedHashMap<String, Any> = LinkedHashMap(),
-  val id: String = UUID.randomUUID().toString().replace("-", ""),
-)
+@Serializable
+data class Point(
+  val coordinates: List<Double>,
+  override val type: String = "Point",
+) : Geometry {
+
+  fun toFeature(properties: JsonObject = JsonObject(mapOf())): Feature {
+    return Feature(geometry = this, properties = properties)
+  }
+}

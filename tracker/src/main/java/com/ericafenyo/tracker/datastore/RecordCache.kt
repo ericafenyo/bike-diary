@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.Flow
  *
  * created on 2021-01-25
  */
-internal class RecordCache private constructor(context: Context) : Cache<Record> {
+internal class RecordCache constructor(context: Context) : Cache<Record> {
   private val records = DataStore.getInstance(context).getRecords()
 
   override suspend fun put(value: Record) = records.insert(value)

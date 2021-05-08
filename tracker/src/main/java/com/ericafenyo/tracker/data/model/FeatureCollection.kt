@@ -22,12 +22,23 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.model
+package com.ericafenyo.tracker.data.model
 
-import java.util.*
+import com.ericafenyo.tracker.util.Identity
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
+@Serializable
 data class FeatureCollection(
   val features: List<Feature>,
   val type: String = "FeatureCollection",
-  val id: String = UUID.randomUUID().toString().replace("-", "")
-)
+  val id: String = Identity.generateObjectId()
+) {
+  /**
+   * Serializes the [FeatureCollection] object to a json string
+   *
+   * @return a json string
+   */
+  fun toJson(): String = Json.encodeToString(this)
+}

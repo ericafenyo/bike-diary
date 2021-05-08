@@ -22,13 +22,16 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.model
+package com.ericafenyo.tracker.data.model
 
-data class LineString(
-  override val type: String = "LineString",
-  val coordinates: List<List<Double>>
-) : Geometry {
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
-  }
-}
+import com.ericafenyo.tracker.util.Identity
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
+
+@Serializable
+data class Feature(
+  val geometry: Geometry,
+  val type: String = "Feature",
+  val properties: JsonObject = JsonObject(mapOf()),
+  val id: String = Identity.generateObjectId()
+)

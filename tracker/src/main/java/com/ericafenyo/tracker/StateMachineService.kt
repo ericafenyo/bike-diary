@@ -31,11 +31,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.IBinder
 import android.provider.Settings
-import android.util.Log
 import androidx.core.app.NotificationCompat.Action
 import com.ericafenyo.tracker.analysis.AnalysisJobIntentService
 import com.ericafenyo.tracker.datastore.PreferenceDataStore
-import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.logger.Logger
 import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID
@@ -43,10 +41,10 @@ import com.ericafenyo.tracker.util.Notifications
 import com.ericafenyo.tracker.util.Notifications.Config
 import com.ericafenyo.tracker.util.ONGOING_NOTIFICATION_ID
 import com.ericafenyo.tracker.util.PermissionsManager
-import com.google.gson.JsonObject
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 
 class StateMachineService : Service(), CoroutineScope {
   private val tag = "StateMachineService"
@@ -126,16 +124,6 @@ class StateMachineService : Service(), CoroutineScope {
     if (currentState == getString(R.string.tracker_state_ready)) {
       // Start the location-updates request
       LocationUpdatesAction(this).start()?.addOnSuccessListener { request ->
-        // On success, add trip start message
-
-        runBlocking(Dispatchers.IO) {
-          val actionObject = JsonObject()
-          actionObject.addProperty("action", "Trip start")
-          RecordCache.getInstance(this@StateMachineService).putMessage(
-            RecordCache.KEY_TRIP_STARTED, actionObject
-          )
-        }
-
         //Change the current state to ongoing
         // We should now get location updates at a particular interval
         setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
@@ -191,14 +179,6 @@ class StateMachineService : Service(), CoroutineScope {
     Logger.debug(this, tag, "handleStop(currentState: $currentState, action: $action)")
     // Stop the location-updates request
     LocationUpdatesAction(this).stop()?.addOnSuccessListener {
-      // On success, add trip stopped message
-      runBlocking(Dispatchers.IO) {
-        val actionObject = JsonObject()
-        actionObject.addProperty("action", "Trip stop")
-        RecordCache.getInstance(this@StateMachineService).putMessage(
-          RecordCache.KEY_TRIP_STOPPED, actionObject
-        )
-      }
       // If the request is successful, change the current state to ongoing
       // We should now get location updates at a particular interval
       setNewState(this, currentState, getString(R.string.tracker_state_ready))
@@ -208,7 +188,6 @@ class StateMachineService : Service(), CoroutineScope {
       // Start the trip analysis process
       AnalysisJobIntentService.enqueueWork(this, Intent(this, AnalysisJobIntentService::class.java))
     }?.addOnFailureListener {
-      Log.e(tag, "Error", it)
       Logger.error(this, tag, "Stop Location updates request unsuccessful: $it")
     }
   }
