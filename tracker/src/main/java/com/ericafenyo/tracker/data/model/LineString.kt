@@ -22,18 +22,15 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.model
+package com.ericafenyo.tracker.data.model
 
-data class Point(
-  override val type: String = "Point",
-  val coordinates: List<Double>,
+import kotlinx.serialization.json.JsonObject
+
+data class LineString(
+  val coordinates: List<List<Double>>,
+  override val type: String = "LineString",
 ) : Geometry {
-
-  fun toFeature(properties: LinkedHashMap<String, Any> = LinkedHashMap()): Feature {
-    return Feature(properties = properties, geometry = this)
-  }
-
-  companion object {
-    fun fromCoordinates(coordinates: List<Double>) = Point(coordinates = coordinates)
+  fun toFeature(properties: JsonObject = JsonObject(mapOf())): Feature {
+    return Feature(geometry = this, properties = properties)
   }
 }

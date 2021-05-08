@@ -37,11 +37,11 @@ import android.content.Context
 class DataStoreModel(context: Context) {
   private val records = RecordCache.getInstance(context)
 
-  fun getRecords(): List<Record> {
-    return records.getDocuments(listOf(RecordCache.KEY_COLLECTION))
+  suspend fun getRecords(): List<Record> {
+    return records.getAll()
   }
 
-  fun getRecord(): Record? {
-    return records.getDocument(listOf(RecordCache.KEY_COLLECTION))
+  suspend fun getRecord(): Record? {
+    return records.getLatest()
   }
 }

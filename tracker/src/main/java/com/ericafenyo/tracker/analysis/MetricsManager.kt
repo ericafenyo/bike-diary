@@ -29,7 +29,7 @@ import kotlin.math.roundToInt
 /**
  * Contains variety of methods for metric conversions.
  */
-object Metrics {
+object MetricsManager {
   /**
    * Returns the number of calories burnt per minute during a cycling activity.
    *

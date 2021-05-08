@@ -27,12 +27,13 @@ package com.ericafenyo.tracker.location
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import com.ericafenyo.tracker.datastore.Record
 import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.logger.Logger
 import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 /**
  * Receiver for broadcasts sent by {@link LocationUpdatesAction}.
@@ -43,12 +44,12 @@ class LocationUpdatesReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
     Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
     val result = LocationResult.extractResult(intent)
-    Log.d(tag, "Location updates: ${LocationResult.extractResult(intent)}")
+    Timber.d("Location updates: ${LocationResult.extractResult(intent)}")
     if (result != null) {
       val location = result.lastLocation.simplify()
       runBlocking(Dispatchers.IO) {
-        RecordCache.getInstance(context).putSensorData(
-          RecordCache.KEY_LOCATION, location
+        RecordCache.getInstance(context).put(
+          Record.fromSimpleLocation(location)
         )
       }
     }
