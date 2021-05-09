@@ -32,11 +32,11 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.ericafenyo.data.BuildConfig
-import com.ericafenyo.data.api.BikeDiaryService
 import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
 import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.tracker.data.api.BikeDiaryService
 import java.io.File
-import java.util.*
+import java.util.UUID
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.BufferedSink
@@ -72,11 +72,12 @@ class BikeDiaryServiceImpl(
       title = result.title(),
       speed = result.speed(),
       duration = result.duration(),
-      calories = result.calories(),
-      date = result.date(),
+      distance = result.distance(),
+      calories = result.calories().toInt(),
+      startedAt = result.startedAt(),
+      completedAt = result.completedAt(),
       geojson = result.geojson(),
-      images = result.images(),
-      distance = 0.0
+      imageUrl = result.imageUrl(),
     )
   }
 
