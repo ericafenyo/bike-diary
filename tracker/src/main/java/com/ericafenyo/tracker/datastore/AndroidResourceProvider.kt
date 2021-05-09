@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Transway
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,46 +22,14 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.util
+package com.ericafenyo.tracker.datastore
 
 import android.content.Context
-import com.google.gson.GsonBuilder
-import java.io.IOException
-import java.lang.reflect.Type
-import java.nio.charset.Charset
-import kotlin.reflect.KClass
+import androidx.annotation.StringRes
 
-object JSON {
-  private val gson = GsonBuilder().create()
+class AndroidResourceProvider(val context: Context) {
 
-  fun stringify(entity: Any): String {
-    return gson.toJson(entity)
-  }
-
-  // User for debug only
-  fun prettify(entity: Any): String {
-    return gson.newBuilder().setPrettyPrinting().create().toJson(entity)
-  }
-
-  fun <T : Any> parse(jsonString: String, clazz: KClass<T>): T {
-    return gson.fromJson(jsonString, clazz.java)
-  }
-
-  fun <T : Any> parse(jsonString: String, type: Type): T {
-    return gson.fromJson(jsonString, type)
-  }
-
-  fun fromAsset(context: Context, filename: String): String {
-    return try {
-      val inputStream = context.assets.open(filename)
-      val size: Int = inputStream.available()
-      val buffer = ByteArray(size)
-      inputStream.read(buffer)
-      inputStream.close()
-      String(buffer, Charset.forName("UTF-8"))
-    } catch (exception: IOException) {
-      exception.printStackTrace()
-      ""
-    }
+  fun getString(@StringRes resId: Int): String {
+    return context.getString(resId)
   }
 }

@@ -45,13 +45,22 @@ class LocationUpdatesReceiver : BroadcastReceiver() {
     Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
     val result = LocationResult.extractResult(intent)
     Timber.d("Location updates: ${LocationResult.extractResult(intent)}")
-    if (result != null) {
-      val location = result.lastLocation.simplify()
-      runBlocking(Dispatchers.IO) {
-        RecordCache.getInstance(context).put(
-          Record.fromSimpleLocation(location)
-        )
-      }
+    val locations = if (LocationResult.hasResult(intent)) {
+      LocationResult.extractResult(intent).locations
+    } else {
+      null
+    }
+
+    // Skip if locations is null
+    if (locations == null) return
+    Timber.d("This is the location size ${locations.size}")
+    //Timber.d("This is the avaibility ${LocationAvailability.hasLocationAvailability(intent)}")
+
+    val location = locations.first().simplify()
+    runBlocking(Dispatchers.IO) {
+      RecordCache.getInstance(context).put(
+        Record.fromSimpleLocation(location)
+      )
     }
   }
 }

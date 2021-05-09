@@ -22,21 +22,13 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.api
+package com.ericafenyo.tracker
 
-import com.ericafenyo.data.BuildConfig
-import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
-import com.ericafenyo.tracker.data.Adventure
+object Constants {
+  const val TRACKER_STATE_START = "tracker.state.start"
+  const val TRACKER_STATE_READY = "tracker.state.ready"
+  const val TRACKER_STATE_ONGOING = "tracker.state.ongoing"
+  const val TRACKER_STATE_DISABLED = "tracker.state.disabled"
 
-
-interface BikeDiaryService {
-  suspend fun getAdventures(): List<Adventure>
-
-  suspend fun saveAdventures(): SaveAdventureResponse
-
-  suspend fun getStaticMap(geojson: String): String
-
-  companion object {
-    const val ENDPOINT: String = "${BuildConfig.BIKE_DIARY_SERVER_URL}/graphql"
-  }
+  const val tracker_current_state_key = "com.ericafenyo.tracker.CURRENT_STATE"
 }

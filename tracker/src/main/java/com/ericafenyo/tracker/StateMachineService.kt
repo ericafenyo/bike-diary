@@ -44,7 +44,6 @@ import com.ericafenyo.tracker.util.PermissionsManager
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import timber.log.Timber
 
 class StateMachineService : Service(), CoroutineScope {
   private val tag = "StateMachineService"
@@ -119,24 +118,27 @@ class StateMachineService : Service(), CoroutineScope {
     // Exit quickly if tracking is disabled
     exitOnTrackingDisabled(currentState)
 
-
     // Only start tracking if the state machine is ready.
-    if (currentState == getString(R.string.tracker_state_ready)) {
+    if (currentState == getString(R.string.tracker_state_ready)
+      || currentState == getString(R.string.tracker_state_start)
+    ) {
       // Start the location-updates request
-      LocationUpdatesAction(this).start()?.addOnSuccessListener { request ->
-        //Change the current state to ongoing
-        // We should now get location updates at a particular interval
-        setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
+      LocationUpdatesAction(this).start()?.addOnCompleteListener { task ->
 
-        val notificationConfig = Config(
-          notificationId = ONGOING_NOTIFICATION_ID,
-          message = getString(R.string.tracking_notification_content_text),
-          title = getString(R.string.tracking_notification_title_text),
-          icon = R.drawable.ic_bike,
-          cancellable = false
-        )
+        if (task.isSuccessful) {
+          //Change the current state to ongoing
+          // We should now get location updates at a particular interval
+          setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
+          val notificationConfig = Config(
+            notificationId = ONGOING_NOTIFICATION_ID,
+            message = getString(R.string.tracking_notification_content_text),
+            title = getString(R.string.tracking_notification_title_text),
+            icon = R.drawable.ic_bike,
+            cancellable = false
+          )
 
-        Notifications.create(this, notificationConfig)
+          Notifications.create(this, notificationConfig)
+        }
       }?.addOnFailureListener {
         Logger.error(this, tag, "Start location request unsuccessful: $it")
         if (!PermissionsManager.isForegroundLocationPermissionGranted(this)) {

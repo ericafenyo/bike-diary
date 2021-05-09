@@ -26,14 +26,16 @@ package com.ericafenyo.tracker.datastore
 
 import androidx.room.TypeConverter
 import com.ericafenyo.tracker.location.SimpleLocation
+import com.ericafenyo.tracker.util.JsonSerializerManager
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class Converters {
-  @TypeConverter
-  fun fromSimpleLocation(value: SimpleLocation): String = Json.encodeToString(value)
+  private val json = JsonSerializerManager.serializer()
 
   @TypeConverter
-  fun toSimpleLocation(value: String): SimpleLocation = Json.decodeFromString(value)
+  fun fromSimpleLocation(value: SimpleLocation): String = json.encodeToString(value)
+
+  @TypeConverter
+  fun toSimpleLocation(value: String): SimpleLocation = json.decodeFromString(value)
 }

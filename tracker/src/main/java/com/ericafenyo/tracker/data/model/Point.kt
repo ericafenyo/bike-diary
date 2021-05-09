@@ -24,14 +24,16 @@
 
 package com.ericafenyo.tracker.data.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
 @Serializable
+@SerialName("Point")
 data class Point(
   val coordinates: List<Double>,
   override val type: String = "Point",
-) : Geometry {
+) : Geometry() {
 
   fun toFeature(properties: JsonObject = JsonObject(mapOf())): Feature {
     return Feature(geometry = this, properties = properties)

@@ -31,7 +31,7 @@ import androidx.datastore.preferences.createDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PreferenceDataStore private constructor(val context: Context) {
+class PreferenceDataStore private constructor(context: Context) {
   private val dataStore = context.createDataStore(name = "tracker_data_store")
 
   suspend fun putString(key: String, value: String) {

@@ -28,9 +28,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.ericafenyo.tracker.logger.Logger
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 
@@ -39,11 +37,6 @@ import com.google.android.gms.tasks.Task
  */
 class LocationUpdatesAction(private val context: Context) {
   private val tag = "LocationUpdatesAction"
-  private var locationCallback = object : LocationCallback() {
-    override fun onLocationResult(locationResult: LocationResult?) {
-      Logger.debug(context, tag, "locationResult: $locationResult")
-    }
-  }
 
   fun start(): Task<Void>? {
     return try {
@@ -60,7 +53,7 @@ class LocationUpdatesAction(private val context: Context) {
   }
 
   private val locationRequest: LocationRequest = LocationRequest.create()
-    .setInterval(TEN_SECONDS)
+    .setInterval(FIVE_SECONDS)
     .setSmallestDisplacement(10F) // In meters
     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 
@@ -75,7 +68,7 @@ class LocationUpdatesAction(private val context: Context) {
   }
 
   companion object {
-    const val THIRTY_SECONDS: Long = 30 * 1000
     const val TEN_SECONDS: Long = 10 * 1000 // For debug purpose
+    const val FIVE_SECONDS: Long = 5 * 1000 // For debug purpose
   }
 }

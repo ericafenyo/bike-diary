@@ -25,9 +25,9 @@
 package com.ericafenyo.tracker.data.model
 
 import com.ericafenyo.tracker.util.Identity
+import com.ericafenyo.tracker.util.JsonSerializerManager
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Serializable
 data class FeatureCollection(
@@ -40,5 +40,5 @@ data class FeatureCollection(
    *
    * @return a json string
    */
-  fun toJson(): String = Json.encodeToString(this)
+  fun toJson(): String = JsonSerializerManager.serializer().encodeToString(this)
 }
