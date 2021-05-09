@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -39,8 +40,8 @@
   <string name="tracker_action_enable" translatable="false">tracker.intent.action.ENABLE</string>
 
   <!-- Trip analyses actions -->
-  <string name="tracker_action_start_analysis" translatable="false">tracker.intent.action.START_ANALYSIS</string>
-  <string name="tracker_action_end_analysis" translatable="false">tracker.intent.action.END_ANALYSIS</string>
+  <string name="tracker_action_start_analysis" translatable="false">com.ericafenyo.tracker.intent.action.START_ANALYSIS</string>
+  <string name="tracker_action_end_analysis" translatable="false">com.ericafenyo.tracker.intent.action.END_ANALYSIS</string>
 
-  <string name="tracker_current_state_key" translatable="false">tracker_current_state</string>
+  <string name="tracker_current_state_key" translatable="false">com.ericafenyo.tracker.CURRENT_STATE</string>
 </resources>
