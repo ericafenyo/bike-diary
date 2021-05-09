@@ -4,10 +4,11 @@ query getAdventures {
     title
     speed
     duration
+    distance
     calories
-    date
-    images
+    startedAt
+    completedAt
     geojson
-    createdAt
+    imageUrl
   }
 }

@@ -1,13 +1,14 @@
 mutation createAdventure($input: AdventureInput!) {
   adventure(input: $input) {
-    id
-    title
-    speed
-    duration
-    date
-    images
-    geojson
-    createdAt
-    calories
+  id
+  title
+  speed
+  duration
+  distance
+  calories
+  startedAt
+  completedAt
+  geojson
+  imageUrl
   }
 }

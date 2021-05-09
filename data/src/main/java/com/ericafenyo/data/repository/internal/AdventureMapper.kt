@@ -26,8 +26,8 @@ package com.ericafenyo.data.repository.internal
 
 import com.ericafenyo.data.api.internal.response.GetAdventuresResponse
 import com.ericafenyo.data.database.AdventureEntity
-import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.data.repository.Mapper
+import com.ericafenyo.tracker.data.Adventure
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,23 +45,25 @@ class AdventureMapper @Inject constructor() : Mapper<Any, Adventure> {
     id = response.id,
     title = response.title,
     speed = response.speed,
-    distance = response.distance,
     duration = response.duration,
+    distance = response.distance,
     calories = response.calories,
-    date = response.date,
+    startedAt = response.startedAt,
+    completedAt = response.completedAt,
     geojson = response.geojson,
-    images = response.images
+    imageUrl = response.imageUrl,
   )
 
   private fun fromLocal(response: AdventureEntity) = Adventure(
-    id = "${response.id}",
+    id = response.id,
     title = response.title,
     speed = response.speed,
-    distance = response.distance,
     duration = response.duration,
+    distance = response.distance,
     calories = response.calories,
-    date = response.date,
+    startedAt = response.startedAt,
+    completedAt = response.completedAt,
     geojson = response.geojson,
-    images = listOf()
+    imageUrl = response.imageUrl,
   )
 }

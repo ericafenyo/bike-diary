@@ -30,8 +30,9 @@ data class GetAdventuresResponse(
   val speed: Double,
   val duration: Double,
   val distance: Double,
-  val calories: Double,
-  val date: String,
+  val calories: Int,
+  val startedAt: String,
+  val completedAt: String,
   val geojson: String,
-  val images: List<String>,
+  val imageUrl: String,
 )
