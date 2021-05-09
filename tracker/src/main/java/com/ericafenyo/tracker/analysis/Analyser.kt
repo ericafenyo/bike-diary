@@ -25,6 +25,8 @@
 package com.ericafenyo.tracker.analysis
 
 import android.content.Context
+import com.ericafenyo.data.database.AdventureEntity
+import com.ericafenyo.data.database.CacheDatabase
 import com.ericafenyo.tracker.R
 import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.tracker.data.Metrics
@@ -121,6 +123,8 @@ class Analyser constructor(private val context: Context) {
     try {
       if (adventure != null) {
         Timber.d("Adventure $adventure")
+        CacheDatabase.getInstance(context)
+          .getAdventureDao().insert(AdventureEntity.fromAdventure(adventure))
         Result.Success(true)
       } else {
         Result.Success(false)

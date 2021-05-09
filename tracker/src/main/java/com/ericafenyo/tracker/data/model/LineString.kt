@@ -24,12 +24,16 @@
 
 package com.ericafenyo.tracker.data.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
+@Serializable
+@SerialName("LineString")
 data class LineString(
-  val coordinates: List<List<Double>>,
+  val coordinates: List<List<Double>> = listOf(),
   override val type: String = "LineString",
-) : Geometry {
+) : Geometry() {
   fun toFeature(properties: JsonObject = JsonObject(mapOf())): Feature {
     return Feature(geometry = this, properties = properties)
   }

@@ -22,9 +22,20 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.tracker.datastore
 
-interface GeoJson {
-  val type: String
+import com.ericafenyo.tracker.Constants
+
+data class CurrentState(val state: String) {
+  fun isOngoing(): Boolean {
+    return this.state == Constants.TRACKER_STATE_ONGOING
+  }
+
+  fun isReady(): Boolean {
+    return this.state == Constants.TRACKER_STATE_READY
+  }
+
+  fun isStarted(): Boolean {
+    return this.state == Constants.TRACKER_STATE_START
+  }
 }
-

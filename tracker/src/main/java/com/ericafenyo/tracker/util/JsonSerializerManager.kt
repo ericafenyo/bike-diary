@@ -22,30 +22,16 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+package com.ericafenyo.tracker.util
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.json.Json
 
+object JsonSerializerManager {
 
-/**
- * Abstract object with variety of query methods.
- * This is used to
- *
- * @param T the type of data to be passed to the declared methods
- *
- * @author Eric
- * @since 1.0
- *
- * @see [RecordCache]
- *
- * created on 2021-01-30
- */
-interface Cache<T : Any> {
-  suspend fun put(value: T)
-  suspend fun putMany(values: List<T>)
-  suspend fun getAll(): List<T>
-  fun streams(): Flow<List<T>>
-  fun single(): Flow<T>
-  suspend fun getLatest(): T
-  fun clear()
+  @JvmStatic
+  fun serializer(): Json = Json {
+    classDiscriminator = "_class_"
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+  }
 }

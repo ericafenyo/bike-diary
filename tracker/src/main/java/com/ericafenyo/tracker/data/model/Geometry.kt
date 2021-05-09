@@ -24,6 +24,9 @@
 
 package com.ericafenyo.tracker.data.model
 
-interface Geometry {
-  val type: String
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class Geometry {
+  abstract val type: String
 }

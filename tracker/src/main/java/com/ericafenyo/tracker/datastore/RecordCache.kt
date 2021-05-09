@@ -47,9 +47,9 @@ internal class RecordCache constructor(context: Context) : Cache<Record> {
 
   override suspend fun getLatest(): Record = records.getLatest()
 
-  override suspend fun streams(): Flow<List<Record>> = records.streams()
+  override fun streams(): Flow<List<Record>> = records.streams()
 
-  override suspend fun single(): Flow<Record> = records.single()
+  override fun single(): Flow<Record> = records.single()
 
   override fun clear() = records.clear()
 
