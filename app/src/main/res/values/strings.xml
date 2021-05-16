@@ -41,10 +41,12 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Text input errors strings                                                                   -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <string name="input_error_field_required">This field is required</string>
-  <string name="input_error_invalid_date">The date is invalid</string>
-  <string name="input_error_invalid_email">The e-mail is invalid</string>
-  <string name="input_error_invalid_password">The password is invalid</string>
+  <string name="input_error_field_required">Field is required</string>
+  <string name="input_error_invalid_date">Date is invalid</string>
+  <string name="input_error_invalid_email">Email is invalid</string>
+  <string name="input_error_invalid_password">Password is invalid</string>
+  <string name="input_error_password_not_matched">Passwords did not match</string>
+
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  - Text input hints strings                                                                    -
@@ -53,7 +55,7 @@
   <string name="input_hint_email">E-mail</string>
   <string name="input_hint_name">Name</string>
   <string name="input_hint_password">Password</string>
-
+  <string name="input_helper_text_password_constraints">Password must contain minimum 8 characters, at least 1 uppercase letter and 1 number.</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Label strings                                                                               -
@@ -111,4 +113,5 @@
   <string name="sign_up_label_accept_terms_and_policies">By creating an account, you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</string>
   <string name="sign_up_page_title_text">Let\'s create an account</string>
   <string name="sign_up_label_you_have_account_question">Already have an account?</string>
+  <string name="sign_in_page_title_text">Let\'s sign you in</string>
 </resources>

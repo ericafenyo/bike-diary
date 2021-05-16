@@ -32,7 +32,20 @@
 
   <fragment
       android:id="@+id/loginFragment"
-      android:name="com.ericafenyo.bikediary.LoginFragment"
+      android:name="com.ericafenyo.bikediary.ui.auth.LoginFragment"
       android:label="fragment_login"
-      tools:layout="@layout/fragment_login" />
+      tools:layout="@layout/fragment_login">
+    <action
+        android:id="@+id/action_login_to_signup"
+        app:destination="@id/signUpFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/signUpFragment"
+      android:name="com.ericafenyo.bikediary.ui.auth.SignUpFragment"
+      android:label="SignUpFragment"
+      tools:layout="@layout/fragment_register">
+    <action
+        android:id="@+id/action_signup_to_login"
+        app:destination="@id/loginFragment" />
+  </fragment>
 </navigation>
