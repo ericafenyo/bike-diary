@@ -24,13 +24,16 @@
 
 package com.ericafenyo.bikediary.ui.map
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.R.layout
 import com.ericafenyo.bikediary.databinding.FragmentMapBinding
+import com.ericafenyo.tracker.util.getExplicitIntent
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -38,7 +41,6 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
-import model.getExplicitIntent
 
 
 @AndroidEntryPoint
@@ -46,11 +48,19 @@ class MapFragment : Fragment(layout.fragment_map) {
   private val binding: FragmentMapBinding by dataBinding()
   private val mapModel: MapViewModel by viewModels()
 
+  private val locationRequestContract = registerForActivityResult(RequestPermission()) { granted ->
+    if (granted) {
+
+    }
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     binding.lifecycleOwner = viewLifecycleOwner
     binding.model = mapModel
+
+    locationRequestContract.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
     binding.mapView.onCreate(savedInstanceState)
     binding.mapView.getMapAsync { map -> setupMap(map) }
@@ -100,11 +110,6 @@ class MapFragment : Fragment(layout.fragment_map) {
   override fun onStop() {
     super.onStop()
     binding.mapView.onStop()
-  }
-
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    //binding.mapView.onSaveInstanceState(outState)
   }
 
   override fun onLowMemory() {
