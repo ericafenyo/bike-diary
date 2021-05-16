@@ -4,16 +4,17 @@
     package="com.ericafenyo.bikediary">
 
   <application
-      android:name="com.ericafenyo.bikediary.HabitDiaryApplication"
+      android:name=".HabitDiaryApplication"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
       android:theme="@style/Theme.HabitDiary">
-    <activity android:name="com.ericafenyo.bikediary.ui.diary.EditAdventureActivity" />
-    <activity android:name="com.ericafenyo.bikediary.SettingsActivity" />
-    <activity android:name="com.ericafenyo.bikediary.ui.MainActivity">
+    <activity android:name=".ui.auth.AuthenticationActivity"></activity>
+    <activity android:name=".ui.diary.EditAdventureActivity" />
+    <activity android:name=".SettingsActivity" />
+    <activity android:name=".ui.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -24,15 +25,17 @@
     <meta-data
         android:name="preloaded_fonts"
         android:resource="@array/preloaded_fonts" />
+
     <receiver
-        android:name="com.ericafenyo.bikediary.AnalysisEndReceiver"
+        android:name=".AnalysisEndReceiver"
         android:exported="false">
       <intent-filter>
         <action android:name="tracker.intent.action.END_ANALYSIS" />
       </intent-filter>
     </receiver>
+
     <service
-        android:name="com.ericafenyo.bikediary.util.DraftAdventureJobIntentService"
+        android:name=".util.DraftAdventureJobIntentService"
         android:permission="android.permission.BIND_JOB_SERVICE" />
   </application>
 
