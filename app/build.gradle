@@ -96,5 +96,8 @@ dependencies {
     implementation libs.threetenabp
     implementation libs.google.gms.location
 
+    implementation libs.androidx.activity
+    implementation libs.androidx.fragment
+
     // debugImplementation libs.leakCanary
 }
