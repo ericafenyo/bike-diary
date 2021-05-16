@@ -22,9 +22,8 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.auth.login
+package com.ericafenyo.bikediary.util
 
-import androidx.fragment.app.Fragment
-import com.ericafenyo.bikediary.R
-
-class LoginFragment : Fragment(R.layout.fragment_login)
+fun Boolean.doOnTrue(block: () -> Boolean): Boolean {
+  return if (this) block() else false
+}

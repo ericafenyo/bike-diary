@@ -32,8 +32,8 @@ import com.ericafenyo.bikediary.databinding.FragmentHomeBinding
 import com.ericafenyo.bikediary.model.Achievement
 import com.ericafenyo.bikediary.model.Badge
 import com.ericafenyo.bikediary.util.drawableFrom
+import com.ericafenyo.tracker.util.getExplicitIntent
 import com.wada811.databinding.dataBinding
-import model.getExplicitIntent
 
 /**
  * A simple [Fragment] subclass for displaying users adventure metrics.

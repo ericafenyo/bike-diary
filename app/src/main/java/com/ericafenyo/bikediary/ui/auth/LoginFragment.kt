@@ -31,7 +31,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.databinding.FragmentRegisterBinding
+import com.ericafenyo.bikediary.databinding.FragmentLoginBinding
 import com.ericafenyo.bikediary.util.EventObserver
 import com.ericafenyo.bikediary.util.Validator
 import com.ericafenyo.bikediary.util.doOnTrue
@@ -40,36 +40,33 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class SignUpFragment : Fragment(R.layout.fragment_register) {
-  private val binding: FragmentRegisterBinding by dataBinding()
-  private val registerModel: RegisterViewModel by viewModels()
+class LoginFragment : Fragment(R.layout.fragment_login) {
+  private val binding: FragmentLoginBinding by dataBinding()
+  private val authModel: LoginViewModel by viewModels()
   private val inputValidator by lazy { Validator(requireContext()) }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     binding.lifecycleOwner = viewLifecycleOwner
-    binding.model = registerModel
+    binding.model = authModel
 
     // Clear input errors when the user is typing
     clearInputErrorsOnChange()
 
-    // Listen and handle sign up button press.
-    registerModel.registerAction.observe(viewLifecycleOwner, EventObserver {
+    // Listen and handle sign in button press
+    authModel.loginAction.observe(viewLifecycleOwner, EventObserver {
       onSubmit()
     })
 
-    // This launches the signup page.
-    registerModel.launchLoginAction.observe(viewLifecycleOwner, EventObserver {
-      findNavController().navigate((R.id.action_signup_to_login))
+    // Listen and handle sign up button press. Note:
+    // This just launches the signup page.
+    authModel.launchRegisterAction.observe(viewLifecycleOwner, EventObserver {
+      findNavController().navigate((R.id.action_login_to_signup))
     })
   }
 
   private fun clearInputErrorsOnChange() {
-    binding.editTextName.doAfterTextChanged {
-      binding.inputFieldEmail.error = null
-    }
-
     binding.editTextEmail.doAfterTextChanged {
       binding.inputFieldEmail.error = null
     }
@@ -77,21 +74,15 @@ class SignUpFragment : Fragment(R.layout.fragment_register) {
     binding.editTextPassword.doAfterTextChanged {
       binding.inputFieldPassword.error = null
     }
-
-    binding.editTextConfirmPassword.doAfterTextChanged {
-      binding.inputFieldConfirmPassword.error = null
-    }
   }
 
   private fun onSubmit() = with(binding) {
     // Extract the texts from the inputs.
-    val name = editTextName.text?.toString() ?: ""
     val email = editTextEmail.text?.toString() ?: ""
     val password = editTextPassword.text?.toString() ?: ""
-    val confirmedPassword = editTextConfirmPassword.text?.toString() ?: ""
 
     // Validate inputs and notify users about the errors.
-    val hasValidInputs = validateInputs(name, email, password, confirmedPassword)
+    val hasValidInputs = validateInputs(email, password)
 
     // Submit the form only if all inputs are valid.
     if (hasValidInputs) {
@@ -103,29 +94,12 @@ class SignUpFragment : Fragment(R.layout.fragment_register) {
     Timber.d("Submitting form")
   }
 
-  private fun validateInputs(
-    name: String,
-    email: String,
-    password: String,
-    confirmedPassword: String
-  ): Boolean = with(binding) {
-    // Validate required name
-    return inputValidator.isFieldNotEmpty(name, inputFieldName)
-      // Validate required email
-      .doOnTrue { inputValidator.isFieldNotEmpty(email, inputFieldEmail) }
+  private fun validateInputs(email: String, password: String): Boolean = with(binding) {
+    // Validate required email
+    inputValidator.isFieldNotEmpty(email, inputFieldEmail)
       // Validate valid email
       .doOnTrue { inputValidator.isEmailValid(email, inputFieldEmail) }
       // Validate required password
       .doOnTrue { inputValidator.isFieldNotEmpty(password, inputFieldPassword) }
-      // Validate valid password
-      .doOnTrue { inputValidator.isPasswordValid(password, inputFieldPassword) }
-      // Validate required confirmed password
-      .doOnTrue { inputValidator.isFieldNotEmpty(confirmedPassword, inputFieldConfirmPassword) }
-      // Validate matched password
-      .doOnTrue {
-        inputValidator.isPasswordMatched(
-          password, confirmedPassword, binding.inputFieldConfirmPassword
-        )
-      }
   }
 }

@@ -49,3 +49,14 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task downloadGraphQLSchema(type: Exec){
+    commandLine("sh", "$projectDir/bin/download_schema.sh")
+}
+
+static def buildVersionCode() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    def formatInt = formattedDate + "0"
+    return formatInt as int
+}
