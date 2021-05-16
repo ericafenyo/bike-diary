@@ -26,7 +26,8 @@
 <resources>
 
   <!-- Format strings -->
-  <string name="format_trip_metrics">%.2f km en %s</string>
+  <string name="format_km_in_sec">%.2f km en %s</string>
+  <string name="format_level">Niveau %d</string>
 
   <string name="title_map">Carte</string>
   <string name="title_profile">Profil</string>
@@ -45,9 +46,10 @@
   <string name="settings_theme_dark">Sombre</string>
   <string name="settings_theme_battery">Défini par l\'économiseur de batterie</string>
 
-  <string name="profile_lable_dark_mode">Dark mode</string>
+  <string name="profile_label_dark_mode">Dark mode</string>
   <string name="a11y_profile_enable_dark_mode">Activer le mode sombre</string>
   <string name="a11y_profile_disable_dark_mode">Désactiver le mode sombre</string>
   <string name="title_edit_adventure">Modifier l\'aventure</string>
+  <string name="label_email">Email</string>
 
 </resources>
