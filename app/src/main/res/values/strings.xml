@@ -1,27 +1,25 @@
 <resources>
   <string name="app_name" translatable="false">Habit Diary</string>
 
-  <!-- Format strings -->
-  <string name="format_trip_metrics">%.2f km in %s</string>
-  <string name="format_trip_calories" translatable="false">%s kcal</string>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Action strings                                                                              -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="action_forgot_password">Forgot password?</string>
+  <string name="action_login">Sign in</string>
+  <string name="action_sign_up">Sign up</string>
+  <string name="action_start_adventure">Start adventure</string>
+  <string name="action_stop_adventure">End adventure</string>
+  <string name="action_upload_picture">Upload picture</string>
 
-  <string name="title_map">Map</string>
-  <string name="title_dashboard">Dashboard</string>
-  <string name="title_settings">settings</string>
-  <string name="title_diary">Diary</string>
-  <string name="title_profile">Profile</string>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Content description strings                                                                                   -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="a11y_profile_disable_dark_mode">Disable mode</string>
+  <string name="a11y_profile_enable_dark_mode">Enable dark mode</string>
 
-  <string name="settings_theme_title">Choose theme</string>
-  <string name="settings_theme_system">System default</string>
-  <string name="settings_theme_light">Light</string>
-  <string name="settings_theme_dark">Dark</string>
-  <string name="settings_theme_battery">Set by Battery Saver</string>
-
-  <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-
-
-  <!-- Gender -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Gender strings                                                                              -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="gender_male">Male</string>
   <string name="gender_female">Female</string>
   <string name="gender_other">Other</string>
@@ -32,24 +30,76 @@
     <item>@string/gender_other</item>
   </string-array>
 
-  <string name="profile_lable_dark_mode">Dark mode</string>
-  <string name="a11y_profile_enable_dark_mode">Enable dark mode</string>
-  <string name="a11y_profile_disable_dark_mode">Disable mode</string>
-  <string name="label_oops">Oops!</string>
-  <string name="diary_adventures_empty">Your adventure list is empty, recorded adventures will appear here.</string>
-  <string name="label_adventure_title">Adventure title</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Format strings                                                                              -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="format_level">Level %d</string>
+  <string name="format_km_in_sec">%.2f km in %s</string>
+  <string name="format_kcal" translatable="false">%s kcal</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Text input errors strings                                                                   -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="input_error_field_required">This field is required</string>
+  <string name="input_error_invalid_date">The date is invalid</string>
+  <string name="input_error_invalid_email">The e-mail is invalid</string>
+  <string name="input_error_invalid_password">The password is invalid</string>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Label strings                                                                               -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="label_adventure_date">Date</string>
-  <string name="label_calories">Calories</string>
-  <string name="label_kilometers">Kilometers</string>
-  <string name="label_start_time">Start time</string>
-  <string name="label_end_time">End time</string>
   <string name="label_adventure_note">Note</string>
+  <string name="label_adventure_title">Adventure title</string>
+  <string name="label_calories">Calories</string>
+  <string name="label_email">Email</string>
+  <string name="label_end_time">End time</string>
+  <string name="label_kilometers">Kilometers</string>
+  <string name="label_login">Login</string>
+  <string name="label_name">Name</string>
+  <string name="label_oops">Oops!</string>
+  <string name="label_password">Password</string>
+  <string name="label_start_time">Start time</string>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Settings page strings                                                                                   -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="settings_theme_title">Choose theme</string>
+  <string name="settings_theme_system">System default</string>
+  <string name="settings_theme_light">Light</string>
+  <string name="settings_theme_dark">Dark</string>
+  <string name="settings_theme_battery">Set by Battery Saver</string>
+
+  <string name="content_description_add_trip">Add trip</string>
+  <string name="diary_adventures_empty">Your adventure list is empty, recorded adventures will appear here.</string>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Text input hints strings                                                                    -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="input_hint_confirm_password">Password</string>
+  <string name="input_hint_email">E-mail</string>
+  <string name="input_hint_name">Name</string>
+  <string name="input_hint_password">Password</string>
+
+  <string name="kilometers_remaining">Km left</string>
+
+  <string name="map_a11y_show_devices_current_location">Show devices current location</string>
+
+  <string name="profile_label_dark_mode">Dark mode</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - Title strings                                                             -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="title_map">Map</string>
+  <string name="title_dashboard">Dashboard</string>
+  <string name="title_settings">settings</string>
+  <string name="title_diary">Diary</string>
+  <string name="title_profile">Profile</string>
   <string name="title_edit_adventure">Edit adventure</string>
   <string name="title_save">Save</string>
-  <string name="content_description_add_trip">Add trip</string>
-  <string name="kilometers_remaining">Km left</string>
-  <string name="action_upload_picture">Upload picture</string>
-  <string name="action_start_adventure">Start adventure</string>
-  <string name="action_stop_adventure">End adventure</string>
-
+  <string name="login_label_you_have_account">Don\'t have an account?</string>
 </resources>
