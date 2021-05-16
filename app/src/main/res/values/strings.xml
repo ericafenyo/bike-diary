@@ -46,6 +46,14 @@
   <string name="input_error_invalid_email">The e-mail is invalid</string>
   <string name="input_error_invalid_password">The password is invalid</string>
 
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - Text input hints strings                                                                    -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="input_hint_confirm_password">Confirm password</string>
+  <string name="input_hint_email">E-mail</string>
+  <string name="input_hint_name">Name</string>
+  <string name="input_hint_password">Password</string>
+
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Label strings                                                                               -
@@ -77,14 +85,6 @@
   <string name="diary_adventures_empty">Your adventure list is empty, recorded adventures will appear here.</string>
 
 
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   - Text input hints strings                                                                    -
-   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <string name="input_hint_confirm_password">Password</string>
-  <string name="input_hint_email">E-mail</string>
-  <string name="input_hint_name">Name</string>
-  <string name="input_hint_password">Password</string>
-
   <string name="kilometers_remaining">Km left</string>
 
   <string name="map_a11y_show_devices_current_location">Show devices current location</string>
@@ -101,5 +101,14 @@
   <string name="title_profile">Profile</string>
   <string name="title_edit_adventure">Edit adventure</string>
   <string name="title_save">Save</string>
+
   <string name="login_label_you_have_account">Don\'t have an account?</string>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Sign up strings                                                                             -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="sign_up_label_accept_terms_and_policies">By creating an account, you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</string>
+  <string name="sign_up_page_title_text">Let\'s create an account</string>
+  <string name="sign_up_label_you_have_account_question">Already have an account?</string>
 </resources>
