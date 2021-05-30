@@ -54,6 +54,7 @@ dependencies {
     implementation project(path: ':shared')
     implementation project(path: ':data')
     implementation project(path: ':tracker')
+    implementation project(path: ':model')
 
     testImplementation libs.junit
     androidTestImplementation(libs.androidx.junitExt)
