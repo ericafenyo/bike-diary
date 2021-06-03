@@ -24,14 +24,15 @@
 
 package com.ericafenyo.data.domain
 
-import android.util.Log
-import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.data.repository.AdventureRepository
+import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.tracker.data.model.Result
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 
 class GetAdventuresUseCase @Inject constructor(
@@ -40,13 +41,13 @@ class GetAdventuresUseCase @Inject constructor(
 ) : FlowUseCaseWithoutParams<List<Adventure>>(Dispatchers.IO) {
   override fun execute(): Flow<Result<List<Adventure>>> = flow {
     try {
-      repository.getAdventures().collect { adventures ->
-        Log.d("TAG", "execute: $adventures")
+      repository.adventures().collect { adventures ->
+        Timber.d("$adventures")
         emit(Result.Success(adventures))
       }
-    } catch (e: Exception) {
-      Log.e("Tag", "execute", e)
-      emit(Result.Error(e))
+    } catch (exception: Exception) {
+      Timber.e(exception)
+      emit(Result.Error(exception))
     }
   }
 }

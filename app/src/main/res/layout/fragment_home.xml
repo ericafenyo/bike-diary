@@ -36,224 +36,254 @@
         type="com.ericafenyo.bikediary.model.Achievement" />
   </data>
 
-  <LinearLayout
-      android:id="@+id/linear_layout_dashboard"
+  <androidx.core.widget.NestedScrollView
+      android:id="@+id/dashboard_nested_scroll_view"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
+      android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/appbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        bind:isLoading="@{false}"
-        bind:title="@{@string/title_dashboard}" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_level"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/space_small"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.HabitDiary.SmallComponent">
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="?attr/selectableItemBackground"
-          android:clickable="true"
-          android:focusable="true"
-          android:padding="@dimen/space_normal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image_badge"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:src="@{achievement.badge.icon}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
-
-        <TextView
-            android:id="@+id/text_next_badge_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@{@string/format_level(2)}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintBottom_toTopOf="@+id/progress_bar_kilometers"
-            app:layout_constraintStart_toEndOf="@+id/image_badge"
-            tools:text="Level 2" />
-
-        <TextView
-            android:id="@+id/text_kilometers_remaining_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/space_micro"
-            android:fontFamily="sans-serif-medium"
-            android:text="@{achievement.remainingDistance}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintBaseline_toBaselineOf="@+id/text_next_badge_level"
-            app:layout_constraintEnd_toStartOf="@+id/text_kilometers_remaining"
-            tools:text="53.6" />
-
-        <TextView
-            android:id="@+id/text_kilometers_remaining"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/kilometers_remaining"
-            app:layout_constraintBaseline_toBaselineOf="@+id/text_kilometers_remaining_value"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="53.6 Km left" />
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progress_bar_kilometers"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_normal"
-            android:progress="@{achievement.progressPercent}"
-            app:layout_constraintBottom_toBottomOf="@+id/image_badge"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_badge"
-            app:trackCornerRadius="@dimen/space_small"
-            app:trackThickness="6dp" />
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/space_small"
-        android:layout_marginBottom="@dimen/space_small"
-        app:shapeAppearance="@style/ShapeAppearance.HabitDiary.MediumComponent">
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="@dimen/space_normal">
-
-        <com.mancj.slimchart.SlimChart
-            android:id="@+id/progress_kilometers"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:roundedEdges="true"
-            app:starts="@{70}"
-            app:strokeWidth="@dimen/space_small"
-            bind:color="@{@color/color_accent}" />
-
-        <com.mancj.slimchart.SlimChart
-            android:id="@+id/progress_calories"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="@+id/progress_kilometers"
-            app:layout_constraintEnd_toEndOf="@+id/progress_kilometers"
-            app:layout_constraintStart_toStartOf="@+id/progress_kilometers"
-            app:layout_constraintTop_toTopOf="parent"
-            app:roundedEdges="true"
-            app:strokeWidth="@dimen/space_small"
-            bind:color="@{@color/color_violet}"
-            bind:starts="@{56}" />
-
-        <LinearLayout
-            android:id="@+id/linear_layout_legend_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/linear_layout_legend_calories"
-            app:layout_constraintStart_toEndOf="@+id/progress_kilometers"
-            app:layout_constraintTop_toTopOf="parent">
-
-          <View
-              android:id="@+id/metrics_indicator_distance"
-              android:layout_width="10dp"
-              android:layout_height="10dp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginEnd="@dimen/space_small"
-              android:background="@color/color_accent" />
-
-          <TextView
-              android:id="@+id/text_metrics_distance"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center_vertical"
-              android:fontFamily="@font/google_sans_medium"
-              android:text="Distance"
-              android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_layout_legend_calories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/progress_kilometers"
-            app:layout_constraintTop_toBottomOf="@+id/linear_layout_legend_distance">
-
-          <View
-              android:id="@+id/metrics_indicator_calories"
-              android:layout_width="10dp"
-              android:layout_height="10dp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginEnd="@dimen/space_small"
-              android:background="@color/color_violet" />
-
-          <TextView
-              android:id="@+id/text_metrics_calories"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center_vertical"
-              android:fontFamily="@font/google_sans_medium"
-              android:text="Calories"
-              android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-        </LinearLayout>
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/linear_layout_dashboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".DashboardFragment">
+        android:orientation="vertical">
 
-      <Button
-          android:id="@+id/button_init"
-          android:layout_width="wrap_content"
+      <include
+          android:id="@+id/appbar"
+          layout="@layout/toolbar"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="24dp"
-          android:text="Initialize"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+          bind:isLoading="@{false}"
+          bind:title="@{@string/title_dashboard}" />
 
-      <Button
-          android:id="@+id/button_start"
-          android:layout_width="wrap_content"
+      <com.google.android.material.card.MaterialCardView
+          android:id="@+id/card_level"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/space_normal"
-          android:text="Start tracking"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/button_init" />
+          android:layout_margin="@dimen/space_small"
+          app:shapeAppearanceOverlay="@style/ShapeAppearance.HabitDiary.SmallComponent">
 
-      <Button
-          android:id="@+id/button_stop"
-          android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/space_normal">
+
+          <androidx.appcompat.widget.AppCompatImageView
+              android:id="@+id/image_badge"
+              android:layout_width="52dp"
+              android:layout_height="52dp"
+              android:src="@{achievement.badge.icon}"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              tools:src="@tools:sample/avatars" />
+
+          <TextView
+              android:id="@+id/text_next_badge_level"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="16dp"
+              android:layout_marginBottom="16dp"
+              android:fontFamily="sans-serif-medium"
+              android:text="@{@string/format_level(2)}"
+              android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+              app:layout_constraintBottom_toTopOf="@+id/progress_bar_kilometers"
+              app:layout_constraintStart_toEndOf="@+id/image_badge"
+              tools:text="Level 2" />
+
+          <TextView
+              android:id="@+id/text_kilometers_remaining_value"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="@dimen/space_micro"
+              android:fontFamily="sans-serif-medium"
+              android:text="@{achievement.remainingDistance}"
+              android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+              app:layout_constraintBaseline_toBaselineOf="@+id/text_next_badge_level"
+              app:layout_constraintEnd_toStartOf="@+id/text_kilometers_remaining"
+              tools:text="53.6" />
+
+          <TextView
+              android:id="@+id/text_kilometers_remaining"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/kilometers_remaining"
+              app:layout_constraintBaseline_toBaselineOf="@+id/text_kilometers_remaining_value"
+              app:layout_constraintEnd_toEndOf="parent"
+              tools:text="53.6 Km left" />
+
+          <com.google.android.material.progressindicator.LinearProgressIndicator
+              android:id="@+id/progress_bar_kilometers"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/space_normal"
+              android:progress="@{achievement.progressPercent}"
+              app:layout_constraintBottom_toBottomOf="@+id/image_badge"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toEndOf="@+id/image_badge"
+              app:trackCornerRadius="@dimen/space_small"
+              app:trackThickness="6dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:text="Stop tracking"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/button_start" />
+          android:layout_marginHorizontal="@dimen/space_small"
+          android:layout_marginBottom="@dimen/space_small"
+          app:shapeAppearance="@style/ShapeAppearance.HabitDiary.MediumComponent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-  </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_normal">
+
+          <com.mancj.slimchart.SlimChart
+              android:id="@+id/progress_kilometers"
+              android:layout_width="120dp"
+              android:layout_height="120dp"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              app:roundedEdges="true"
+              app:starts="@{70}"
+              app:strokeWidth="@dimen/space_small"
+              bind:color="@{@color/color_accent}" />
+
+          <com.mancj.slimchart.SlimChart
+              android:id="@+id/progress_calories"
+              android:layout_width="100dp"
+              android:layout_height="100dp"
+              app:layout_constraintBottom_toBottomOf="@+id/progress_kilometers"
+              app:layout_constraintEnd_toEndOf="@+id/progress_kilometers"
+              app:layout_constraintStart_toStartOf="@+id/progress_kilometers"
+              app:layout_constraintTop_toTopOf="parent"
+              app:roundedEdges="true"
+              app:strokeWidth="@dimen/space_small"
+              bind:color="@{@color/color_violet}"
+              bind:starts="@{56}" />
+
+          <LinearLayout
+              android:id="@+id/linear_layout_legend_distance"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="24dp"
+              android:orientation="horizontal"
+              app:layout_constraintBottom_toTopOf="@+id/linear_layout_legend_calories"
+              app:layout_constraintStart_toEndOf="@+id/progress_kilometers"
+              app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:id="@+id/metrics_indicator_distance"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/space_small"
+                android:background="@color/color_accent" />
+
+            <TextView
+                android:id="@+id/text_metrics_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/google_sans_medium"
+                android:text="Distance"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+          </LinearLayout>
+
+          <LinearLayout
+              android:id="@+id/linear_layout_legend_calories"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="24dp"
+              android:orientation="horizontal"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintStart_toEndOf="@+id/progress_kilometers"
+              app:layout_constraintTop_toBottomOf="@+id/linear_layout_legend_distance">
+
+            <View
+                android:id="@+id/metrics_indicator_calories"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/space_small"
+                android:background="@color/color_violet" />
+
+            <TextView
+                android:id="@+id/text_metrics_calories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/google_sans_medium"
+                android:text="Calories"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+          </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+      </com.google.android.material.card.MaterialCardView>
+
+      <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/space_small"
+          android:layout_marginBottom="@dimen/space_small"
+          app:shapeAppearance="@style/ShapeAppearance.HabitDiary.MediumComponent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_normal">
+
+          <com.github.mikephil.charting.charts.BarChart
+              android:id="@+id/chart_adventures"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              app:layout_constraintDimensionRatio="3:2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/space_small"
+          android:layout_marginBottom="@dimen/space_small"
+          app:shapeAppearance="@style/ShapeAppearance.HabitDiary.MediumComponent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_normal">
+
+          <com.github.mikephil.charting.charts.LineChart
+              android:id="@+id/chart_weight"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              app:layout_constraintDimensionRatio="3:2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/space_small"
+          android:layout_marginBottom="@dimen/space_small"
+          app:shapeAppearance="@style/ShapeAppearance.HabitDiary.MediumComponent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+          <TextView
+              android:id="@+id/text_bmi_title"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="BMI(Kg/m2)" />
+
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
 </layout>

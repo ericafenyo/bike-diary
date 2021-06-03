@@ -74,7 +74,6 @@ android {
 
 dependencies {
     implementation project(path: ':shared')
-    implementation project(path: ':tracker')
 
     testImplementation libs.junit
 
@@ -93,4 +92,9 @@ dependencies {
     implementation libs.timber
 
     implementation libs.kotlin.serialization.json
+}
+
+apollo {
+    // instruct the compiler to generate Kotlin models
+    generateKotlinModels.set(true)
 }

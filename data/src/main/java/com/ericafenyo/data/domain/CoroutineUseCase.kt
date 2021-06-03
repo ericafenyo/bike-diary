@@ -25,10 +25,10 @@
 package com.ericafenyo.data.domain
 
 
-import android.util.Log
-import com.ericafenyo.data.Result
+import com.ericafenyo.tracker.data.model.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Executes business logic synchronously or asynchronously using Coroutines.
@@ -53,7 +53,7 @@ abstract class CoroutineUseCase<in P, R>(private val coroutineDispatcher: Corout
         }
       }
     } catch (exception: Exception) {
-      Log.e(tag, "$exception")
+      Timber.tag(tag).e(exception)
       Result.Error(exception)
     }
   }

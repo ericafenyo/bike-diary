@@ -24,8 +24,8 @@
 
 package com.ericafenyo.data.sync.internal
 
-import com.ericafenyo.data.Result
 import com.ericafenyo.data.sync.SyncManager
+import com.ericafenyo.tracker.data.model.Result
 
 class SyncManagerImpl : SyncManager {
   override suspend fun performPeriodicSync() {

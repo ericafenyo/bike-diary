@@ -61,5 +61,5 @@ fun Location.simplify() = SimpleLocation(
   ts = time.toDouble(),
   speed = speed,
   accuracy = accuracy,
-  bearing = bearing
+  bearing = bearing,
 )

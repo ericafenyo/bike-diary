@@ -33,8 +33,8 @@ import kotlinx.coroutines.flow.Flow
 @Singleton
 class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
   private val dao = database.getAdventureDao()
-  suspend fun getAdventures(): List<AdventureEntity> {
-    return dao.getAdventures()
-  }
+
+  suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
+  fun adventure(): Flow<AdventureEntity> = dao.adventure()
   suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
 }

@@ -26,7 +26,7 @@ package com.ericafenyo.data.domain
 
 
 import android.util.Log
-import com.ericafenyo.data.Result
+import com.ericafenyo.tracker.data.model.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

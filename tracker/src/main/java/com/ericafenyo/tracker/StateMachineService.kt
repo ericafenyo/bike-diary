@@ -34,6 +34,7 @@ import android.provider.Settings
 import androidx.core.app.NotificationCompat.Action
 import com.ericafenyo.tracker.analysis.AnalysisJobIntentService
 import com.ericafenyo.tracker.datastore.PreferenceDataStore
+import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.logger.Logger
 import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID
@@ -88,6 +89,7 @@ class StateMachineService : Service(), CoroutineScope {
 
   override fun onDestroy() {
     super.onDestroy()
+    Logger.debug(this, tag, "onDestroy()")
     job.cancel()
   }
 
@@ -124,8 +126,8 @@ class StateMachineService : Service(), CoroutineScope {
     ) {
       // Start the location-updates request
       LocationUpdatesAction(this).start()?.addOnCompleteListener { task ->
-
         if (task.isSuccessful) {
+          launch { RecordCache.getInstance(applicationContext).clear() }
           //Change the current state to ongoing
           // We should now get location updates at a particular interval
           setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
@@ -220,9 +222,6 @@ class StateMachineService : Service(), CoroutineScope {
         .putString(getString(R.string.tracker_current_state_key), newState)
       Logger.debug(context, tag, "New state saved to preference storage")
     }
-
-    // TODO: 1/10/21 Check settings after setting state
-
     stopSelf()
   }
 

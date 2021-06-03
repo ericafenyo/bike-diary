@@ -16,7 +16,7 @@
 
 package com.ericafenyo.data.domain
 
-import com.ericafenyo.data.Result
+import com.ericafenyo.tracker.data.model.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

@@ -25,7 +25,9 @@
 package com.ericafenyo.tracker.datastore
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 /**
  * An implementation of the [Cache] interface providing methods for performing
@@ -51,7 +53,7 @@ internal class RecordCache constructor(context: Context) : Cache<Record> {
 
   override fun single(): Flow<Record> = records.single()
 
-  override fun clear() = records.clear()
+  override suspend fun clear() = withContext(Dispatchers.IO) { records.clear() }
 
   companion object {
     @Volatile

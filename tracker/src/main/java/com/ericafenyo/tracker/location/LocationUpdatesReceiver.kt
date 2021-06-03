@@ -36,14 +36,13 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 /**
- * Receiver for broadcasts sent by {@link LocationUpdatesAction}.
+ * Receiver for broadcasts sent by [LocationUpdatesAction] through pending intent.
  */
 class LocationUpdatesReceiver : BroadcastReceiver() {
   private val tag = "LocationUpdatesReceiver"
 
   override fun onReceive(context: Context, intent: Intent) {
     Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
-    val result = LocationResult.extractResult(intent)
     Timber.d("Location updates: ${LocationResult.extractResult(intent)}")
     val locations = if (LocationResult.hasResult(intent)) {
       LocationResult.extractResult(intent).locations
@@ -51,10 +50,8 @@ class LocationUpdatesReceiver : BroadcastReceiver() {
       null
     }
 
-    // Skip if locations is null
-    if (locations == null) return
-    Timber.d("This is the location size ${locations.size}")
-    //Timber.d("This is the avaibility ${LocationAvailability.hasLocationAvailability(intent)}")
+    // Skip if we don't have a location object
+    if (locations.isNullOrEmpty()) return
 
     val location = locations.first().simplify()
     runBlocking(Dispatchers.IO) {

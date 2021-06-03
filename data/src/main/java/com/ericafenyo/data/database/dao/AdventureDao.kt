@@ -49,4 +49,7 @@ interface AdventureDao {
 
   @Query("SELECT * FROM adventures")
   suspend fun getAdventures(): List<AdventureEntity>
+
+  @Query("SELECT * FROM adventures ORDER BY id DESC Limit 1")
+  fun adventure(): Flow<AdventureEntity>
 }

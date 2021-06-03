@@ -25,7 +25,7 @@
 package com.ericafenyo.bikediary.di
 
 import android.content.Context
-import com.ericafenyo.tracker.datastore.DataStoreModel
+import com.ericafenyo.tracker.datastore.RecordsProvider
 import com.ericafenyo.tracker.datastore.PreferenceDataStore
 import dagger.Module
 import dagger.Provides
@@ -40,8 +40,8 @@ object TrackerModule {
 
   @Provides
   @Singleton
-  fun provideTrackerDataSource(@ApplicationContext context: Context): DataStoreModel {
-    return DataStoreModel(context)
+  fun provideTrackerDataSource(@ApplicationContext context: Context): RecordsProvider {
+    return RecordsProvider(context)
   }
 
   @Provides

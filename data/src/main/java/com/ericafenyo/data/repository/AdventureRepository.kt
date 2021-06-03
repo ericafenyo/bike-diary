@@ -28,6 +28,6 @@ import com.ericafenyo.tracker.data.Adventure
 import kotlinx.coroutines.flow.Flow
 
 interface AdventureRepository {
-  suspend fun getAdventures(): Flow<List<Adventure>>
-  suspend fun draftAdventures(): String
+  suspend fun adventures(): Flow<List<Adventure>>
+  suspend fun adventure(): Flow<Adventure>
 }

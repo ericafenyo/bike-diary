@@ -24,39 +24,34 @@
 
 package com.ericafenyo.bikediary.ui
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.data.trip.TripRepository
 import com.ericafenyo.bikediary.databinding.ActivityMainBinding
 import com.ericafenyo.bikediary.model.Theme
-import com.ericafenyo.bikediary.util.setupWithNavController
-import com.ericafenyo.data.api.BikeDiaryService
-import com.ericafenyo.data.repository.AdventureRepository
-import com.leinardi.android.speeddial.SpeedDialActionItem
-import com.leinardi.android.speeddial.SpeedDialView
+import com.ericafenyo.tracker.data.api.BikeDiaryService
+import com.ericafenyo.tracker.datastore.RecordsProvider
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+  private lateinit var navController: NavController
+
   private val binding: ActivityMainBinding by dataBinding()
   private val viewModel: MainActivityViewModel by viewModels()
 
-  private var currentNavController: LiveData<NavController>? = null
-
-  @Inject lateinit var adventureRepository: AdventureRepository
-
   @Inject lateinit var tripRepository: TripRepository
+  @Inject lateinit var provider: RecordsProvider
   @Inject lateinit var service: BikeDiaryService
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,53 +62,17 @@ class MainActivity : AppCompatActivity() {
 
     setContentView(R.layout.activity_main)
 
-    if (savedInstanceState == null) {
-      setupBottomNavigationBar()
-    } // Else, need to wait for onRestoreInstanceState
-
     viewModel.theme.observe(this, Observer(::updateForTheme))
 
-    // sendBroadcast(ExplicitIntent(this, string.tracker_action_end_analysis))
-    // EditAdventureActivity.getStartIntent(this).also { startActivity(it) }
+    navController = getNavController()
 
-    GlobalScope.launch {
-//      Timber.d("Drafting data")
-//      adventureRepository.draftAdventures()
-      //val gj = "{\"type\":\"FeatureCollection\",\"features\":[{\"geometry\":{\"coordinates\":[24.93834,60.16983],\"type\":\"Point\"},\"id\":\"af8e6f087eaf44089cdeb56b1242a87c\",\"properties\":{},\"type\":\"Feature\"}]}"
-      //val fileName = service.getStaticMap(gj)
-      //Timber.d("fileNamefileName $fileName")
-    }
+    binding.bottomNavigation.setupWithNavController(navController)
   }
 
-  override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-    super.onRestoreInstanceState(savedInstanceState)
-    // Now that BottomNavigationBar has restored its instance state
-    // and its selectedItemId, we can proceed with setting up the
-    // BottomNavigationBar with Navigation
-    setupBottomNavigationBar()
-  }
-
-  private fun setupBottomNavigationBar() {
-    val bottomNavigationView = binding.bottomNavigation
-    val navGraphIds = listOf(
-      R.navigation.dashboard,
-      R.navigation.profile,
-      R.navigation.diary,
-      R.navigation.map
-    )
-
-    // Setup the bottom navigation view with a list of navigation graphs
-    val controller = bottomNavigationView.setupWithNavController(
-      navGraphIds = navGraphIds,
-      fragmentManager = supportFragmentManager,
-      containerId = R.id.nav_host_container,
-      intent = intent
-    )
-    currentNavController = controller
-  }
-
-  override fun onSupportNavigateUp(): Boolean {
-    return currentNavController?.value?.navigateUp() ?: false
+  private fun getNavController(): NavController {
+    val navHostFragment = supportFragmentManager
+      .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
+    return navHostFragment.navController
   }
 }
 

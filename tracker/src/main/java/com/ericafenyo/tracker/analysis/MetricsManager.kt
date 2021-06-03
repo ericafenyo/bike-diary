@@ -24,6 +24,8 @@
 
 package com.ericafenyo.tracker.analysis
 
+import com.ericafenyo.bikediary.model.SimpleMetrics
+import com.ericafenyo.tracker.location.SimpleLocation
 import kotlin.math.roundToInt
 
 /**
@@ -64,7 +66,15 @@ object MetricsManager {
    */
   @JvmStatic
   fun metersPerSecondsToMilesPerHour(speed: Double): Double {
-    return if (speed >= 0) 2369362921 * speed else 0.0
+    return if (speed >= 0) 2.2369362921 * speed else 0.0
+  }
+
+  fun metersPerSecondsToKilometersPerHour(speed: Double): Double {
+    return if (speed >= 0) 3.6 * speed else 0.0
+  }
+
+  fun metersToKilometers(distance: Double): Double {
+    return if (distance >= 0) distance / distance else 0.0
   }
 
   /**
@@ -88,5 +98,58 @@ object MetricsManager {
       speed >= 20 -> 16.0
       else -> 0.0
     }
+  }
+
+
+  fun getLiveMetrics(locations: List<SimpleLocation>): SimpleMetrics {
+    if (locations.size < 2) {
+      return SimpleMetrics(speed = 0.0, distance = 0.0, duration = 0.0, calories = 0)
+    }
+
+    val distances = mutableListOf<Float>()
+    for (index in locations.indices) {
+      if (index != locations.size - 1) {
+        val startLocation = locations[index]
+        val nextLocation = locations[index + 1]
+        startLocation.distanceTo(nextLocation).also { distances.add(it) }
+      }
+    }
+
+    val times = locations.map { it.ts }
+
+    val timeDeltas = mutableListOf<Double>()
+    var index = 0
+    while (index < (times.size - 1)) {
+      timeDeltas.add(times[index + 1] - times[index])
+      index++
+    }
+
+    if (distances.size != timeDeltas.size) {
+      throw RuntimeException("distances size: ${distances.size} != timeDeltas size: ${timeDeltas.size}")
+    }
+
+    val speeds = mutableListOf<Double>()
+    for (i in distances.indices) {
+      speeds.add(distances[i] / timeDeltas[i])
+    }
+
+    // Get the origin and destination locations
+    val origin = locations.first()
+    val destination = locations.last()
+    val duration = destination.ts - origin.ts
+    val averageSpeed = speeds.average()
+
+    /*
+     * Note:
+     * speed is in meters per seconds (km/h).
+     * duration varies between seconds, minutes and hours.
+     * distance is in kilometers (km)
+     */
+    return SimpleMetrics(
+      speed = metersPerSecondsToKilometersPerHour(destination.speed.toDouble()),
+      duration = destination.ts - origin.ts,
+      distance = (distances.sum() * 0.001),
+      calories = getCalories(averageSpeed, duration),
+    )
   }
 }

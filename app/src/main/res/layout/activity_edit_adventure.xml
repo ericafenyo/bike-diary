@@ -31,7 +31,7 @@
   <data>
     <variable
         name="adventure"
-        type="com.ericafenyo.data.model.Adventure" />
+        type="com.ericafenyo.tracker.data.Adventure" />
 
     <variable
         name="onTextChangedListener"

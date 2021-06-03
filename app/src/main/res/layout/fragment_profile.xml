@@ -81,7 +81,7 @@
                 android:drawablePadding="@dimen/space_normal"
                 android:fontFamily="sans-serif-medium"
                 android:onCheckedChanged="@{(_, checked) -> model.onEnableDarkThemeEvent(checked)}"
-                android:text="@string/profile_lable_dark_mode"
+                android:text="@string/profile_label_dark_mode"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
           </FrameLayout>

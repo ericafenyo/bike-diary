@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name" translatable="false">Habit Diary</string>
+  <string name="app_name" translatable="false">Bike Diary</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Action strings                                                                              -
@@ -37,6 +37,7 @@
   <string name="format_level">Level %d</string>
   <string name="format_km_in_sec">%.2f km in %s</string>
   <string name="format_kcal" translatable="false">%s kcal</string>
+  <string name="format_small_suffix" translatable="false">%s <font size="12">%s</font></string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Text input errors strings                                                                   -
@@ -114,4 +115,12 @@
   <string name="sign_up_page_title_text">Let\'s create an account</string>
   <string name="sign_up_label_you_have_account_question">Already have an account?</string>
   <string name="sign_in_page_title_text">Let\'s sign you in</string>
+
+  <string name="dashboard_axis_label_monday">Mon</string>
+  <string name="dashboard_axis_label_tuesday">Tue</string>
+  <string name="dashboard_axis_label_wednesday">Wed</string>
+  <string name="dashboard_axis_label_thursday">Thu</string>
+  <string name="dashboard_axis_label_friday">Fri</string>
+  <string name="dashboard_axis_label_saturday">Sat</string>
+  <string name="dashboard_axis_label_sunday">Sun</string>
 </resources>

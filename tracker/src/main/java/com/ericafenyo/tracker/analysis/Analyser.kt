@@ -83,7 +83,7 @@ class Analyser constructor(private val context: Context) {
     try {
       if (records.size < 10) {
         Logger.debug(context, TAG, "Invalid record list, returning empty list")
-        return@withContext null
+        throw RuntimeException("Invalid record list, returning empty list")
       }
 
       // Create LineString feature for trip path
@@ -137,7 +137,11 @@ class Analyser constructor(private val context: Context) {
     }
   }
 
-  private fun buildMetrics(records: List<Record>): Metrics {
+  fun buildMetrics(records: List<Record>): Metrics {
+    if (records.size < 2) {
+      return Metrics.default()
+    }
+
     val distances = mutableListOf<Float>()
     for (index in records.indices) {
       if (index != records.size - 1) {
@@ -167,7 +171,7 @@ class Analyser constructor(private val context: Context) {
 
     // Get the origin and destination locations
     val origin = records.first()
-    val destination = records.first()
+    val destination = records.last()
     val duration = destination.ts - origin.ts
     val averageSpeed = speeds.average()
 

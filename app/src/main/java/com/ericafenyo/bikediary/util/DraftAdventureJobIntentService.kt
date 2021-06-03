@@ -41,7 +41,7 @@ class DraftAdventureJobIntentService : JobIntentService() {
 
   override fun onHandleWork(intent: Intent) {
     Logger.debug(applicationContext, TAG, "onHandleWork(intent: $intent)")
-    runBlocking { repository.draftAdventures() }
+    runBlocking { }
   }
 
   override fun onDestroy() {

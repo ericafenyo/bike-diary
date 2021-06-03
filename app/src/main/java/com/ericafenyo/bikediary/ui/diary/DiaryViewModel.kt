@@ -28,10 +28,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ericafenyo.data.data
+import com.ericafenyo.bikediary.model.UIState
 import com.ericafenyo.data.domain.GetAdventuresUseCase
 import com.ericafenyo.tracker.data.Adventure
-import com.ericafenyo.bikediary.model.UIState
+import com.ericafenyo.tracker.data.model.Result
+import com.ericafenyo.tracker.data.model.data
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
@@ -61,19 +62,20 @@ class DiaryViewModel @Inject constructor(
     _state.value = UIState(loading = true)
 
     kotlin.runCatching {
-    getAdventures()
-      .collect { result ->
-        Timber.d("Got adventures");
+      getAdventures()
+        .collect { result ->
+          Timber.d("Got adventures");
           setAdventureResult(result)
-      }  }.onFailure {
-      Timber.e(it,"Loading adventures")
-    }.onSuccess{
+        }
+    }.onFailure {
+      Timber.e(it, "Loading adventures")
+    }.onSuccess {
       Timber.d("Loading adventures success $it")
     }
-     /* .catch {
-        Timber.d("An error occurred loading adventures")
-        _adventures.value = emptyList();
-        _state.value = UIState(error = true) }*/
+    /* .catch {
+       Timber.d("An error occurred loading adventures")
+       _adventures.value = emptyList();
+       _state.value = UIState(error = true) }*/
 //      .launchIn(viewModelScope)/
   }
 
@@ -91,4 +93,3 @@ class DiaryViewModel @Inject constructor(
     }
   }
 }
-

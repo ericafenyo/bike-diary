@@ -24,7 +24,7 @@
 
 package com.ericafenyo.data.sync
 
-import com.ericafenyo.data.Result
+import com.ericafenyo.tracker.data.model.Result
 
 interface SyncManager {
   suspend fun performPeriodicSync()

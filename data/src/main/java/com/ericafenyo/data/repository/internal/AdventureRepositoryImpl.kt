@@ -24,78 +24,33 @@
 
 package com.ericafenyo.data.repository.internal
 
-import android.util.Log
-import com.ericafenyo.data.api.BikeDiaryService
 import com.ericafenyo.data.database.AdventureEntity
-import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.data.repository.AdventureRepository
-import com.ericafenyo.tracker.datastore.DataStoreModel
-import com.ericafenyo.tracker.util.JSON
-import java.util.*
+import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.tracker.data.api.BikeDiaryService
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 @Singleton
 @OptIn(ExperimentalCoroutinesApi::class)
 class AdventureRepositoryImpl @Inject constructor(
   private val service: BikeDiaryService,
   private val mapper: AdventureMapper,
-  private val trackerDataSource: DataStoreModel,
   private val localStore: AdventureLocalDataSource,
 ) : AdventureRepository {
-  override suspend fun getAdventures(): Flow<List<Adventure>> = flow {
-    Log.d("Tag", "Trying to get adventures")
+
+  override suspend fun adventures(): Flow<List<Adventure>> = flow {
     val adventures = localStore.getAdventures();
-    Log.d("Tag", "Trying to get adventures $adventures")
     emit(toEntities(adventures))
   }
+
+  override suspend fun adventure(): Flow<Adventure> = localStore.adventure().map { mapper.map(it) }
 
   private suspend fun toEntities(adventures: List<AdventureEntity>): List<Adventure> {
     return adventures.map { adventure -> mapper.map(adventure) }
   }
-
-  override suspend fun draftAdventures(): String {
-    val record = trackerDataSource.getRecord()
-    if (record != null) {
-      val stringData = record.data
-      val valueObject = JSON.parse(stringData, TrackerVO::class)
-
-      val data = record.data
-      val metadata = valueObject.metadata
-
-
-      val adventure = AdventureEntity(
-        id = "Unprocessed-${UUID.randomUUID()}",
-        title = "Untitled adventure",
-        speed = metadata.speed,
-        duration = metadata.duration,
-        distance = metadata.distance,
-        calories = metadata.calories,
-        date = "metadata.date",
-        geojson = JSON.stringify(data),
-        staticMap = ""
-      )
-        localStore.save(adventure)
-      Log.d("Log Tag", "Record from local store $adventure")
-    }
-    return ""
-  }
-}
-
-data class TrackerVO(
-  val data: Any,
-  val metadata: Metadata,
-) {
-  data class Metadata(
-    val id: String = "Unprocessed-${UUID.randomUUID()}",
-    val title: String = "",
-    val speed: Double,
-    val duration: Double,
-    val distance: Double,
-    val calories: Double,
-    //val date: String,
-  )
 }

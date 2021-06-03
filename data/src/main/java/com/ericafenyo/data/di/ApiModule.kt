@@ -26,7 +26,7 @@ package com.ericafenyo.data.di
 
 import android.content.Context
 import com.apollographql.apollo.ApolloClient
-import com.ericafenyo.data.api.BikeDiaryService
+import com.ericafenyo.tracker.data.api.BikeDiaryService
 import com.ericafenyo.data.api.internal.BikeDiaryServiceImpl
 import dagger.Module
 import dagger.Provides

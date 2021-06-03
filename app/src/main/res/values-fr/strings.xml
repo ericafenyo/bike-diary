@@ -52,4 +52,12 @@
   <string name="title_edit_adventure">Modifier l\'aventure</string>
   <string name="label_email">Email</string>
 
+  <string name="dashboard_axis_label_monday">Lun</string>
+  <string name="dashboard_axis_label_tuesday">Mar</string>
+  <string name="dashboard_axis_label_wednesday">Mer</string>
+  <string name="dashboard_axis_label_thursday">Jeu</string>
+  <string name="dashboard_axis_label_friday">Ven</string>
+  <string name="dashboard_axis_label_saturday">Sam</string>
+  <string name="dashboard_axis_label_sunday">Dim</string>
+
 </resources>

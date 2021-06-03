@@ -21,4 +21,9 @@
   <!-- Application Theme -->
   <style name="Theme.HabitDiary" parent="Theme.Base" />
 
+  <!-- Splash Screen theme. -->
+  <style name="SplashTheme" parent="Theme.HabitDiary">
+    <item name="android:windowBackground">@drawable/splash_background</item>
+  </style>
+
 </resources>

@@ -47,5 +47,5 @@ interface Cache<T : Any> {
   fun streams(): Flow<List<T>>
   fun single(): Flow<T>
   suspend fun getLatest(): T
-  fun clear()
+  suspend fun clear()
 }

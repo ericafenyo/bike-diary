@@ -25,7 +25,7 @@
 package com.ericafenyo.bikediary.data.trip
 
 import com.ericafenyo.bikediary.model.Trip
-import com.ericafenyo.tracker.datastore.DataStoreModel
+import com.ericafenyo.tracker.datastore.RecordsProvider
 import javax.inject.Inject
 
 interface TripRepository {
@@ -33,7 +33,7 @@ interface TripRepository {
 }
 
 class TripRepositoryImpl @Inject constructor(
-  private val trackerDataSource: DataStoreModel
+  private val trackerDataSource: RecordsProvider
 ) : TripRepository {
   override suspend fun currentTrip(tripId: String): Trip {
     TODO("Not yet implemented")

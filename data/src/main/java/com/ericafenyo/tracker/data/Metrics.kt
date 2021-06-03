@@ -37,4 +37,15 @@ data class Metrics(
   val calories: Int,
   val startedAt: String,
   val completedAt: String,
-)
+) {
+  companion object {
+    fun default() = Metrics(
+      speed = 0.0,
+      duration = 0.0,
+      distance = 0.0,
+      calories = 0,
+      startedAt = "",
+      completedAt = ""
+    )
+  }
+}

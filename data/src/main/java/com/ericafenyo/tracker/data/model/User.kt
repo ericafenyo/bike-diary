@@ -22,21 +22,13 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.di
+package com.ericafenyo.tracker.data.model
 
-import com.ericafenyo.data.repository.AdventureRepository
-import com.ericafenyo.data.repository.internal.AdventureRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
-
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
-
-  @Binds
-  @Singleton
-  abstract fun bindAdventureRepository(repository: AdventureRepositoryImpl): AdventureRepository
-}
+data class User(
+  val id: String,
+  val email: String,
+  val name: String,
+  val bio: String,
+  val avatarUrl: String,
+  val weight: Double,
+)
