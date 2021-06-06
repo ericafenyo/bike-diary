@@ -6,21 +6,22 @@
   <dimen name="text_size_h3">18sp</dimen>
 
   <dimen name="bottom_navigation_elevation">4dp</dimen>
+
   <dimen name="nav_avatar_size">48dp</dimen>
 
-
-  <!-- 8 grid spacing -->
   <dimen name="space_micro">4dp</dimen>
   <dimen name="space_small">8dp</dimen>
   <dimen name="space_normal">16dp</dimen>
-  <dimen name="spacing_medium">24dp</dimen>
-  <dimen name="spacing_large">32dp</dimen>
-  <dimen name="spacing_huge">40dp</dimen>
-  <dimen name="spacing_xlarge">48dp</dimen>
+  <dimen name="space_medium">24dp</dimen>
+  <dimen name="space_large">32dp</dimen>
+  <dimen name="space_huge">48dp</dimen>
 
   <dimen name="a11y_min_touch_target">48dp</dimen>
+
   <dimen name="bottom_nav_height">56dp</dimen>
+
   <dimen name="floating_action_button_elevation">10</dimen>
+
   <dimen name="progress_indicator_corner_radius">8dp</dimen>
 
 </resources>
