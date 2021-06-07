@@ -25,7 +25,6 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
@@ -35,111 +34,142 @@
         type="com.ericafenyo.bikediary.model.SimpleMetrics" />
   </data>
 
-  <com.google.android.flexbox.FlexboxLayout
+  <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="#F6F6F6"
-      android:padding="@dimen/space_micro"
-      app:flexDirection="row">
+      android:layout_height="match_parent"
+      android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/distance_container"
+    <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingVertical="@dimen/space_normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/keyline_center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/speed_container">
+        android:background="#F6F6F6"
+        android:padding="@dimen/space_extra_small"
+        app:flexDirection="row">
 
-      <TextView
-          android:id="@+id/text_metrics_distance"
-          android:layout_width="wrap_content"
+      <LinearLayout
+          android:id="@+id/distance_container"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@{String.valueOf(metrics.distance)}"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-          tools:text="9.99km" />
+          android:layout_marginEnd="2dp"
+          android:background="@color/white"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:paddingVertical="@dimen/space_normal"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@+id/keyline_center"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/speed_container">
 
-      <TextView
-          android:id="@+id/text_metrics_distance_label"
-          android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/text_metrics_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(metrics.distance)}"
+            android:textAppearance="?textAppearanceHeadline4"
+            tools:text="9.99km" />
+
+        <TextView
+            android:id="@+id/text_metrics_distance_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Distance(Km)"
+            android:textAppearance="?textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="@+id/text_metrics_distance"
+            app:layout_constraintStart_toStartOf="@+id/text_metrics_distance"
+            app:layout_constraintTop_toBottomOf="@+id/text_metrics_distance" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/calories_container"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="Distance"
-          app:layout_constraintEnd_toEndOf="@+id/text_metrics_distance"
-          app:layout_constraintStart_toStartOf="@+id/text_metrics_distance"
-          app:layout_constraintTop_toBottomOf="@+id/text_metrics_distance" />
+          android:layout_marginStart="2dp"
+          android:layout_marginEnd="2dp"
+          android:background="@color/white"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:paddingVertical="@dimen/space_normal"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/speed_container"
+          app:layout_constraintTop_toTopOf="parent">
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/text_metrics_calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(metrics.duration)}"
+            android:textAppearance="?textAppearanceHeadline4"
+            tools:layout_editor_absoluteX="55dp"
+            tools:layout_editor_absoluteY="202dp"
+            tools:text="236" />
+
+        <TextView
+            android:id="@+id/text_metrics_duration_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calories(kcal)"
+            android:textAppearance="?textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="@+id/text_metrics_duration"
+            app:layout_constraintStart_toStartOf="@+id/text_metrics_duration"
+            app:layout_constraintTop_toBottomOf="@+id/text_metrics_duration" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/speed_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="2dp"
+          android:background="@color/white"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:paddingVertical="@dimen/space_normal"
+          app:layout_constraintEnd_toStartOf="@+id/keyline_center"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_metrics_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(metrics.speed)}"
+            android:textAppearance="?textAppearanceHeadline4"
+            tools:layout_editor_absoluteX="186dp"
+            tools:layout_editor_absoluteY="67dp"
+            tools:text="4km/h" />
+
+        <TextView
+            android:id="@+id/text_metrics_speed_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speed(km/h)"
+            android:textAppearance="?textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="@+id/text_metrics_speed"
+            app:layout_constraintStart_toStartOf="@+id/text_metrics_speed"
+            app:layout_constraintTop_toBottomOf="@+id/text_metrics_speed" />
+      </LinearLayout>
+
+    </com.google.android.flexbox.FlexboxLayout>
 
     <LinearLayout
-        android:id="@+id/calories_container"
+        android:id="@+id/timer_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingVertical="@dimen/space_normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/speed_container"
-        app:layout_constraintTop_toTopOf="parent">
-
-      <TextView
-          android:id="@+id/text_metrics_calories"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@{String.valueOf(metrics.duration)}"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-          tools:layout_editor_absoluteX="55dp"
-          tools:layout_editor_absoluteY="202dp"
-          tools:text="236" />
-
-      <TextView
-          android:id="@+id/text_metrics_duration_label"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Calories"
-          app:layout_constraintEnd_toEndOf="@+id/text_metrics_duration"
-          app:layout_constraintStart_toStartOf="@+id/text_metrics_duration"
-          app:layout_constraintTop_toBottomOf="@+id/text_metrics_duration" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/speed_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingVertical="@dimen/space_normal"
         app:layout_constraintEnd_toStartOf="@+id/keyline_center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_wrapBefore="true">
 
-      <TextView
-          android:id="@+id/text_metrics_speed"
+      <Chronometer
+          android:id="@+id/chronometer"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@{String.valueOf(metrics.speed)}"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-          tools:layout_editor_absoluteX="186dp"
-          tools:layout_editor_absoluteY="67dp"
-          tools:text="4km/h" />
+          android:textAppearance="?textAppearanceHeadline3" />
 
-      <TextView
-          android:id="@+id/text_metrics_speed_label"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Speed"
-          app:layout_constraintEnd_toEndOf="@+id/text_metrics_speed"
-          app:layout_constraintStart_toStartOf="@+id/text_metrics_speed"
-          app:layout_constraintTop_toBottomOf="@+id/text_metrics_speed" />
     </LinearLayout>
-  </com.google.android.flexbox.FlexboxLayout>
+  </LinearLayout>
 </layout>
