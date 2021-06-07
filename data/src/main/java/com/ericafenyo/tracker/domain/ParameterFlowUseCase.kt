@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,43 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.domain
+package com.ericafenyo.tracker.domain
 
-
-import android.util.Log
 import com.ericafenyo.tracker.data.model.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 
 /**
- * Executes business logic synchronously or asynchronously using Coroutines.
+ * Executes business logic in its execute method and keep posting updates to the result as
+ * [Result<R>].
+ * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
  */
-abstract class CoroutineUseCaseWithoutParams<R>(private val coroutineDispatcher: CoroutineDispatcher) {
-  private val tag = "CoroutineInteractor"
+abstract class ParameterFlowUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
-  /** Executes the use case asynchronously and returns a [Result].
-   *
-   * @return a [Result].
-   */
-  suspend operator fun invoke(): Result<R> {
-    return try {
-      // Moving all use case's executions to the injected dispatcher
-      // In production code, this is usually the Default dispatcher (background thread)
-      // In tests, this becomes a TestCoroutineDispatcher
-      withContext(coroutineDispatcher) {
-        execute().let {
-          Result.Success(it)
-        }
-      }
-    } catch (exception: Exception) {
-      Log.e(tag, "$exception")
-      Result.Error(exception)
-    }
-  }
+  operator fun invoke(parameters: P): Flow<Result<R>> = execute(parameters)
+    .catch { e -> emit(Result.Error(Exception(e))) }
+    .flowOn(coroutineDispatcher)
 
-  /**
-   * Override this to set the code to be executed.
-   */
-  @Throws(RuntimeException::class)
-  protected abstract suspend fun execute(): R
+  protected abstract fun execute(parameters: P): Flow<Result<R>>
 }

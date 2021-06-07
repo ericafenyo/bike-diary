@@ -22,38 +22,34 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.database
+package com.ericafenyo.tracker.database.dao
 
-import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.ericafenyo.data.database.dao.AdventureDao
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.ericafenyo.tracker.database.entity.AdventureEntity
+import kotlinx.coroutines.flow.Flow
 
-@Database(entities = [AdventureEntity::class], version = 1, exportSchema = false)
-abstract class CacheDatabase : RoomDatabase() {
-  abstract fun getAdventureDao(): AdventureDao
+/**
+ * A Data Access Object with variety of query methods for database interactions.
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-04-17
+ */
+@Dao
+interface AdventureDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun bulkInsert(adventures: List<AdventureEntity>)
 
-  companion object {
-    private const val DB_NAME = "cache-db"
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(adventure: AdventureEntity)
 
-    @Volatile
-    private var INSTANCE: CacheDatabase? = null
+  @Query("SELECT * FROM adventures")
+  suspend fun getAdventures(): List<AdventureEntity>
 
-    @JvmStatic
-    fun getInstance(context: Context): CacheDatabase {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: createCacheDatabase(context)
-          .also { INSTANCE = it }
-      }
-    }
-
-    private fun createCacheDatabase(context: Context): CacheDatabase {
-      return Room.databaseBuilder(
-        context,
-        CacheDatabase::class.java,
-        DB_NAME
-      ).build()
-    }
-  }
+  @Query("SELECT * FROM adventures ORDER BY id DESC Limit 1")
+  fun adventure(): Flow<AdventureEntity>
 }

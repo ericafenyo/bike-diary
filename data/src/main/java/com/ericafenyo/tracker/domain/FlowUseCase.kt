@@ -22,34 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.database.dao
+package com.ericafenyo.tracker.domain
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.ericafenyo.data.database.AdventureEntity
+import com.ericafenyo.tracker.data.model.Result
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 
 /**
- * A Data Access Object with variety of query methods for database interactions.
- *
- * @author Eric
- * @since 1.0
- *
- * created on 2021-04-17
+ * Executes business logic in its execute method and keep posting updates to the result as
+ * [Result<R>].
+ * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
  */
-@Dao
-interface AdventureDao {
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun bulkInsert(adventures: List<AdventureEntity>)
+abstract class FlowUseCase<R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(adventure: AdventureEntity)
+  operator fun invoke(): Flow<Result<R>> = execute()
+    .catch { e -> emit(Result.Error(Exception(e))) }
+    .flowOn(coroutineDispatcher)
 
-  @Query("SELECT * FROM adventures")
-  suspend fun getAdventures(): List<AdventureEntity>
-
-  @Query("SELECT * FROM adventures ORDER BY id DESC Limit 1")
-  fun adventure(): Flow<AdventureEntity>
+  protected abstract fun execute(): Flow<Result<R>>
 }

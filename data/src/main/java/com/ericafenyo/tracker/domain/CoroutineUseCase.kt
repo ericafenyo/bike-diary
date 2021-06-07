@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2020 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,43 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.data.trip
+package com.ericafenyo.tracker.domain
 
-import com.ericafenyo.bikediary.Result
-import com.ericafenyo.bikediary.data.FlowInteractor
-import com.ericafenyo.tracker.di.qualifier.IODispatcher
-import com.ericafenyo.bikediary.model.Trip
+
+import android.util.Log
+import com.ericafenyo.tracker.data.model.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
+import kotlinx.coroutines.withContext
 
-class GetTripsUseCase @Inject constructor(
-  private val repository: TripRepository,
-  @IODispatcher dispatcher: CoroutineDispatcher
-) : FlowInteractor<Unit, List<Trip>>(dispatcher) {
-  override fun execute(parameters: Unit): Flow<Result<List<Trip>>> {
-    TODO()
+/**
+ * Executes business logic synchronously or asynchronously using Coroutines.
+ */
+abstract class CoroutineUseCase<R>(private val coroutineDispatcher: CoroutineDispatcher) {
+  private val tag = "CoroutineInteractor"
+
+  /** Executes the use case asynchronously and returns a [Result].
+   *
+   * @return a [Result].
+   */
+  suspend operator fun invoke(): Result<R> {
+    return try {
+      // Moving all use case's executions to the injected dispatcher
+      // In production code, this is usually the Default dispatcher (background thread)
+      // In tests, this becomes a TestCoroutineDispatcher
+      withContext(coroutineDispatcher) {
+        execute().let {
+          Result.Success(it)
+        }
+      }
+    } catch (exception: Exception) {
+      Log.e(tag, "$exception")
+      Result.Error(exception)
+    }
   }
+
+  /**
+   * Override this to set the code to be executed.
+   */
+  @Throws(RuntimeException::class)
+  protected abstract suspend fun execute(): R
 }

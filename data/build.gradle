@@ -74,6 +74,7 @@ android {
 
 dependencies {
     implementation project(path: ':shared')
+    implementation project(path: ':model')
 
     testImplementation libs.junit
 

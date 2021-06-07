@@ -52,7 +52,7 @@
         android:id="@+id/card_trip_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.HabitDiary.MediumComponent">
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.HabitDiary.LargeComponent">
 
       <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"

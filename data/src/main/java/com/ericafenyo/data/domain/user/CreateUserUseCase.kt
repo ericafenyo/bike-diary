@@ -24,7 +24,7 @@
 
 package com.ericafenyo.data.domain.user
 
-import com.ericafenyo.data.domain.CoroutineUseCase
+import com.ericafenyo.tracker.domain.CoroutineUseCase
 import com.ericafenyo.tracker.data.api.repository.UserRepository
 import com.ericafenyo.tracker.data.api.vo.CreateUserRequest
 import com.ericafenyo.tracker.data.model.User

@@ -25,7 +25,7 @@
 package com.ericafenyo.bikediary.data.settings
 
 import com.ericafenyo.bikediary.data.CoroutineInteractor
-import com.ericafenyo.bikediary.di.qualifier.IODispatcher
+import com.ericafenyo.tracker.di.qualifier.IODispatcher
 import com.ericafenyo.bikediary.model.Theme
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject

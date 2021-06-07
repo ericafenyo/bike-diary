@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2020 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,32 +22,10 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.domain
+package com.ericafenyo.tracker.di.qualifier
 
-import com.ericafenyo.data.repository.AdventureRepository
-import com.ericafenyo.tracker.data.Adventure
-import com.ericafenyo.tracker.data.model.Result
-import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import timber.log.Timber
+import javax.inject.Qualifier
 
-
-class GetAdventuresUseCase @Inject constructor(
-  private val repository: AdventureRepository,
-  // val dispatchers: CoroutineDispatchers
-) : FlowUseCaseWithoutParams<List<Adventure>>(Dispatchers.IO) {
-  override fun execute(): Flow<Result<List<Adventure>>> = flow {
-    try {
-      repository.adventures().collect { adventures ->
-        Timber.d("$adventures")
-        emit(Result.Success(adventures))
-      }
-    } catch (exception: Exception) {
-      Timber.e(exception)
-      emit(Result.Error(exception))
-    }
-  }
-}
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class IODispatcher

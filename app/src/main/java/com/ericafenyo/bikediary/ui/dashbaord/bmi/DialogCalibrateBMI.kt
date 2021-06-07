@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.dashbaord
+package com.ericafenyo.bikediary.ui.dashbaord.bmi
 
 import android.view.View
 import com.ericafenyo.bikediary.R

@@ -25,7 +25,7 @@
 package com.ericafenyo.bikediary.di
 
 import com.ericafenyo.bikediary.di.qualifier.DefaultDispatcher
-import com.ericafenyo.bikediary.di.qualifier.IODispatcher
+import com.ericafenyo.tracker.di.qualifier.IODispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

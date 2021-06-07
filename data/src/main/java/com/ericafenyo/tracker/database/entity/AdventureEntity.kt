@@ -22,24 +22,38 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.di
+package com.ericafenyo.tracker.database.entity
 
-import android.content.Context
-import com.ericafenyo.tracker.database.CacheDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.ericafenyo.tracker.data.Adventure
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
+@Entity(tableName = "adventures")
+data class AdventureEntity(
+  @PrimaryKey val id: String,
+  val title: String,
+  val speed: Double,
+  val duration: Double,
+  val distance: Double,
+  val calories: Int,
+  val startedAt: String,
+  val completedAt: String,
+  val geojson: String,
+  val imageUrl: String,
+) {
 
-  @Provides
-  @Singleton
-  fun provideCacheDatabase(@ApplicationContext context: Context): CacheDatabase {
-    return CacheDatabase.getInstance(context)
+  companion object {
+    fun fromAdventure(adventure: Adventure) = AdventureEntity(
+      id = adventure.id,
+      title = adventure.title,
+      speed = adventure.speed,
+      duration = adventure.duration,
+      distance = adventure.distance,
+      calories = adventure.calories,
+      startedAt = adventure.startedAt,
+      completedAt = adventure.completedAt,
+      geojson = adventure.geojson,
+      imageUrl = adventure.imageUrl,
+    )
   }
 }

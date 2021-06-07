@@ -9,12 +9,12 @@
 
   <dimen name="nav_avatar_size">48dp</dimen>
 
-  <dimen name="space_micro">4dp</dimen>
+  <dimen name="space_extra_small">4dp</dimen>
   <dimen name="space_small">8dp</dimen>
   <dimen name="space_normal">16dp</dimen>
   <dimen name="space_medium">24dp</dimen>
   <dimen name="space_large">32dp</dimen>
-  <dimen name="space_huge">48dp</dimen>
+  <dimen name="space_extra_large">48dp</dimen>
 
   <dimen name="a11y_min_touch_target">48dp</dimen>
 
@@ -23,5 +23,8 @@
   <dimen name="floating_action_button_elevation">10</dimen>
 
   <dimen name="progress_indicator_corner_radius">8dp</dimen>
+
+  <dimen name="bmi_scale_values_text_size">10sp</dimen>
+  <dimen name="bmi_scale_height">24dp</dimen>
 
 </resources>

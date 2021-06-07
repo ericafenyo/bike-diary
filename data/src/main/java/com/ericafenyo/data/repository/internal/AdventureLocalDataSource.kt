@@ -24,8 +24,8 @@
 
 package com.ericafenyo.data.repository.internal
 
-import com.ericafenyo.data.database.AdventureEntity
-import com.ericafenyo.data.database.CacheDatabase
+import com.ericafenyo.tracker.database.entity.AdventureEntity
+import com.ericafenyo.tracker.database.CacheDatabase
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow

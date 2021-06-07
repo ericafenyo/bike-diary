@@ -62,15 +62,16 @@
           android:fontFamily="sans-serif-medium"
           android:onClick="@{()-> trackingEvent.onClick(model.isTrackingOngoing)}"
           android:text="@{model.isTrackingOngoing ? @string/action_stop_adventure: @string/action_start_adventure}"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+          android:textAppearance="?attr/textAppearanceBody2"
           app:icon="@{model.isTrackingOngoing ? @drawable/ic_stop: @drawable/ic_play_arrow}"
-          app:iconSize="40dp"
+          app:iconSize="32dp"
           app:iconTint="@{model.isTrackingOngoing ? @color/red :@color/color_primary}"
           tools:ignore="ContentDescription" />
     </com.mapbox.mapboxsdk.maps.MapView>
 
     <include
         layout="@layout/live_metrics"
+        android:id="@+id/live_metrics"
         bind:metrics="@{metrics}" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

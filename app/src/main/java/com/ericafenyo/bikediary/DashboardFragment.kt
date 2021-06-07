@@ -31,7 +31,7 @@ import androidx.fragment.app.Fragment
 import com.ericafenyo.bikediary.databinding.FragmentHomeBinding
 import com.ericafenyo.bikediary.model.Achievement
 import com.ericafenyo.bikediary.model.Badge
-import com.ericafenyo.bikediary.ui.dashbaord.DialogCalibrateBMI
+import com.ericafenyo.bikediary.ui.dashbaord.bmi.DialogCalibrateBMI
 import com.ericafenyo.bikediary.util.drawableFrom
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart

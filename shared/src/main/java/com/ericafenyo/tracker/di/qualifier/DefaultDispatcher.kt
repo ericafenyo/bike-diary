@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2020 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,10 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.di
+package com.ericafenyo.bikediary.di.qualifier
 
-import android.content.Context
-import com.ericafenyo.tracker.database.CacheDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import javax.inject.Qualifier
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
-
-  @Provides
-  @Singleton
-  fun provideCacheDatabase(@ApplicationContext context: Context): CacheDatabase {
-    return CacheDatabase.getInstance(context)
-  }
-}
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class DefaultDispatcher

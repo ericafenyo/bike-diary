@@ -25,8 +25,8 @@
 package com.ericafenyo.tracker.analysis
 
 import android.content.Context
-import com.ericafenyo.data.database.AdventureEntity
-import com.ericafenyo.data.database.CacheDatabase
+import com.ericafenyo.tracker.database.entity.AdventureEntity
+import com.ericafenyo.tracker.database.CacheDatabase
 import com.ericafenyo.tracker.R
 import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.tracker.data.Metrics

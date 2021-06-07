@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,33 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.domain
+package com.ericafenyo.tracker.domain.adventures
 
-
+import com.ericafenyo.data.repository.AdventureRepository
+import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.tracker.data.model.Result
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import com.ericafenyo.tracker.domain.FlowUseCase
+import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
-/**
- * Executes business logic synchronously or asynchronously using Coroutines.
- */
-abstract class CoroutineUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
-  private val tag = "CoroutineInteractor"
 
-  /** Executes the use case asynchronously and returns a [Result].
-   *
-   * @return a [Result].
-   *
-   * @param parameters the input parameters to run the use case with
-   */
-  suspend operator fun invoke(parameters: P): Result<R> {
-    return try {
-      // Moving all use case's executions to the injected dispatcher
-      // In production code, this is usually the Default dispatcher (background thread)
-      // In tests, this becomes a TestCoroutineDispatcher
-      withContext(coroutineDispatcher) {
-        execute(parameters).let {
-          Result.Success(it)
-        }
+class GetAdventuresUseCase @Inject constructor(
+  private val repository: AdventureRepository,
+  // val dispatchers: CoroutineDispatchers
+) : FlowUseCase<List<Adventure>>(Dispatchers.IO) {
+  override fun execute(): Flow<Result<List<Adventure>>> = flow {
+    try {
+      repository.adventures().collect { adventures ->
+        Timber.d("$adventures")
+        emit(Result.Success(adventures))
       }
     } catch (exception: Exception) {
-      Timber.tag(tag).e(exception)
-      Result.Error(exception)
+      Timber.e(exception)
+      emit(Result.Error(exception))
     }
   }
-
-  /**
-   * Override this to set the code to be executed.
-   */
-  @Throws(RuntimeException::class)
-  protected abstract suspend fun execute(parameters: P): R
 }

@@ -24,7 +24,7 @@
 
 package com.ericafenyo.data.repository.internal
 
-import com.ericafenyo.data.database.AdventureEntity
+import com.ericafenyo.tracker.database.entity.AdventureEntity
 import com.ericafenyo.data.repository.AdventureRepository
 import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.tracker.data.api.BikeDiaryService

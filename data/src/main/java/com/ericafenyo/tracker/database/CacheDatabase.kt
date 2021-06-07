@@ -22,38 +22,39 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.database
+package com.ericafenyo.tracker.database
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.ericafenyo.tracker.data.Adventure
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.ericafenyo.tracker.database.dao.AdventureDao
+import com.ericafenyo.tracker.database.entity.AdventureEntity
 
-@Entity(tableName = "adventures")
-data class AdventureEntity(
-  @PrimaryKey val id: String,
-  val title: String,
-  val speed: Double,
-  val duration: Double,
-  val distance: Double,
-  val calories: Int,
-  val startedAt: String,
-  val completedAt: String,
-  val geojson: String,
-  val imageUrl: String,
-) {
+@Database(entities = [AdventureEntity::class], version = 1, exportSchema = false)
+abstract class CacheDatabase : RoomDatabase() {
+  abstract fun getAdventureDao(): AdventureDao
 
   companion object {
-    fun fromAdventure(adventure: Adventure) = AdventureEntity(
-      id = adventure.id,
-      title = adventure.title,
-      speed = adventure.speed,
-      duration = adventure.duration,
-      distance = adventure.distance,
-      calories = adventure.calories,
-      startedAt = adventure.startedAt,
-      completedAt = adventure.completedAt,
-      geojson = adventure.geojson,
-      imageUrl = adventure.imageUrl,
-    )
+    private const val DB_NAME = "cache-db"
+
+    @Volatile
+    private var INSTANCE: CacheDatabase? = null
+
+    @JvmStatic
+    fun getInstance(context: Context): CacheDatabase {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: createCacheDatabase(context)
+          .also { INSTANCE = it }
+      }
+    }
+
+    private fun createCacheDatabase(context: Context): CacheDatabase {
+      return Room.databaseBuilder(
+        context,
+        CacheDatabase::class.java,
+        DB_NAME
+      ).build()
+    }
   }
 }

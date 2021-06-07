@@ -172,14 +172,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/spacing_medium" />
+            app:layout_constraintGuide_begin="@dimen/space_medium" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/right_keyline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="@dimen/spacing_medium" />
+            app:layout_constraintGuide_end="@dimen/space_medium" />
 
 
       </androidx.constraintlayout.widget.ConstraintLayout>

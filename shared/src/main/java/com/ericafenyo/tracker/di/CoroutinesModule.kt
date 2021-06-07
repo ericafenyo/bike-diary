@@ -22,24 +22,25 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.di
+package com.ericafenyo.tracker.di
 
-import android.content.Context
-import com.ericafenyo.tracker.database.CacheDatabase
+import com.ericafenyo.bikediary.di.qualifier.DefaultDispatcher
+import com.ericafenyo.tracker.di.qualifier.IODispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
-
+object CoroutinesModule {
+  @IODispatcher
   @Provides
-  @Singleton
-  fun provideCacheDatabase(@ApplicationContext context: Context): CacheDatabase {
-    return CacheDatabase.getInstance(context)
-  }
+  fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+  @DefaultDispatcher
+  @Provides
+  fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }

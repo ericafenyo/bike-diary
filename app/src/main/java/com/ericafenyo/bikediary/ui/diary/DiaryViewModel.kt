@@ -29,7 +29,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericafenyo.bikediary.model.UIState
-import com.ericafenyo.data.domain.GetAdventuresUseCase
+import com.ericafenyo.tracker.domain.adventures.GetAdventuresUseCase
 import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.data
