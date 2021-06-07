@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
-  Copyright (C) 2020 Eric Afenyo
+  Copyright (C) 2021 Eric Afenyo
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +22,39 @@
   SOFTWARE.
   -->
 
-<resources>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="ShapeAppearance.HabitDiary.Circular" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">50%</item>
-  </style>
+  <data>
 
-  <style name="ShapeAppearance.HabitDiary.SmallComponent" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">4dp</item>
-  </style>
+    <variable
+        name="onClick"
+        type="android.view.View.OnClickListener" />
 
-  <style name="ShapeAppearance.HabitDiary.MediumComponent" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">8dp</item>
-  </style>
+    <variable
+        name="text"
+        type="java.lang.String" />
+  </data>
 
-  <style name="ShapeAppearance.HabitDiary.LargeComponent" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">12dp</item>
-  </style>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/space_normal"
+        android:background="@color/divider" />
 
-  <style name="ShapeAppearance.BikeDiary.LargeComponent.Top" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSizeTopLeft">12dp</item>
-    <item name="cornerSizeTopRight">12dp</item>
-  </style>
-</resources>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button"
+        style="@style/Widget.BikeDiary.Button.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{onClick}"
+        android:text="@{text}"
+        tools:text="Action" />
+  </LinearLayout>
+</layout>

@@ -70,6 +70,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
   private lateinit var mapboxMap: MapboxMap
   private var line: Line? = null
   @Inject lateinit var provider: RecordsProvider
+  private lateinit var chronometerManager: ChronometerManager
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -83,9 +84,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         if (isOngoing) {
           requireActivity()
             .sendBroadcast(requireActivity().getExplicitIntent(R.string.tracker_action_stop))
+          chronometerManager.stop()
         } else {
           requireActivity()
             .sendBroadcast(requireActivity().getExplicitIntent(R.string.tracker_action_start))
+          chronometerManager.start()
         }
       }
     }
@@ -101,6 +104,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }*/
 
     displayMetrics()
+    chronometerManager = ChronometerManager(binding.liveMetrics.chronometer)
   }
 
 /*

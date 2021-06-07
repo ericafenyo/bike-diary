@@ -21,9 +21,13 @@
   <!-- Application Theme -->
   <style name="Theme.HabitDiary" parent="Theme.Base" />
 
-  <!-- Splash Screen theme. -->
-  <style name="SplashTheme" parent="Theme.HabitDiary">
-    <item name="android:windowBackground">@drawable/splash_background</item>
+  <!-- Splash Screen theme. --><style name="SplashTheme" parent="Theme.HabitDiary">
+  <item name="android:windowBackground">@drawable/splash_background</item>
+</style>
+
+  <style name="ThemeOverlay.BikeDiary.Dialog" parent="">
+    <item name="colorSurface">@color/white</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearance.HabitDiary.LargeComponent</item>
   </style>
 
 </resources>

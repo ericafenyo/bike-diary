@@ -10,6 +10,7 @@
   <string name="action_start_adventure">Start adventure</string>
   <string name="action_stop_adventure">End adventure</string>
   <string name="action_upload_picture">Upload picture</string>
+  <string name="action_save">Save</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Content description strings                                                                                   -
@@ -57,6 +58,8 @@
   <string name="input_hint_name">Name</string>
   <string name="input_hint_password">Password</string>
   <string name="input_helper_text_password_constraints">Password must contain minimum 8 characters, at least 1 uppercase letter and 1 number.</string>
+  <string name="input_hint_weight">Weight</string>
+  <string name="input_hint_height">Height</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Label strings                                                                               -
@@ -123,4 +126,5 @@
   <string name="dashboard_axis_label_friday">Fri</string>
   <string name="dashboard_axis_label_saturday">Sat</string>
   <string name="dashboard_axis_label_sunday">Sun</string>
+
 </resources>
