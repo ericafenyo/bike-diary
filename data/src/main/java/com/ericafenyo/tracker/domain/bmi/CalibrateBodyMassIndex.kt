@@ -25,14 +25,13 @@
 package com.ericafenyo.tracker.domain.bmi
 
 import com.ericafenyo.bikediary.model.BodyMassIndex
-import com.ericafenyo.tracker.data.api.repository.UserRepository
 import com.ericafenyo.tracker.di.qualifier.IODispatcher
 import com.ericafenyo.tracker.domain.ParameterizedInteractor
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
 class CalibrateBodyMassIndexInteractor @Inject constructor(
-  private val userRepository: UserRepository,
+
   @IODispatcher dispatcher: CoroutineDispatcher,
 ) : ParameterizedInteractor<BodyMassIndex, Unit>(dispatcher) {
 

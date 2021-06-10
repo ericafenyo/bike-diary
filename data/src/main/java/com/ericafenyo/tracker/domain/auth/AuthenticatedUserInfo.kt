@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.domain.signin
+package com.ericafenyo.tracker.domain.auth
 
 interface AuthenticatedUserInfo {
 
