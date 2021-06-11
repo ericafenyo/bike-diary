@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
   Copyright (C) 2020 Eric Afenyo
@@ -31,6 +30,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
+    <variable
+        name="listener"
+        type="com.ericafenyo.bikediary.ui.dashboard.OnDashboardEventListener" />
 
     <variable
         name="achievement"
@@ -303,6 +306,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginEnd="@dimen/space_small"
+              android:onClick="@{() -> listener.onEditBmi()}"
               app:icon="@drawable/ic_edit"
               app:layout_constraintBaseline_toBaselineOf="@+id/text_bmi_title"
               app:layout_constraintEnd_toEndOf="parent" />
@@ -312,8 +316,8 @@
               layout="@layout/partial_bmi_scale"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="@dimen/space_medium"
               android:layout_marginHorizontal="@dimen/space_normal"
+              android:layout_marginTop="@dimen/space_medium"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/text_bmi_title" />

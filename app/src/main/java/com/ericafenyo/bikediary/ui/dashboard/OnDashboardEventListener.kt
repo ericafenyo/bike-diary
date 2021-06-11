@@ -22,15 +22,8 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.data.model
+package com.ericafenyo.bikediary.ui.dashboard
 
-data class User(
-  val id: String,
-  val email: String,
-  val name: String,
-  val bio: String,
-  val gender: Gender,
-  val avatarUrl: String,
-  val height: Double,
-  val weight: Double,
-)
+interface OnDashboardEventListener {
+  fun onEditBmi()
+}

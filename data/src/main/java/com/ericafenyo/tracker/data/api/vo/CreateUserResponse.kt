@@ -28,7 +28,9 @@ data class CreateUserResponse(
   val id: String,
   val name: String,
   val email: String,
+  val gender: String,
   val weight: Double,
+  val height: Double,
   val bio: String,
   val avatarUrl: String
 )

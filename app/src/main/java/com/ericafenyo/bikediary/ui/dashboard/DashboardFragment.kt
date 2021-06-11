@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary
+package com.ericafenyo.bikediary.ui.dashboard
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.ericafenyo.bikediary.DayAxisValueFormatter
+import com.ericafenyo.bikediary.R.color
+import com.ericafenyo.bikediary.R.drawable
+import com.ericafenyo.bikediary.R.layout
 import com.ericafenyo.bikediary.databinding.FragmentHomeBinding
 import com.ericafenyo.bikediary.model.Achievement
 import com.ericafenyo.bikediary.model.Badge
-import com.ericafenyo.bikediary.ui.dashbaord.bmi.DialogCalibrateBMI
+import com.ericafenyo.bikediary.ui.dashboard.bmi.DialogCalibrateBodyMassIndex
 import com.ericafenyo.bikediary.util.drawableFrom
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
@@ -45,14 +50,16 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.wada811.databinding.dataBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
  * A simple [Fragment] subclass for displaying users adventure metrics.
  */
-class DashboardFragment : Fragment(R.layout.fragment_home) {
+@AndroidEntryPoint
+class DashboardFragment : Fragment(layout.fragment_home) {
   private val binding: FragmentHomeBinding by dataBinding()
-
+  private val model: DashboardViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -61,15 +68,20 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
       totalDistance = 100.toDouble(),
       badge = Badge(
         distance = 53.toDouble(),
-        icon = requireContext().drawableFrom(R.drawable.badge_level_one)
+        icon = requireContext().drawableFrom(drawable.badge_level_one)
       )
     )
 
+    binding.listener = DashboardEventListener(this,model,binding)
+
     setWeightData(binding.chartWeight)
     setAdventureData(binding.chartAdventures)
+    setUpBodyMassIndex()
+  }
 
-    binding.buttonEditBmi.setOnClickListener {
-      DialogCalibrateBMI().show(requireActivity().supportFragmentManager, "null")
+  private fun setUpBodyMassIndex() = with(binding) {
+    buttonEditBmi.setOnClickListener {
+      DialogCalibrateBodyMassIndex().show(requireActivity().supportFragmentManager, "null")
     }
   }
 
@@ -90,7 +102,7 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
 
     val targetAxis = LimitLine(65f, "65.0kg")
     targetAxis.lineWidth = 1f
-    targetAxis.lineColor = ContextCompat.getColor(requireContext(), R.color.color_green)
+    targetAxis.lineColor = ContextCompat.getColor(requireContext(), color.color_green)
     targetAxis.enableDashedLine(20f, 20f, 0f)
     targetAxis.labelPosition = RIGHT_BOTTOM
 
@@ -105,7 +117,7 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
 
     val dataset = LineDataSet(values, "")
     dataset.lineWidth = 2.5f
-    dataset.color = ContextCompat.getColor(requireContext(), R.color.color_primary)
+    dataset.color = ContextCompat.getColor(requireContext(), color.color_primary)
     dataset.setDrawCircles(false)
     dataset.setDrawValues(false)
 
@@ -129,7 +141,7 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
 
     val targetAxis = LimitLine(65f, "65.0kg")
     targetAxis.lineWidth = 1f
-    targetAxis.lineColor = ContextCompat.getColor(requireContext(), R.color.color_green)
+    targetAxis.lineColor = ContextCompat.getColor(requireContext(), color.color_green)
     targetAxis.enableDashedLine(20f, 20f, 0f)
     targetAxis.labelPosition = RIGHT_BOTTOM
 
@@ -144,7 +156,7 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
 
     val dataset = BarDataSet(values, "")
     //dataset.lineWidth = 2.5f
-    dataset.color = ContextCompat.getColor(requireContext(), R.color.color_primary)
+    dataset.color = ContextCompat.getColor(requireContext(), color.color_primary)
     //dataset.setDrawCircles(false)
     dataset.setDrawValues(false)
 

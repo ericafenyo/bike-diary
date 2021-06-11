@@ -25,6 +25,9 @@
 package com.ericafenyo.tracker.data.model
 
 import androidx.lifecycle.MutableLiveData
+import com.ericafenyo.bikediary.data.SimpleResult
+import com.ericafenyo.tracker.data.model.Result.Error
+import com.ericafenyo.tracker.data.model.Result.Loading
 import com.ericafenyo.tracker.data.model.Result.Success
 
 /**
@@ -54,6 +57,14 @@ val Result<*>.succeeded
 
 fun <T> Result<T>.successOr(fallback: T): T {
   return (this as? Success<T>)?.data ?: fallback
+}
+
+fun <T> Result<T>.simplify(): SimpleResult<T> {
+  return when (this) {
+    is Success -> SimpleResult.Success(data)
+    is Error -> SimpleResult.Error(exception)
+    Loading -> throw IllegalArgumentException("Result cannot be a Loading type: $this")
+  }
 }
 
 val <T> Result<T>.data: T?

@@ -22,21 +22,8 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.dashbaord.bmi
+package com.ericafenyo.bikediary.data.weight
 
-import android.view.View
-import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.databinding.DialogCalibrateBmiBinding
-import com.ericafenyo.bikediary.widget.BaseDialogFragment
-import com.wada811.databinding.dataBinding
-
-class DialogCalibrateBMI: BaseDialogFragment(R.layout.dialog_calibrate_bmi) {
-  private val _block: ((Double, Double) -> Boolean)? = null
-  private val binding: DialogCalibrateBmiBinding by dataBinding()
-
-  override fun onCreated(view: View) {
-    binding.apply {
-
-    }
-  }
+interface WeightRepository {
+  fun save(weight: Weight)
 }

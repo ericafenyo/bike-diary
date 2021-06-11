@@ -24,16 +24,19 @@
 
 package com.ericafenyo.tracker.data.api.repository.internal
 
+import com.ericafenyo.bikediary.data.user.UserLocalDataSource
 import com.ericafenyo.tracker.data.api.BikeDiaryService
 import com.ericafenyo.tracker.data.api.repository.UserRepository
 import com.ericafenyo.tracker.data.api.vo.CreateUserRequest
 import com.ericafenyo.tracker.data.model.User
+import com.ericafenyo.tracker.data.model.asEnum
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserRepositoryImpl @Inject constructor(
-  private val service: BikeDiaryService
+  private val service: BikeDiaryService,
+  private val localSource: UserLocalDataSource
 ) : UserRepository {
   override suspend fun createUser(request: CreateUserRequest): User {
     val response = service.createUser(request)
@@ -43,7 +46,17 @@ class UserRepositoryImpl @Inject constructor(
       name = response.name,
       bio = response.bio,
       avatarUrl = response.avatarUrl,
+      height = response.height,
       weight = response.weight,
+      gender = response.gender.asEnum(),
     )
+  }
+
+  override suspend fun getUser(): User {
+    TODO("Not yet implemented")
+  }
+
+  override suspend fun updateHeight(height: Double) {
+    localSource.updateHeight(height)
   }
 }

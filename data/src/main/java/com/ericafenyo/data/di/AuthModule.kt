@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.di
+package com.ericafenyo.data.di
 
-import com.ericafenyo.bikediary.di.qualifier.DefaultDispatcher
-import com.ericafenyo.tracker.di.qualifier.IODispatcher
+import com.ericafenyo.tracker.domain.auth.AuthenticatedUserInfo
+import com.ericafenyo.tracker.domain.auth.AuthenticatedUserInfoImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
-
-@InstallIn(SingletonComponent::class)
 @Module
-object CoroutinesModule {
+@InstallIn(SingletonComponent::class)
+abstract class AuthModule {
 
-  @DefaultDispatcher
+  @Binds
   @Singleton
-  @Provides
-  fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
-
-  @IODispatcher
-  @Singleton
-  @Provides
-  fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+  abstract fun bindAuthenticatedUserInfo(impl: AuthenticatedUserInfoImpl): AuthenticatedUserInfo
 }

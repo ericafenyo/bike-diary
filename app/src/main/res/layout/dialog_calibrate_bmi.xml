@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -25,35 +26,39 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
+    <variable
+        name="onAction"
+        type="android.view.View.OnClickListener" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-
     <TextView
         android:id="@+id/dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dialog title"
+        android:layout_marginVertical="@dimen/space_normal"
+        android:text="BMI calibration"
         android:textAppearance="?textAppearanceHeadline6"
         android:textSize="@dimen/text_size_h3"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/keyline_left" />
+        app:layout_constraintStart_toStartOf="@+id/keyline_left"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggle_button_units"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/space_medium"
         app:layout_constraintEnd_toStartOf="@+id/keyline_right"
         app:layout_constraintStart_toStartOf="@+id/keyline_left"
         app:layout_constraintTop_toBottomOf="@+id/dialog_title"
@@ -61,7 +66,7 @@
         app:singleSelection="true">
 
       <com.google.android.material.button.MaterialButton
-          android:id="@+id/button1"
+          android:id="@+id/button_kg_cm"
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -71,7 +76,7 @@
           app:shapeAppearanceOverlay="@style/ShapeAppearance.HabitDiary.SmallComponent" />
 
       <com.google.android.material.button.MaterialButton
-          android:id="@+id/button2"
+          android:id="@+id/button_button_lbs_ft"
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -83,16 +88,15 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_field_weight"
+        android:id="@+id/text_field_weight"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_normal"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/space_small"
         android:hint="@string/input_hint_weight"
         app:boxStrokeColor="@color/input_field_stroke_color_secondary"
-        app:layout_constraintEnd_toStartOf="@+id/input_field_height"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/text_field_height"
         app:layout_constraintStart_toStartOf="@+id/keyline_left"
         app:layout_constraintTop_toBottomOf="@+id/toggle_button_units"
         app:suffixText="kg">
@@ -102,22 +106,21 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="@font/google_sans_medium"
-          android:inputType="number"
-          android:text="71" />
+          android:inputType="numberDecimal"
+          tools:text="71" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_field_height"
+        android:id="@+id/text_field_height"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/space_small"
         android:hint="@string/input_hint_height"
         app:boxStrokeColor="@color/input_field_stroke_color_secondary"
-        app:layout_constraintBaseline_toBaselineOf="@id/input_field_weight"
+        app:layout_constraintBaseline_toBaselineOf="@id/text_field_weight"
         app:layout_constraintEnd_toStartOf="@id/keyline_right"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/input_field_weight"
+        app:layout_constraintStart_toEndOf="@id/text_field_weight"
         app:suffixText="cm">
 
       <com.google.android.material.textfield.TextInputEditText
@@ -125,12 +128,12 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="@font/google_sans_medium"
-          android:inputType="number"
-          android:text="170" />
+          android:inputType="numberDecimal"
+          tools:text="170" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <include
-        android:id="@+id/action_layout"
+        android:id="@+id/action"
         layout="@layout/partial_dialog_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -141,6 +144,7 @@
         app:layout_constraintStart_toStartOf="@+id/keyline_left"
         app:layout_constraintTop_toBottomOf="@id/barrier_metrics_inputs"
         app:layout_constraintVertical_bias="1.0"
+        bind:onClick="@{onAction}"
         bind:text="@{@string/action_save}" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -162,6 +166,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="input_field_height, input_field_weight" />
+        app:constraint_referenced_ids="text_field_height, text_field_weight" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

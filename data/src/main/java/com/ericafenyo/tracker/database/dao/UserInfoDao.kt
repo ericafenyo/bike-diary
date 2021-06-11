@@ -22,15 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.data.model
+package com.ericafenyo.tracker.database.dao
 
-data class User(
-  val id: String,
-  val email: String,
-  val name: String,
-  val bio: String,
-  val gender: Gender,
-  val avatarUrl: String,
-  val height: Double,
-  val weight: Double,
-)
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.ericafenyo.tracker.database.entity.UserInfo
+
+@Dao
+interface UserInfoDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insert(user: UserInfo)
+
+  @Query("SELECT * FROM user_info ORDER BY id DESC Limit 1")
+  suspend fun getUserInfo(): UserInfo?
+
+  @Query("UPDATE user_info SET height = :height")
+  suspend fun updateHeight(height: Double)
+}

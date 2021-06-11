@@ -22,36 +22,16 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.domain.bmi
+package com.ericafenyo.bikediary.data.user
 
-import com.ericafenyo.bikediary.data.weight.WeightRepository
-import com.ericafenyo.tracker.data.api.repository.UserRepository
-import com.ericafenyo.tracker.di.qualifier.IODispatcher
-import com.ericafenyo.tracker.domain.ParameterizedInteractor
-import com.ericafenyo.tracker.domain.auth.AuthenticatedUserInfo
+import com.ericafenyo.tracker.data.model.User
+import com.ericafenyo.tracker.database.dao.UserInfoDao
+import com.ericafenyo.tracker.database.entity.model
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Singleton
 
-typealias BodyMassIndexParams = CalibrateBodyMassIndexInteractor.Params
-
-class CalibrateBodyMassIndexInteractor @Inject constructor(
-  private val authenticatedUserInfo: AuthenticatedUserInfo,
-  private val weights: WeightRepository,
-  private val users: UserRepository,
-  @IODispatcher dispatcher: CoroutineDispatcher,
-) : ParameterizedInteractor<BodyMassIndexParams, Unit>(dispatcher) {
-
-  override suspend fun execute(params: BodyMassIndexParams) {
-    if (authenticatedUserInfo.isAuthenticated()) {
-      val user = authenticatedUserInfo.getData()
-      user?.let { users.update(user.copy(height = params.height, weight = params.weight)) }
-    } else {
-
-    }
-  }
-
-  data class Params(
-    val weight: Double,
-    val height: Double,
-  )
+@Singleton
+class UserLocalDataSource @Inject constructor(private val userInfoDao: UserInfoDao) {
+  suspend fun getUserInfo(): User? = userInfoDao.getUserInfo()?.model()
+  suspend fun updateHeight(height: Double)  = userInfoDao.updateHeight(height)
 }

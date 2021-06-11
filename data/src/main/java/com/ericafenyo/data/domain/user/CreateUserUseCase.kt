@@ -24,10 +24,10 @@
 
 package com.ericafenyo.data.domain.user
 
-import com.ericafenyo.tracker.domain.CoroutineUseCase
 import com.ericafenyo.tracker.data.api.repository.UserRepository
 import com.ericafenyo.tracker.data.api.vo.CreateUserRequest
 import com.ericafenyo.tracker.data.model.User
+import com.ericafenyo.tracker.domain.ParameterizedInteractor
 import com.ericafenyo.tracker.util.CoroutineDispatchers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,8 +36,8 @@ import javax.inject.Singleton
 class CreateUserUseCase @Inject constructor(
   private val repository: UserRepository,
   dispatchers: CoroutineDispatchers
-) : CoroutineUseCase<CreateUserRequest, User>(dispatchers.io) {
-  override suspend fun execute(parameters: CreateUserRequest): User {
-    return repository.createUser(parameters)
+) : ParameterizedInteractor<CreateUserRequest, User>(dispatchers.io) {
+  override suspend fun execute(params: CreateUserRequest): User {
+    return repository.createUser(params)
   }
 }

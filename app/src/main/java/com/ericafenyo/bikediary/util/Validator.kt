@@ -41,7 +41,10 @@ import timber.log.Timber
  *
  * created on 2021-05-14
  */
-class Validator constructor(private val context: Context) {
+class Validator constructor(
+  private val context: Context,
+  private val hideErrorDrawable: Boolean = false,
+) {
 
   fun isEmailValid(value: String, inputField: TextInputLayout): Boolean {
     val emailText = value.trim()
@@ -90,6 +93,9 @@ class Validator constructor(private val context: Context) {
       return true
     } else {
       inputField.error = context.getString(R.string.input_error_password_not_matched)
+      if (hideErrorDrawable) {
+        inputField.errorIconDrawable = null
+      }
       return false
     }
   }
@@ -121,6 +127,9 @@ class Validator constructor(private val context: Context) {
 
   private fun showRequiredError(inputField: TextInputLayout) {
     inputField.error = context.getString(R.string.input_error_field_required)
+    if (hideErrorDrawable) {
+      inputField.errorIconDrawable = null
+    }
   }
 
   private fun showInvalidPasswordError(inputField: TextInputLayout) {
@@ -129,6 +138,9 @@ class Validator constructor(private val context: Context) {
 
   private fun showInvalidEmailError(inputField: TextInputLayout) {
     inputField.error = context.getString(R.string.input_error_invalid_email)
+    if (hideErrorDrawable) {
+      inputField.errorIconDrawable = null
+    }
   }
 
   private fun validateLocalDate(date: String, inputField: TextInputLayout): Boolean {

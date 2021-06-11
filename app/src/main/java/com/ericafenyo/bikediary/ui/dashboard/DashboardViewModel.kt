@@ -22,36 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.domain.bmi
+package com.ericafenyo.bikediary.ui.dashboard
 
-import com.ericafenyo.bikediary.data.weight.WeightRepository
-import com.ericafenyo.tracker.data.api.repository.UserRepository
-import com.ericafenyo.tracker.di.qualifier.IODispatcher
-import com.ericafenyo.tracker.domain.ParameterizedInteractor
-import com.ericafenyo.tracker.domain.auth.AuthenticatedUserInfo
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import com.ericafenyo.tracker.domain.bmi.BodyMassIndexParams
+import com.ericafenyo.tracker.domain.bmi.CalibrateBodyMassIndexInteractor
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineDispatcher
 
-typealias BodyMassIndexParams = CalibrateBodyMassIndexInteractor.Params
+@HiltViewModel
+class DashboardViewModel @Inject constructor(
+  private val calibrateBodyMassIndex: CalibrateBodyMassIndexInteractor
+) : ViewModel() {
 
-class CalibrateBodyMassIndexInteractor @Inject constructor(
-  private val authenticatedUserInfo: AuthenticatedUserInfo,
-  private val weights: WeightRepository,
-  private val users: UserRepository,
-  @IODispatcher dispatcher: CoroutineDispatcher,
-) : ParameterizedInteractor<BodyMassIndexParams, Unit>(dispatcher) {
-
-  override suspend fun execute(params: BodyMassIndexParams) {
-    if (authenticatedUserInfo.isAuthenticated()) {
-      val user = authenticatedUserInfo.getData()
-      user?.let { users.update(user.copy(height = params.height, weight = params.weight)) }
-    } else {
-
-    }
+  fun saveBodyMassIndex(weight: Double, height: Double) = liveData {
+    val params = BodyMassIndexParams(weight = weight, height = height)
+    emit(calibrateBodyMassIndex(params))
   }
-
-  data class Params(
-    val weight: Double,
-    val height: Double,
-  )
 }

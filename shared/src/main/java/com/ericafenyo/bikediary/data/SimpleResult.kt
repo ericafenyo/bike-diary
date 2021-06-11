@@ -22,15 +22,9 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.data.model
+package com.ericafenyo.bikediary.data
 
-data class User(
-  val id: String,
-  val email: String,
-  val name: String,
-  val bio: String,
-  val gender: Gender,
-  val avatarUrl: String,
-  val height: Double,
-  val weight: Double,
-)
+sealed class SimpleResult<out R> {
+  data class Success<out T>(val data: T) : SimpleResult<T>()
+  data class Error(val exception: Exception) : SimpleResult<Nothing>()
+}

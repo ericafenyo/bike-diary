@@ -24,13 +24,11 @@
 
 package com.ericafenyo.tracker.data.model
 
-data class User(
-  val id: String,
-  val email: String,
-  val name: String,
-  val bio: String,
-  val gender: Gender,
-  val avatarUrl: String,
-  val height: Double,
-  val weight: Double,
-)
+enum class Gender(val code: String) {
+  MALE("male"),
+  FEMALE("female"),
+  UNSPECIFIED("unspecified"),
+  NON_GENDERED("other")
+}
+
+fun String.asEnum() = Gender.values().find { it.code == this } ?: Gender.UNSPECIFIED

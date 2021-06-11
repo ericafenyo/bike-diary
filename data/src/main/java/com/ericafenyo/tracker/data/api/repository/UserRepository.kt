@@ -29,4 +29,6 @@ import com.ericafenyo.tracker.data.model.User
 
 interface UserRepository {
   suspend fun createUser(request: CreateUserRequest): User
+  suspend fun getUser(): User
+  suspend fun update(user: User)
 }

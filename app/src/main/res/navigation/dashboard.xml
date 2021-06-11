@@ -31,7 +31,7 @@
 
   <fragment
       android:id="@+id/dashboardFragment"
-      android:name="com.ericafenyo.bikediary.DashboardFragment"
+      android:name="com.ericafenyo.bikediary.ui.dashboard.DashboardFragment"
       android:label="fragment_home"
       tools:layout="@layout/fragment_home" />
 </navigation>

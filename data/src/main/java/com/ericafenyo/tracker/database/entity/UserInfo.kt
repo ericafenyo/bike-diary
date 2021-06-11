@@ -25,20 +25,39 @@
 package com.ericafenyo.tracker.database.entity
 
 import androidx.room.Entity
-
-enum class Gender(code: String) {
-  MALE("male"),
-  FEMALE("female"),
-  UNSPECIFIED("unspecified"),
-  NON_GENDERED("other")
-}
+import com.ericafenyo.tracker.data.model.User
+import com.ericafenyo.tracker.data.model.asEnum
 
 @Entity(tableName = "user_info")
 data class UserInfo(
   val id: String,
   val name: String,
+  val email: String,
   val bio: String,
-  val gender: Gender,
-  val height: String,
+  val gender: String,
+  val height: Double,
+  val weight: Double,
   val avatarUrl: String,
+)
+
+fun UserInfo.model() = User(
+  id = id,
+  name = name,
+  email = email,
+  bio = bio,
+  gender = gender.asEnum(),
+  height = height,
+  weight = weight,
+  avatarUrl = avatarUrl,
+)
+
+fun User.entity() = UserInfo(
+  id = id,
+  name = name,
+  email = email,
+  bio = bio,
+  gender = gender.code,
+  height = height,
+  weight = weight,
+  avatarUrl = avatarUrl,
 )

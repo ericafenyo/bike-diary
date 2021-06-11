@@ -22,15 +22,12 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.data.model
+package com.ericafenyo.tracker.database.entity
 
-data class User(
+import androidx.room.Entity
+
+@Entity(tableName = "guests")
+data class Guest(
   val id: String,
-  val email: String,
-  val name: String,
-  val bio: String,
-  val gender: Gender,
-  val avatarUrl: String,
-  val height: Double,
-  val weight: Double,
+  val height: String,
 )

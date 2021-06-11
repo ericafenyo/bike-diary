@@ -24,6 +24,25 @@
 
 package com.ericafenyo.tracker.domain.auth
 
-interface AuthenticatedUserInfo {
+import com.ericafenyo.bikediary.data.user.UserLocalDataSource
+import com.ericafenyo.tracker.data.model.User
+import javax.inject.Inject
+import javax.inject.Singleton
 
+interface AuthenticatedUserInfo {
+  suspend fun getId(): String?
+  suspend fun getData(): User?
+  suspend fun isAuthenticated(): Boolean
+}
+
+@Singleton
+class AuthenticatedUserInfoImpl @Inject constructor(
+  private val localSource: UserLocalDataSource,
+) : AuthenticatedUserInfo {
+
+  override suspend fun getId(): String? = getData()?.id
+
+  override suspend fun getData(): User? = localSource.getUserInfo()
+
+  override suspend fun isAuthenticated(): Boolean = getId() != null
 }
