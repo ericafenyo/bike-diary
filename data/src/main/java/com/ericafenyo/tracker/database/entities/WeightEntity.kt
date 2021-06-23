@@ -25,15 +25,18 @@
 package com.ericafenyo.tracker.database.entities
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.time.Clock
 import java.time.LocalDate
-import java.time.ZoneId
+import java.time.OffsetDateTime
 
-@Entity(tableName = "weights")
+@Entity(
+  tableName = "weights",
+  indices = [Index(value = ["date"], unique = true)]
+)
 data class WeightEntity(
   @PrimaryKey(autoGenerate = true) val id: Long = 0,
   val value: Double,
-  val time: Long = Clock.systemDefaultZone().millis(),
-  val date: String = LocalDate.now(ZoneId.systemDefault()).toString()
+  val time: String = OffsetDateTime.now().toString(),
+  val date: String = LocalDate.now().toString()
 )

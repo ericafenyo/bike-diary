@@ -34,10 +34,12 @@ import javax.inject.Singleton
 class ConfigurationLocalDataSource @Inject constructor(database: CacheDatabase) {
   private val dao = database.getConfigDao()
 
-  suspend fun getConfiguration(): Configuration = dao.getConfig().toModel()
-}
+  suspend fun getConfiguration(): Configuration {
+    val entity = dao.getConfig() ?: Config(height = 0.0, weight = 0.0)
+    return Configuration(weight = entity.weight, height = entity.height)
+  }
 
-private fun Config.toModel() = Configuration(
-  weight = weight,
-  height = height,
-)
+  suspend fun saveConfiguration(configuration: Configuration) {
+    dao.insert(Config(weight = configuration.weight, height = configuration.height))
+  }
+}

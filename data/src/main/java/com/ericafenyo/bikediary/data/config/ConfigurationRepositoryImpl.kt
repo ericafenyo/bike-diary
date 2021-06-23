@@ -33,4 +33,8 @@ class ConfigurationRepositoryImpl @Inject constructor(
   private val localSource: ConfigurationLocalDataSource
 ) : ConfigurationRepository {
   override suspend fun getConfiguration(): Configuration = localSource.getConfiguration()
+
+  override suspend fun save(configuration: Configuration) {
+    localSource.saveConfiguration(configuration)
+  }
 }

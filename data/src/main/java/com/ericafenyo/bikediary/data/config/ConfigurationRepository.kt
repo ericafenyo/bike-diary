@@ -28,4 +28,5 @@ import com.ericafenyo.bikediary.model.Configuration
 
 interface ConfigurationRepository {
   suspend fun getConfiguration(): Configuration
+  suspend fun save(configuration: Configuration)
 }

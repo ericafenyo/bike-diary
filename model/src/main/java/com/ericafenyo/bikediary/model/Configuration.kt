@@ -27,4 +27,8 @@ package com.ericafenyo.bikediary.model
 data class Configuration(
   val weight: Double,
   val height: Double,
-)
+) {
+  companion object {
+    fun default() = Configuration(0.0, 0.0)
+  }
+}

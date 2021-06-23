@@ -36,9 +36,11 @@
    - Format strings                                                                              -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="format_level">Level %d</string>
-  <string name="format_km_in_sec">%.2f km in %s</string>
+  <string name="format_km_in_sec">%1$.2f km in %2$s</string>
   <string name="format_kcal" translatable="false">%s kcal</string>
-  <string name="format_small_suffix" translatable="false">%s <font size="12">%s</font></string>
+  <string name="format_small_suffix" translatable="false">%1$s <font size="12">%2$s</font></string>
+  <string name="format_one_decimal_place" translatable="false">%.1f</string>
+  <string name="format_two_decimal_place" translatable="false">%.2f</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Text input errors strings                                                                   -
@@ -119,6 +121,10 @@
   <string name="sign_up_label_you_have_account_question">Already have an account?</string>
   <string name="sign_in_page_title_text">Let\'s sign you in</string>
 
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Dashboard strings                                                                           -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="dashboard_axis_label_monday">Mon</string>
   <string name="dashboard_axis_label_tuesday">Tue</string>
   <string name="dashboard_axis_label_wednesday">Wed</string>
@@ -126,5 +132,7 @@
   <string name="dashboard_axis_label_friday">Fri</string>
   <string name="dashboard_axis_label_saturday">Sat</string>
   <string name="dashboard_axis_label_sunday">Sun</string>
+
+  <string name="dashboard_bmi_card_title"><![CDATA[BMI(Kg/m<small><small><sup>2</sup></small>)]]></string>
 
 </resources>

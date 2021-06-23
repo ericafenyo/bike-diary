@@ -24,39 +24,23 @@
 
 package com.ericafenyo.tracker.domain.bmi
 
+import com.ericafenyo.bikediary.data.config.ConfigurationRepository
 import com.ericafenyo.bikediary.data.weight.WeightRepository
-import com.ericafenyo.tracker.data.api.repository.UserRepository
+import com.ericafenyo.bikediary.model.Configuration
 import com.ericafenyo.tracker.di.qualifier.IODispatcher
 import com.ericafenyo.tracker.domain.ParameterizedInteractor
-import com.ericafenyo.tracker.domain.auth.AuthenticatedUserInfo
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import timber.log.Timber
 
 class CalibrateBodyMassIndexInteractor @Inject constructor(
-  private val authenticatedUserInfo: AuthenticatedUserInfo,
   private val weights: WeightRepository,
-  private val users: UserRepository,
+  private val configuration: ConfigurationRepository,
   @IODispatcher dispatcher: CoroutineDispatcher,
 ) : ParameterizedInteractor<BodyMassIndexParams, Unit>(dispatcher) {
 
   override suspend fun execute(params: BodyMassIndexParams) {
-    Timber.d("rjklznrlkgzrnk $params")
-    if (authenticatedUserInfo.isAuthenticated()) {
-      updateAuthenticatedUser(height = params.height, weight = params.weight)
-    } else {
-      users.updateGuest(height = params.height, weight = params.weight)
-    }
-
+    configuration.save(Configuration(weight = params.weight, height = params.height))
     weights.save(params.weight)
-  }
-
-  private suspend fun updateAuthenticatedUser(weight: Double, height: Double) {
-    val user = authenticatedUserInfo.getData()
-    user?.let {
-      val entity = user.copy(height = height, weight = weight)
-      users.update(entity)
-    }
   }
 }
 

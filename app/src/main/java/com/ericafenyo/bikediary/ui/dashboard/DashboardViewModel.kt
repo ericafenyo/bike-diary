@@ -24,17 +24,46 @@
 
 package com.ericafenyo.bikediary.ui.dashboard
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.bikediary.domain.configuration.GetConfiguration
+import com.ericafenyo.bikediary.model.Configuration
+import com.ericafenyo.tracker.data.model.successOr
 import com.ericafenyo.tracker.domain.bmi.BodyMassIndexParams
 import com.ericafenyo.tracker.domain.bmi.CalibrateBodyMassIndexInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-  private val calibrateBodyMassIndex: CalibrateBodyMassIndexInteractor
+  private val calibrateBodyMassIndex: CalibrateBodyMassIndexInteractor,
+  private val getConfiguration: GetConfiguration
 ) : ViewModel() {
+
+  private val _bodyMassIndex = MutableLiveData<Double>()
+  val bodyMassIndex: LiveData<Double> = _bodyMassIndex
+
+  init {
+    loadBodyMassIndex()
+  }
+
+  private fun loadBodyMassIndex() {
+    viewModelScope.launch {
+      val configuration = getConfiguration().successOr(Configuration.default())
+      val bmi = computeBodyMassIndex(configuration.height, configuration.weight)
+      _bodyMassIndex.value = bmi
+    }
+  }
+
+  private fun computeBodyMassIndex(height: Double, weight: Double): Double {
+    val heightInMeters = height / 100
+    return if (height <= 0) 0.0 else weight / (heightInMeters * heightInMeters)
+  }
+
 
   fun saveBodyMassIndex(weight: Double, height: Double) = liveData {
     val params = BodyMassIndexParams(weight = weight, height = height)

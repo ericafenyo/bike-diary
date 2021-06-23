@@ -42,25 +42,26 @@ import timber.log.Timber
 @AndroidEntryPoint
 class DialogCalibrateBodyMassIndex : DialogFragment(R.layout.dialog_calibrate_bmi) {
   private val binding: DialogCalibrateBmiBinding by dataBinding()
-  private val model: BodyMassIndexViewModel by viewModels()
+  private val viewModel: BodyMassIndexViewModel by viewModels()
   private val validator: Validator by lazy { Validator(requireContext(), true) }
   private var _block: ((DialogInterface, Double, Double) -> Unit)? = null
 
-  override fun onCreated(view: View) = with(binding) {
+  override fun onCreated(view: View) {
     binding.lifecycleOwner = viewLifecycleOwner
-    binding.model = model
+    binding.model = viewModel
 
     binding.onAction = View.OnClickListener {
-      val weight = editTextWeight.text.getOrEmpty()
-      val height = editTextHeight.text.getOrEmpty()
+      binding.apply {
+        val weight = editTextWeight.text.getOrEmpty()
+        val height = editTextHeight.text.getOrEmpty()
 
-      // Validate required weight
-      val hasValidInputs = validator.isFieldNotEmpty(weight, textFieldWeight)
-        .doOnTrue { validator.isFieldNotEmpty(height, textFieldHeight) }
+        // Validate required weight
+        val hasValidInputs = validator.isFieldNotEmpty(weight, textFieldWeight)
+          .doOnTrue { validator.isFieldNotEmpty(height, textFieldHeight) }
 
-      if (hasValidInputs) {
-        Timber.d("weight: $weight height: $height")
-        _block?.invoke(requireDialog(), weight.toDouble().round(1), height.toDouble().round(2))
+        if (hasValidInputs) {
+          _block?.invoke(requireDialog(), weight.toDouble().round(1), height.toDouble().round(2))
+        }
       }
     }
   }

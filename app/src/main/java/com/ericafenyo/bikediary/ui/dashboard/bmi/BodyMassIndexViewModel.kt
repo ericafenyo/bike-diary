@@ -49,7 +49,8 @@ class BodyMassIndexViewModel @Inject constructor(
 
   private fun loadConfiguration() {
     viewModelScope.launch {
-      getConfiguration().successOr(Configuration(0.00, 0.0))
+      val configuration = getConfiguration().successOr(Configuration.default())
+      _configuration.value = configuration
     }
   }
 }

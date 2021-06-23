@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2020 Eric Afenyo
@@ -30,6 +31,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
+    <variable
+        name="model"
+        type="com.ericafenyo.bikediary.ui.dashboard.DashboardViewModel" />
 
     <variable
         name="listener"
@@ -294,11 +299,12 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_margin="@dimen/space_normal"
-              android:text="BMI(Kg/m2)"
               android:textAppearance="?attr/textAppearanceHeadline6"
-              android:textSize="@dimen/text_size_h3"
+              android:textSize="@dimen/text_size_normal"
               app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent" />
+              app:layout_constraintTop_toTopOf="parent"
+              bind:html="@{@string/dashboard_bmi_card_title}"
+              tools:text="BMI(Kg/m2)" />
 
           <com.google.android.material.button.MaterialButton
               android:id="@+id/button_edit_bmi"
@@ -345,9 +351,11 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginEnd="16dp"
-              android:text="24.6"
+              android:fontFamily="sans-serif-medium"
+              android:text="@{@string/format_one_decimal_place(model.bodyMassIndex)}"
               app:layout_constraintBaseline_toBaselineOf="@+id/text_bmi_description"
-              app:layout_constraintEnd_toEndOf="parent" />
+              app:layout_constraintEnd_toEndOf="parent"
+              tools:text="24.6" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,6 +63,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="@dimen/space_medium"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/keyline_right"
         app:layout_constraintStart_toStartOf="@+id/keyline_left"
         app:layout_constraintTop_toBottomOf="@+id/dialog_title"
@@ -111,8 +112,8 @@
           android:layout_height="wrap_content"
           android:fontFamily="@font/google_sans_medium"
           android:inputType="numberDecimal"
-          android:text="@{String.valueOf(model.configuration.height)}"
-          tools:text="71" />
+          android:text="@{@string/format_two_decimal_place(model.configuration.weight)}"
+          tools:text="68" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -134,6 +135,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="@font/google_sans_medium"
           android:inputType="numberDecimal"
+          android:text="@{@string/format_one_decimal_place(model.configuration.height)}"
           tools:text="170" />
     </com.google.android.material.textfield.TextInputLayout>
 

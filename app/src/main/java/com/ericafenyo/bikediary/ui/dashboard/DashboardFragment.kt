@@ -64,6 +64,9 @@ class DashboardFragment : Fragment(layout.fragment_home) {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    binding.lifecycleOwner = viewLifecycleOwner
+    binding.model = model
+
     binding.achievement = Achievement(
       totalDistance = 100.toDouble(),
       badge = Badge(
@@ -72,7 +75,7 @@ class DashboardFragment : Fragment(layout.fragment_home) {
       )
     )
 
-    binding.listener = DashboardEventListener(this,model,binding)
+    binding.listener = DashboardEventListener(this, model, binding)
 
     setWeightData(binding.chartWeight)
     setAdventureData(binding.chartAdventures)

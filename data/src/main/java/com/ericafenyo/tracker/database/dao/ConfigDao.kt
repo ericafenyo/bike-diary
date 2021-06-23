@@ -39,5 +39,5 @@ interface ConfigDao {
   suspend fun clearAll()
 
   @Query("SELECT * FROM configs ORDER BY id DESC Limit 1")
-  suspend fun getConfig(): Config
+  suspend fun getConfig(): Config?
 }
