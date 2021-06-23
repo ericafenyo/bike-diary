@@ -146,6 +146,8 @@ class BikeDiaryServiceImpl(
               weight = user?.weight ?: 0.4,
               bio = user?.bio ?: "",
               avatarUrl = user?.avatar ?: "",
+              gender = "",
+              height = 0.0,
             )
             continuation.resume(useResponse)
           } else {

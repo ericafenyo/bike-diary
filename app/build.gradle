@@ -32,16 +32,23 @@ android {
     }
 
     compileOptions {
+         // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+
+        // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
+        // Sets Kotlin compatibility to Java 8
         jvmTarget = '1.8'
+
+        // Use experimental features
         freeCompilerArgs += [
-                "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi",
-                "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
-                "-Xopt-in=kotlin.RequiresOptIn"
+                //"-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                //"-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi",
+                //"-Xuse-experimental=kotlinx.coroutines.FlowPreview",
+                //"-Xopt-in=kotlin.RequiresOptIn"
         ]
     }
 
@@ -61,6 +68,8 @@ dependencies {
     implementation project(path: ':data')
     implementation project(path: ':tracker')
     implementation project(path: ':model')
+
+    coreLibraryDesugaring libs.android.tools.desugarJdkLibs
 
     testImplementation libs.junit
     androidTestImplementation(libs.androidx.junitExt)

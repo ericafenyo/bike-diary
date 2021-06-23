@@ -22,19 +22,34 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.repository.internal
+package com.ericafenyo.bikediary.ui.dashboard.bmi
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
-import com.ericafenyo.tracker.database.CacheDatabase
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.bikediary.domain.configuration.GetConfiguration
+import com.ericafenyo.bikediary.model.Configuration
+import com.ericafenyo.tracker.data.model.successOr
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import javax.inject.Singleton
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
-@Singleton
-class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
-  private val dao = database.getAdventureDao()
+@HiltViewModel
+class BodyMassIndexViewModel @Inject constructor(
+  private val getConfiguration: GetConfiguration
+) : ViewModel() {
 
-  suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
-  fun adventure(): Flow<AdventureEntity> = dao.adventure()
-  suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
+  private val _configuration = MutableLiveData<Configuration>()
+  val configuration: LiveData<Configuration> = _configuration
+
+  init {
+    loadConfiguration()
+  }
+
+  private fun loadConfiguration() {
+    viewModelScope.launch {
+      getConfiguration().successOr(Configuration(0.00, 0.0))
+    }
+  }
 }

@@ -25,9 +25,14 @@
 package com.ericafenyo.tracker.data.prefs
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Serializable
 data class Guest(
   val height: Double,
+  val weight: Double,
   val gender: String,
-)
+) {
+  override fun toString(): String = Json.encodeToString(this)
+}

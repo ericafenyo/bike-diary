@@ -28,7 +28,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ericafenyo.tracker.database.entity.AdventureEntity
+import com.ericafenyo.tracker.database.entities.AdventureEntity
 import kotlinx.coroutines.flow.Flow
 
 /**

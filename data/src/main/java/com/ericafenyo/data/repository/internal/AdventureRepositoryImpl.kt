@@ -24,19 +24,17 @@
 
 package com.ericafenyo.data.repository.internal
 
-import com.ericafenyo.tracker.database.entity.AdventureEntity
+import com.ericafenyo.tracker.database.entities.AdventureEntity
 import com.ericafenyo.data.repository.AdventureRepository
 import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.tracker.data.api.BikeDiaryService
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 @Singleton
-@OptIn(ExperimentalCoroutinesApi::class)
 class AdventureRepositoryImpl @Inject constructor(
   private val service: BikeDiaryService,
   private val mapper: AdventureMapper,

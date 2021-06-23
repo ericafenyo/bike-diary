@@ -22,19 +22,39 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.repository.internal
+package com.ericafenyo.tracker.database.dao
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
-import com.ericafenyo.tracker.database.CacheDatabase
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
+import com.ericafenyo.tracker.database.entities.GuestEntity
 
-@Singleton
-class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
-  private val dao = database.getAdventureDao()
+/**
+ * A Data Access Object with variety of query methods for database interactions.
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-04-17
+ */
+@Dao
+interface GuestDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(guest: GuestEntity)
 
-  suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
-  fun adventure(): Flow<AdventureEntity> = dao.adventure()
-  suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
+  @Transaction
+  suspend fun insertOrUpdate(guest: GuestEntity) {
+    getGuest().also {
+      if (it == null) insert(guest) else update(guest)
+    }
+  }
+
+  @Query("SELECT * FROM guest ORDER BY id DESC Limit 1")
+  fun getGuest(): GuestEntity?
+
+  @Update
+  suspend fun update(guest: GuestEntity)
 }

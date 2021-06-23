@@ -22,19 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.repository.internal
+package com.ericafenyo.tracker.database.entities
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
-import com.ericafenyo.tracker.database.CacheDatabase
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.time.Clock
+import java.time.LocalDate
+import java.time.ZoneId
 
-@Singleton
-class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
-  private val dao = database.getAdventureDao()
-
-  suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
-  fun adventure(): Flow<AdventureEntity> = dao.adventure()
-  suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
-}
+@Entity(tableName = "weights")
+data class WeightEntity(
+  @PrimaryKey(autoGenerate = true) val id: Long = 0,
+  val value: Double,
+  val time: Long = Clock.systemDefaultZone().millis(),
+  val date: String = LocalDate.now(ZoneId.systemDefault()).toString()
+)

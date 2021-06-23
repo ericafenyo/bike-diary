@@ -22,19 +22,15 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.repository.internal
+package com.ericafenyo.bikediary.data.config
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
-import com.ericafenyo.tracker.database.CacheDatabase
+import com.ericafenyo.bikediary.model.Configuration
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.flow.Flow
 
 @Singleton
-class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
-  private val dao = database.getAdventureDao()
-
-  suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
-  fun adventure(): Flow<AdventureEntity> = dao.adventure()
-  suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
+class ConfigurationRepositoryImpl @Inject constructor(
+  private val localSource: ConfigurationLocalDataSource
+) : ConfigurationRepository {
+  override suspend fun getConfiguration(): Configuration = localSource.getConfiguration()
 }

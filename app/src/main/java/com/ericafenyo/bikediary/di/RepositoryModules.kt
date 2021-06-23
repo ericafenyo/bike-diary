@@ -24,8 +24,12 @@
 
 package com.ericafenyo.bikediary.di
 
+import com.ericafenyo.bikediary.data.config.ConfigurationRepository
+import com.ericafenyo.bikediary.data.config.ConfigurationRepositoryImpl
 import com.ericafenyo.bikediary.data.trip.TripRepository
 import com.ericafenyo.bikediary.data.trip.TripRepositoryImpl
+import com.ericafenyo.bikediary.data.weight.WeightRepository
+import com.ericafenyo.bikediary.data.weight.WeightRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -39,4 +43,12 @@ abstract class RepositoryModules {
   @Binds
   @Singleton
   abstract fun bindTripRepository(repository: TripRepositoryImpl): TripRepository
+
+  @Binds
+  @Singleton
+  abstract fun bindWightRepository(repository: WeightRepositoryImpl): WeightRepository
+
+  @Binds
+  @Singleton
+  abstract fun bindConfigurationRepository(repository: ConfigurationRepositoryImpl): ConfigurationRepository
 }

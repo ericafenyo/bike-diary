@@ -22,12 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.database.entity
+package com.ericafenyo.tracker.database.dao
 
-import androidx.room.Entity
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.ericafenyo.tracker.database.entities.Config
 
-@Entity(tableName = "guests")
-data class Guest(
-  val id: String,
-  val height: String,
-)
+@Dao
+interface ConfigDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(config: Config)
+
+  @Query("DELETE FROM configs")
+  suspend fun clearAll()
+
+  @Query("SELECT * FROM configs ORDER BY id DESC Limit 1")
+  suspend fun getConfig(): Config
+}

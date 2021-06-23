@@ -22,19 +22,43 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.repository.internal
+package com.ericafenyo.tracker.database.entities
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
-import com.ericafenyo.tracker.database.CacheDatabase
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.ericafenyo.tracker.data.model.User
+import com.ericafenyo.tracker.data.model.asEnum
 
-@Singleton
-class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
-  private val dao = database.getAdventureDao()
+@Entity(tableName = "user_info")
+data class UserInfo(
+  @PrimaryKey val id: String,
+  val name: String,
+  val email: String,
+  val bio: String,
+  val gender: String,
+  val height: Double,
+  val weight: Double,
+  val avatarUrl: String,
+)
 
-  suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
-  fun adventure(): Flow<AdventureEntity> = dao.adventure()
-  suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
-}
+fun UserInfo.model() = User(
+  id = id,
+  name = name,
+  email = email,
+  bio = bio,
+  gender = gender.asEnum(),
+  height = height,
+  weight = weight,
+  avatarUrl = avatarUrl,
+)
+
+fun User.entity() = UserInfo(
+  id = id,
+  name = name,
+  email = email,
+  bio = bio,
+  gender = gender.code,
+  height = height,
+  weight = weight,
+  avatarUrl = avatarUrl,
+)

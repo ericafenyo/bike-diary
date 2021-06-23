@@ -22,42 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.database.entity
+package com.ericafenyo.bikediary.domain.configuration
 
-import androidx.room.Entity
-import com.ericafenyo.tracker.data.model.User
-import com.ericafenyo.tracker.data.model.asEnum
+import com.ericafenyo.bikediary.data.config.ConfigurationRepository
+import com.ericafenyo.bikediary.model.Configuration
+import com.ericafenyo.tracker.di.qualifier.IODispatcher
+import com.ericafenyo.tracker.domain.CoroutineUseCase
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
-@Entity(tableName = "user_info")
-data class UserInfo(
-  val id: String,
-  val name: String,
-  val email: String,
-  val bio: String,
-  val gender: String,
-  val height: Double,
-  val weight: Double,
-  val avatarUrl: String,
-)
+class GetConfiguration @Inject constructor(
+  private val repository: ConfigurationRepository,
+  @IODispatcher dispatcher: CoroutineDispatcher,
+) : CoroutineUseCase<Configuration>(dispatcher) {
 
-fun UserInfo.model() = User(
-  id = id,
-  name = name,
-  email = email,
-  bio = bio,
-  gender = gender.asEnum(),
-  height = height,
-  weight = weight,
-  avatarUrl = avatarUrl,
-)
-
-fun User.entity() = UserInfo(
-  id = id,
-  name = name,
-  email = email,
-  bio = bio,
-  gender = gender.code,
-  height = height,
-  weight = weight,
-  avatarUrl = avatarUrl,
-)
+  override suspend fun execute(): Configuration {
+    return repository.getConfiguration()
+  }
+}

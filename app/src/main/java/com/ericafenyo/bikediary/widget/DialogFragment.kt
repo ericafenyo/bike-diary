@@ -35,7 +35,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import com.ericafenyo.bikediary.R.style
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-abstract class DialogFragment(@LayoutRes private val contentLayoutId: Int? = null) :
+abstract class DialogFragment(@LayoutRes private val contentLayoutId: Int?) :
   AppCompatDialogFragment() {
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

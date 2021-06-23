@@ -27,9 +27,14 @@ package com.ericafenyo.tracker.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.ericafenyo.tracker.database.entities.WeightEntity
 
 @Dao
 interface WeightDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insert()
+  suspend fun insert(weight: WeightEntity)
+
+  @Query("DELETE FROM weights")
+  fun clearAll()
 }

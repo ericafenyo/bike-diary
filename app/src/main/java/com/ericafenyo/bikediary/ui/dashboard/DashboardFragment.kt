@@ -112,7 +112,7 @@ class DashboardFragment : Fragment(layout.fragment_home) {
     yAxis.setDrawAxisLine(false)
 
 
-    val weights = listOf(56.8f, 60.7f, 70.4f, 50.4f, 68.5f, 64.3f, 60.0f, 56.3f)
+    val weights = listOf(56.8f, 60.7f, 70.4f, 50.4f, 68.5f, 64.3f, 60.0f)
     val values = weights.mapIndexed { index, weight -> Entry(index.toFloat(), weight, "Mon") }
 
     val dataset = LineDataSet(values, "")
@@ -151,7 +151,7 @@ class DashboardFragment : Fragment(layout.fragment_home) {
     yAxis.setDrawAxisLine(false)
 
 
-    val weights = listOf(56.8f, 60.7f, 70.4f, 50.4f, 68.5f, 64.3f, 60.0f, 56.3f)
+    val weights = listOf(56.8f, 60.7f, 70.4f, 50.4f, 68.5f, 64.3f, 60.0f)
     val values = weights.mapIndexed { index, weight -> BarEntry(index.toFloat(), weight) }
 
     val dataset = BarDataSet(values, "")

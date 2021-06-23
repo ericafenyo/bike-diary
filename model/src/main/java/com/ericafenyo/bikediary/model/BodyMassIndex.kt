@@ -27,5 +27,4 @@ package com.ericafenyo.bikediary.model
 data class BodyMassIndex(
   val height: Double,
   val weight: Double,
-  val timestamp: Double,
 )

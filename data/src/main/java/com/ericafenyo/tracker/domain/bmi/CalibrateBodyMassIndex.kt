@@ -31,8 +31,7 @@ import com.ericafenyo.tracker.domain.ParameterizedInteractor
 import com.ericafenyo.tracker.domain.auth.AuthenticatedUserInfo
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-
-typealias BodyMassIndexParams = CalibrateBodyMassIndexInteractor.Params
+import timber.log.Timber
 
 class CalibrateBodyMassIndexInteractor @Inject constructor(
   private val authenticatedUserInfo: AuthenticatedUserInfo,
@@ -42,16 +41,26 @@ class CalibrateBodyMassIndexInteractor @Inject constructor(
 ) : ParameterizedInteractor<BodyMassIndexParams, Unit>(dispatcher) {
 
   override suspend fun execute(params: BodyMassIndexParams) {
+    Timber.d("rjklznrlkgzrnk $params")
     if (authenticatedUserInfo.isAuthenticated()) {
-      val user = authenticatedUserInfo.getData()
-      user?.let { users.update(user.copy(height = params.height, weight = params.weight)) }
+      updateAuthenticatedUser(height = params.height, weight = params.weight)
     } else {
-
+      users.updateGuest(height = params.height, weight = params.weight)
     }
+
+    weights.save(params.weight)
   }
 
-  data class Params(
-    val weight: Double,
-    val height: Double,
-  )
+  private suspend fun updateAuthenticatedUser(weight: Double, height: Double) {
+    val user = authenticatedUserInfo.getData()
+    user?.let {
+      val entity = user.copy(height = height, weight = weight)
+      users.update(entity)
+    }
+  }
 }
+
+data class BodyMassIndexParams(
+  val weight: Double,
+  val height: Double,
+)

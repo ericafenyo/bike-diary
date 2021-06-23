@@ -25,6 +25,6 @@
 package com.ericafenyo.bikediary.model
 
 data class Weight(
-  val value: Double,
+  val value: Float,
   val timestamp: Long,
 )

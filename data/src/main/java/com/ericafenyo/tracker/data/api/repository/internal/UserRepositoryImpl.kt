@@ -56,7 +56,11 @@ class UserRepositoryImpl @Inject constructor(
     TODO("Not yet implemented")
   }
 
-  override suspend fun updateHeight(height: Double) {
-    localSource.updateHeight(height)
+  override suspend fun update(user: User) {
+    TODO("Not yet implemented")
+  }
+
+  override suspend fun updateGuest(weight: Double, height: Double) {
+    localSource.updateGuest(weight, height)
   }
 }

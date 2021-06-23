@@ -26,6 +26,9 @@ package com.ericafenyo.data.di
 
 import android.content.Context
 import com.ericafenyo.tracker.database.CacheDatabase
+import com.ericafenyo.tracker.database.dao.GuestDao
+import com.ericafenyo.tracker.database.dao.UserInfoDao
+import com.ericafenyo.tracker.database.dao.WeightDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,11 +38,25 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
+abstract class DatabaseModule {
 
-  @Provides
-  @Singleton
-  fun provideCacheDatabase(@ApplicationContext context: Context): CacheDatabase {
-    return CacheDatabase.getInstance(context)
+  companion object {
+    @Provides
+    @Singleton
+    fun provideCacheDatabase(@ApplicationContext context: Context): CacheDatabase {
+      return CacheDatabase.getInstance(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGuestDao(database: CacheDatabase): GuestDao = database.getGuestDao()
+
+    @Provides
+    @Singleton
+    fun provideWeightDao(database: CacheDatabase): WeightDao = database.getWeightDao()
+
+    @Provides
+    @Singleton
+    fun provideUserInfoDao(database: CacheDatabase): UserInfoDao = database.getUserInfoDao()
   }
 }

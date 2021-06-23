@@ -22,14 +22,29 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.database.entity
+package com.ericafenyo.tracker.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ericafenyo.tracker.data.model.Gender
+import com.ericafenyo.tracker.data.model.User
+import com.ericafenyo.tracker.data.model.asEnum
 
-@Entity(tableName = "weights")
-data class WeightEntity(
-  @PrimaryKey(autoGenerate = true) val id: Int,
-  val value: Double,
-  val timestamp: Long,
+@Entity(tableName = "guest")
+data class GuestEntity(
+  @PrimaryKey val id: Long = 1,
+  val weight: Double,
+  val height: Double,
+  val gender: String = Gender.UNSPECIFIED.code,
+)
+
+fun GuestEntity.toUser() = User(
+  id = id.toString(),
+  name = "",
+  email = "",
+  bio = "",
+  gender = gender.asEnum(),
+  height = height,
+  weight = weight,
+  avatarUrl = "",
 )

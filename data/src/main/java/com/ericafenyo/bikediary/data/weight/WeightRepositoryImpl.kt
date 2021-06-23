@@ -22,19 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.repository.internal
+package com.ericafenyo.bikediary.data.weight
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
-import com.ericafenyo.tracker.database.CacheDatabase
+import com.ericafenyo.tracker.database.entities.WeightEntity
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.flow.Flow
+
 
 @Singleton
-class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
-  private val dao = database.getAdventureDao()
-
-  suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
-  fun adventure(): Flow<AdventureEntity> = dao.adventure()
-  suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
+class WeightRepositoryImpl @Inject constructor(
+  private val localSource: WeightLocalDataSource
+) : WeightRepository {
+  override suspend fun save(weight: Double) {
+    localSource.save(WeightEntity(value = weight))
+  }
 }

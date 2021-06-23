@@ -28,7 +28,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ericafenyo.tracker.database.entity.UserInfo
+import com.ericafenyo.tracker.database.entities.UserInfo
 
 @Dao
 interface UserInfoDao {

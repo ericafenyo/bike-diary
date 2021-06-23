@@ -25,13 +25,24 @@
 package com.ericafenyo.bikediary.data.user
 
 import com.ericafenyo.tracker.data.model.User
+import com.ericafenyo.tracker.database.dao.GuestDao
 import com.ericafenyo.tracker.database.dao.UserInfoDao
-import com.ericafenyo.tracker.database.entity.model
+import com.ericafenyo.tracker.database.entities.GuestEntity
+import com.ericafenyo.tracker.database.entities.model
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserLocalDataSource @Inject constructor(private val userInfoDao: UserInfoDao) {
+class UserLocalDataSource @Inject constructor(
+  private val guestDao: GuestDao,
+  private val userInfoDao: UserInfoDao,
+) {
   suspend fun getUserInfo(): User? = userInfoDao.getUserInfo()?.model()
-  suspend fun updateHeight(height: Double)  = userInfoDao.updateHeight(height)
+
+  suspend fun updateHeight(height: Double) = userInfoDao.updateHeight(height)
+
+  suspend fun updateGuest(weight: Double, height: Double) {
+    val entity = GuestEntity(weight = weight, height = height)
+    guestDao.insertOrUpdate(entity)
+  }
 }

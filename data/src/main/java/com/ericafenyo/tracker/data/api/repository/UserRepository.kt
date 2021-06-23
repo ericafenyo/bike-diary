@@ -31,4 +31,5 @@ interface UserRepository {
   suspend fun createUser(request: CreateUserRequest): User
   suspend fun getUser(): User
   suspend fun update(user: User)
+  suspend fun updateGuest(weight: Double, height: Double)
 }

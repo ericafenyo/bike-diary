@@ -25,5 +25,5 @@
 package com.ericafenyo.bikediary.data.weight
 
 interface WeightRepository {
-  fun save(weight: Weight)
+  suspend fun save(weight: Double)
 }

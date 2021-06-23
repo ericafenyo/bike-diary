@@ -29,11 +29,27 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ericafenyo.tracker.database.dao.AdventureDao
-import com.ericafenyo.tracker.database.entity.AdventureEntity
+import com.ericafenyo.tracker.database.dao.ConfigDao
+import com.ericafenyo.tracker.database.dao.GuestDao
+import com.ericafenyo.tracker.database.dao.UserInfoDao
+import com.ericafenyo.tracker.database.dao.WeightDao
+import com.ericafenyo.tracker.database.entities.AdventureEntity
+import com.ericafenyo.tracker.database.entities.Config
+import com.ericafenyo.tracker.database.entities.GuestEntity
+import com.ericafenyo.tracker.database.entities.UserInfo
+import com.ericafenyo.tracker.database.entities.WeightEntity
 
-@Database(entities = [AdventureEntity::class], version = 1, exportSchema = false)
+@Database(
+  entities = [AdventureEntity::class, GuestEntity::class, UserInfo::class, WeightEntity::class, Config::class],
+  version = 1,
+  exportSchema = false
+)
 abstract class CacheDatabase : RoomDatabase() {
   abstract fun getAdventureDao(): AdventureDao
+  abstract fun getGuestDao(): GuestDao
+  abstract fun getUserInfoDao(): UserInfoDao
+  abstract fun getWeightDao(): WeightDao
+  abstract fun getConfigDao(): ConfigDao
 
   companion object {
     private const val DB_NAME = "cache-db"

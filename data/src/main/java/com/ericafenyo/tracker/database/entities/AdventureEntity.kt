@@ -22,19 +22,38 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.data.repository.internal
+package com.ericafenyo.tracker.database.entities
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
-import com.ericafenyo.tracker.database.CacheDatabase
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.ericafenyo.tracker.data.Adventure
 
-@Singleton
-class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
-  private val dao = database.getAdventureDao()
+@Entity(tableName = "adventures")
+data class AdventureEntity(
+  @PrimaryKey val id: String,
+  val title: String,
+  val speed: Double,
+  val duration: Double,
+  val distance: Double,
+  val calories: Int,
+  val startedAt: String,
+  val completedAt: String,
+  val geojson: String,
+  val imageUrl: String,
+) {
 
-  suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
-  fun adventure(): Flow<AdventureEntity> = dao.adventure()
-  suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
+  companion object {
+    fun fromAdventure(adventure: Adventure) = AdventureEntity(
+      id = adventure.id,
+      title = adventure.title,
+      speed = adventure.speed,
+      duration = adventure.duration,
+      distance = adventure.distance,
+      calories = adventure.calories,
+      startedAt = adventure.startedAt,
+      completedAt = adventure.completedAt,
+      geojson = adventure.geojson,
+      imageUrl = adventure.imageUrl,
+    )
+  }
 }
