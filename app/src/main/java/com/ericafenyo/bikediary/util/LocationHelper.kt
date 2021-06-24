@@ -42,8 +42,6 @@ object LocationHelper {
           getLocationCallback(block),
           Looper.getMainLooper()
         )
-      LocationServices.getFusedLocationProviderClient(context)
-        .removeLocationUpdates(getLocationCallback(block))
     } catch (exception: SecurityException) {
       Timber.e(exception, "Security error: ${exception.message} while starting location updates")
     }
@@ -61,6 +59,5 @@ object LocationHelper {
     .setNumUpdates(1)
     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
     .setInterval(0)
-    .setExpirationDuration(5_000)
     .setFastestInterval(0)
 }
