@@ -4,6 +4,7 @@
   <color name="color_accent">@color/blue_600</color>
   <color name="color_surface">@color/white</color>
   <color name="color_background">@color/grey_blue_gray_200</color>
+  <color name="color_background_inactive">#DEF0F0F0</color>
   <color name="transparent">#0fff</color>
 
   <color name="brand_indigo_300">#7f94bc</color>
@@ -25,7 +26,7 @@
 
   <color name="color_orange">#ff9800</color>
   <color name="color_green">#4caf50</color>
-  <color name="red">#D32F2F</color>
+  <color name="red">#EF4444</color>
   <color name="color_violet">#9c27b0</color>
 
   <color name="white">#fff</color>
@@ -38,5 +39,6 @@
   <color name="black_inactive">#99000000</color>
   <color name="black_disabled">#61000000</color>
   <color name="divider">#e0e0e0</color>
+  <color name="divider_on_background">#e0e0e0</color>
 
 </resources>

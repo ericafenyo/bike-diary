@@ -26,4 +26,8 @@ package com.ericafenyo.bikediary.ui.map
 
 interface OnTrackingEvent {
   fun onClick(isOngoing: Boolean)
+  fun takePicture()
+  fun stopTracking()
+  fun startTracking()
+  fun showDeviceLocation()
 }

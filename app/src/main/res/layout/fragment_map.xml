@@ -25,8 +25,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
   <data>
 
@@ -52,37 +51,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-      <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-          android:id="@+id/fab_start_stop_tracking"
+
+      <androidx.appcompat.widget.LinearLayoutCompat
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_gravity="bottom|center_horizontal"
-          android:layout_marginBottom="@dimen/space_normal"
-          android:backgroundTint="@color/white"
-          android:fontFamily="sans-serif-medium"
-          android:onClick="@{()-> trackingEvent.onClick(model.isTrackingOngoing)}"
-          android:text="@{model.isTrackingOngoing ? @string/action_stop_adventure: @string/action_start_adventure}"
-          android:textAppearance="?attr/textAppearanceBody2"
-          app:icon="@{model.isTrackingOngoing ? @drawable/ic_stop: @drawable/ic_play_arrow}"
-          app:iconSize="32dp"
-          app:iconTint="@{model.isTrackingOngoing ? @color/red :@color/color_primary}"
-          tools:ignore="ContentDescription" />
+          android:layout_gravity="bottom|end"
+          android:orientation="vertical"
+          android:padding="@dimen/space_normal">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_layers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/space_small"
+            android:layout_marginTop="@dimen/space_normal"
+            android:layout_marginBottom="@dimen/space_normal"
+            android:onClick="@{()-> trackingEvent.startTracking()}"
+            android:src="@drawable/ic_layers"
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:backgroundTint="?attr/colorSurface"
+            app:elevation="4dp"
+            app:maxImageSize="32dp"
+            app:tint="?attr/colorControlNormal"
+            bind:showIf="@{model.isTrackingOngoing()}" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_show_current_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="@dimen/space_small"
+            android:contentDescription="@string/map_a11y_show_devices_current_location"
+            android:onClick="@{()-> trackingEvent.showDeviceLocation()}"
+            android:src="@drawable/ic_current_location"
+            app:backgroundTint="@color/white"
+            app:elevation="4dp"
+            app:layout_anchor="@id/fab_start_tracking"
+            app:tint="?attr/colorControlNormal" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_start_tracking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/space_small"
+            android:onClick="@{()-> trackingEvent.startTracking()}"
+            android:src="@drawable/ic_play_arrow"
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:backgroundTint="?attr/colorPrimary"
+            app:elevation="4dp"
+            app:maxImageSize="32dp"
+            app:tint="@color/white"
+            bind:showIf="@{!model.isTrackingOngoing()}" />
+
+      </androidx.appcompat.widget.LinearLayoutCompat>
+
+
     </com.mapbox.mapboxsdk.maps.MapView>
 
     <include
-        layout="@layout/live_metrics"
         android:id="@+id/live_metrics"
-        bind:metrics="@{metrics}" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_show_current_location"
-        android:layout_width="wrap_content"
+        layout="@layout/live_metrics"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/space_normal"
-        android:contentDescription="@string/map_a11y_show_devices_current_location"
-        android:src="@drawable/ic_current_location"
-        app:backgroundTint="@color/white" />
+        android:layout_margin="@dimen/space_small"
+        bind:metrics="@{metrics}"
+        bind:onClickPicture="@{()-> trackingEvent.takePicture()}"
+        bind:onClickStop="@{()-> trackingEvent.stopTracking()}"
+        bind:showIf="@{model.isTrackingOngoing()}" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
