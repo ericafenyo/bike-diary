@@ -43,6 +43,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.ericafenyo.bikediary.databinding.FragmentProfileBinding
 import com.ericafenyo.bikediary.ui.MainActivityViewModel
 import com.ericafenyo.bikediary.ui.profile.ProfileViewModel
+import com.google.android.material.transition.MaterialFadeThrough
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,6 +60,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
   private val binding: FragmentProfileBinding by dataBinding()
   private val activityModel: MainActivityViewModel by viewModels()
   private val profileModel: ProfileViewModel by viewModels()
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enterTransition = MaterialFadeThrough().apply {
+      duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

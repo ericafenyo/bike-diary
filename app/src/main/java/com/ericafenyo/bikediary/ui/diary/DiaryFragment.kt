@@ -35,6 +35,7 @@ import com.ericafenyo.bikediary.databinding.FragmentDiaryBinding
 import com.ericafenyo.bikediary.ui.diary.DiaryAdapter.OnItemClickListener
 import com.ericafenyo.bikediary.util.SpaceItemDecoration
 import com.ericafenyo.bikediary.util.dp2px
+import com.google.android.material.transition.MaterialFadeThrough
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -44,6 +45,13 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
   private val binding: FragmentDiaryBinding by dataBinding()
   private val model: DiaryViewModel by viewModels()
   private val diaryAdapter = DiaryAdapter()
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enterTransition = MaterialFadeThrough().apply {
+      duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

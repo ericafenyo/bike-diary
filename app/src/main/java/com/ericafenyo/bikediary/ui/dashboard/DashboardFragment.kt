@@ -30,10 +30,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ericafenyo.bikediary.DayAxisValueFormatter
+import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.R.color
 import com.ericafenyo.bikediary.R.drawable
 import com.ericafenyo.bikediary.R.layout
-import com.ericafenyo.bikediary.databinding.FragmentHomeBinding
+import com.ericafenyo.bikediary.databinding.FragmentDashboardBinding
 import com.ericafenyo.bikediary.model.Achievement
 import com.ericafenyo.bikediary.model.Badge
 import com.ericafenyo.bikediary.ui.dashboard.bmi.DialogCalibrateBodyMassIndex
@@ -49,6 +50,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.google.android.material.transition.MaterialFadeThrough
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,9 +59,16 @@ import dagger.hilt.android.AndroidEntryPoint
  * A simple [Fragment] subclass for displaying users adventure metrics.
  */
 @AndroidEntryPoint
-class DashboardFragment : Fragment(layout.fragment_home) {
-  private val binding: FragmentHomeBinding by dataBinding()
+class DashboardFragment : Fragment(layout.fragment_dashboard) {
+  private val binding: FragmentDashboardBinding by dataBinding()
   private val model: DashboardViewModel by viewModels()
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enterTransition = MaterialFadeThrough().apply {
+      duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
