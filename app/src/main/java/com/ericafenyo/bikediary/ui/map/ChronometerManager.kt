@@ -38,7 +38,7 @@ class ChronometerManager(val chronometer: Chronometer) {
   }
 
   fun stop() {
-    if (started.get()) {
+    if (started.getAndSet(false)) {
       chronometer.stop()
     }
   }

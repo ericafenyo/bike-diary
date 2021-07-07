@@ -75,7 +75,7 @@ class DashboardFragment : Fragment(layout.fragment_home) {
       )
     )
 
-    binding.listener = DashboardEventListener(this, model, binding)
+    binding.dashboardActions = DashboardEventListener(this, model, binding)
 
     setWeightData(binding.chartWeight)
     setAdventureData(binding.chartAdventures)

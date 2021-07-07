@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -33,7 +34,11 @@
       android:id="@+id/dashboard"
       android:name="com.ericafenyo.bikediary.ui.dashboard.DashboardFragment"
       android:label="DashboardFragment"
-      tools:layout="@layout/fragment_home" />
+      tools:layout="@layout/fragment_home">
+    <action
+        android:id="@+id/action_dashboard_to_diary"
+        app:destination="@id/diaryActivity" />
+  </fragment>
 
   <fragment
       android:id="@+id/map"
@@ -44,4 +49,9 @@
       android:id="@+id/profile"
       android:name="com.ericafenyo.bikediary.ProfileFragment"
       android:label="ProfileFragment" />
+  <activity
+      android:id="@+id/diaryActivity"
+      android:name="com.ericafenyo.bikediary.ui.diary.DiaryActivity"
+      android:label="DiaryActivity"
+      tools:layout="@layout/activity_diary" />
 </navigation>

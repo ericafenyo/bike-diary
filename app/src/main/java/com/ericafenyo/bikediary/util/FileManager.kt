@@ -24,16 +24,24 @@
 
 package com.ericafenyo.bikediary.util
 
-import android.content.Intent
+import android.content.Context
+import android.net.Uri
+import androidx.core.content.FileProvider
+import java.io.File
 
-import androidx.core.app.ActivityCompat.startActivityForResult
 
+object FileManager {
+  private fun getFileAuthority(context: Context): String {
+    return "${context.applicationContext.packageName}.fileprovider"
+  }
 
-class FileManager {
-  fun choseImage() {
-    val intent = Intent()
-    intent.type = "image/*"
-    intent.action = Intent.ACTION_GET_CONTENT
-    //startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
+  fun getUriForFile(context: Context, filename: String): Uri {
+    val authority = getFileAuthority(context)
+    val imagePath = File(context.filesDir, "images")
+    if (!imagePath.exists()){
+      imagePath.mkdir()
+    }
+    val file = File(imagePath, filename)
+    return FileProvider.getUriForFile(context, authority, file)
   }
 }

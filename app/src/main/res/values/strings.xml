@@ -134,5 +134,10 @@
   <string name="dashboard_axis_label_sunday">Sun</string>
 
   <string name="dashboard_bmi_card_title"><![CDATA[BMI(Kg/m<small><small><sup>2</sup></small>)]]></string>
+  <string name="a11y_maps_stop_adventure">Stop the adventure</string>
+  <string name="metrics_unit_kilometres_per_hour">km/h</string>
+  <string name="metrics_unit_kilo_calories">kcal</string>
+  <string name="metrics_unit_kilometres">km</string>
+  <string name="a11y_see_more">See more</string>
 
 </resources>

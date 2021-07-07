@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
-  Copyright (C) 2020 Eric Afenyo
+  Copyright (C) 2021 Eric Afenyo
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +23,6 @@
   SOFTWARE.
   -->
 
-<resources>
-
-  <style name="ShapeAppearance.HabitDiary.Circular" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">50%</item>
-  </style>
-
-  <style name="ShapeAppearance.HabitDiary.SmallComponent" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">4dp</item>
-  </style>
-
-  <style name="ShapeAppearance.HabitDiary.MediumComponent" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">8dp</item>
-  </style>
-
-  <style name="ShapeAppearance.HabitDiary.LargeComponent" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">12dp</item>
-  </style>
-
-  <style name="ShapeAppearance.HabitDiary.HugeComponent" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSize">20dp</item>
-  </style>
-
-  <style name="ShapeAppearance.BikeDiary.LargeComponent.Top" parent="ShapeAppearance.MaterialComponents">
-    <item name="cornerSizeTopLeft">12dp</item>
-    <item name="cornerSizeTopRight">12dp</item>
-  </style>
-</resources>
+<paths>
+  <files-path name="my_images" path="images" />
+</paths>

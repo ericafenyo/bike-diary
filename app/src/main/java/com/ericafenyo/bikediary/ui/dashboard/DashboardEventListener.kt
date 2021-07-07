@@ -28,6 +28,8 @@ import android.content.DialogInterface
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.databinding.FragmentHomeBinding
 import com.ericafenyo.bikediary.ui.dashboard.bmi.DialogCalibrateBodyMassIndex
 import com.ericafenyo.bikediary.util.AlertHelper
@@ -40,6 +42,7 @@ class DashboardEventListener(
   private val binding: FragmentHomeBinding
 ) : OnDashboardEventListener {
   private val activity = fragment.requireActivity()
+  private val navController = fragment.findNavController()
   private val scope: CoroutineScope = fragment.lifecycleScope
   private val owner: LifecycleOwner = fragment.viewLifecycleOwner
   private val alertHelper: AlertHelper by lazy { AlertHelper(activity) }
@@ -62,5 +65,9 @@ class DashboardEventListener(
     } finally {
       dialog.dismiss()
     }
+  }
+
+  override fun launchHistory() {
+    navController.navigate(R.id.action_dashboard_to_diary)
   }
 }

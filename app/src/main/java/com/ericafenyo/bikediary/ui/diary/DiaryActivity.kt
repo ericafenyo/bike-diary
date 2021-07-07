@@ -22,9 +22,11 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.dashboard
+package com.ericafenyo.bikediary.ui.diary
 
-interface OnDashboardEventListener {
-  fun onEditBmi()
-  fun launchHistory()
-}
+import androidx.appcompat.app.AppCompatActivity
+import com.ericafenyo.bikediary.R
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class DiaryActivity : AppCompatActivity(R.layout.activity_diary)

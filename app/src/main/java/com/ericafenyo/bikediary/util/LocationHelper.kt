@@ -35,15 +35,26 @@ import timber.log.Timber
 
 object LocationHelper {
   fun getCurrentLocation(context: Context, block: (Location?) -> Unit) {
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     try {
-      LocationServices.getFusedLocationProviderClient(context)
-        .requestLocationUpdates(
-          getLocationRequest(),
-          getLocationCallback(block),
-          Looper.getMainLooper()
-        )
-      LocationServices.getFusedLocationProviderClient(context)
-        .removeLocationUpdates(getLocationCallback(block))
+      fusedLocationProviderClient.requestLocationUpdates(
+        getLocationRequest(),
+        getLocationCallback(block),
+        Looper.getMainLooper()
+      ).addOnCompleteListener {
+        fusedLocationProviderClient.removeLocationUpdates(getLocationCallback(block))
+      }
+    } catch (exception: SecurityException) {
+      Timber.e(exception, "Security error: ${exception.message} while starting location updates")
+    }
+  }
+
+  fun getLastLocation(context: Context, block: (Location?) -> Unit) {
+
+    try {
+      LocationServices.getFusedLocationProviderClient(context).lastLocation
+        .addOnSuccessListener { location -> block(location) }
+        .addOnFailureListener { block(null) }
     } catch (exception: SecurityException) {
       Timber.e(exception, "Security error: ${exception.message} while starting location updates")
     }
@@ -61,6 +72,5 @@ object LocationHelper {
     .setNumUpdates(1)
     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
     .setInterval(0)
-    .setExpirationDuration(5_000)
     .setFastestInterval(0)
 }
