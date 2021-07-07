@@ -17,13 +17,13 @@ androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
 androidx-core = "androidx.core:core-ktx:1.5.0-rc01"
 androidx-datastore = "androidx.datastore:datastore-preferences:1.0.0-alpha05"
 androidx-espresso = "androidx.test.espresso:espresso-core:3.3.0"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.3.3"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.4.0-alpha04"
 androidx-junitExt = "androidx.test.ext:junit-ktx:1.1.2"
 androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-androidx-material = "com.google.android.material:material:1.3.0"
-androidx-navigation-fragment = "androidx.navigation:navigation-fragment-ktx:2.3.5"
-androidx-navigation-ui = "androidx.navigation:navigation-ui-ktx:2.3.5"
+androidx-material = "com.google.android.material:material:1.4.0"
+androidx-navigation-fragment = "androidx.navigation:navigation-fragment-ktx:2.4.0-alpha04"
+androidx-navigation-ui = "androidx.navigation:navigation-ui-ktx:2.4.0-alpha04"
 androidx-preference = "androidx.preference:preference-ktx:1.1.1"
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
