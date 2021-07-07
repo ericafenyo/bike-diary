@@ -23,35 +23,12 @@
   SOFTWARE.
   -->
 
-<navigation
+<androidx.fragment.app.FragmentContainerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/dashboard">
-
-  <fragment
-      android:id="@+id/dashboard"
-      android:name="com.ericafenyo.bikediary.ui.dashboard.DashboardFragment"
-      android:label="DashboardFragment"
-      tools:layout="@layout/fragment_home">
-    <action
-        android:id="@+id/action_dashboard_to_diary"
-        app:destination="@id/diaryActivity" />
-  </fragment>
-
-  <fragment
-      android:id="@+id/map"
-      android:name="com.ericafenyo.bikediary.ui.map.MapFragment"
-      android:label="MapFragment"
-      tools:layout="@layout/fragment_map" />
-  <fragment
-      android:id="@+id/profile"
-      android:name="com.ericafenyo.bikediary.ProfileFragment"
-      android:label="ProfileFragment" />
-  <activity
-      android:id="@+id/diaryActivity"
-      android:name="com.ericafenyo.bikediary.ui.diary.DiaryActivity"
-      android:label="DiaryActivity"
-      tools:layout="@layout/activity_diary" />
-</navigation>
+    android:id="@+id/main_nav_host_fragment"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/diary" />

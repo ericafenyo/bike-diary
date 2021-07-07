@@ -138,5 +138,6 @@
   <string name="metrics_unit_kilometres_per_hour">km/h</string>
   <string name="metrics_unit_kilo_calories">kcal</string>
   <string name="metrics_unit_kilometres">km</string>
+  <string name="a11y_see_more">See more</string>
 
 </resources>

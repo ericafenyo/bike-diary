@@ -37,10 +37,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.databinding.FragmentMapBinding
-import com.ericafenyo.bikediary.util.LocationHelper
+import com.ericafenyo.bikediary.util.FileManager
+import com.ericafenyo.bikediary.util.MapUtils
 import com.ericafenyo.tracker.analysis.MetricsManager
 import com.ericafenyo.tracker.datastore.RecordsProvider
 import com.ericafenyo.tracker.util.PermissionsManager
+import com.ericafenyo.tracker.util.bson.ObjectId
 import com.ericafenyo.tracker.util.getExplicitIntent
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.camera.CameraPosition
@@ -49,6 +51,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
+import com.mapbox.mapboxsdk.location.OnIndicatorPositionChangedListener
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
@@ -60,19 +63,31 @@ import com.mapbox.mapboxsdk.plugins.annotation.LineOptions
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@AndroidEntryPoint
-class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
-  private val mapModel: MapViewModel by viewModels()
-  private val binding: FragmentMapBinding by dataBinding()
 
+@AndroidEntryPoint
+class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback, OnTrackingEvent {
   private lateinit var locationComponent: LocationComponent
   private lateinit var mapbox: MapboxMap
-  private var line: Line? = null
-  @Inject lateinit var provider: RecordsProvider
   private lateinit var chronometerManager: ChronometerManager
+
+  @Inject lateinit var provider: RecordsProvider
+
+  private var line: Line? = null
+  private var onIndicatorPositionChangedListener: OnIndicatorPositionChangedListener? = null
+
+  private val locationContracts = registerForActivityResult(RequestPermission()) { isGranted ->
+    if (isGranted) {
+      mapbox.style?.let { style -> enableLocationComponent(style) }
+    }
+  }
+
+  private val mapModel: MapViewModel by viewModels()
+  private val binding: FragmentMapBinding by dataBinding()
 
   private val capturePhoto =
     registerForActivityResult(ActivityResultContracts.TakePicture()) { bitmap -> // Now this bitmap can be used wherever we want
@@ -86,47 +101,66 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
 
     binding.mapView.onCreate(savedInstanceState)
 
-    binding.trackingEvent = object : OnTrackingEvent {
-      override fun onClick(isOngoing: Boolean) {
-        if (isOngoing) {
-          requireActivity()
-            .sendBroadcast(requireActivity().getExplicitIntent(R.string.tracker_action_stop))
-          chronometerManager.stop()
-        } else {
-          requireActivity()
-            .sendBroadcast(requireActivity().getExplicitIntent(R.string.tracker_action_start))
-          chronometerManager.start()
-        }
-      }
+    binding.trackingEvent = this
 
-      override fun takePicture() {
-        capturePhoto.launch(null)
-      }
+    /* binding.trackingEvent = object : OnTrackingEvent {
 
-      override fun stopTracking() {
-        requireActivity().apply { sendBroadcast(getExplicitIntent(R.string.tracker_action_stop)) }
-        chronometerManager.stop()
-      }
+       override fun takePicture() {
+         capturePhoto.launch(null)
+       }
 
-      override fun startTracking() {
-        requireActivity().apply { sendBroadcast(getExplicitIntent(R.string.tracker_action_start)) }
-        chronometerManager.stop()
-        chronometerManager.start()
-      }
+       override fun stopTracking() {
+         requireActivity().apply { sendBroadcast(getExplicitIntent(R.string.tracker_action_stop)) }
+         chronometerManager.stop()
+       }
 
-      override fun showDeviceLocation() {
-        LocationHelper.getLastLocation(requireContext()) { location ->
+       override fun startTracking() {
+         requireActivity().apply { sendBroadcast(getExplicitIntent(R.string.tracker_action_start)) }
+         chronometerManager.stop()
+         chronometerManager.start()
+       }
+
+       override fun showDeviceLocation() {
+         if (locationComponent.isLocationComponentEnabled) {
+           locationComponent.cameraMode = CameraMode.TRACKING
+         }
+         *//*LocationHelper.getLastLocation(requireContext()) { location ->
           if (location != null) {
             zoomOnLocation(location)
           }
-        }
+        }*//*
       }
-    }
+
+      override fun toggleStyle() {
+        mapbox.setStyle(MapUtils.nextStyle)
+      }
+
+      override fun toggleCameraMode() {
+        val mode = MapUtils.nextCameraMode
+        binding.fabToggleCamera.apply {
+          when (mode) {
+            CameraMode.TRACKING_COMPASS -> setImageResource(R.drawable.ic_satellite)
+            CameraMode.TRACKING_GPS -> setImageResource(R.drawable.ic_current_location)
+            CameraMode.TRACKING -> setImageResource(R.drawable.ic_compass)
+          }
+        }
+        locationComponent.cameraMode = mode
+      }
+    }*/
 
     binding.mapView.getMapAsync(this)
 
     displayMetrics()
     chronometerManager = ChronometerManager(binding.liveMetrics.chronometer)
+  }
+
+  private fun displayMetrics() {
+    lifecycleScope.launchWhenCreated {
+      provider.provideRecords().collect { records ->
+        val locations = records.map { it.location }
+        binding.metrics = MetricsManager.getLiveMetrics(locations)
+      }
+    }
   }
 
   override fun onMapReady(mapbox: MapboxMap) {
@@ -135,38 +169,20 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     prepareMap(mapbox)
   }
 
-  private fun getDeviceLocation(style: Style) {
-    if (PermissionsManager.isForegroundLocationPermissionGranted(requireContext())) {
-      enableLocationComponent(style)
-    } else {
-      lifecycleScope.launchWhenResumed {
-        requestForegroundLocationPermission { isGranted ->
-          if (isGranted) {
-            enableLocationComponent(style)
-          }
-        }
-      }
-    }
-  }
-
   private fun prepareMap(mapbox: MapboxMap) {
     mapbox.setStyle(Style.MAPBOX_STREETS) { style -> getDeviceLocation(style) }
   }
 
-  private fun requestForegroundLocationPermission(block: (Boolean) -> Unit) {
-    registerForActivityResult(RequestPermission()) { isGranted -> block(isGranted) }
-      .launch(permission.ACCESS_FINE_LOCATION)
+  private fun getDeviceLocation(style: Style) {
+    if (PermissionsManager.isForegroundLocationPermissionGranted(requireContext())) {
+      enableLocationComponent(style)
+    } else {
+      requestForegroundLocationPermission()
+    }
   }
 
-  private fun displayMetrics() {
-    lifecycleScope.launchWhenCreated {
-      provider.provideRecords().collect { records ->
-        val locations = records.map { it.location }
-        val metrics = MetricsManager.getLiveMetrics(locations)
-        Timber.d("Metrics: $metrics")
-        binding.metrics = metrics
-      }
-    }
+  private fun requestForegroundLocationPermission() {
+    locationContracts.launch(permission.ACCESS_FINE_LOCATION)
   }
 
   @SuppressLint("MissingPermission")
@@ -184,7 +200,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     )
 
     // Set the component's camera mode
-    locationComponent.cameraMode = CameraMode.NONE
+    locationComponent.cameraMode = CameraMode.TRACKING
 
     // Set the component's render mode
     locationComponent.renderMode = RenderMode.NORMAL
@@ -192,59 +208,81 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     // Enable to make component visible
     locationComponent.isLocationComponentEnabled = true
 
-    locationComponent.zoomWhileTracking(15.0)
+    locationComponent.zoomWhileTracking(14.0)
 
-    if (locationComponent.isLocationComponentEnabled) {
-      LocationHelper.getLastLocation(requireContext()) { lastLocation ->
-        if (lastLocation != null) {
-          zoomOnLocation(lastLocation)
-        } else {
-          LocationHelper.getCurrentLocation(requireContext()) { currentLocation ->
-            if (currentLocation != null) {
-              zoomOnLocation(currentLocation)
-            }
-          }
-        }
-      }
-    }
+    /* if (locationComponent.isLocationComponentEnabled) {
+       LocationHelper.getLastLocation(requireContext()) { lastLocation ->
+         if (lastLocation != null) {
+           zoomOnLocation(lastLocation)
+         } else {
+           LocationHelper.getCurrentLocation(requireContext()) { currentLocation ->
+             if (currentLocation != null) {
+               zoomOnLocation(currentLocation)
+             }
+           }
+         }
+       }
+     }*/
 
     setupTrackingIndicator(style)
   }
 
   private fun setupTrackingIndicator(style: Style) {
     val lineManager = LineManager(binding.mapView, mapbox, style)
-
     mapModel.isTrackingOngoing.observe(viewLifecycleOwner, { isOngoing ->
       val coordinatesList = mutableListOf<LatLng>()
-      val onIndicatorPositionChangedListener = { point: Point ->
-        val coordinates = LatLng(point.latitude(), point.longitude())
-        coordinatesList.add(coordinates)
-        val lineOptions = LineOptions()
-          .withLineColor("#4c91df")
-          .withLineWidth(5f)
-          .withLatLngs(coordinatesList)
-        if (line != null) {
-          line?.latLngs = coordinatesList
-          if (lineManager.annotations.isEmpty) {
-            line = lineManager.create(lineOptions)
-          } else {
-            lineManager.update(line)
-          }
-        } else {
-          line = lineManager.create(lineOptions)
+      onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener { point: Point ->
+        displayTracks(coordinatesList, point, lineManager)
+      }
+
+
+      if (isOngoing) {
+        locationComponent.renderMode = RenderMode.COMPASS
+        if (onIndicatorPositionChangedListener != null) {
+          locationComponent.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener!!)
         }
 
-        val cameraPosition = LatLng(point.latitude(), point.longitude())
-        navigateCamera(mapbox, cameraPosition)
-      }
-      if (isOngoing) {
-        locationComponent.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
       } else {
-        locationComponent.removeOnIndicatorPositionChangedListener(
-          onIndicatorPositionChangedListener
-        )
+        Timber.d("It is not on going: $isOngoing")
+        locationComponent.renderMode = RenderMode.NORMAL
+        coordinatesList.clear()
+        lineManager.deleteAll()
+        binding.mapView.invalidate()
+        if (onIndicatorPositionChangedListener != null) {
+          locationComponent.removeOnIndicatorPositionChangedListener(
+            onIndicatorPositionChangedListener!!
+          )
+        }
+
       }
     })
+  }
+
+  private fun displayTracks(
+    coordinatesList: MutableList<LatLng>,
+    point: Point,
+    lineManager: LineManager
+  ) {
+
+    coordinatesList.add(LatLng(point.latitude(), point.longitude()))
+    val lineOptions = LineOptions()
+      .withLineColor("#4c91df")
+      .withLineWidth(5f)
+      .withLatLngs(coordinatesList)
+
+    if (line != null) {
+      line?.latLngs = coordinatesList
+      if (lineManager.annotations.isEmpty) {
+        line = lineManager.create(lineOptions)
+      } else {
+        lineManager.update(line)
+      }
+    } else {
+      line = lineManager.create(lineOptions)
+    }
+
+    val cameraPosition = LatLng(point.latitude(), point.longitude())
+    navigateCamera(mapbox, cameraPosition)
   }
 
   private fun zoomOnLocation(point: Point, zoomIn: Boolean = true) {
@@ -293,5 +331,57 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
   override fun onDestroyView() {
     super.onDestroyView()
     binding.mapView.onDestroy()
+  }
+
+  override fun takePicture() {
+    requireContext().apply {
+      val filename = "${ObjectId()}.jpg"
+
+      val uri = FileManager.getUriForFile(this, filename)
+      Timber.d("Uri from camera: $uri")
+
+      lifecycleScope.launch(Dispatchers.Default) {
+        capturePhoto.launch(uri)
+      }
+    }
+  }
+
+  override fun stopTracking() {
+    requireActivity().apply { sendBroadcast(getExplicitIntent(R.string.tracker_action_stop)) }
+    chronometerManager.stop()
+  }
+
+  override fun startTracking() {
+    requireActivity().apply { sendBroadcast(getExplicitIntent(R.string.tracker_action_start)) }
+    chronometerManager.start()
+  }
+
+  override fun showDeviceLocation() {
+    if (locationComponent.isLocationComponentEnabled) {
+      locationComponent.cameraMode = CameraMode.TRACKING
+      locationComponent.zoomWhileTracking(14.0)
+    }
+    /* LocationHelper.getLastLocation(requireContext()) { location ->
+      if(location != null) {
+        zoomOnLocation(location)
+      }
+    } */
+  }
+
+  override fun toggleStyle() {
+    mapbox.setStyle(MapUtils.nextStyle)
+  }
+
+  override fun toggleCameraMode() {
+    val mode = MapUtils.nextCameraMode
+    binding.fabToggleCamera.apply {
+      when (mode) {
+        CameraMode.TRACKING_COMPASS -> setImageResource(R.drawable.ic_satellite)
+        CameraMode.TRACKING_GPS -> setImageResource(R.drawable.ic_current_location)
+        CameraMode.TRACKING -> setImageResource(R.drawable.ic_compass)
+      }
+    }
+    locationComponent.cameraMode = mode
+    locationComponent.zoomWhileTracking(14.0)
   }
 }

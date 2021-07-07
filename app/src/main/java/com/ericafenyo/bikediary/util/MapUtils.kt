@@ -22,9 +22,51 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.dashboard
+package com.ericafenyo.bikediary.util
 
-interface OnDashboardEventListener {
-  fun onEditBmi()
-  fun launchHistory()
+import com.mapbox.mapboxsdk.location.modes.CameraMode
+import com.mapbox.mapboxsdk.maps.Style
+
+object MapUtils {
+  private val STYLES = arrayOf(
+    Style.MAPBOX_STREETS,
+    Style.OUTDOORS,
+    Style.LIGHT,
+    Style.DARK,
+    Style.SATELLITE_STREETS,
+  )
+
+  private var mapStyleIndex: Int = 0
+
+  /**
+   * Utility to cycle through map styles. Useful to test if runtime styling source and layers transfer over to new
+   * style.
+   *
+   * @return a string ID representing the map style
+   */
+  val nextStyle: String
+    get() {
+      mapStyleIndex++
+      if (mapStyleIndex == STYLES.size) {
+        mapStyleIndex = 0
+      }
+      return STYLES[mapStyleIndex]
+    }
+
+
+  private var cameraModesIndex: Int = 0
+  private val CAMERA_MODES = arrayOf(
+    CameraMode.TRACKING_COMPASS,
+    CameraMode.TRACKING_GPS,
+    CameraMode.TRACKING,
+  )
+
+  val nextCameraMode: Int
+    get() {
+      cameraModesIndex++
+      if (cameraModesIndex == CAMERA_MODES.size) {
+        cameraModesIndex = 0
+      }
+      return CAMERA_MODES[cameraModesIndex]
+    }
 }

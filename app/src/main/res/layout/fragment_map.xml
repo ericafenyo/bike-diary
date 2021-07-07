@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -60,37 +61,6 @@
           android:padding="@dimen/space_normal">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_layers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/space_small"
-            android:layout_marginTop="@dimen/space_normal"
-            android:layout_marginBottom="@dimen/space_normal"
-            android:onClick="@{()-> trackingEvent.startTracking()}"
-            android:src="@drawable/ic_layers"
-            android:textAppearance="?attr/textAppearanceBody2"
-            app:backgroundTint="?attr/colorSurface"
-            app:elevation="4dp"
-            app:maxImageSize="32dp"
-            app:tint="?attr/colorControlNormal"
-            bind:showIf="@{model.isTrackingOngoing()}" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_show_current_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_margin="@dimen/space_small"
-            android:contentDescription="@string/map_a11y_show_devices_current_location"
-            android:onClick="@{()-> trackingEvent.showDeviceLocation()}"
-            android:src="@drawable/ic_current_location"
-            app:backgroundTint="@color/white"
-            app:elevation="4dp"
-            app:layout_anchor="@id/fab_start_tracking"
-            app:tint="?attr/colorControlNormal" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_start_tracking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,6 +74,54 @@
             app:maxImageSize="32dp"
             app:tint="@color/white"
             bind:showIf="@{!model.isTrackingOngoing()}" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_show_current_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="@dimen/space_small"
+            android:contentDescription="@string/map_a11y_show_devices_current_location"
+            android:onClick="@{()-> trackingEvent.showDeviceLocation()}"
+            android:src="@drawable/ic_current_location"
+            app:backgroundTint="@color/white"
+            app:elevation="4dp"
+            app:layout_anchor="@id/fab_start_tracking"
+            app:tint="?attr/colorControlNormal"
+            bind:showIf="@{!model.isTrackingOngoing()}" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_layers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/space_small"
+            android:layout_marginTop="@dimen/space_normal"
+            android:layout_marginBottom="@dimen/space_normal"
+            android:onClick="@{()-> trackingEvent.toggleStyle()}"
+            android:src="@drawable/ic_layers"
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:backgroundTint="?attr/colorSurface"
+            app:elevation="4dp"
+            app:maxImageSize="32dp"
+            app:tint="?attr/colorControlNormal"
+            bind:showIf="@{model.isTrackingOngoing()}" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_toggle_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="@dimen/space_small"
+            android:contentDescription="@string/map_a11y_show_devices_current_location"
+            android:onClick="@{()-> trackingEvent.toggleCameraMode()}"
+            android:src="@drawable/ic_compass"
+            app:backgroundTint="@color/white"
+            app:elevation="4dp"
+            app:layout_anchor="@id/fab_start_tracking"
+            app:tint="?attr/colorControlNormal"
+            bind:showIf="@{model.isTrackingOngoing()}" />
+
 
       </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -119,7 +137,8 @@
         bind:metrics="@{metrics}"
         bind:onClickPicture="@{()-> trackingEvent.takePicture()}"
         bind:onClickStop="@{()-> trackingEvent.stopTracking()}"
-        bind:showIf="@{model.isTrackingOngoing()}" />
+        />
+<!--    bind:showIf="@{model.isTrackingOngoing()}"-->
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
