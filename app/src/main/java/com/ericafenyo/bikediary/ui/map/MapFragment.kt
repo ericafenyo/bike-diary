@@ -44,6 +44,7 @@ import com.ericafenyo.tracker.datastore.RecordsProvider
 import com.ericafenyo.tracker.util.PermissionsManager
 import com.ericafenyo.tracker.util.bson.ObjectId
 import com.ericafenyo.tracker.util.getExplicitIntent
+import com.google.android.material.transition.MaterialFadeThrough
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -93,6 +94,13 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback, OnTrack
     registerForActivityResult(ActivityResultContracts.TakePicture()) { bitmap -> // Now this bitmap can be used wherever we want
       Timber.d("bittt: $bitmap")
     }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enterTransition = MaterialFadeThrough().apply {
+      duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

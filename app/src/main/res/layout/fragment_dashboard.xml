@@ -48,7 +48,8 @@
   <androidx.core.widget.NestedScrollView
       android:id="@+id/dashboard_nested_scroll_view"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:transitionGroup="true">
 
     <LinearLayout
         android:id="@+id/linear_layout_dashboard"
@@ -274,9 +275,9 @@
                 android:layout_gravity="end|center_vertical"
                 android:contentDescription="@string/a11y_see_more"
                 android:gravity="center_vertical"
-                android:textSize="12sp"
                 android:text="History"
                 android:textAppearance="?attr/textAppearanceButton"
+                android:textSize="12sp"
                 app:drawableEndCompat="@drawable/ic_chevron_right" />
           </FrameLayout>
 

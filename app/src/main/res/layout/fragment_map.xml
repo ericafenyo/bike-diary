@@ -45,7 +45,8 @@
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:transitionGroup="true">
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/map_view"
@@ -136,9 +137,8 @@
         android:layout_margin="@dimen/space_small"
         bind:metrics="@{metrics}"
         bind:onClickPicture="@{()-> trackingEvent.takePicture()}"
-        bind:onClickStop="@{()-> trackingEvent.stopTracking()}"
-        />
-<!--    bind:showIf="@{model.isTrackingOngoing()}"-->
+        bind:onClickStop="@{()-> trackingEvent.stopTracking()}" />
+    <!--    bind:showIf="@{model.isTrackingOngoing()}"-->
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

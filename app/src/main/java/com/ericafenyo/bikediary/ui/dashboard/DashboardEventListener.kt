@@ -30,7 +30,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.databinding.FragmentHomeBinding
+import com.ericafenyo.bikediary.databinding.FragmentDashboardBinding
 import com.ericafenyo.bikediary.ui.dashboard.bmi.DialogCalibrateBodyMassIndex
 import com.ericafenyo.bikediary.util.AlertHelper
 import com.ericafenyo.tracker.data.model.succeeded
@@ -39,7 +39,7 @@ import kotlinx.coroutines.CoroutineScope
 class DashboardEventListener(
   fragment: Fragment,
   private val model: DashboardViewModel,
-  private val binding: FragmentHomeBinding
+  private val binding: FragmentDashboardBinding
 ) : OnDashboardEventListener {
   private val activity = fragment.requireActivity()
   private val navController = fragment.findNavController()
