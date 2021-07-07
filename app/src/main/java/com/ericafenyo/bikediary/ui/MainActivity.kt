@@ -24,7 +24,6 @@
 
 package com.ericafenyo.bikediary.ui
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -45,10 +44,11 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-  private lateinit var navController: NavController
+  private val navController: NavController by lazy { getNavigationController() }
 
   private val binding: ActivityMainBinding by dataBinding()
   private val viewModel: MainActivityViewModel by viewModels()
+
 
   @Inject lateinit var tripRepository: TripRepository
   @Inject lateinit var provider: RecordsProvider
@@ -64,12 +64,11 @@ class MainActivity : AppCompatActivity() {
 
     viewModel.theme.observe(this, Observer(::updateForTheme))
 
-    navController = getNavController()
 
     binding.bottomNavigation.setupWithNavController(navController)
   }
 
-  private fun getNavController(): NavController {
+  private fun getNavigationController(): NavController {
     val navHostFragment = supportFragmentManager
       .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
     return navHostFragment.navController
