@@ -38,7 +38,7 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.ericafenyo.data.BuildConfig
 import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
-import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.tracker.data.api.BikeDiaryService
 import com.ericafenyo.tracker.data.api.vo.CreateUserRequest
 import com.ericafenyo.tracker.data.api.vo.CreateUserResponse

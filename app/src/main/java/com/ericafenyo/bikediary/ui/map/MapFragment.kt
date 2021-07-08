@@ -61,6 +61,8 @@ import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.Line
 import com.mapbox.mapboxsdk.plugins.annotation.LineManager
 import com.mapbox.mapboxsdk.plugins.annotation.LineOptions
+import com.mapbox.mapboxsdk.style.layers.Property.LINE_CAP
+import com.mapbox.mapboxsdk.style.layers.Property.LINE_JOIN_ROUND
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -237,6 +239,8 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback, OnTrack
 
   private fun setupTrackingIndicator(style: Style) {
     val lineManager = LineManager(binding.mapView, mapbox, style)
+    lineManager.lineCap = LINE_JOIN_ROUND
+
     mapModel.isTrackingOngoing.observe(viewLifecycleOwner, { isOngoing ->
       val coordinatesList = mutableListOf<LatLng>()
       onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener { point: Point ->

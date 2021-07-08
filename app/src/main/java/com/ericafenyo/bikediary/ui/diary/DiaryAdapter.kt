@@ -28,7 +28,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.databinding.ItemDateBinding
 import com.ericafenyo.bikediary.databinding.ItemTripBinding
 

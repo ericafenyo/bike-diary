@@ -24,15 +24,14 @@
 
 package com.ericafenyo.data.repository.internal
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
+import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.data.repository.AdventureRepository
-import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.tracker.data.api.BikeDiaryService
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 @Singleton
 class AdventureRepositoryImpl @Inject constructor(
@@ -41,14 +40,11 @@ class AdventureRepositoryImpl @Inject constructor(
   private val localStore: AdventureLocalDataSource,
 ) : AdventureRepository {
 
-  override suspend fun adventures(): Flow<List<Adventure>> = flow {
-    val adventures = localStore.getAdventures();
-    emit(toEntities(adventures))
+  override fun adventures(): Flow<List<Adventure>> {
+    return localStore.adventures().map { entities ->
+      mapper.toAdventures(entities) }
   }
 
-  override suspend fun adventure(): Flow<Adventure> = localStore.adventure().map { mapper.map(it) }
-
-  private suspend fun toEntities(adventures: List<AdventureEntity>): List<Adventure> {
-    return adventures.map { adventure -> mapper.map(adventure) }
-  }
+  override fun adventure(): Flow<Adventure> = localStore.adventure()
+    .map { mapper.map(it) }
 }

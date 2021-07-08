@@ -28,7 +28,7 @@ import android.content.Context
 import com.ericafenyo.tracker.database.entities.AdventureEntity
 import com.ericafenyo.tracker.database.CacheDatabase
 import com.ericafenyo.tracker.R
-import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.tracker.data.Metrics
 import com.ericafenyo.tracker.data.model.FeatureCollection
 import com.ericafenyo.tracker.data.model.LineString

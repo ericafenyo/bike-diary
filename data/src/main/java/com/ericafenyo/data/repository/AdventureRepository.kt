@@ -24,10 +24,10 @@
 
 package com.ericafenyo.data.repository
 
-import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.bikediary.model.Adventure
 import kotlinx.coroutines.flow.Flow
 
 interface AdventureRepository {
-  suspend fun adventures(): Flow<List<Adventure>>
-  suspend fun adventure(): Flow<Adventure>
+  fun adventures(): Flow<List<Adventure>>
+  fun adventure(): Flow<Adventure>
 }

@@ -24,8 +24,8 @@
 
 package com.ericafenyo.data.repository.internal
 
-import com.ericafenyo.tracker.database.entities.AdventureEntity
 import com.ericafenyo.tracker.database.CacheDatabase
+import com.ericafenyo.tracker.database.entities.AdventureEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
@@ -36,5 +36,6 @@ class AdventureLocalDataSource @Inject constructor(database: CacheDatabase) {
 
   suspend fun getAdventures(): List<AdventureEntity> = dao.getAdventures()
   fun adventure(): Flow<AdventureEntity> = dao.adventure()
+  fun adventures(): Flow<List<AdventureEntity>> = dao.adventures()
   suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
 }

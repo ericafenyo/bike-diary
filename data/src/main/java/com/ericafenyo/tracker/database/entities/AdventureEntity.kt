@@ -26,7 +26,7 @@ package com.ericafenyo.tracker.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.bikediary.model.Adventure
 
 @Entity(tableName = "adventures")
 data class AdventureEntity(

@@ -24,10 +24,10 @@
 
 package com.ericafenyo.data.repository.internal
 
+import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.data.api.internal.response.GetAdventuresResponse
-import com.ericafenyo.tracker.database.entities.AdventureEntity
 import com.ericafenyo.data.repository.Mapper
-import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.tracker.database.entities.AdventureEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -66,4 +66,8 @@ class AdventureMapper @Inject constructor() : Mapper<Any, Adventure> {
     geojson = response.geojson,
     imageUrl = response.imageUrl,
   )
+
+  suspend fun toAdventures(entities: List<AdventureEntity>): List<Adventure> {
+    return entities.map { entity -> map(entity) }
+  }
 }

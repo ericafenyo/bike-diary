@@ -33,7 +33,7 @@
 
     <variable
         name="adventure"
-        type="com.ericafenyo.tracker.data.Adventure" />
+        type="com.ericafenyo.bikediary.model.Adventure" />
 
     <variable
         name="listener"

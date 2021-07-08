@@ -26,7 +26,7 @@ package com.ericafenyo.tracker.data.api
 
 import com.ericafenyo.data.BuildConfig
 import com.ericafenyo.data.api.internal.response.SaveAdventureResponse
-import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.tracker.data.api.vo.CreateUserRequest
 import com.ericafenyo.tracker.data.api.vo.CreateUserResponse
 

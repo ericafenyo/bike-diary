@@ -60,7 +60,7 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_gravity="center"
-          bind:show="@{model.syncing}" />
+          bind:show="@{model.state.loading}" />
 
       <include
           layout="@layout/no_adventure"

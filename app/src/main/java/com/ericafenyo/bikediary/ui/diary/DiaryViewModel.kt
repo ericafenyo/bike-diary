@@ -28,20 +28,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ericafenyo.bikediary.domain.adventures.GetAdventures
+import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.model.UIState
-import com.ericafenyo.tracker.domain.adventures.GetAdventuresUseCase
-import com.ericafenyo.tracker.data.Adventure
-import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.data
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @HiltViewModel
 class DiaryViewModel @Inject constructor(
-  private val getAdventures: GetAdventuresUseCase,
+  private val getAdventures: GetAdventures,
 ) : ViewModel() {
   private val _state = MutableLiveData<UIState>()
   val state: LiveData<UIState> get() = _state
@@ -56,40 +56,22 @@ class DiaryViewModel @Inject constructor(
     loadAdventures()
   }
 
-  private fun loadAdventures() = viewModelScope.launch {
-    Timber.d("Loading adventures")
+  private fun loadAdventures() {
     // Start with a loading state
     _state.value = UIState(loading = true)
 
-    kotlin.runCatching {
-      getAdventures()
-        .collect { result ->
-          Timber.d("Got adventures");
-          setAdventureResult(result)
-        }
-    }.onFailure {
-      Timber.e(it, "Loading adventures")
-    }.onSuccess {
-      Timber.d("Loading adventures success $it")
-    }
-    /* .catch {
-       Timber.d("An error occurred loading adventures")
-       _adventures.value = emptyList();
-       _state.value = UIState(error = true) }*/
-//      .launchIn(viewModelScope)/
-  }
-
-  private fun setAdventureResult(result: Result<List<Adventure>>) {
-    Timber.d("result result $result")
-    val data = result.data // New variable created to benefit from smart cast.
-    if (data != null) {
-      if (data.isEmpty()) {
-        _adventures.value = emptyList()
-        _state.value = UIState(empty = true)
-      } else {
-        _adventures.value = data!!
+    // Get the list of adventures from the data sources
+    getAdventures().onEach { result ->
+      val data = result.data!!
+      _adventures.value = data
+      if (data.isNotEmpty()) {
         _state.value = UIState(success = true)
+      } else {
+        _state.value = UIState(empty = true)
       }
-    }
+    }.catch {
+      _adventures.value = emptyList()
+      _state.value = UIState(error = true)
+    }.launchIn(viewModelScope)
   }
 }

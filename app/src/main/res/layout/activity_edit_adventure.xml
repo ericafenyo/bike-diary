@@ -31,7 +31,7 @@
   <data>
     <variable
         name="adventure"
-        type="com.ericafenyo.tracker.data.Adventure" />
+        type="com.ericafenyo.bikediary.model.Adventure" />
 
     <variable
         name="onTextChangedListener"
@@ -132,7 +132,7 @@
               android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -141,7 +141,7 @@
               android:layout_height="wrap_content"
               android:text="" />
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/left_keyline"

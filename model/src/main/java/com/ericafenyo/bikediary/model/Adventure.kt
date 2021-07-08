@@ -22,28 +22,19 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.components
+package com.ericafenyo.bikediary.model
 
-import com.ericafenyo.tracker.data.Adventure
-
-
-val fakeAdventure = Adventure(
-  id = "60a5a2ef86454011e030c33d",
-  title = "Wli Water falls",
-  speed = 34.0,
-  distance = 5.2,
-  duration = 678376.67,
-  calories = 8,
-  startedAt = "",
-  completedAt = "",
-  geojson = "",
-  imageUrl = ""
-)
-
-//@Preview(showBackground = true)
-//@Composable
-//fun AdventureItem(adventure: Adventure = fakeAdventure) {
-//  Card {
-//    Text(text = "Mina")
-//  }
-//}
+data class Adventure(
+  val id: String,
+  val title: String,
+  val speed: Double,
+  val duration: Double,
+  val distance: Double,
+  val calories: Int,
+  val startedAt: String,
+  val completedAt: String,
+  val geojson: String,
+  val imageUrl: String,
+) {
+  fun isPushed() = !id.contains("Unprocessed")
+}

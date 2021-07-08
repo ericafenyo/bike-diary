@@ -22,33 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.domain.adventures
+package com.ericafenyo.bikediary.domain.adventures
 
+import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.data.repository.AdventureRepository
-import com.ericafenyo.tracker.data.Adventure
 import com.ericafenyo.tracker.data.model.Result
+import com.ericafenyo.tracker.di.qualifier.IODispatcher
 import com.ericafenyo.tracker.domain.FlowUseCase
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 
-class GetAdventuresUseCase @Inject constructor(
+class GetAdventures @Inject constructor(
   private val repository: AdventureRepository,
-  // val dispatchers: CoroutineDispatchers
-) : FlowUseCase<List<Adventure>>(Dispatchers.IO) {
-  override fun execute(): Flow<Result<List<Adventure>>> = flow {
-    try {
-      repository.adventures().collect { adventures ->
-        Timber.d("$adventures")
-        emit(Result.Success(adventures))
-      }
-    } catch (exception: Exception) {
-      Timber.e(exception)
-      emit(Result.Error(exception))
-    }
-  }
+  @IODispatcher dispatchers: CoroutineDispatcher
+) : FlowUseCase<List<Adventure>>(dispatchers) {
+  override fun execute(): Flow<Result<List<Adventure>>> {
+    return repository.adventures().map { adventures -> Result.Success(adventures) } }
 }
