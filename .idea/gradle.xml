@@ -16,7 +16,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/database" />
+            <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/logger" />
+            <option value="$PROJECT_DIR$/model" />
+            <option value="$PROJECT_DIR$/repositories" />
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/tracker" />
           </set>
