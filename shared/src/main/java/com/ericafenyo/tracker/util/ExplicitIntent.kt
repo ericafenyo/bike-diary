@@ -27,6 +27,8 @@ package com.ericafenyo.tracker.util
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.StringRes
+import com.ericafenyo.bikediary.database.entity.Record
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Create an explicit intent that sets the package name correctly and converts it to an implicit intent.

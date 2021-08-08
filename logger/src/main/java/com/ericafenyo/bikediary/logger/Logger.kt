@@ -22,11 +22,9 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.logger
+package com.ericafenyo.bikediary.logger
 
 import android.content.Context
-import java.io.PrintWriter
-import java.io.StringWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -37,18 +35,19 @@ object Logger {
 
   fun clear(context: Context) = runBlocking(IOContext) { database(context).clear() }
 
-  fun log(context: Context, level: String, tag: String, message: String) = runBlocking(IOContext) {
-    database(context).insert(LogEntity(level = level, message = "$tag, $message"))
-  }
+  private fun log(context: Context, level: String, tag: String, message: String) =
+      runBlocking(IOContext) {
+        database(context).insert(Log(level = level, message = "$tag, $message"))
+      }
 
   fun debug(context: Context, tag: String, message: String) {
     log(context, "DEBUG", tag, message)
-    Timber.tag(tag).d(message)
+    Timber.tag(tag).d(tag, message)
   }
 
   fun info(context: Context, tag: String, message: String) {
     log(context, "INFO", tag, message)
-    Timber.tag(tag).i(message)
+    Timber.tag(tag).i(tag, message)
   }
 
   fun warn(context: Context, tag: String, message: String) {
@@ -56,19 +55,8 @@ object Logger {
     Timber.tag(tag).w(message)
   }
 
-  fun error(context: Context, tag: String, message: String) {
-    log(context, "ERROR", tag, message)
-    Timber.tag(tag).e(message)
-  }
-
-  fun exception(context: Context, tag: String, exception: Exception) {
-    try {
-      val stringWriter = StringWriter()
-      val printWriter = PrintWriter(stringWriter)
-      error(context, tag, printWriter.toString())
-      Timber.tag(tag).e(exception)
-    } catch (e: Exception) {
-      e.printStackTrace()
-    }
+  fun error(context: Context, tag: String, exception: Exception) {
+    log(context, "ERROR", tag, exception.stackTraceToString())
+    Timber.tag(tag).e(exception)
   }
 }

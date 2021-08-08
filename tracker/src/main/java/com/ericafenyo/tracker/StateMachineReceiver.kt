@@ -27,11 +27,11 @@ package com.ericafenyo.tracker
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.ericafenyo.tracker.logger.Logger
+import com.ericafenyo.bikediary.logger.Logger
 
 class StateMachineReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
-    Logger.debug(context, TAG, "onReceive(Context $context, Intent $intent)")
+    com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "onReceive(Context $context, Intent $intent)")
 
     if (intent.action == context.getString(R.string.tracker_action_initialize)) {
       // TODO: 1/9/21

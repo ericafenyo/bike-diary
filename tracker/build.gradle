@@ -67,6 +67,8 @@ dependencies {
     implementation project(path: ':shared')
     api project(path: ':data')
     implementation project(path: ':model')
+    implementation project(path: ':database')
+    implementation project(path: ':logger')
 
     testImplementation libs.junit
 

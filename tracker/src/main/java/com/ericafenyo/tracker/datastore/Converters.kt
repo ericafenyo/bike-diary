@@ -22,7 +22,11 @@
  * SOFTWARE.
  */
 
+<<<<<<< HEAD:tracker/src/main/java/com/ericafenyo/tracker/datastore/Converters.kt
 package com.ericafenyo.tracker.datastore
+=======
+package com.ericafenyo.bikediary.database.entity
+>>>>>>> a0365d1 (Test :logger module build):database/src/main/java/com/ericafenyo/bikediary/database/entity/Record.kt
 
 import androidx.room.TypeConverter
 import com.ericafenyo.tracker.location.SimpleLocation

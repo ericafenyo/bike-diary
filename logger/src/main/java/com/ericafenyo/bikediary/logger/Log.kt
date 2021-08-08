@@ -22,38 +22,17 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.bikediary.logger
 
-import android.content.Context
-import android.content.Intent
-import androidx.core.app.JobIntentService
-import com.ericafenyo.bikediary.logger.Logger
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import org.threeten.bp.LocalDateTime
 
-class AnalysisJobIntentService : JobIntentService() {
-
-  override fun onHandleWork(intent: Intent) {
-    Logger.debug(applicationContext, TAG, "onHandleWork(intent: $intent)")
-    Analyser(applicationContext).startAnalysis()
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    com.ericafenyo.bikediary.logger.Logger.debug(applicationContext, TAG, "onDestroy() All work complete")
-  }
-
-  companion object {
-    private const val TAG = "AnalysisJobIntentService"
-
-    /**
-     * Unique job ID for this service.
-     */
-    const val JOB_ID = 1000
-
-    /**
-     * Convenience method for enqueuing work in to this service.
-     */
-    fun enqueueWork(context: Context, work: Intent) {
-      enqueueWork(context, AnalysisJobIntentService::class.java, JOB_ID, work)
-    }
-  }
-}
+@Entity(tableName = "logs")
+data class Log(
+  @PrimaryKey(autoGenerate = true) val id: Int = 0,
+  val fmt: String = LocalDateTime.now().toString(),
+  val ts: Double = (System.currentTimeMillis() / 1000).toDouble(),
+  val level: String,
+  val message: String
+)

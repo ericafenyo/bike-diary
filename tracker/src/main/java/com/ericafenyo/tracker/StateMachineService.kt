@@ -36,7 +36,7 @@ import com.ericafenyo.tracker.analysis.AnalysisJobIntentService
 import com.ericafenyo.tracker.datastore.PreferenceDataStore
 import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
-import com.ericafenyo.tracker.logger.Logger
+import com.ericafenyo.bikediary.logger.Logger
 import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID
 import com.ericafenyo.tracker.util.Notifications
 import com.ericafenyo.tracker.util.Notifications.Config
@@ -59,12 +59,12 @@ class StateMachineService : Service(), CoroutineScope {
   }
 
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-    Logger.debug(this, tag, "onStartCommand(intent: $intent,  flags: $flags, startId: $startId)")
+    com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "onStartCommand(intent: $intent,  flags: $flags, startId: $startId)")
 
     if (flags == START_FLAG_REDELIVERY) {
       // Service restated after being killed before calling stopSelf(int) for the given Intent.
       // https://developer.android.com/reference/android/app/Service#START_FLAG_REDELIVERY
-      Logger.debug(this, tag, "Service restarted! need to check idempotence!")
+      com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "Service restarted! need to check idempotence!")
     }
 
     // TODO: 1/10/21 change runBlocking with a proper coroutine builder
@@ -76,7 +76,7 @@ class StateMachineService : Service(), CoroutineScope {
         ).first()
 
 
-      Logger.debug(this@StateMachineService, tag, "The current state is $currentState")
+      com.ericafenyo.bikediary.logger.Logger.debug(this@StateMachineService, tag, "The current state is $currentState")
       // 1. TODO: 1/10/21 Save action to database
       handleAction(currentState, intent.action)
     }
@@ -94,9 +94,9 @@ class StateMachineService : Service(), CoroutineScope {
   }
 
   private fun handleAction(currentState: String, action: String?) {
-    Logger.debug(this, tag, "handleAction(currentState: $currentState , action: $action)")
+    com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "handleAction(currentState: $currentState , action: $action)")
     if (action == null) {
-      Logger.debug(this, tag, "action is null, exiting")
+      com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "action is null, exiting")
       return
     }
 
@@ -108,14 +108,14 @@ class StateMachineService : Service(), CoroutineScope {
   }
 
   private fun handleInitialize(currentState: String, action: String) {
-    Logger.debug(this, tag, "handleInitialize(currentState: $currentState, action: $action)")
+    com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "handleInitialize(currentState: $currentState, action: $action)")
     // Exit quickly if tracking is disabled
     exitOnTrackingDisabled(currentState)
     setNewState(this, currentState, getString(R.string.tracker_state_ready))
   }
 
   private fun handleStart(currentState: String, action: String) {
-    Logger.debug(this, tag, "handleStart(currentState: $currentState, action: $action)")
+    com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "handleStart(currentState: $currentState, action: $action)")
 
     // Exit quickly if tracking is disabled
     exitOnTrackingDisabled(currentState)
@@ -142,7 +142,7 @@ class StateMachineService : Service(), CoroutineScope {
           Notifications.create(this, notificationConfig)
         }
       }?.addOnFailureListener {
-        Logger.error(this, tag, "Start location request unsuccessful: $it")
+        com.ericafenyo.bikediary.logger.Logger.error(this, tag, "Start location request unsuccessful: $it")
         if (!PermissionsManager.isForegroundLocationPermissionGranted(this)) {
           showNotificationToAppSettings()
         }
@@ -180,7 +180,7 @@ class StateMachineService : Service(), CoroutineScope {
   }
 
   private fun handleStop(currentState: String, action: String) {
-    Logger.debug(this, tag, "handleStop(currentState: $currentState, action: $action)")
+    com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "handleStop(currentState: $currentState, action: $action)")
     // Stop the location-updates request
     LocationUpdatesAction(this).stop()?.addOnSuccessListener {
       // If the request is successful, change the current state to ongoing
@@ -193,25 +193,26 @@ class StateMachineService : Service(), CoroutineScope {
       AnalysisJobIntentService.enqueueWork(this, Intent(this, AnalysisJobIntentService::class.java))
     }?.addOnFailureListener {
       Logger.error(this, tag, "Stop Location updates request unsuccessful: $it")
+      Log.e(tag, "Error", it)
     }
   }
 
   private fun exitOnTrackingDisabled(currentState: String) {
     if (currentState == getString(R.string.tracker_state_disabled)) {
-      Logger.debug(this, tag, "Tracking is disabled, exiting")
+      com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "Tracking is disabled, exiting")
       return
     }
   }
 
   private fun exitOnEqualState(currentState: String, newState: String) {
     if (currentState == newState) {
-      Logger.debug(this, tag, "Already in the state: $newState, exiting")
+      com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "Already in the state: $newState, exiting")
       return
     }
   }
 
   private fun setNewState(context: Context, currentState: String, newState: String) {
-    Logger.debug(context, tag, "New state after handling action is $newState")
+    com.ericafenyo.bikediary.logger.Logger.debug(context, tag, "New state after handling action is $newState")
 
     //Exit quickly if current state is same as state ready
     exitOnEqualState(currentState, newState)
@@ -220,7 +221,7 @@ class StateMachineService : Service(), CoroutineScope {
     runBlocking {
       PreferenceDataStore.getInstance(context)
         .putString(getString(R.string.tracker_current_state_key), newState)
-      Logger.debug(context, tag, "New state saved to preference storage")
+      com.ericafenyo.bikediary.logger.Logger.debug(context, tag, "New state saved to preference storage")
     }
     stopSelf()
   }

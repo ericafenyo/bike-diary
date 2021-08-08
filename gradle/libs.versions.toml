@@ -8,7 +8,7 @@ okhttp = "4.9.0"
 room = "2.3.0"
 
 [libraries]
-android-gradlePlugin = "com.android.tools.build:gradle:4.2.1"
+android-gradlePlugin = "com.android.tools.build:gradle:4.2.2"
 
 androidx-activity = "androidx.activity:activity-ktx:1.2.3"
 androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
