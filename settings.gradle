@@ -11,3 +11,5 @@ include ':network'
 rootProject.name = "Bike Diary"
 
 enableFeaturePreview("VERSION_CATALOGS")
+include ':repositories'
+include ':domain'
