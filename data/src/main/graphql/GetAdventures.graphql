@@ -1,0 +1,14 @@
+query getAdventures {
+  adventures {
+    id
+    title
+    speed
+    duration
+    distance
+    calories
+    startedAt
+    completedAt
+    geojson
+    imageUrl
+  }
+}

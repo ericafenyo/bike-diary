@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  The MIT License (MIT)
+
+  Copyright (C) 2021 Eric Afenyo
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  -->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+        name="model"
+        type="com.ericafenyo.bikediary.ui.auth.LoginViewModel" />
+  </data>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/color_background"
+      android:orientation="vertical"
+      tools:context=".ui.auth.LoginFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:clickable="true"
+          android:focusable="true"
+          android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/text_login_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/sign_in_page_title_text"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintStart_toStartOf="@+id/left_keyline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_field_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="@string/input_hint_email"
+            app:boxStrokeColor="@color/input_field_stroke_color"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+            app:layout_constraintStart_toStartOf="@+id/left_keyline"
+            app:layout_constraintTop_toBottomOf="@+id/text_login_title">
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/edit_text_email"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_field_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_normal"
+            android:hint="@string/input_hint_password"
+            app:boxStrokeColor="@color/input_field_stroke_color"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+            app:layout_constraintStart_toStartOf="@+id/left_keyline"
+            app:layout_constraintTop_toBottomOf="@id/input_field_email">
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/edit_text_password"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/text_action_forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> model.onForgetPassword()}"
+            android:padding="@dimen/space_small"
+            android:paddingHorizontal="@dimen/space_normal"
+            android:paddingVertical="@dimen/space_small"
+            android:text="@string/action_forgot_password"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+            app:layout_constraintTop_toBottomOf="@+id/input_field_password" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_login"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="24dp"
+            android:onClick="@{() -> model.onLogin()}"
+            android:text="@string/action_login"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="@dimen/text_size_normal"
+            app:backgroundTint="@color/color_green"
+            app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+            app:layout_constraintStart_toStartOf="@+id/left_keyline"
+            app:layout_constraintTop_toBottomOf="@+id/text_action_forgot_password" />
+
+        <TextView
+            android:id="@+id/text_login_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/login_label_you_have_account"
+            app:layout_constraintEnd_toStartOf="@+id/text_action_create_account"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_login" />
+
+        <TextView
+            android:id="@+id/text_action_create_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> model.onRegister()}"
+            android:padding="@dimen/space_small"
+            android:text="Sign up"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/text_login_no_account"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/text_login_no_account"
+            app:layout_constraintTop_toTopOf="@+id/text_login_no_account" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_keyline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/spacing_medium" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/right_keyline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/spacing_medium" />
+
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+  </LinearLayout>
+</layout>

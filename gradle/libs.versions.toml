@@ -1,0 +1,83 @@
+[versions]
+apollo = "2.5.4"
+coroutines = "1.4.3"
+hilt = "2.34.1-beta"
+kotlin = "1.5.0"
+lifecycle = "2.3.1"
+okhttp = "4.9.0"
+room = "2.3.0"
+
+[libraries]
+android-gradlePlugin = "com.android.tools.build:gradle:4.2.2"
+
+androidx-activity = "androidx.activity:activity-ktx:1.2.3"
+androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
+androidx-core = "androidx.core:core-ktx:1.5.0-rc01"
+androidx-datastore = "androidx.datastore:datastore-preferences:1.0.0-alpha05"
+androidx-espresso = "androidx.test.espresso:espresso-core:3.3.0"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.3.3"
+androidx-junitExt = "androidx.test.ext:junit-ktx:1.1.2"
+androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-material = "com.google.android.material:material:1.3.0"
+androidx-navigation-fragment = "androidx.navigation:navigation-fragment-ktx:2.3.5"
+androidx-navigation-ui = "androidx.navigation:navigation-ui-ktx:2.3.5"
+androidx-preference = "androidx.preference:preference-ktx:1.1.1"
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+
+apollo-coroutines = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo" }
+apollo-gradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo" }
+apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
+
+crashlytics-gradlePlugin = "com.google.firebase:firebase-crashlytics-gradle:2.5.2"
+crashlytics-ktx = "com.google.firebase:firebase-crashlytics-ktx:17.4.1"
+
+databinding = "com.github.wada811:DataBinding-ktx:5.0.1"
+
+dokka = "org.jetbrains.dokka:dokka-gradle-plugin:1.4.30"
+
+flexbox = "com.google.android.flexbox:flexbox:3.0.0"
+
+glide = "com.github.bumptech.glide:glide:4.12.0"
+
+google-gms-location = "com.google.android.gms:play-services-location:18.0.0"
+google-gms-services = "com.google.gms:google-services:4.3.5"
+
+gson = "com.google.code.gson:gson:2.8.6"
+
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+hilt-gradlePlugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+hilt-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
+
+junit = "junit:junit:4.13"
+
+kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+kotlin-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0"
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+
+leakCanary = "com.squareup.leakcanary:leakcanary-android:2.6"
+
+mapbox-android = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1"
+mapbox-annotation = "com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v9:0.9.0"
+
+materialratingbar = "me.zhanghai.android.materialratingbar:library:1.4.0"
+
+slimChart = "com.github.mancj:SlimChart:0.1.2"
+
+speedDial = "com.leinardi.android:speed-dial:3.1.0"
+
+threetenabp = "com.jakewharton.threetenabp:threetenabp:1.3.1"
+
+timber = "com.jakewharton.timber:timber:4.7.1"
+
+okhttp3-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp3-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+
+androidChart = "com.github.PhilJay:MPAndroidChart:v3.1.0"

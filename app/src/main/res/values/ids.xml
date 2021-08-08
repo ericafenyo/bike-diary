@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item name="fab_item_weight" type="id" />
+  <item name="fab_item_trip" type="id" />
+  <item name="fab_item_drink" type="id" />
+</resources>

@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+bin/download_schema.sh
+**/build/

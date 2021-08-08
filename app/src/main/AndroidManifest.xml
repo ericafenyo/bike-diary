@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.ericafenyo.habitdiary">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ericafenyo.bikediary">
 
   <application
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/Theme.HabitDiary">
-    <activity android:name=".MainActivity">
+      android:name=".HabitDiaryApplication"
+      android:allowBackup="true"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/app_name"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:supportsRtl="true"
+      android:theme="@style/Theme.HabitDiary">
+    <activity android:name=".ui.auth.AuthenticationActivity"></activity>
+    <activity android:name=".ui.diary.EditAdventureActivity" />
+    <activity android:name=".SettingsActivity" />
+    <activity android:name=".ui.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
     <meta-data
-      android:name="preloaded_fonts"
-      android:resource="@array/preloaded_fonts" />
+        android:name="preloaded_fonts"
+        android:resource="@array/preloaded_fonts" />
+
+    <receiver
+        android:name=".AnalysisEndReceiver"
+        android:exported="false">
+      <intent-filter>
+        <action android:name="tracker.intent.action.END_ANALYSIS" />
+      </intent-filter>
+    </receiver>
+
+    <service
+        android:name=".util.DraftAdventureJobIntentService"
+        android:permission="android.permission.BIND_JOB_SERVICE" />
   </application>
+
 </manifest>

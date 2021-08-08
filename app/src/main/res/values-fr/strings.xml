@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The MIT License (MIT)
+
+  Copyright (C) 2020 Eric Afenyo
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  -->
+
+<resources>
+
+  <!-- Format strings -->
+  <string name="format_km_in_sec">%.2f km en %s</string>
+  <string name="format_level">Niveau %d</string>
+
+  <string name="title_map">Carte</string>
+  <string name="title_profile">Profil</string>
+  <string name="title_diary">Diary</string>
+  <string name="title_dashboard">Dashboard</string>
+  <string name="title_settings">settings</string>
+
+  <!-- Gender -->
+  <string name="gender_male">Homme</string>
+  <string name="gender_female">Femme</string>
+  <string name="gender_other">Autre</string>
+
+  <string name="settings_theme_title">Sélectionner un thème</string>
+  <string name="settings_theme_system">Thème par défaut su système</string>
+  <string name="settings_theme_light">Clair</string>
+  <string name="settings_theme_dark">Sombre</string>
+  <string name="settings_theme_battery">Défini par l\'économiseur de batterie</string>
+
+  <string name="profile_label_dark_mode">Dark mode</string>
+  <string name="a11y_profile_enable_dark_mode">Activer le mode sombre</string>
+  <string name="a11y_profile_disable_dark_mode">Désactiver le mode sombre</string>
+  <string name="title_edit_adventure">Modifier l\'aventure</string>
+  <string name="label_email">Email</string>
+
+  <string name="dashboard_axis_label_monday">Lun</string>
+  <string name="dashboard_axis_label_tuesday">Mar</string>
+  <string name="dashboard_axis_label_wednesday">Mer</string>
+  <string name="dashboard_axis_label_thursday">Jeu</string>
+  <string name="dashboard_axis_label_friday">Ven</string>
+  <string name="dashboard_axis_label_saturday">Sam</string>
+  <string name="dashboard_axis_label_sunday">Dim</string>
+
+</resources>
