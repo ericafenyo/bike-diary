@@ -22,17 +22,37 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.logger
+package com.ericafenyo.bikediary.logger
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import org.threeten.bp.LocalDateTime
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 
-@Entity(tableName = "logs")
-data class LogEntity(
-  @PrimaryKey(autoGenerate = true) val id: Int = 0,
-  val fmt: String = LocalDateTime.now().toString(),
-  val ts: Double = (System.currentTimeMillis() / 1000).toDouble(),
-  val level: String,
-  val message: String
-)
+@Database(entities = [Log::class], version = 1, exportSchema = false)
+abstract class LoggerDatabase : RoomDatabase() {
+  abstract fun logs(): LogDao
+
+  companion object {
+    @Volatile
+    private var INSTANCE: LoggerDatabase? = null
+
+
+    @JvmStatic
+    fun getInstance(context: Context): LoggerDatabase {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: createDatabase(context)
+          .also { INSTANCE = it }
+      }
+    }
+
+    private fun createDatabase(context: Context): LoggerDatabase {
+      return Room.databaseBuilder(
+        context,
+        LoggerDatabase::class.java,
+        "com.ericafenyo.bikediary.Logs"
+      ).fallbackToDestructiveMigration()
+        .build()
+    }
+  }
+}

@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.Builder
 import androidx.core.app.NotificationManagerCompat
 import com.ericafenyo.tracker.R
-import com.ericafenyo.tracker.logger.Logger
+import com.ericafenyo.bikediary.logger.Logger
 
 object Notifications {
   private const val TAG = "Notification"
@@ -50,7 +50,7 @@ object Notifications {
       .also {
         NotificationManagerCompat.from(context).notify(notificationId, it)
       }
-    Logger.debug(
+    com.ericafenyo.bikediary.logger.Logger.debug(
       context, TAG, "Generating notify with id $notificationId and message $message"
     )
   }
@@ -75,14 +75,14 @@ object Notifications {
       .also {
         NotificationManagerCompat.from(context).notify(notificationId, it)
       }
-    Logger.debug(
+    com.ericafenyo.bikediary.logger.Logger.debug(
       context, TAG, "Generating notify with id $notificationId and message $message"
     )
   }
 
   fun cancel(context: Context, notificationId: Int) {
     val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    Logger.debug(context, TAG, "Cancelling notify with id $notificationId")
+    com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Cancelling notify with id $notificationId")
     manager.cancel(notificationId)
   }
 
@@ -92,13 +92,13 @@ object Notifications {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
       for (chanel in manager.notificationChannels) {
-        Logger.debug(context, TAG, "Checking channel with id = ${chanel.id}")
+        com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Checking channel with id = ${chanel.id}")
         if (DEFAULT_CHANNEL_ID == chanel.id) {
-          Logger.debug(context, TAG, "Default channel found, returning")
+          com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Default channel found, returning")
           return
         }
       }
-      Logger.debug(context, TAG, "Default channel not found, creating a new one")
+      com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Default channel not found, creating a new one")
       val channel = NotificationChannel(
         DEFAULT_CHANNEL_ID, DEFAULT_CHANNEL_DESCRIPTION, NotificationManager.IMPORTANCE_DEFAULT
       )

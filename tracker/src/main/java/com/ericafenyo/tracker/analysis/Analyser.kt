@@ -67,16 +67,78 @@ class Analyser constructor(private val context: Context) {
 
   private suspend fun loadRecords(): List<Record> {
     Logger.debug(context, TAG, "*** Retrieving records ***")
+  private fun getAllRecords(): List<Record> {
+    com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "***Retrieving records***")
+    // Suppress Return should be lifted out of 'try'
     return try {
       RecordCache.getInstance(context).getAll()
     } catch (exception: Exception) {
-      Logger.error(context, TAG, "An error occurred while trying to retrieve records: $exception")
+      com.ericafenyo.bikediary.logger.Logger.error(context, TAG, "An error occurred while trying to retrieve records: $exception")
       emptyList()
     }
   }
 
   private suspend fun generateAdventure(): Adventure? = withContext(computation) {
     val records = loadRecords()
+  private fun getLastRecord(): List<Record> {
+    com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "***Getting last record***")
+
+    val records = getAllRecords()
+    try {
+      var startIndex = 0
+      var endIndex = 0
+      var canBeginTrip = true
+      var processing = true
+      val trips = mutableListOf<Record>()
+
+      while (processing) {
+        if (canBeginTrip) {
+          // Look for the trip start and store its index in the startIndex variable
+          records.indexOfLast { record -> record.key == RecordCache.KEY_TRIP_STARTED }
+            .also { foundStartIndex ->
+              if (foundStartIndex == -1) {
+                // Properly log the right message
+                com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Trip start not found, exiting")
+                return emptyList()
+              } else {
+                // Set appropriate properties
+                startIndex = foundStartIndex + 1 // +1 because next index contains the actual data
+                com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Found trip starting at index: $startIndex")
+                canBeginTrip = false
+                processing = true
+              }
+            }
+        } else {
+          // Already processed trip start, move on to trip end
+          records.indexOfLast { record -> record.key == RecordCache.KEY_TRIP_STOPPED }
+            .also { foundEndIndex ->
+              if (foundEndIndex == -1) {
+                com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Can't find end for trip starting at index: $startIndex")
+                // break the while loop
+                processing = false
+              } else {
+                // Set appropriate properties
+                endIndex = foundEndIndex - 1 // -1 because the previous index have the actual data
+                com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Found trip ending at index: $endIndex")
+                canBeginTrip = true
+                processing = false
+                val results = records.slice(startIndex..endIndex)
+                trips.clear()
+                trips.addAll(results)
+              }
+            }
+        }
+      }
+      return trips
+    } catch (exception: Exception) {
+      com.ericafenyo.bikediary.logger.Logger.error(context, TAG, "An error occurred while trying to get last record: $exception")
+      return emptyList()
+    }
+  }
+
+  private suspend fun generateDocuments(): List<FeatureCollection> = withContext(computation) {
+    val segment = getLastRecord()
+
 
     // We need at least ten records to build our feature collections.
     // TODO: 06/05/2021 How many points determine a valid point?

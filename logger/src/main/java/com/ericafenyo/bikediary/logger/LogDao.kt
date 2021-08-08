@@ -22,38 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.analysis
+package com.ericafenyo.bikediary.logger
 
-import android.content.Context
-import android.content.Intent
-import androidx.core.app.JobIntentService
-import com.ericafenyo.bikediary.logger.Logger
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
-class AnalysisJobIntentService : JobIntentService() {
+@Dao
+interface LogDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(log: Log)
 
-  override fun onHandleWork(intent: Intent) {
-    Logger.debug(applicationContext, TAG, "onHandleWork(intent: $intent)")
-    Analyser(applicationContext).startAnalysis()
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    com.ericafenyo.bikediary.logger.Logger.debug(applicationContext, TAG, "onDestroy() All work complete")
-  }
-
-  companion object {
-    private const val TAG = "AnalysisJobIntentService"
-
-    /**
-     * Unique job ID for this service.
-     */
-    const val JOB_ID = 1000
-
-    /**
-     * Convenience method for enqueuing work in to this service.
-     */
-    fun enqueueWork(context: Context, work: Intent) {
-      enqueueWork(context, AnalysisJobIntentService::class.java, JOB_ID, work)
-    }
-  }
+  @Query("DELETE FROM logs")
+  suspend fun clear(): Int
 }

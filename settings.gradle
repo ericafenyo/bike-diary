@@ -3,6 +3,8 @@ include ':shared'
 include ':data'
 include ':tracker'
 include ':model'
+include ':database'
+include ':logger'
 
 rootProject.name = "Bike Diary"
 

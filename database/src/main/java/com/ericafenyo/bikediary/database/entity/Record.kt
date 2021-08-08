@@ -22,20 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker
+<<<<<<< HEAD:tracker/src/main/java/com/ericafenyo/tracker/datastore/Converters.kt
+package com.ericafenyo.tracker.datastore
+=======
+package com.ericafenyo.bikediary.database.entity
+>>>>>>> a0365d1 (Test :logger module build):database/src/main/java/com/ericafenyo/bikediary/database/entity/Record.kt
 
-import org.junit.Test
+import androidx.room.TypeConverter
+import com.ericafenyo.tracker.location.SimpleLocation
+import com.ericafenyo.tracker.util.JsonSerializerManager
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 
-import org.junit.Assert.*
+class Converters {
+  private val json = JsonSerializerManager.serializer()
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-  @Test
-  fun addition_isCorrect() {
-    assertEquals(4, 2 + 2)
-  }
+  @TypeConverter
+  fun fromSimpleLocation(value: SimpleLocation): String = json.encodeToString(value)
+
+  @TypeConverter
+  fun toSimpleLocation(value: String): SimpleLocation = json.decodeFromString(value)
 }
