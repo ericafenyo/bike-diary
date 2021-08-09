@@ -26,19 +26,15 @@
 package com.ericafenyo.tracker.datastore
 
 import android.content.Context
-
+import android.icu.text.AlphabeticIndex.Record
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @TypeConverters(Converters::class)
-@Database(
-  version = 1,
-  exportSchema = false,
-  entities = [Record::class]
-)
-abstract class DataStore : RoomDatabase() {
+@Database(entities = [Record::class], version = 1, exportSchema = false)
+internal abstract class DataStore : RoomDatabase() {
   abstract fun getRecords(): RecordDao
 
   companion object {
