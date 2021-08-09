@@ -35,7 +35,6 @@ import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.data
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
