@@ -25,11 +25,11 @@
 package com.ericafenyo.tracker.analysis
 
 import android.content.Context
-import com.ericafenyo.data.database.AdventureEntity
-import com.ericafenyo.data.database.CacheDatabase
+import com.ericafenyo.bikediary.database.entity.AdventureEntity
+import com.ericafenyo.bikediary.database.CacheDatabase
 import com.ericafenyo.tracker.R
-import com.ericafenyo.tracker.data.Adventure
-import com.ericafenyo.tracker.data.Metrics
+import com.ericafenyo.bikediary.model.Adventure
+import com.ericafenyo.bikediary.model.Metrics
 import com.ericafenyo.tracker.data.model.FeatureCollection
 import com.ericafenyo.tracker.data.model.LineString
 import com.ericafenyo.tracker.data.model.Point

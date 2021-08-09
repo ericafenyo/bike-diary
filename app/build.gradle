@@ -23,6 +23,10 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    lintOptions {
+        checkReleaseBuilds = false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -60,7 +64,6 @@ android {
 
 dependencies {
     implementation project(path: ':shared')
-    implementation project(path: ':data')
     implementation project(path: ':tracker')
     implementation project(path: ':model')
 
@@ -95,7 +98,7 @@ dependencies {
     implementation libs.databinding
     implementation libs.glide
 
-    implementation libs.slimChart
+    //implementation libs.slimChart
     implementation libs.speedDial
 
     implementation libs.androidx.room.runtime
@@ -113,23 +116,10 @@ dependencies {
 
     implementation libs.androidChart
 
-  /*  implementation 'androidx.compose.ui:ui:1.0.0-beta07'
-    // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.0.0-beta07'
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation 'androidx.compose.foundation:foundation:1.0.0-beta07'
-    // Material Design
-    implementation 'androidx.compose.material:material:1.0.0-beta07'
-    // Material design icons
-    implementation 'androidx.compose.material:material-icons-core:1.0.0-beta07'
-    implementation 'androidx.compose.material:material-icons-extended:1.0.0-beta07'
-    // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.3.0-alpha08'
-    // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha05'
-    // Integration with observables
-    implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta07'
-    implementation 'androidx.compose.runtime:runtime-rxjava2:1.0.0-beta07'*/
-
     // debugImplementation libs.leakCanary
 }
+
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+

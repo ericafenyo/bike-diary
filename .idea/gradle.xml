@@ -5,20 +5,19 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="testRunner" value="GRADLE" />
-        <option name="disableWrapperSourceDistributionNotification" value="true" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="/usr/local/Cellar/gradle/6.6.1/libexec" />
-        <option name="gradleJvm" value="1.8" />
+        <option name="gradleHome" value="/usr/local/Cellar/gradle/4.9/libexec" />
+        <option name="gradleJvm" value="11" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/logger" />
             <option value="$PROJECT_DIR$/model" />
+            <option value="$PROJECT_DIR$/network" />
             <option value="$PROJECT_DIR$/repositories" />
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/tracker" />

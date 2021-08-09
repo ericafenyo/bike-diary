@@ -27,9 +27,9 @@ package com.ericafenyo.tracker.location
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import com.ericafenyo.tracker.database.RecordCache
 import com.ericafenyo.bikediary.logger.Logger
+import com.ericafenyo.tracker.datastore.Record
+import com.ericafenyo.tracker.datastore.RecordCache
 import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking

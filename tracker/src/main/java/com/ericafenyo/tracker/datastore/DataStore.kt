@@ -22,18 +22,14 @@
  * SOFTWARE.
  */
 
-<<<<<<< HEAD:tracker/src/main/java/com/ericafenyo/tracker/datastore/DataStore.kt
+
 package com.ericafenyo.tracker.datastore
-=======
-package com.ericafenyo.bikediary.database
->>>>>>> a0365d1 (Test :logger module build):database/src/main/java/com/ericafenyo/bikediary/database/DataStore.kt
 
 import android.content.Context
 import android.icu.text.AlphabeticIndex.Record
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-<<<<<<< HEAD:tracker/src/main/java/com/ericafenyo/tracker/datastore/DataStore.kt
 import androidx.room.TypeConverters
 
 @TypeConverters(Converters::class)
@@ -42,18 +38,6 @@ internal abstract class DataStore : RoomDatabase() {
   abstract fun getRecords(): RecordDao
 
   companion object {
-    private const val DATABASE_NAME = "com.ericafenyo.tracker.Cache"
-=======
-import com.ericafenyo.bikediary.database.dao.RecordDao
-
-@Database(entities = [Record::class], version = 1, exportSchema = false)
-abstract class DataStore : RoomDatabase() {
-
-  abstract fun getRecords(): RecordDao
-
-  companion object {
->>>>>>> a0365d1 (Test :logger module build):database/src/main/java/com/ericafenyo/bikediary/database/DataStore.kt
-
     @Volatile
     private var INSTANCE: DataStore? = null
 
@@ -69,7 +53,7 @@ abstract class DataStore : RoomDatabase() {
       return Room.databaseBuilder(
         context,
         DataStore::class.java,
-        "com.ericafenyo.tracker.DataStore"
+        "com.ericafenyo.tracker.Cache"
       ).fallbackToDestructiveMigration()
         .build()
     }

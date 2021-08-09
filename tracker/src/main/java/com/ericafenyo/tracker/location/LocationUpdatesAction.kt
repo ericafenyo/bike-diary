@@ -28,7 +28,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.ericafenyo.bikediary.logger.Logger
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
@@ -44,7 +43,7 @@ class LocationUpdatesAction(private val context: Context) {
       LocationServices.getFusedLocationProviderClient(context)
         .requestLocationUpdates(locationRequest, getPendingIntent())
     } catch (exception: SecurityException) {
-      com.ericafenyo.bikediary.logger.Logger.error(
+      Logger.error(
         context,
         tag,
         "Security error: ${exception.message} while starting location updates"

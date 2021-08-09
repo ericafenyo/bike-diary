@@ -22,17 +22,12 @@
  * SOFTWARE.
  */
 
-<<<<<<< HEAD:tracker/src/main/java/com/ericafenyo/tracker/datastore/RecordDao.kt
 package com.ericafenyo.tracker.datastore
-=======
-package com.ericafenyo.bikediary.database.dao
->>>>>>> a0365d1 (Test :logger module build):database/src/main/java/com/ericafenyo/bikediary/database/dao/RecordDao.kt
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ericafenyo.bikediary.database.entity.Record
 import kotlinx.coroutines.flow.Flow
 
 /**

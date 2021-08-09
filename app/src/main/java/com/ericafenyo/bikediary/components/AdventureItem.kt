@@ -24,7 +24,7 @@
 
 package com.ericafenyo.bikediary.components
 
-import com.ericafenyo.tracker.data.Adventure
+import com.ericafenyo.bikediary.model.Adventure
 
 
 val fakeAdventure = Adventure(
