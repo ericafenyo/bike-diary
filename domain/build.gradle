@@ -65,5 +65,6 @@ dependencies {
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
+    implementation libs.kotlin.stdlib
     implementation libs.kotlin.coroutines.core
 }

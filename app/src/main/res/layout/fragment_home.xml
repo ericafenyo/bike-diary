@@ -240,7 +240,10 @@
               android:id="@+id/chart_adventures"
               android:layout_width="match_parent"
               android:layout_height="0dp"
-              app:layout_constraintDimensionRatio="3:2" />
+              app:layout_constraintDimensionRatio="3:2"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
       </com.google.android.material.card.MaterialCardView>
 
@@ -260,7 +263,10 @@
               android:id="@+id/chart_weight"
               android:layout_width="match_parent"
               android:layout_height="0dp"
-              app:layout_constraintDimensionRatio="3:2" />
+              app:layout_constraintDimensionRatio="3:2"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
       </com.google.android.material.card.MaterialCardView>
 

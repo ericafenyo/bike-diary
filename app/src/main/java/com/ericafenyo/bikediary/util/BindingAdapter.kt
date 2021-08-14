@@ -79,6 +79,6 @@ fun TextView.bindHtml(html: String) {
 @BindingAdapter(value = ["captionSuffix"])
 fun TextView.bindCaptionSuffix(suffix: String) {
   val content = text.toString() + suffix
-  setTextAppearance(R.style.TextAppearance_MaterialComponents_Caption)
+    //setTextAppearance(R.style.TextAppearance_MaterialComponents_Caption)
   text = content
 }

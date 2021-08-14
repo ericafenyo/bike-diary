@@ -27,17 +27,14 @@ package com.ericafenyo.bikediary.util
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.tracker.logger.Logger
+import com.ericafenyo.bikediary.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 
 @Singleton
 @AndroidEntryPoint
 class DraftAdventureJobIntentService : JobIntentService() {
-  @Inject lateinit var repository: com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
 
   override fun onHandleWork(intent: Intent) {
     Logger.debug(applicationContext, TAG, "onHandleWork(intent: $intent)")

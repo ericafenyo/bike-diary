@@ -27,12 +27,15 @@ package com.ericafenyo.bikediary
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.ericafenyo.habitdiary.ui.diary.EditAdventureActivity
-import com.ericafenyo.bikediary.logger.Logger
+import com.ericafenyo.bikediary.ui.diary.EditAdventureActivity
 
 class AnalysisEndReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent?) {
-    com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "onReceive(context: $context, intent: $intent)")
+    com.ericafenyo.bikediary.logger.Logger.debug(
+      context,
+      TAG,
+      "onReceive(context: $context, intent: $intent)"
+    )
     context.startActivity(EditAdventureActivity.getStartIntent(context))
   }
 

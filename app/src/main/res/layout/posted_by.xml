@@ -25,6 +25,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
@@ -40,7 +41,6 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/user_avatar"
-        image="@{owner.avatar}"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:scaleType="centerCrop"

@@ -38,7 +38,7 @@ object DatabaseModule {
 
   @Provides
   @Singleton
-  fun provideCacheDatabase(@ApplicationContext context: Context): AppDatabase {
+  fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
     return AppDatabase.getInstance(context)
   }
 }

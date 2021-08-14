@@ -21,6 +21,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
+
+        multiDexEnabled true
     }
 
     lintOptions {
@@ -64,8 +66,10 @@ android {
 
 dependencies {
     implementation project(path: ':shared')
-    implementation project(path: ':tracker')
     implementation project(path: ':model')
+    implementation project(path: ':logger')
+    implementation project(path: ':domain')
+    implementation project(path: ':tracker')
 
     testImplementation libs.junit
     androidTestImplementation(libs.androidx.junitExt)
@@ -113,6 +117,8 @@ dependencies {
     implementation libs.androidx.fragment
 
     implementation libs.flexbox
+
+    implementation libs.slimChart
 
     implementation libs.androidChart
 
