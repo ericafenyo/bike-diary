@@ -22,11 +22,11 @@ jobs:
     - name: Configure environment variables
       env:
         MAPBOX_ACCESS_TOKEN:${{ secrets.MAPBOX_ACCESS_TOKEN }}
-    shell: bash
-    run: |
-      mkdir -p ~/.gradle/
-      echo "::set-env name=GRADLE_USER_HOME::$HOME/.gradle"
-      echo ${MAPBOX_ACCESS_TOKEN} > ~/.gradle/gradle.properties
+    - shell: bash
+      run: |
+          mkdir -p ~/.gradle/
+          echo "::set-env name=GRADLE_USER_HOME::$HOME/.gradle"
+          echo ${MAPBOX_ACCESS_TOKEN} > ~/.gradle/gradle.properties
       
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
