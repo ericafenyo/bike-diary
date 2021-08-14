@@ -24,3 +24,4 @@ jobs:
         run: |
           mkdir -p ~/.gradle/
           echo "GRADLE_USER_HOME=$HOME/.gradle" >> $GITHUB_ENV
+          echo ${MAPBOX_ACCESS_TOKEN} > ~/.gradle/gradle.properties
