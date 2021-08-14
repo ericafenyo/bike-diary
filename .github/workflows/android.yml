@@ -21,3 +21,5 @@ jobs:
       - name: Setup Build Configs
         env:
           MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+        run: |
+          mkdir -p ~/.gradle/
