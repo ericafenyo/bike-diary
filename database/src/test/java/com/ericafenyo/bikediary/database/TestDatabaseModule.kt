@@ -21,41 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.ericafenyo.bikediary.database
 
-package com.ericafenyo.bikediary.database.dao
+import android.content.Context
+import androidx.room.Room
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.ericafenyo.bikediary.database.entity.AdventureEntity
-import kotlinx.coroutines.flow.Flow
 
-/**
- * A Data Access Object with variety of query methods for database interactions.
- *
- * @author Eric
- * @since 1.0
- *
- * created on 2021-04-17
- */
-@Dao
-interface AdventureDao {
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(adventure: AdventureEntity)
+@Module
+@InstallIn(SingletonComponent::class)
+object TestDatabaseModule {
 
-  @Query("SELECT * FROM adventures WHERE id = :adventureId")
-  suspend fun getAdventureById(adventureId: String): AdventureEntity
-
-  @Query("SELECT * FROM adventures")
-  suspend fun getAdventures(): List<AdventureEntity>
-
-  @Query("SELECT * FROM adventures ORDER BY id DESC Limit 1")
-  fun adventure(): Flow<AdventureEntity>
-
-  @Query("DELETE FROM adventures WHERE id = :adventureId")
-  suspend fun deleteById(adventureId: String): Int
-
-  @Query("DELETE FROM adventures")
-  suspend fun clearAll(): Int
+  @Provides
+  @Singleton
+  fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+    return Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
+      .allowMainThreadQueries()
+      .build()
+  }
 }

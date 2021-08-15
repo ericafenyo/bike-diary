@@ -22,40 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.database.dao
+package com.ericafenyo.bikediary.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import com.ericafenyo.bikediary.database.entity.AdventureEntity
-import kotlinx.coroutines.flow.Flow
 
-/**
- * A Data Access Object with variety of query methods for database interactions.
- *
- * @author Eric
- * @since 1.0
- *
- * created on 2021-04-17
- */
-@Dao
-interface AdventureDao {
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(adventure: AdventureEntity)
+object TestDatabaseUtils {
+  fun createAdventure(adventureId: String) = AdventureEntity(
+    id = adventureId,
+    title = "Adventure title",
+    speed = 20.0,
+    duration = 2000.0,
+    distance = 200.0,
+    calories = 1200,
+    startedAt = "2021-08-15T18:56:50.431356",
+    completedAt = "2021-08-15T23:56:50.431356",
+    geojson = "{}",
+    imageUrl = "https://example.com/uploads/images/611948098ffd2b6fcd1c72e9.png",
+  )
 
-  @Query("SELECT * FROM adventures WHERE id = :adventureId")
-  suspend fun getAdventureById(adventureId: String): AdventureEntity
-
-  @Query("SELECT * FROM adventures")
-  suspend fun getAdventures(): List<AdventureEntity>
-
-  @Query("SELECT * FROM adventures ORDER BY id DESC Limit 1")
-  fun adventure(): Flow<AdventureEntity>
-
-  @Query("DELETE FROM adventures WHERE id = :adventureId")
-  suspend fun deleteById(adventureId: String): Int
-
-  @Query("DELETE FROM adventures")
-  suspend fun clearAll(): Int
 }
