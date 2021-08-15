@@ -48,7 +48,7 @@ interface AdventureDao {
   suspend fun getAdventureById(adventureId: String): AdventureEntity
 
   @Query("SELECT * FROM adventures")
-  suspend fun getAdventures(): List<com.ericafenyo.bikediary.database.entity.AdventureEntity>
+  suspend fun getAdventures(): List<AdventureEntity>
 
   @Query("SELECT * FROM adventures ORDER BY id DESC Limit 1")
   fun adventure(): Flow<AdventureEntity>
