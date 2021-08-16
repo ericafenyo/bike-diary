@@ -33,4 +33,4 @@ jobs:
      #  run: ./gradlew test
         
       - name: Build with Gradle
-        run: ./gradlew assembleDebug -PMAPBOX_ACCESS_TOKEN=${MAPBOX_ACCESS_TOKEN}
+        run: ./gradlew assembleDebug -PMAPBOX_ACCESS_TOKEN="$MAPBOX_ACCESS_TOKEN"
