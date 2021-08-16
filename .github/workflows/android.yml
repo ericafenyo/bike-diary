@@ -34,4 +34,6 @@ jobs:
      #  run: ./gradlew test
         
       - name: Build with Gradle
+        env:
+          MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
         run: ./gradlew assembleDebug
