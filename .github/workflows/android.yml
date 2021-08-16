@@ -41,4 +41,4 @@ jobs:
           mkdir -p ~/.gradle/
           echo "MAPBOX_ACCESS_TOKEN=${HOME}/.gradle" >> $GITHUB_ENV
           echo "${MAPBOX_ACCESS_TOKEN}" > ~/.gradle/gradle.properties
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug -PMAPBOX_ACCESS_TOKEN="${MAPBOX_ACCESS_TOKEN}"
