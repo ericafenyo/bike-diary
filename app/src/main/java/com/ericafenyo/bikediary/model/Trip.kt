@@ -34,9 +34,3 @@ data class Trip(
   val date: String,
   val owner: User
 )
-
-data class User(
-  val uid: String,
-  val name: String,
-  val avatar: String,
-)

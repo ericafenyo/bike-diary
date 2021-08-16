@@ -24,7 +24,6 @@
 
 package com.ericafenyo.bikediary.ui
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -37,7 +36,6 @@ import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.data.trip.TripRepository
 import com.ericafenyo.bikediary.databinding.ActivityMainBinding
 import com.ericafenyo.bikediary.model.Theme
-import com.ericafenyo.tracker.data.api.BikeDiaryService
 import com.ericafenyo.tracker.datastore.RecordsProvider
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
   @Inject lateinit var tripRepository: TripRepository
   @Inject lateinit var provider: RecordsProvider
-  @Inject lateinit var service: BikeDiaryService
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

@@ -25,11 +25,12 @@
 package com.ericafenyo.tracker.analysis
 
 import android.content.Context
-import com.ericafenyo.data.database.AdventureEntity
-import com.ericafenyo.data.database.CacheDatabase
+import com.ericafenyo.bikediary.database.AppDatabase
+import com.ericafenyo.bikediary.database.entity.AdventureEntity
+import com.ericafenyo.bikediary.logger.Logger
+import com.ericafenyo.bikediary.model.Adventure
+import com.ericafenyo.bikediary.model.Metrics
 import com.ericafenyo.tracker.R
-import com.ericafenyo.tracker.data.Adventure
-import com.ericafenyo.tracker.data.Metrics
 import com.ericafenyo.tracker.data.model.FeatureCollection
 import com.ericafenyo.tracker.data.model.LineString
 import com.ericafenyo.tracker.data.model.Point
@@ -37,7 +38,6 @@ import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.datastore.Record
 import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.SimpleLocation
-import com.ericafenyo.tracker.logger.Logger
 import com.ericafenyo.tracker.util.Identity
 import com.ericafenyo.tracker.util.getExplicitIntent
 import kotlinx.coroutines.Dispatchers
@@ -67,78 +67,21 @@ class Analyser constructor(private val context: Context) {
 
   private suspend fun loadRecords(): List<Record> {
     Logger.debug(context, TAG, "*** Retrieving records ***")
-  private fun getAllRecords(): List<Record> {
-    com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "***Retrieving records***")
-    // Suppress Return should be lifted out of 'try'
+    // Suppress Return should be lifted out of 'try
     return try {
       RecordCache.getInstance(context).getAll()
     } catch (exception: Exception) {
-      com.ericafenyo.bikediary.logger.Logger.error(context, TAG, "An error occurred while trying to retrieve records: $exception")
+      Logger.error(
+        context,
+        TAG,
+        "An error occurred while trying to retrieve records: $exception"
+      )
       emptyList()
     }
   }
 
   private suspend fun generateAdventure(): Adventure? = withContext(computation) {
     val records = loadRecords()
-  private fun getLastRecord(): List<Record> {
-    com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "***Getting last record***")
-
-    val records = getAllRecords()
-    try {
-      var startIndex = 0
-      var endIndex = 0
-      var canBeginTrip = true
-      var processing = true
-      val trips = mutableListOf<Record>()
-
-      while (processing) {
-        if (canBeginTrip) {
-          // Look for the trip start and store its index in the startIndex variable
-          records.indexOfLast { record -> record.key == RecordCache.KEY_TRIP_STARTED }
-            .also { foundStartIndex ->
-              if (foundStartIndex == -1) {
-                // Properly log the right message
-                com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Trip start not found, exiting")
-                return emptyList()
-              } else {
-                // Set appropriate properties
-                startIndex = foundStartIndex + 1 // +1 because next index contains the actual data
-                com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Found trip starting at index: $startIndex")
-                canBeginTrip = false
-                processing = true
-              }
-            }
-        } else {
-          // Already processed trip start, move on to trip end
-          records.indexOfLast { record -> record.key == RecordCache.KEY_TRIP_STOPPED }
-            .also { foundEndIndex ->
-              if (foundEndIndex == -1) {
-                com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Can't find end for trip starting at index: $startIndex")
-                // break the while loop
-                processing = false
-              } else {
-                // Set appropriate properties
-                endIndex = foundEndIndex - 1 // -1 because the previous index have the actual data
-                com.ericafenyo.bikediary.logger.Logger.debug(context, TAG, "Found trip ending at index: $endIndex")
-                canBeginTrip = true
-                processing = false
-                val results = records.slice(startIndex..endIndex)
-                trips.clear()
-                trips.addAll(results)
-              }
-            }
-        }
-      }
-      return trips
-    } catch (exception: Exception) {
-      com.ericafenyo.bikediary.logger.Logger.error(context, TAG, "An error occurred while trying to get last record: $exception")
-      return emptyList()
-    }
-  }
-
-  private suspend fun generateDocuments(): List<FeatureCollection> = withContext(computation) {
-    val segment = getLastRecord()
-
 
     // We need at least ten records to build our feature collections.
     // TODO: 06/05/2021 How many points determine a valid point?
@@ -156,9 +99,10 @@ class Analyser constructor(private val context: Context) {
       val endFeature = coordinates.last().run { Point(coordinates = this).toFeature() }
       val lineStringFeature = LineString(coordinates = coordinates).toFeature()
       val metrics = buildMetrics(records)
-      val featureCollection = FeatureCollection(listOf(startFeature, endFeature, lineStringFeature))
+      val featureCollection =
+        FeatureCollection(listOf(startFeature, endFeature, lineStringFeature))
 
-      val adventure = Adventure(
+      return@withContext Adventure(
         id = "Unprocessed-${Identity.generateObjectId()}",
         title = "Untitled",
         speed = metrics.speed,
@@ -170,9 +114,12 @@ class Analyser constructor(private val context: Context) {
         geojson = featureCollection.toJson(),
         completedAt = metrics.completedAt,
       )
-      return@withContext adventure
     } catch (exception: Exception) {
-      Logger.error(context, TAG, "An error occurred while trying to get last record: $exception")
+      Logger.error(
+        context,
+        TAG,
+        "An error occurred while trying to get last record: $exception"
+      )
       return@withContext null
     }
   }
@@ -185,8 +132,20 @@ class Analyser constructor(private val context: Context) {
     try {
       if (adventure != null) {
         Timber.d("Adventure $adventure")
-        CacheDatabase.getInstance(context)
-          .getAdventureDao().insert(AdventureEntity.fromAdventure(adventure))
+        val adventureEntity = AdventureEntity(
+          id = adventure.id,
+          title = adventure.title,
+          speed = adventure.speed,
+          duration = adventure.duration,
+          distance = adventure.distance,
+          calories = adventure.calories,
+          startedAt = adventure.startedAt,
+          completedAt = adventure.completedAt,
+          geojson = adventure.geojson,
+          imageUrl = adventure.imageUrl,
+        )
+        AppDatabase.getInstance(context)
+          .getAdventureDao().insert(adventureEntity)
         Result.Success(true)
       } else {
         Result.Success(false)

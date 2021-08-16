@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
   Copyright (C) 2020 Eric Afenyo
@@ -25,15 +24,73 @@
 
 <resources>
 
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - Action strings                                                                              -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="action_forgot_password">Mot de passe oublié ?</string>
+  <string name="action_login">Se connecter</string>
+  <string name="action_sign_up">S\'inscrire</string>
+  <string name="action_start_adventure">Commencer l\'aventure</string>
+  <string name="action_stop_adventure">Terminer l\'aventure</string>
+  <string name="action_upload_picture">Télécharger une image</string>
+
   <!-- Format strings -->
-  <string name="format_km_in_sec">%.2f km en %s</string>
+  <string name="format_km_in_sec">%1$.2f km en %2$s</string>
   <string name="format_level">Niveau %d</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - Text input errors strings                                                                   -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="input_error_field_required">Le champ est requis</string>
+  <string name="input_error_invalid_date">La date est invalide</string>
+  <string name="input_error_invalid_email">L\'email n\'est pas valide</string>
+  <string name="input_error_invalid_password">Le mot de passe est invalide</string>
+  <string name="input_error_password_not_matched">Les mots de passe ne correspondent pas</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- Text input hints strings                                                                    -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="input_hint_confirm_password">Confirmer le mot de passe</string>
+  <string name="input_hint_email">Email</string>
+  <string name="input_hint_name">Nom complet</string>
+  <string name="input_hint_password">Mot de passe</string>
+  <string name="input_helper_text_password_constraints">Le mot de passe doit contenir au minimum 8 caractères, au moins une lettre majuscule et un chiffre.</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - Label strings                                                                               -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="label_adventure_date">Date</string>
+  <string name="label_adventure_note">Note</string>
+  <string name="label_adventure_title">Titre d\'aventure</string>
+  <string name="label_calories">Calories</string>
+  <string name="label_email">Email</string>
+  <string name="label_end_time">Heure d\'arrivée</string>
+  <string name="label_kilometers">Kilomètres</string>
+  <string name="label_login">Se connecter</string>
+  <string name="label_name">Nom complet</string>
+  <string name="label_oops">Oups !</string>
+  <string name="label_password">Mot de passe</string>
+  <string name="label_start_time">Heure de départ</string>
+
+
+  <string name="content_description_add_trip">Ajouter un trajet</string>
+  <string name="diary_adventures_empty">Votre liste d\'aventures est vide, les aventures enregistrées apparaîtront ici.</string>
+
+
+  <string name="kilometers_remaining">Km restants</string>
+
+  <string name="map_a11y_show_devices_current_location">Afficher la localisation actuelle des appareils</string>
+
+  <string name="profile_label_dark_mode">Mode sombre</string>
 
   <string name="title_map">Carte</string>
   <string name="title_profile">Profil</string>
-  <string name="title_diary">Diary</string>
-  <string name="title_dashboard">Dashboard</string>
-  <string name="title_settings">settings</string>
+  <string name="title_diary">Journal</string>
+  <string name="title_dashboard">Tableau de bord</string>
+  <string name="title_settings">Paramètres</string>
+  <string name="title_save">Sauvegarder</string>
+
+  <string name="login_label_you_have_account">Don\'t have an account?</string>
 
   <!-- Gender -->
   <string name="gender_male">Homme</string>
@@ -46,11 +103,17 @@
   <string name="settings_theme_dark">Sombre</string>
   <string name="settings_theme_battery">Défini par l\'économiseur de batterie</string>
 
-  <string name="profile_label_dark_mode">Dark mode</string>
   <string name="a11y_profile_enable_dark_mode">Activer le mode sombre</string>
   <string name="a11y_profile_disable_dark_mode">Désactiver le mode sombre</string>
   <string name="title_edit_adventure">Modifier l\'aventure</string>
-  <string name="label_email">Email</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - Sign up strings                                                                             -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="sign_up_label_accept_terms_and_policies">En créant un compte, vous acceptez nos <a href="#">Conditions d\'utilisation</a> et <a href="#">Politique de confidentialité</a>.</string>
+  <string name="sign_up_page_title_text"><![CDATA[Créons un compte]]></string>
+  <string name="sign_up_label_you_have_account_question">Vous avez déjà un compte ?</string>
+  <string name="sign_in_page_title_text">Inscrivez vous</string>
 
   <string name="dashboard_axis_label_monday">Lun</string>
   <string name="dashboard_axis_label_tuesday">Mar</string>

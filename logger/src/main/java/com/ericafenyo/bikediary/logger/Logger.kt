@@ -36,9 +36,9 @@ object Logger {
   fun clear(context: Context) = runBlocking(IOContext) { database(context).clear() }
 
   private fun log(context: Context, level: String, tag: String, message: String) =
-      runBlocking(IOContext) {
-        database(context).insert(Log(level = level, message = "$tag, $message"))
-      }
+    runBlocking(IOContext) {
+      database(context).insert(Log(level = level, message = "$tag, $message"))
+    }
 
   fun debug(context: Context, tag: String, message: String) {
     log(context, "DEBUG", tag, message)
@@ -58,5 +58,10 @@ object Logger {
   fun error(context: Context, tag: String, exception: Exception) {
     log(context, "ERROR", tag, exception.stackTraceToString())
     Timber.tag(tag).e(exception)
+  }
+
+  fun error(context: Context, tag: String, message: String) {
+    log(context, "ERROR", tag, message)
+    Timber.tag(tag).e(message)
   }
 }

@@ -53,11 +53,48 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += [
+                "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi",
+                "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
+                "-Xopt-in=kotlin.RequiresOptIn"
+        ]
+    }
+
+    testOptions {
+        unitTests {
+            //returnDefaultValues = true
+            //includeAndroidResources = true
+        }
     }
 }
 
 dependencies {
-    implementation libs.androidx.room.runtime
     implementation libs.androidx.room.ktx
+    api libs.androidx.room.runtime
     kapt libs.androidx.room.compiler
+
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+
+    // For Robolectric tests
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.androidx.test.junit)
+    testImplementation(libs.androidx.archCoreTesting)
+
+    // Test Assertion
+    testImplementation(libs.truth)
+
+    // Use dagger hilt in tests
+    testImplementation(libs.hilt.testing)
+    kaptTest libs.hilt.compiler
+
+    testImplementation(libs.kotlin.coroutines.test)
+
+    testImplementation(libs.androidx.room.testing)
+    kaptTest libs.androidx.room.compiler
+
+    //testImplementation 'androidx.test:runner:1.4.0'
+    //testImplementation 'androidx.test:rules:1.4.0'
 }

@@ -38,7 +38,7 @@ class AnalysisJobIntentService : JobIntentService() {
 
   override fun onDestroy() {
     super.onDestroy()
-    com.ericafenyo.bikediary.logger.Logger.debug(applicationContext, TAG, "onDestroy() All work complete")
+    Logger.debug(applicationContext, TAG, "onDestroy() All work complete")
   }
 
   companion object {
