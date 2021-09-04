@@ -24,16 +24,21 @@
 
 package com.ericafenyo.bikediary.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import com.ericafenyo.bikediary.R
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.progressindicator.CircularProgressIndicator
+
 
 class Button @JvmOverloads constructor(
   context: Context,
@@ -44,8 +49,11 @@ class Button @JvmOverloads constructor(
   private var progress: CircularProgressIndicator
 
   private var _isLoading: Boolean = false
-  private var _buttonText: String? = ""
-  private var _buttonTextColor: Int = 0
+  private var _text: String? = ""
+  private var _textColor: Int = MaterialColors.getColor(context, R.attr.colorOnPrimary, 0)
+  private var _backgroundTint: Int = MaterialColors.getColor(context, R.attr.colorPrimary, 0)
+  private var _indicatorColor: Int = MaterialColors.getColor(context, R.attr.colorPrimary, 0)
+  private var _trackColor: Int = MaterialColors.getColor(context, R.attr.colorPrimary, 0)
 
 
   /**
@@ -74,18 +82,42 @@ class Button @JvmOverloads constructor(
       if (hasValue(R.styleable.LoadingButton_isLoading)) {
         _isLoading = getBoolean(R.styleable.LoadingButton_isLoading, false)
       }
+      if (hasValue(R.styleable.LoadingButton_backgroundTint)) {
+        _backgroundTint = getColor(R.styleable.LoadingButton_backgroundTint, R.attr.colorPrimary)
+      }
 
-      _buttonText = getString(R.styleable.LoadingButton_text)
-      _buttonTextColor = getColor(R.styleable.LoadingButton_textColor, 0)
+      if (hasValue(R.styleable.LoadingButton_backgroundTint)) {
+        _indicatorColor = getColor(R.styleable.LoadingButton_indicatorColor, R.attr.colorPrimary)
+      }
+
+      if (hasValue(R.styleable.LoadingButton_trackColor)) {
+        _trackColor = getColor(R.styleable.LoadingButton_trackColor, R.attr.colorPrimary)
+      }
+    }
+
+    context.withStyledAttributes(attrs, intArrayOf(android.R.attr.text, android.R.attr.textColor)) {
+      _text = getString(0)
+      @SuppressLint("ResourceType")
+      _textColor = getColor(1, Color.WHITE)
     }
   }
 
   private fun setStates(context: Context, loading: Boolean) {
+    //progress.setIndicatorColor(_indicatorColor)
+    if (loading) {
+      val disabledColor = ColorUtils.setAlphaComponent(Color.GRAY, 32)
+      button.setBackgroundColor(disabledColor)
+    } else {
+      button.setBackgroundColor(_backgroundTint)
+    }
+
     val transparentColor = ContextCompat.getColor(context, android.R.color.transparent)
-    val color = if (loading) transparentColor else _buttonTextColor
+    val color = if (loading) transparentColor else _textColor
     button.setTextColor(color)
+    val backgroundColor = if (loading) Color.GRAY else _backgroundTint
+
     button.isEnabled = !loading
-    button.text = _buttonText
+    button.text = _text
 
     progress.isVisible = loading
   }

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.auth
+package com.ericafenyo.bikediary.ui.login
 
 import android.os.Bundle
 import android.view.View
@@ -35,6 +35,7 @@ import com.ericafenyo.bikediary.databinding.FragmentLoginBinding
 import com.ericafenyo.bikediary.util.EventObserver
 import com.ericafenyo.bikediary.util.Validator
 import com.ericafenyo.bikediary.util.doOnTrue
+import com.ericafenyo.bikediary.widget.dialog.Alert
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,6 +50,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     binding.lifecycleOwner = viewLifecycleOwner
     binding.model = loginViewModel
+
+    loginViewModel.message.observe(viewLifecycleOwner, { message ->
+      if (message != null) {
+        Alert.Builder(requireContext())
+          .from(message)
+          .build()
+          .show(this)
+      }
+    })
+
+    loginViewModel.state.observe(viewLifecycleOwner, { state ->
+      if (state != null && state.success) {
+        requireActivity().onBackPressed()
+      }
+    })
 
     // Clear input errors when the user is typing
     clearInputErrorsOnChange()
@@ -85,12 +101,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     // Submit the form only if all inputs are valid.
     if (hasValidInputs) {
-      submit()
+      submit(email, password)
     }
   }
 
-  private fun submit() {
-    //loginViewModel.performLogin()
+  private fun submit(email: String, password: String) {
+    loginViewModel.authenticate(email, password)
   }
 
   private fun validateInputs(email: String, password: String): Boolean = with(binding) {

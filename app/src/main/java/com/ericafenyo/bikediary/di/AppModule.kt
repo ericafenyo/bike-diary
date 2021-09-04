@@ -30,6 +30,9 @@ import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.ericafenyo.bikediary.data.settings.PreferenceStorage
 import com.ericafenyo.bikediary.data.settings.SharedPreferenceStorage
+import com.ericafenyo.bikediary.util.credentials.CredentialsManager
+import com.ericafenyo.bikediary.util.credentials.EncryptedCredentialsManager
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,25 +42,34 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AppModule {
+abstract class AppModule {
 
+  @Binds
   @Singleton
-  @Provides
-  fun providePreferenceStorage(@ApplicationContext context: Context): PreferenceStorage {
-    return SharedPreferenceStorage(context)
+  abstract fun bindCredentialsManager(impl: EncryptedCredentialsManager): CredentialsManager
+
+  @Module
+  @InstallIn(SingletonComponent::class)
+  object Providers {
+    @Singleton
+    @Provides
+    fun providePreferenceStorage(@ApplicationContext context: Context): PreferenceStorage {
+      return SharedPreferenceStorage(context)
+    }
+
+    @Provides
+    fun provideWifiManager(@ApplicationContext context: Context): WifiManager =
+      context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+    @Provides
+    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
+      context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+          as ConnectivityManager
+
+    @Provides
+    fun provideClipboardManager(@ApplicationContext context: Context): ClipboardManager =
+      context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
+          as ClipboardManager
+
   }
-
-  @Provides
-  fun provideWifiManager(@ApplicationContext context: Context): WifiManager =
-    context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-
-  @Provides
-  fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
-    context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
-        as ConnectivityManager
-
-  @Provides
-  fun provideClipboardManager(@ApplicationContext context: Context): ClipboardManager =
-    context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
-        as ClipboardManager
 }

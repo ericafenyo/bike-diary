@@ -29,6 +29,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
+import timber.log.Timber
 
 /**
  * Executes business logic in its execute method and keep posting updates to the result as
@@ -40,7 +41,7 @@ abstract class ParameterizedFlowInteractor<in P, R>(
 ) {
 
   operator fun invoke(params: P): Flow<Result<R>> = execute(params)
-    .catch { e -> emit(Result.Error(Exception(e))) }
+    .catch { exception -> Timber.e(exception); emit(Result.Error(Exception(exception))) }
     .flowOn(coroutineDispatcher)
 
   protected abstract fun execute(params: P): Flow<Result<R>>

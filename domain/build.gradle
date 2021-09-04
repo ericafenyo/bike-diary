@@ -66,5 +66,6 @@ dependencies {
     kapt libs.hilt.compiler
 
     implementation libs.kotlin.stdlib
+    implementation libs.timber
     implementation libs.kotlin.coroutines.core
 }

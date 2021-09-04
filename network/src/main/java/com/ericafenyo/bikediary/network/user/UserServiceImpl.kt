@@ -24,10 +24,12 @@
 
 package com.ericafenyo.bikediary.network.user
 
+import AuthenticateUserMutation
 import CreateUserMutation
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
+import com.ericafenyo.bikediary.model.Credentials
 import com.ericafenyo.bikediary.model.HttpException
 import com.ericafenyo.bikediary.model.User
 import com.ericafenyo.bikediary.network.ApolloErrorResponse
@@ -84,5 +86,27 @@ class UserServiceImpl @Inject constructor(
       Timber.d("AddUser: name: ${exception.message}")
       throw HttpException()
     }
+  }
+
+  override suspend fun authenticate(email: String, password: String): Credentials {
+    val response = apolloClient.mutate(AuthenticateUserMutation(email, password)).await()
+    Timber.d("Authenticate result ${response.data}")
+
+    if (response.hasErrors()) {
+      val map = response.errors?.first()?.customAttributes?.toMutableMap() ?: mutableMapOf()
+      val json = JSONObject(map).toString()
+      val apolloError = jsonSerializer.decodeFromString(ApolloErrorResponse.serializer(), json)
+
+      throw HttpException(
+        status = apolloError.extensions.exception.status,
+        message = apolloError.extensions.exception.message
+      )
+    }
+
+    val data = response.data?.tokens ?: throw HttpException(HTTP_NOT_FOUND)
+    return Credentials(
+      accessToken = data.access_token,
+      refreshToken = data.refresh_token
+    )
   }
 }

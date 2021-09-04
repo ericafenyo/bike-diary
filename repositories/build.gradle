@@ -61,9 +61,12 @@ dependencies {
     implementation project(path: ':network')
     implementation project(path: ':model')
     implementation project(path: ':logger')
+    implementation project(path: ':shared')
 
     implementation libs.kotlin.stdlib
     implementation libs.kotlin.coroutines.core
+
+    implementation libs.androidx.core
 
 
     implementation libs.hilt.android
