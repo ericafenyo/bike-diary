@@ -28,6 +28,7 @@ package com.ericafenyo.bikediary.domain
 import com.ericafenyo.tracker.data.model.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Executes business logic synchronously or asynchronously using Coroutines.
@@ -50,6 +51,7 @@ abstract class Interactor<R>(private val coroutineDispatcher: CoroutineDispatche
         }
       }
     } catch (exception: Exception) {
+      Timber.e(exception)
       Result.Error(exception)
     }
   }

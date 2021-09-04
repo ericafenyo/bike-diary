@@ -108,4 +108,10 @@
   <string name="dashboard_axis_label_saturday">Sam</string>
   <string name="dashboard_axis_label_sunday">Dim</string>
 
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  -  Generic error message texts                                                                -
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="error_user_email_exists">Votre adresse mail existe déjà</string>
+  <string name="error_wrong_login_credentials">Email ou mot de passe incorrect</string>
+
 </resources>

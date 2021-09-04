@@ -26,6 +26,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -63,6 +64,7 @@ dependencies {
 
     implementation libs.kotlin.stdlib
     implementation libs.kotlin.coroutines.core
+    api libs.kotlin.serialization.json
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.material)

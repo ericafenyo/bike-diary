@@ -1,26 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  The MIT License (MIT)
-
-  Copyright (C) 2021 Eric Afenyo
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,14 +9,14 @@
 
     <variable
         name="model"
-        type="com.ericafenyo.bikediary.ui.auth.LoginViewModel" />
+        type="com.ericafenyo.bikediary.ui.login.LoginViewModel" />
   </data>
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical"
-      tools:context=".ui.auth.LoginFragment">
+      tools:context=".ui.login.LoginFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_surface"
@@ -122,16 +100,14 @@
             app:layout_constraintEnd_toStartOf="@+id/right_keyline"
             app:layout_constraintTop_toBottomOf="@+id/text_field_password" />
 
-        <com.google.android.material.button.MaterialButton
+        <com.ericafenyo.bikediary.widget.Button
             android:id="@+id/button_login"
             android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_medium"
             android:onClick="@{() -> model.onLogin()}"
             android:text="@string/action_login"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="@dimen/text_size_normal"
-            app:backgroundTint="@color/color_green"
+            app:isLoading="@{model.state.loading}"
             app:layout_constraintEnd_toStartOf="@+id/right_keyline"
             app:layout_constraintStart_toStartOf="@+id/left_keyline"
             app:layout_constraintTop_toBottomOf="@+id/text_action_forgot_password" />

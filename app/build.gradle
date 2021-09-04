@@ -86,6 +86,7 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.securityCrypto)
 
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
@@ -125,6 +126,8 @@ dependencies {
     implementation libs.slimChart
 
     implementation libs.androidChart
+
+    implementation libs.lottie
 
     // debugImplementation libs.leakCanary
 

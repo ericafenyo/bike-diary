@@ -22,25 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.domain
+package com.ericafenyo.bikediary.domain.user
 
-import com.ericafenyo.tracker.data.model.Result
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import timber.log.Timber
+import com.ericafenyo.bikediary.domain.ParameterizedInteractor
+import com.ericafenyo.bikediary.model.Credentials
+import com.ericafenyo.bikediary.repositories.user.UserRepository
+import com.ericafenyo.tracker.util.CoroutineDispatchers
+import javax.inject.Inject
+import javax.inject.Singleton
 
-/**
- * Executes business logic in its execute method and keep posting updates to the result as
- * [Result<R>].
- * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
- */
-abstract class FlowInteractor<R>(private val coroutineDispatcher: CoroutineDispatcher) {
-
-  operator fun invoke(): Flow<Result<R>> = execute()
-    .catch { exception -> Timber.e(exception); emit(Result.Error(Exception(exception))) }
-    .flowOn(coroutineDispatcher)
-
-  protected abstract fun execute(): Flow<Result<R>>
+@Singleton
+class AuthenticateInteractor @Inject constructor(
+  private val repository: UserRepository,
+  dispatchers: CoroutineDispatchers
+) : ParameterizedInteractor<Pair<String, String>, Credentials>(dispatchers.io) {
+  override suspend fun execute(params: Pair<String, String>): Credentials {
+    val (email, password) = params
+    return repository.authenticate(email, password)
+  }
 }
