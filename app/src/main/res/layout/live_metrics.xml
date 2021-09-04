@@ -39,7 +39,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="#F6F6F6"
-      android:padding="@dimen/space_micro"
+      android:padding="@dimen/space_extra_small"
       app:flexDirection="row">
 
     <LinearLayout

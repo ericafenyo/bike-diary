@@ -26,10 +26,12 @@ package com.ericafenyo.bikediary.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 @Entity(tableName = "adventures")
 data class AdventureEntity(
   @PrimaryKey val id: String,
+  val uuid: String = UUID.randomUUID().toString(),
   val title: String,
   val speed: Double,
   val duration: Double,

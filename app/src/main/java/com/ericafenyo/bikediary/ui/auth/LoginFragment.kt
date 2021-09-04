@@ -37,42 +37,41 @@ import com.ericafenyo.bikediary.util.Validator
 import com.ericafenyo.bikediary.util.doOnTrue
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
   private val binding: FragmentLoginBinding by dataBinding()
-  private val authModel: LoginViewModel by viewModels()
+  private val loginViewModel: LoginViewModel by viewModels()
   private val inputValidator by lazy { Validator(requireContext()) }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     binding.lifecycleOwner = viewLifecycleOwner
-    binding.model = authModel
+    binding.model = loginViewModel
 
     // Clear input errors when the user is typing
     clearInputErrorsOnChange()
 
     // Listen and handle sign in button press
-    authModel.loginAction.observe(viewLifecycleOwner, EventObserver {
+    loginViewModel.launchLoginAction.observe(viewLifecycleOwner, EventObserver {
       onSubmit()
     })
 
     // Listen and handle sign up button press. Note:
     // This just launches the signup page.
-    authModel.launchRegisterAction.observe(viewLifecycleOwner, EventObserver {
+    loginViewModel.launchRegisterAction.observe(viewLifecycleOwner, EventObserver {
       findNavController().navigate((R.id.action_login_to_signup))
     })
   }
 
   private fun clearInputErrorsOnChange() {
     binding.editTextEmail.doAfterTextChanged {
-      binding.inputFieldEmail.error = null
+      binding.textFieldEmail.error = null
     }
 
     binding.editTextPassword.doAfterTextChanged {
-      binding.inputFieldPassword.error = null
+      binding.textFieldPassword.error = null
     }
   }
 
@@ -91,15 +90,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
   }
 
   private fun submit() {
-    Timber.d("Submitting form")
+    //loginViewModel.performLogin()
   }
 
   private fun validateInputs(email: String, password: String): Boolean = with(binding) {
     // Validate required email
-    inputValidator.isFieldNotEmpty(email, inputFieldEmail)
+    inputValidator.isFieldNotEmpty(email, textFieldEmail)
       // Validate valid email
-      .doOnTrue { inputValidator.isEmailValid(email, inputFieldEmail) }
+      .doOnTrue { inputValidator.isEmailValid(email, textFieldEmail) }
       // Validate required password
-      .doOnTrue { inputValidator.isFieldNotEmpty(password, inputFieldPassword) }
+      .doOnTrue { inputValidator.isFieldNotEmpty(password, textFieldPassword) }
   }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2021 TransWay
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,28 +22,26 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.components
-
-import com.ericafenyo.bikediary.model.Adventure
 
 
-val fakeAdventure = Adventure(
-  id = "60a5a2ef86454011e030c33d",
-  title = "Wli Water falls",
-  speed = 34.0,
-  distance = 5.2,
-  duration = 678376.67,
-  calories = 8,
-  startedAt = "",
-  completedAt = "",
-  geojson = "",
-  imageUrl = ""
-)
+package com.ericafenyo.bikediary.util
 
-//@Preview(showBackground = true)
-//@Composable
-//fun AdventureItem(adventure: Adventure = fakeAdventure) {
-//  Card {
-//    Text(text = "Mina")
-//  }
-//}
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+
+/**
+ * Checks if a network connection exists.
+ */
+open class NetworkUtils @Inject constructor(@ApplicationContext private val context: Context) {
+
+  @SuppressLint("MissingPermission")
+  open fun hasNetworkConnection(): Boolean {
+    val connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetworkInfo = connectivityManager.activeNetworkInfo
+    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
+  }
+}

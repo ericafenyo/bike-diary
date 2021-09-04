@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
   Copyright (C) 2020 Eric Afenyo
@@ -37,7 +36,7 @@
     <item name="android:paddingTop">@dimen/space_normal</item>
     <item name="android:paddingBottom">@dimen/space_normal</item>
     <item name="android:paddingLeft">@dimen/space_normal</item>
-    <item name="android:paddingEnd">@dimen/space_micro</item>
+    <item name="android:paddingEnd">@dimen/space_extra_small</item>
     <item name="android:textAlignment">viewStart</item>
     <item name="switchPadding">@dimen/space_small</item>
     <item name="switchTextAppearance">?attr/textAppearanceBody2</item>

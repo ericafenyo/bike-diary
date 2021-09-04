@@ -22,21 +22,17 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.domain.interactors
+package com.ericafenyo.bikediary.util
 
-import com.ericafenyo.bikediary.domain.ParameterizedInteractor
-import com.ericafenyo.bikediary.repositories.user.UserRepository
-import com.ericafenyo.tracker.util.CoroutineDispatchers
-import javax.inject.Inject
-import javax.inject.Singleton
+import androidx.databinding.BindingMethod
+import androidx.databinding.BindingMethods
+import com.ericafenyo.bikediary.widget.Button
 
-@Singleton
-class AddUser @Inject constructor(
-  private val repository: UserRepository,
-  dispatchers: CoroutineDispatchers
-) :
-  ParameterizedInteractor<Any, com.ericafenyo.bikediary.model.User>(dispatchers.io) {
-  override suspend fun execute(params: Any): com.ericafenyo.bikediary.model.User {
-    TODO()
-  }
-}
+@BindingMethods(
+  BindingMethod(
+    type = Button::class,
+    attribute = "isLoading",
+    method = "setLoading"
+  )
+)
+class BindingMethods

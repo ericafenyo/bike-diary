@@ -22,31 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.auth
+package com.ericafenyo.bikediary.network
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.ericafenyo.bikediary.util.Event
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-
-@HiltViewModel
-class RegisterViewModel @Inject constructor() : ViewModel() {
-  private val _registerAction = MutableLiveData<Event<Unit>>()
-  val registerAction: LiveData<Event<Unit>> get() = _registerAction
-
-  private val _launchLoginAction = MutableLiveData<Event<Unit>>()
-  val launchLoginAction: LiveData<Event<Unit>> get() = _launchLoginAction
+import kotlinx.serialization.Serializable
 
 
-  // Android layout xml action = android:onClick="@{() -> model.onRegister()}"
-  fun onRegister() {
-    _registerAction.value = Event(Unit)
-  }
+@Serializable
+data class ApolloErrorResponse(
+  val extensions: Extensions = Extensions()
+) {
+  @Serializable
+  data class Extensions(val exception: Exception = Exception())
 
-  // Android layout xml action = android:onClick="@{() -> model.onLogin()}"
-  fun onLogin() {
-    _launchLoginAction.value = Event(Unit)
-  }
+  @Serializable
+  data class Exception(
+    val status: Int = 500,
+    val message: String = "Internal Server error"
+  )
 }

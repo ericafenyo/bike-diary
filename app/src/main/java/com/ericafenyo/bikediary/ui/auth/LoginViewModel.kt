@@ -27,14 +27,18 @@ package com.ericafenyo.bikediary.ui.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ericafenyo.bikediary.model.UIState
 import com.ericafenyo.bikediary.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
-  private val _loginAction = MutableLiveData<Event<Unit>>()
-  val loginAction: LiveData<Event<Unit>> get() = _loginAction
+class LoginViewModel @Inject constructor(
+
+) : ViewModel() {
+  // UI Events
+  private val _launchLoginAction = MutableLiveData<Event<Unit>>()
+  val launchLoginAction: LiveData<Event<Unit>> get() = _launchLoginAction
 
   private val _launchRegisterAction = MutableLiveData<Event<Unit>>()
   val launchRegisterAction: LiveData<Event<Unit>> get() = _launchRegisterAction
@@ -43,9 +47,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
   val launchForgotPasswordAction: LiveData<Event<Unit>> get() = _launchForgotPasswordAction
 
 
+
   // Android layout xml action = android:onClick="@{() -> model.onLogin()}"
   fun onLogin() {
-    _loginAction.value = Event(Unit)
+    _launchLoginAction.value = Event(Unit)
   }
 
   // Android layout xml action = android:onClick="@{() -> model.onRegister()}"

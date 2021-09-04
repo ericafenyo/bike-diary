@@ -22,10 +22,36 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.network.user.vo
+package com.ericafenyo.bikediary.ui.app
 
-data class CreateUserRequest(
-  val name: String,
-  val email: String,
-  val password: String,
-)
+import android.view.View
+import androidx.annotation.StringRes
+import com.ericafenyo.bikediary.R
+import com.ericafenyo.bikediary.databinding.DialogAlertBinding
+import com.ericafenyo.bikediary.widget.DialogFragment
+import com.wada811.databinding.dataBinding
+
+class DialogAlert : DialogFragment(R.layout.dialog_alert) {
+  private val binding: DialogAlertBinding by dataBinding()
+
+  override fun onCreated(view: View) {}
+
+  fun setTitle(@StringRes resId: Int): DialogAlert {
+    binding.textTitle.setText(resId)
+    return this
+  }
+
+  fun setMessage(@StringRes resId: Int): DialogAlert {
+    binding.textMessage.setText(resId)
+    return this
+  }
+
+  fun setAction(
+    @StringRes resId: Int,
+    block: (() -> Unit)? = null
+  ): DialogAlert {
+    binding.button.setText(resId)
+    binding.button.setOnClickListener { if (block != null) block() else requireDialog().dismiss() }
+    return this
+  }
+}

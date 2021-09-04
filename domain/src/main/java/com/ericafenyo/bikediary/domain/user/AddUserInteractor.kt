@@ -22,14 +22,28 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.model
+package com.ericafenyo.bikediary.domain.user
 
-data class User(
-  val id: String,
+import com.ericafenyo.bikediary.domain.ParameterizedInteractor
+import com.ericafenyo.bikediary.model.User
+import com.ericafenyo.bikediary.repositories.user.UserRepository
+import com.ericafenyo.tracker.util.CoroutineDispatchers
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class AddUserInteractor @Inject constructor(
+  private val repository: UserRepository,
+  dispatchers: CoroutineDispatchers
+) : ParameterizedInteractor<AccountParams, User>(dispatchers.io) {
+  override suspend fun execute(params: AccountParams): User {
+    return with(params) { repository.addUser(firstName, lastName, email, password) }
+  }
+}
+
+data class AccountParams(
   val firstName: String,
   val lastName: String,
   val email: String,
-  val bio: String,
-  val avatarUrl: String,
-  val weight: Double,
+  val password: String
 )

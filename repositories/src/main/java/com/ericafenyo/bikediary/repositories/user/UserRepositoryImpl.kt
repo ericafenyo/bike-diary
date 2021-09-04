@@ -25,22 +25,21 @@
 package com.ericafenyo.bikediary.repositories.user
 
 import com.ericafenyo.bikediary.model.User
-import com.ericafenyo.bikediary.network.user.vo.CreateUserRequest
+import com.ericafenyo.bikediary.network.user.UserService
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserRepositoryImpl @Inject constructor(private val service: UserRepository) : UserRepository {
+class UserRepositoryImpl @Inject constructor(
+  private val service: UserService
+) : UserRepository {
 
-  override suspend fun createUser(request: CreateUserRequest): User {
-    val response = service.createUser(request)
-    return User(
-      id = response.id,
-      email = response.email,
-      name = response.name,
-      bio = response.bio,
-      avatarUrl = response.avatarUrl,
-      weight = response.weight,
-    )
+  override suspend fun addUser(
+    firstName: String,
+    lastName: String,
+    email: String,
+    password: String
+  ): User {
+    return service.addUser(firstName, lastName, email, password)
   }
 }
