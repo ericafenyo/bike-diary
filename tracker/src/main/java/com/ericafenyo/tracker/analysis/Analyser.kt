@@ -113,7 +113,7 @@ class Analyser constructor(private val context: Context) {
         imageUrl = "",
         geojson = featureCollection.toJson(),
         completedAt = metrics.completedAt,
-      )
+       )
     } catch (exception: Exception) {
       Logger.error(
         context,
