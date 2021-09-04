@@ -24,6 +24,7 @@
 
 package com.ericafenyo.bikediary.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,7 @@ import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.data.trip.TripRepository
 import com.ericafenyo.bikediary.databinding.ActivityMainBinding
 import com.ericafenyo.bikediary.model.Theme
+import com.ericafenyo.bikediary.ui.auth.AuthenticationActivity
 import com.ericafenyo.tracker.datastore.RecordsProvider
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,6 +66,8 @@ class MainActivity : AppCompatActivity() {
     navController = getNavController()
 
     binding.bottomNavigation.setupWithNavController(navController)
+
+    startActivity(Intent(this, AuthenticationActivity::class.java))
   }
 
   private fun getNavController(): NavController {

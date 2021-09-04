@@ -127,6 +127,8 @@ dependencies {
     implementation libs.androidChart
 
     // debugImplementation libs.leakCanary
+
+    implementation 'com.github.ericafenyo:ProgressButton:1.0.1'
 }
 
 hilt {

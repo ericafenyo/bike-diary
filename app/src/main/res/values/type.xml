@@ -12,9 +12,9 @@
   </style>
 
   <style name="TextAppearance.HabitDiary.H3" parent="@style/TextAppearance.HabitDiary.H1">
-    <item name="android:fontFamily">@font/google_sans_medium</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
     <item name="android:textSize">@dimen/text_size_h3</item>
-    <item name="fontFamily">@font/google_sans_medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
   </style>
 
   <style name="TextAppearance.HabitDiary.BodyText" parent="TextAppearance.MaterialComponents.Body2">

@@ -41,7 +41,7 @@
   </fragment>
   <fragment
       android:id="@+id/signUpFragment"
-      android:name="com.ericafenyo.bikediary.ui.auth.SignUpFragment"
+      android:name="com.ericafenyo.bikediary.ui.register.AccountFragment"
       android:label="SignUpFragment"
       tools:layout="@layout/fragment_register">
     <action

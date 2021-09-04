@@ -27,30 +27,49 @@ package com.ericafenyo.bikediary.network
 import com.apollographql.apollo.ApolloClient
 import com.ericafenyo.bikediary.network.adventure.AdventureRemoteDataSource
 import com.ericafenyo.bikediary.network.adventure.DefaultAdventureRemoteDataSource
+import com.ericafenyo.bikediary.network.user.UserServiceImpl
+import com.ericafenyo.bikediary.network.user.UserService
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+abstract class NetworkModule {
 
-  @Provides
+  @Binds
   @Singleton
-  fun provideApolloClient(): ApolloClient = ApolloClient.builder()
-    .serverUrl("${BuildConfig.API_SERVER_URL}/graphql")
-    .build()
+  abstract fun bindUserService(impl: UserServiceImpl): UserService
 
-  @Provides
-  @Singleton
-  fun provideHttpClient(): OkHttpClient = OkHttpClient()
+  @Module
+  @InstallIn(SingletonComponent::class)
+  object Providers {
+    @Provides
+    @Singleton
+    fun provideHttpClient(): OkHttpClient = OkHttpClient.Builder().apply {
+      if (BuildConfig.DEBUG) {
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY).apply {
+          addInterceptor(this)
+        }
+      }
+    }.build()
 
-  @Provides
-  @Singleton
-  fun provideAdventureRemoteDataSource(
-    client: ApolloClient
-  ): AdventureRemoteDataSource = DefaultAdventureRemoteDataSource(client)
+    @Provides
+    @Singleton
+    fun provideApolloClient(okHttpClient: OkHttpClient): ApolloClient = ApolloClient.builder()
+      .serverUrl("${BuildConfig.API_SERVER_URL}/graphql")
+      .okHttpClient(okHttpClient)
+      .build()
+
+    @Provides
+    @Singleton
+    fun provideAdventureRemoteDataSource(
+      client: ApolloClient
+    ): AdventureRemoteDataSource = DefaultAdventureRemoteDataSource(client)
+  }
 }
