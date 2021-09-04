@@ -24,11 +24,7 @@
 
 package com.ericafenyo.bikediary.network.adventure
 
-import GetAdventuresQuery
-import android.util.Log
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.coroutines.await
-import com.apollographql.apollo.exception.ApolloHttpException
 import com.ericafenyo.bikediary.model.Adventure
 import javax.inject.Singleton
 
@@ -38,33 +34,10 @@ class DefaultAdventureRemoteDataSource(
 ) : AdventureRemoteDataSource {
 
   override suspend fun getAdventures(): List<Adventure> {
-    return try {
-      apolloClient.query(GetAdventuresQuery())
-        .await()
-        .data?.adventures
-        ?.map(::toAdventure) ?: emptyList()
-    } catch (exception: ApolloHttpException) {
-      Log.e("TAG", "An error occurred while fetching adventures ${exception.message()}")
-      emptyList()
-    }
+    TODO("Not yet implemented")
   }
 
   override suspend fun saveAdventure(): String {
     TODO("Not yet implemented")
-  }
-
-  private fun toAdventure(result: GetAdventuresQuery.Adventure): Adventure {
-    return Adventure(
-      id = result.id,
-      title = result.title,
-      speed = result.speed,
-      duration = result.duration,
-      distance = result.distance,
-      calories = result.calories.toInt(),
-      startedAt = result.startedAt,
-      completedAt = result.completedAt,
-      geojson = result.geojson,
-      imageUrl = result.imageUrl,
-    )
   }
 }

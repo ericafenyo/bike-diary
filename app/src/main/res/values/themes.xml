@@ -26,4 +26,20 @@
     <item name="android:windowBackground">@drawable/splash_background</item>
   </style>
 
+  <!-- Alert Dialog --><style name="ThemeOverlay.HabitDiary.AlertDialog" parent="">
+  <item name="colorSurface">@android:color/white</item>
+  <item name="shapeAppearanceOverlay">@style/ShapeAppearance.HabitDiary.MediumComponent</item>
+</style>
+
+  <style name="Widget.Application.Button.Filled" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <item name="fontFamily">sans-serif-medium</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:height">42dp</item>
+    <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="cornerRadius">@dimen/size_button_radius</item>
+  </style>
+
 </resources>

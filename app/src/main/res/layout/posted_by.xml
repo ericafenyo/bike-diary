@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@{owner.name}"
+        android:text="@{owner.firstName}"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/user_avatar"

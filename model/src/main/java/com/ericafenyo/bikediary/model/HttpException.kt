@@ -24,12 +24,7 @@
 
 package com.ericafenyo.bikediary.model
 
-data class User(
-  val id: String,
-  val firstName: String,
-  val lastName: String,
-  val email: String,
-  val bio: String,
-  val avatarUrl: String,
-  val weight: Double,
-)
+data class HttpException(
+  val status: Int? = -1,
+  override val message: String? = null,
+) : RuntimeException(message)

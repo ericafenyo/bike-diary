@@ -10,17 +10,24 @@
 
 
   <!-- 8 grid spacing -->
-  <dimen name="space_micro">4dp</dimen>
+  <dimen name="space_micro">2dp</dimen>
+  <dimen name="space_extra_small">4dp</dimen>
   <dimen name="space_small">8dp</dimen>
   <dimen name="space_normal">16dp</dimen>
-  <dimen name="spacing_medium">24dp</dimen>
-  <dimen name="spacing_large">32dp</dimen>
-  <dimen name="spacing_huge">40dp</dimen>
-  <dimen name="spacing_xlarge">48dp</dimen>
+  <dimen name="space_medium">24dp</dimen>
+  <dimen name="space_large">32dp</dimen>
+  <dimen name="space_extra_large">48dp</dimen>
 
   <dimen name="a11y_min_touch_target">48dp</dimen>
   <dimen name="bottom_nav_height">56dp</dimen>
   <dimen name="floating_action_button_elevation">10</dimen>
   <dimen name="progress_indicator_corner_radius">8dp</dimen>
 
+  <dimen name="size_button_radius">4dp</dimen>
+  <dimen name="size_dialog_button_radius">4.5dp</dimen>
+
+  <!-- Shape corner radius-->
+  <dimen name="size_small_component">8dp</dimen>
+  <dimen name="size_medium_component">12dp</dimen>
+  <dimen name="size_large_component">24dp</dimen>
 </resources>

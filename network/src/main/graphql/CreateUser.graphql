@@ -1,10 +1,5 @@
-mutation createUser($input: UserInput!) {
-  user(input: $input) {
-    id,
-    name,
-    email,
-    weight,
-    bio,
-    avatar
+mutation createUser($user: AddUserInput!) {
+  user(user: $user) {
+    id
   }
 }

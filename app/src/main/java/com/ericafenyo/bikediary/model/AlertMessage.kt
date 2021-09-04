@@ -24,12 +24,16 @@
 
 package com.ericafenyo.bikediary.model
 
-data class User(
-  val id: String,
-  val firstName: String,
-  val lastName: String,
-  val email: String,
-  val bio: String,
-  val avatarUrl: String,
-  val weight: Double,
+data class AlertMessage(
+  /** Resource string ID of the message to show */
+  val messageId: Int,
+
+  /** Optional resource string ID for the action (example: "Got it!") */
+  val actionId: Int? = null,
+
+  /** Optional resource string ID of the title to show */
+  val titleId: Int? = null,
+
+  /** Set to true for a Snackbar with long duration  */
+  val dismiss: Boolean = false,
 )

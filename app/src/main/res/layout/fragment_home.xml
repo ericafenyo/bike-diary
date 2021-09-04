@@ -97,7 +97,7 @@
               android:id="@+id/text_kilometers_remaining_value"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginEnd="@dimen/space_micro"
+              android:layout_marginEnd="@dimen/space_extra_small"
               android:fontFamily="sans-serif-medium"
               android:text="@{achievement.remainingDistance}"
               android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"

@@ -24,7 +24,8 @@
 
 package com.ericafenyo.tracker.data.model
 
-import androidx.lifecycle.MutableLiveData
+import com.ericafenyo.bikediary.shared.SimpleResult
+import com.ericafenyo.tracker.data.model.Result.Error
 import com.ericafenyo.tracker.data.model.Result.Success
 
 /**
@@ -56,14 +57,25 @@ fun <T> Result<T>.successOr(fallback: T): T {
   return (this as? Success<T>)?.data ?: fallback
 }
 
+fun <T> Result<T>.getOrThrow(): T {
+  return when (this) {
+    is Success -> this.data
+    is Error -> throw this.exception
+    else -> throw UnsupportedOperationException("Result can only of type Success or Error")
+  }
+}
+
+fun <T> Result<T>.getOrElse(block: () -> T): T {
+  return (this as? Success<T>)?.data ?: block()
+}
+
 val <T> Result<T>.data: T?
   get() = (this as? Success)?.data
 
-/**
- * Updates value of [liveData] if [Result] is of type [Success]
- */
-inline fun <reified T> Result<T>.updateOnSuccess(liveData: MutableLiveData<T>) {
-  if (this is Success) {
-    liveData.value = data
+fun <T> Result<T>.simplify(): SimpleResult<T> {
+  return when (this) {
+    is Success -> SimpleResult.Success(data)
+    is Error -> SimpleResult.Error(exception)
+    else -> throw UnsupportedOperationException("Result can only of type Success or Error")
   }
 }

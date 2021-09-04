@@ -25,8 +25,8 @@
 package com.ericafenyo.bikediary.network.user
 
 import com.ericafenyo.bikediary.model.User
-import com.ericafenyo.bikediary.network.user.vo.CreateUserRequest
 
 interface UserService {
-  suspend fun createUser(request: CreateUserRequest): User
+
+  suspend fun addUser(firstName: String, lastName: String, email: String, password: String): User
 }

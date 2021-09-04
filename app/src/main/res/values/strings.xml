@@ -11,6 +11,14 @@
   <string name="action_stop_adventure">End adventure</string>
   <string name="action_upload_picture">Upload picture</string>
 
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Alert dialog strings                                                                        -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="msg_no_connection_title">No connection</string>
+  <string name="msg_no_connection_message">You are offline. Please connect to the Internet</string>
+
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Content description strings                                                                                   -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -54,7 +62,8 @@
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="input_hint_confirm_password">Confirm password</string>
   <string name="input_hint_email">E-mail</string>
-  <string name="input_hint_name">Name</string>
+  <string name="input_hint_first_name">First Name</string>
+  <string name="input_hint_last_name">Last Name</string>
   <string name="input_hint_password">Password</string>
   <string name="input_helper_text_password_constraints">Password must contain minimum 8 characters, at least 1 uppercase letter and 1 number.</string>
 
@@ -123,4 +132,6 @@
   <string name="dashboard_axis_label_friday">Fri</string>
   <string name="dashboard_axis_label_saturday">Sat</string>
   <string name="dashboard_axis_label_sunday">Sun</string>
+
+
 </resources>
