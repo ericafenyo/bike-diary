@@ -29,6 +29,8 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+androidx-securityCrypto = "androidx.security:security-crypto:1.1.0-alpha03"
+
 
 apollo-coroutines = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo" }
 apollo-gradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo" }
@@ -65,6 +67,7 @@ kotlin-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 
 leakCanary = "com.squareup.leakcanary:leakcanary-android:2.6"
+lottie = "com.airbnb.android:lottie:4.1.0"
 
 mapbox-android = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1"
 mapbox-annotation = "com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v9:0.9.0"

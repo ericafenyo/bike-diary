@@ -24,6 +24,7 @@
 
 package com.ericafenyo.bikediary.repositories.user
 
+import com.ericafenyo.bikediary.model.Credentials
 import com.ericafenyo.bikediary.model.User
 import com.ericafenyo.bikediary.network.user.UserService
 import javax.inject.Inject
@@ -41,5 +42,9 @@ class UserRepositoryImpl @Inject constructor(
     password: String
   ): User {
     return service.addUser(firstName, lastName, email, password)
+  }
+
+  override suspend fun authenticate(email: String, password: String): Credentials {
+    return service.authenticate(email, password)
   }
 }

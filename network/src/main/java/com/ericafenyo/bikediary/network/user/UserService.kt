@@ -24,9 +24,11 @@
 
 package com.ericafenyo.bikediary.network.user
 
+import com.ericafenyo.bikediary.model.Credentials
 import com.ericafenyo.bikediary.model.User
 
 interface UserService {
 
   suspend fun addUser(firstName: String, lastName: String, email: String, password: String): User
+  suspend fun authenticate(email: String, password: String): Credentials
 }

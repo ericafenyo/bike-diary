@@ -133,5 +133,10 @@
   <string name="dashboard_axis_label_saturday">Sat</string>
   <string name="dashboard_axis_label_sunday">Sun</string>
 
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ -  Generic error message texts                                                                -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="error_user_email_exists">The email already exists</string>
+  <string name="error_wrong_login_credentials">Wrong email or password</string>
 
 </resources>

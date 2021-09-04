@@ -22,25 +22,14 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.domain
+package com.ericafenyo.bikediary.model
 
-import com.ericafenyo.tracker.data.model.Result
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import timber.log.Timber
+import kotlinx.serialization.Serializable
 
-/**
- * Executes business logic in its execute method and keep posting updates to the result as
- * [Result<R>].
- * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
- */
-abstract class FlowInteractor<R>(private val coroutineDispatcher: CoroutineDispatcher) {
-
-  operator fun invoke(): Flow<Result<R>> = execute()
-    .catch { exception -> Timber.e(exception); emit(Result.Error(Exception(exception))) }
-    .flowOn(coroutineDispatcher)
-
-  protected abstract fun execute(): Flow<Result<R>>
+@Serializable
+data class Credentials(
+  val accessToken: String = "",
+  val refreshToken: String = "",
+) {
+  fun isValid() = accessToken.isNotBlank()
 }

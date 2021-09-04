@@ -24,7 +24,14 @@
 
 package com.ericafenyo.bikediary.model
 
+import java.net.HttpURLConnection
+
 data class HttpException(
   val status: Int? = -1,
   override val message: String? = null,
 ) : RuntimeException(message)
+
+fun HttpException.isUnauthorized() = status == HttpURLConnection.HTTP_UNAUTHORIZED
+fun HttpException.isNotFound() = status == HttpURLConnection.HTTP_NOT_FOUND
+fun HttpException.isConflict() = status == HttpURLConnection.HTTP_CONFLICT
+fun HttpException.isForbidden() = status == HttpURLConnection.HTTP_FORBIDDEN

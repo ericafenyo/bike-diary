@@ -6,6 +6,11 @@
   <declare-styleable name="LoadingButton">
     <attr name="isLoading" format="boolean" />
     <attr name="text" format="string" />
+    <attr name="android:text" />
+    <attr name="android:textColor" />
     <attr name="textColor" format="reference|color" />
+    <attr name="trackColor" format="reference|color" />
+    <attr name="indicatorColor" format="reference|color" />
+    <attr name="backgroundTint" format="reference|color" />
   </declare-styleable>
 </resources>
