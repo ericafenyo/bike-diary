@@ -34,6 +34,12 @@
     <variable
         name="achievement"
         type="com.ericafenyo.bikediary.model.Achievement" />
+
+    <variable
+        name="model"
+        type="com.ericafenyo.bikediary.ui.dashboard.DashboardViewModel" />
+
+    <import type="com.ericafenyo.bikediary.ui.dashboard.DashboardViewModel.Action" />
   </data>
 
   <androidx.core.widget.NestedScrollView
@@ -68,6 +74,7 @@
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="@{() -> model.dispatchAction(Action.LAUNCH_ACHIEVEMENTS)}"
             android:padding="@dimen/space_normal">
 
           <androidx.appcompat.widget.AppCompatImageView
