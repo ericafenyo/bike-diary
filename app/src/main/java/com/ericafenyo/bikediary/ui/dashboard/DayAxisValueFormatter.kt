@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary
+package com.ericafenyo.bikediary.ui.dashboard
 
 import android.content.Context
 import com.ericafenyo.bikediary.R.string
