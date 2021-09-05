@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary
+package com.ericafenyo.bikediary.ui.dashboard
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.ericafenyo.bikediary.databinding.FragmentHomeBinding
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.ericafenyo.bikediary.R.color
+import com.ericafenyo.bikediary.R.drawable
+import com.ericafenyo.bikediary.R.layout
+import com.ericafenyo.bikediary.databinding.FragmentDashboardBinding
 import com.ericafenyo.bikediary.model.Achievement
 import com.ericafenyo.bikediary.model.Badge
+import com.ericafenyo.bikediary.ui.dashboard.DashboardViewModel.Action
 import com.ericafenyo.bikediary.util.drawableFrom
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
@@ -49,23 +55,41 @@ import com.wada811.databinding.dataBinding
 /**
  * A simple [Fragment] subclass for displaying users adventure metrics.
  */
-class DashboardFragment : Fragment(R.layout.fragment_home) {
-  private val binding: FragmentHomeBinding by dataBinding()
-
+class DashboardFragment : Fragment(layout.fragment_dashboard) {
+  private val binding: FragmentDashboardBinding by dataBinding()
+  private val viewModel: DashboardViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    binding.model = viewModel
+    binding.lifecycleOwner = viewLifecycleOwner
+
+    viewModel.events.observe(viewLifecycleOwner, { event ->
+      if (event != null && !event.hasBeenHandled) {
+        handleEvents(event.peekContent())
+      }
+    })
 
     binding.achievement = Achievement(
       totalDistance = 100.toDouble(),
       badge = Badge(
         distance = 53.toDouble(),
-        icon = requireContext().drawableFrom(R.drawable.badge_level_one)
+        icon = requireContext().drawableFrom(drawable.badge_level_one)
       )
     )
 
     setWeightData(binding.chartWeight)
     setAdventureData(binding.chartAdventures)
+  }
+
+  private fun handleEvents(event: Action) {
+    when (event) {
+      Action.LAUNCH_ACHIEVEMENTS -> {
+        val action = DashboardFragmentDirections.actionDashboardToAchievements()
+        findNavController().navigate(action)
+      }
+    }
   }
 
   private fun setWeightData(chart: LineChart) {
@@ -85,7 +109,7 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
 
     val targetAxis = LimitLine(65f, "65.0kg")
     targetAxis.lineWidth = 1f
-    targetAxis.lineColor = ContextCompat.getColor(requireContext(), R.color.color_green)
+    targetAxis.lineColor = ContextCompat.getColor(requireContext(), color.color_green)
     targetAxis.enableDashedLine(20f, 20f, 0f)
     targetAxis.labelPosition = RIGHT_BOTTOM
 
@@ -100,7 +124,7 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
 
     val dataset = LineDataSet(values, "")
     dataset.lineWidth = 2.5f
-    dataset.color = ContextCompat.getColor(requireContext(), R.color.color_primary)
+    dataset.color = ContextCompat.getColor(requireContext(), color.color_primary)
     dataset.setDrawCircles(false)
     dataset.setDrawValues(false)
 
@@ -124,7 +148,7 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
 
     val targetAxis = LimitLine(65f, "65.0kg")
     targetAxis.lineWidth = 1f
-    targetAxis.lineColor = ContextCompat.getColor(requireContext(), R.color.color_green)
+    targetAxis.lineColor = ContextCompat.getColor(requireContext(), color.color_green)
     targetAxis.enableDashedLine(20f, 20f, 0f)
     targetAxis.labelPosition = RIGHT_BOTTOM
 
@@ -139,7 +163,7 @@ class DashboardFragment : Fragment(R.layout.fragment_home) {
 
     val dataset = BarDataSet(values, "")
     //dataset.lineWidth = 2.5f
-    dataset.color = ContextCompat.getColor(requireContext(), R.color.color_primary)
+    dataset.color = ContextCompat.getColor(requireContext(), color.color_primary)
     //dataset.setDrawCircles(false)
     dataset.setDrawValues(false)
 
