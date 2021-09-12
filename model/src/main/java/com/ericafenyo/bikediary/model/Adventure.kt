@@ -26,6 +26,7 @@ package com.ericafenyo.bikediary.model
 
 data class Adventure(
   val id: String,
+  val uuid: String,
   val title: String,
   val speed: Double,
   val duration: Double,
@@ -34,7 +35,7 @@ data class Adventure(
   val startedAt: String,
   val completedAt: String,
   val geojson: String,
-  val imageUrl: String,
+  val images: List<String>,
 ) {
   fun isPushed() = !id.contains("Unprocessed")
 }

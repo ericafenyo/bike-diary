@@ -42,6 +42,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AdventureDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun bulkInsert(adventures: List<AdventureEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(adventure: AdventureEntity)
 
   @Query("SELECT * FROM adventures WHERE id = :adventureId")
@@ -50,8 +53,14 @@ interface AdventureDao {
   @Query("SELECT * FROM adventures")
   suspend fun getAdventures(): List<AdventureEntity>
 
-  @Query("SELECT * FROM adventures ORDER BY id DESC Limit 1")
-  fun adventure(): Flow<AdventureEntity>
+  @Query("SELECT * FROM adventures WHERE id LIKE '%Unprocessed'")
+  suspend fun getUnprocessedAdventures(): List<AdventureEntity>
+
+  @Query("SELECT * FROM adventures")
+  fun adventures(): Flow<List<AdventureEntity>>
+
+  @Query("SELECT * FROM adventures WHERE uuid = :uuid")
+  fun adventure(uuid: String): Flow<AdventureEntity>
 
   @Query("DELETE FROM adventures WHERE id = :adventureId")
   suspend fun deleteById(adventureId: String): Int

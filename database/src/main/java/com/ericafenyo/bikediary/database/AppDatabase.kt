@@ -28,10 +28,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.ericafenyo.bikediary.database.dao.AdventureDao
 import com.ericafenyo.bikediary.database.entity.AdventureEntity
 
-@Database(entities = [AdventureEntity::class], version = 1, exportSchema = false)
+@Database(
+  entities = [AdventureEntity::class],
+  version = 1,
+  exportSchema = false
+)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
   abstract fun getAdventureDao(): AdventureDao
 

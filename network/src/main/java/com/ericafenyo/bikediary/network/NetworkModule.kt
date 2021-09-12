@@ -25,10 +25,10 @@
 package com.ericafenyo.bikediary.network
 
 import com.apollographql.apollo.ApolloClient
-import com.ericafenyo.bikediary.network.adventure.AdventureRemoteDataSource
-import com.ericafenyo.bikediary.network.adventure.DefaultAdventureRemoteDataSource
-import com.ericafenyo.bikediary.network.user.UserServiceImpl
+import com.ericafenyo.bikediary.network.adventure.AdventureService
+import com.ericafenyo.bikediary.network.adventure.AdventureServiceImpl
 import com.ericafenyo.bikediary.network.user.UserService
+import com.ericafenyo.bikediary.network.user.UserServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -45,6 +45,10 @@ abstract class NetworkModule {
   @Binds
   @Singleton
   abstract fun bindUserService(impl: UserServiceImpl): UserService
+
+  @Binds
+  @Singleton
+  abstract fun bindAdventureService(impl: AdventureServiceImpl): AdventureService
 
   @Module
   @InstallIn(SingletonComponent::class)
@@ -66,10 +70,10 @@ abstract class NetworkModule {
       .okHttpClient(okHttpClient)
       .build()
 
-    @Provides
-    @Singleton
-    fun provideAdventureRemoteDataSource(
-      client: ApolloClient
-    ): AdventureRemoteDataSource = DefaultAdventureRemoteDataSource(client)
+//    @Provides
+//    @Singleton
+//    fun provideAdventureRemoteDataSource(
+//      client: ApolloClient
+//    ): AdventureService = AdventureServiceImpl(client)
   }
 }

@@ -40,5 +40,5 @@ data class AdventureEntity(
   val startedAt: String,
   val completedAt: String,
   val geojson: String,
-  val imageUrl: String,
+  val images: List<String>,
 )

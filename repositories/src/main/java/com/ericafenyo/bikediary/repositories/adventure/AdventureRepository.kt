@@ -29,5 +29,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AdventureRepository {
   fun adventures(): Flow<List<Adventure>>
-  fun adventure(): Flow<Adventure>
+  fun adventure(uuid: String): Flow<Adventure>
+  suspend fun synchronizeAdventures()
 }

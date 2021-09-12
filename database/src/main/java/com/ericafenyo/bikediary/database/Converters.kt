@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2020 Eric Afenyo
+ * Copyright (C) 2021 TransWay
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,20 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary
+package com.ericafenyo.bikediary.database
 
-import android.app.Application
-import android.os.StrictMode
-import com.ericafenyo.bikediary.util.CrashlyticsTree
-import com.jakewharton.threetenabp.AndroidThreeTen
-import com.mapbox.mapboxsdk.Mapbox
-import dagger.hilt.android.HiltAndroidApp
-import timber.log.Timber
+import androidx.room.TypeConverter
+import org.json.JSONArray
 
-@HiltAndroidApp
-class HabitDiaryApplication : Application() {
-  override fun onCreate() {
-    // Initialize the timezone information for
-    AndroidThreeTen.init(this);
-    // setup mapbox sdk
-    Mapbox.getInstance(applicationContext, BuildConfig.MAPBOX_ACCESS_TOKEN)
 
-    // Enable strict mode before Dagger creates graph
-    if (BuildConfig.DEBUG) {
-      enableStrictMode()
-    }
-
-    super.onCreate()
-    if (BuildConfig.DEBUG) {
-      Timber.plant(Timber.DebugTree())
-    } else {
-      Timber.plant(CrashlyticsTree())
-    }
+class Converters {
+  @TypeConverter
+  fun fromStrings(points: String): List<String> {
+    return listOf()
   }
 
-  private fun enableStrictMode() {
-    StrictMode.setThreadPolicy(
-      StrictMode.ThreadPolicy.Builder()
-        .detectDiskReads()
-        .detectDiskWrites()
-        .detectNetwork()
-        .penaltyLog()
-        .build()
-    )
+  @TypeConverter
+  fun toStrings(points: List<String>): String {
+    return JSONArray().toString()
   }
 }

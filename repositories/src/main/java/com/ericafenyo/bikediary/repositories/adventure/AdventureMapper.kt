@@ -25,30 +25,32 @@
 package com.ericafenyo.bikediary.repositories.adventure
 
 import com.ericafenyo.bikediary.database.entity.AdventureEntity
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.ericafenyo.bikediary.model.Adventure
 
-@Singleton
-class AdventureMapper @Inject constructor() :
-  com.ericafenyo.bikediary.repositories.Mapper<Any, com.ericafenyo.bikediary.model.Adventure> {
-  override suspend fun map(params: Any): com.ericafenyo.bikediary.model.Adventure {
-    return when (params) {
-      is AdventureEntity -> fromLocal(params)
-      else -> throw IllegalArgumentException("Parameter type ${params::class.java} is not supported")
-    }
-  }
+fun Adventure.toEntity() = AdventureEntity(
+  id = id,
+  uuid = uuid,
+  title = title,
+  speed = speed,
+  duration = duration,
+  distance = distance,
+  calories = calories,
+  startedAt = startedAt,
+  completedAt = completedAt,
+  geojson = geojson,
+  images = images,
+)
 
-
-  private fun fromLocal(response: AdventureEntity) = com.ericafenyo.bikediary.model.Adventure(
-    id = response.id,
-    title = response.title,
-    speed = response.speed,
-    duration = response.duration,
-    distance = response.distance,
-    calories = response.calories,
-    startedAt = response.startedAt,
-    completedAt = response.completedAt,
-    geojson = response.geojson,
-    imageUrl = response.imageUrl,
-  )
-}
+fun AdventureEntity.toAdventure() = Adventure(
+  id = id,
+  uuid = uuid,
+  title = title,
+  speed = speed,
+  duration = duration,
+  distance = distance,
+  calories = calories,
+  startedAt = startedAt,
+  completedAt = completedAt,
+  geojson = geojson,
+  images = images,
+)
