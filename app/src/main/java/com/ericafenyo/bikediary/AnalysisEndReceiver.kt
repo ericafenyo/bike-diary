@@ -27,16 +27,17 @@ package com.ericafenyo.bikediary
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.ericafenyo.bikediary.ui.diary.EditAdventureActivity
+import androidx.work.WorkManager
+import com.ericafenyo.bikediary.work.SynchronizationWorker
 
 class AnalysisEndReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent?) {
     com.ericafenyo.bikediary.logger.Logger.debug(
-      context,
-      TAG,
-      "onReceive(context: $context, intent: $intent)"
+      context, TAG, "onReceive(context: $context, intent: $intent)"
     )
-    context.startActivity(EditAdventureActivity.getStartIntent(context))
+
+    WorkManager.getInstance(context.applicationContext)
+      .enqueue(SynchronizationWorker.request)
   }
 
   companion object {

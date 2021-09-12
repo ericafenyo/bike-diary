@@ -22,31 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.domain.observers
+package com.ericafenyo.bikediary.domain.adventure
 
 import com.ericafenyo.bikediary.di.qualifier.IODispatcher
 import com.ericafenyo.bikediary.domain.FlowInteractor
 import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.tracker.data.model.Result
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 
 
-class ObserveAdventures @Inject constructor(
+class LoadAdventuresInteractor @Inject constructor(
   private val repository: AdventureRepository,
   @IODispatcher dispatcher: CoroutineDispatcher,
 ) : FlowInteractor<List<Adventure>>(dispatcher) {
-  override fun execute(): Flow<Result<List<Adventure>>> = flow {
-    try {
-      repository.adventures().collect { adventures ->
-        emit(Result.Success(adventures))
-      }
-    } catch (exception: Exception) {
-      emit(Result.Error(exception))
-    }
-  }
+
+  override fun execute(): Flow<List<Adventure>> = repository.adventures()
 }

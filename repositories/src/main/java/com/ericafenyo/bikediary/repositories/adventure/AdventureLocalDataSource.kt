@@ -25,17 +25,30 @@
 package com.ericafenyo.bikediary.repositories.adventure
 
 import com.ericafenyo.bikediary.database.AppDatabase
-import com.ericafenyo.bikediary.database.entity.AdventureEntity
 import com.ericafenyo.bikediary.model.Adventure
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 @Singleton
 class AdventureLocalDataSource @Inject constructor(database: AppDatabase) {
   private val dao = database.getAdventureDao()
 
-  suspend fun getAdventures(): List<Adventure> = TODO()
-  fun adventure(): Flow<AdventureEntity> = dao.adventure()
-  suspend fun save(adventure: AdventureEntity) = dao.insert(adventure)
+  fun adventure(uuid: String): Flow<Adventure> = dao.adventure(uuid).map { entity ->
+    entity.toAdventure()
+  }
+
+  fun adventures(): Flow<List<Adventure>> = dao.adventures().map { entities ->
+    entities.map { entity -> entity.toAdventure() }
+  }
+
+  suspend fun getUnprocessedAdventures(): List<Adventure> = dao.getAdventures().map { entity ->
+    entity.toAdventure()
+
+  }
+
+  suspend fun bulkInsert(adventures: List<Adventure>) = dao.bulkInsert(
+    adventures.map { entity -> entity.toEntity() }
+  )
 }

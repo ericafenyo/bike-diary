@@ -1,0 +1,15 @@
+mutation addAdventures($input: [AdventureInput!]!) {
+  addAdventures(input: $input) {
+    id
+    uuid
+    title
+    speed
+    duration
+    distance
+    calories
+    startedAt
+    completedAt
+    geojson
+    createdAt
+  }
+}
