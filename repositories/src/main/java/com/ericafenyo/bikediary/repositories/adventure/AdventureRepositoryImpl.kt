@@ -25,24 +25,33 @@
 package com.ericafenyo.bikediary.repositories.adventure
 
 import com.ericafenyo.bikediary.model.Adventure
-import com.ericafenyo.bikediary.network.adventure.AdventureRemoteDataSource
+import com.ericafenyo.bikediary.network.adventure.AdventureService
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 @Singleton
 class AdventureRepositoryImpl @Inject constructor(
-  private val remoteSource: AdventureRemoteDataSource,
+  private val remoteSource: AdventureService,
   private val localSource: AdventureLocalDataSource,
-  private val mapper: AdventureMapper,
 ) : AdventureRepository {
 
-  override fun adventures(): Flow<List<Adventure>> = flow {
-    val adventures = localSource.getAdventures();
-    emit(adventures)
+  override fun adventures(): Flow<List<Adventure>> {
+    return localSource.adventures()
   }
 
-  override fun adventure(): Flow<Adventure> = localSource.adventure().map { mapper.map(it) }
+  override fun adventure(uuid: String): Flow<Adventure> = localSource.adventure(uuid)
+
+  override suspend fun synchronizeAdventures() {
+    val unprocessedAdventures = localSource.getUnprocessedAdventures()
+    if (unprocessedAdventures.isNotEmpty()) {
+      val syncedAdventures = remoteSource.synchronizeAdventures(unprocessedAdventures)
+      if (syncedAdventures.isNotEmpty()) {
+        localSource.bulkInsert(syncedAdventures)
+      }
+    } else {
+      Timber.d("No adventures to sync")
+    }
+  }
 }

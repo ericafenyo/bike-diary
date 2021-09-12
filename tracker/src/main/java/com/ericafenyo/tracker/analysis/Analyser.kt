@@ -110,9 +110,10 @@ class Analyser constructor(private val context: Context) {
         distance = metrics.distance,
         calories = metrics.calories,
         startedAt = metrics.startedAt,
-        imageUrl = "",
+        images = listOf(),
         geojson = featureCollection.toJson(),
         completedAt = metrics.completedAt,
+        uuid = "",
        )
     } catch (exception: Exception) {
       Logger.error(
@@ -142,7 +143,7 @@ class Analyser constructor(private val context: Context) {
           startedAt = adventure.startedAt,
           completedAt = adventure.completedAt,
           geojson = adventure.geojson,
-          imageUrl = adventure.imageUrl,
+          images = adventure.images,
         )
         AppDatabase.getInstance(context)
           .getAdventureDao().insert(adventureEntity)

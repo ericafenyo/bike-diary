@@ -22,22 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.network.adventure
+package com.ericafenyo.bikediary.domain.adventure
 
-import com.apollographql.apollo.ApolloClient
-import com.ericafenyo.bikediary.model.Adventure
-import javax.inject.Singleton
+import com.ericafenyo.bikediary.di.qualifier.IODispatcher
+import com.ericafenyo.bikediary.domain.Interactor
+import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
-@Singleton
-class DefaultAdventureRemoteDataSource(
-  private val apolloClient: ApolloClient,
-) : AdventureRemoteDataSource {
 
-  override suspend fun getAdventures(): List<Adventure> {
-    TODO("Not yet implemented")
-  }
+class SynchronizeAdventuresInteractor @Inject constructor(
+  private val repository: AdventureRepository,
+  @IODispatcher dispatcher: CoroutineDispatcher,
+) : Interactor<Unit>(dispatcher) {
 
-  override suspend fun saveAdventure(): String {
-    TODO("Not yet implemented")
+  override suspend fun execute() {
+    return repository.synchronizeAdventures()
   }
 }

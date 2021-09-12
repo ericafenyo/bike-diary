@@ -22,12 +22,38 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.network.adventure
+package com.ericafenyo.bikediary.work
 
-import com.ericafenyo.bikediary.model.Adventure
+import android.content.Context
+import androidx.hilt.work.HiltWorker
+import androidx.work.CoroutineWorker
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkRequest
+import androidx.work.WorkerParameters
+import com.ericafenyo.bikediary.domain.adventure.SynchronizeAdventuresInteractor
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import timber.log.Timber
 
-interface AdventureRemoteDataSource {
-  suspend fun getAdventures(): List<Adventure>
+@HiltWorker
+class SynchronizationWorker @AssistedInject constructor(
+  @Assisted context: Context,
+  @Assisted params: WorkerParameters,
+  private val synchronizeAdventuresInteractor: SynchronizeAdventuresInteractor
+) : CoroutineWorker(context, params) {
 
-  suspend fun saveAdventure(): String
+  override suspend fun doWork(): Result {
+    Timber.d("Working ...")
+    Timber.d("Work done, submitting results")
+    synchronizeAdventuresInteractor.invoke()
+    return Result.success()
+  }
+
+  companion object {
+    val request: WorkRequest = OneTimeWorkRequestBuilder<SynchronizationWorker>().build()
+  }
 }
+
+
+
+

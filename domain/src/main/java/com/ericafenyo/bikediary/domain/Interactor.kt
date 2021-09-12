@@ -34,8 +34,6 @@ import timber.log.Timber
  * Executes business logic synchronously or asynchronously using Coroutines.
  */
 abstract class Interactor<R>(private val coroutineDispatcher: CoroutineDispatcher) {
-  private val tag = "Interactor"
-
   /** Executes the use case asynchronously and returns a [Result].
    *
    * @return a [Result].

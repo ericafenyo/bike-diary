@@ -5,7 +5,7 @@
     package="com.ericafenyo.bikediary">
 
   <application
-      android:name=".HabitDiaryApplication"
+      android:name=".App"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
@@ -34,13 +34,25 @@
         android:name=".AnalysisEndReceiver"
         android:exported="false">
       <intent-filter>
-        <action android:name="tracker.intent.action.END_ANALYSIS" />
+        <action android:name="com.ericafenyo.tracker.intent.action.END_ANALYSIS" />
       </intent-filter>
     </receiver>
 
     <service
         android:name=".util.DraftAdventureJobIntentService"
         android:permission="android.permission.BIND_JOB_SERVICE" />
+
+    <provider
+        android:name="androidx.startup.InitializationProvider"
+        android:authorities="${applicationId}.androidx-startup"
+        android:exported="false"
+        tools:node="merge">
+      <meta-data
+          android:name="androidx.work.WorkManagerInitializer"
+          android:value="androidx.startup"
+          tools:node="remove" />
+    </provider>
+
   </application>
 
 </manifest>

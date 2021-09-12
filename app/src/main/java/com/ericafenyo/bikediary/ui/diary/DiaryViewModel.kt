@@ -28,7 +28,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ericafenyo.bikediary.domain.observers.ObserveAdventures
+import com.ericafenyo.bikediary.domain.adventure.LoadAdventuresInteractor
 import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.model.UIState
 import com.ericafenyo.tracker.data.model.Result
@@ -41,7 +41,7 @@ import timber.log.Timber
 
 @HiltViewModel
 class DiaryViewModel @Inject constructor(
-  private val getAdventures: ObserveAdventures
+  private val getAdventures: LoadAdventuresInteractor
 ) : ViewModel() {
   private val _state = MutableLiveData<UIState>()
   val state: LiveData<UIState> get() = _state

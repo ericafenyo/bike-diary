@@ -22,28 +22,12 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.domain
+package com.ericafenyo.bikediary.network.adventure
 
-import com.ericafenyo.tracker.data.model.Result
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import timber.log.Timber
+import com.ericafenyo.bikediary.model.Adventure
 
-/**
- * Executes business logic in its execute method and keep posting updates to the result as
- * [Result<R>].
- * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
- */
-abstract class FlowInteractor<R>(private val coroutineDispatcher: CoroutineDispatcher) {
+interface AdventureService {
+  suspend fun getAdventures(): List<Adventure>
 
-  operator fun invoke(): Flow<Result<R>> = createResult()
-    .catch { e -> Timber.e(e); emit(Result.Error(Exception(e))) }
-    .flowOn(coroutineDispatcher)
-
-  private fun createResult(): Flow<Result<R>> = execute().map { Result.Success(it) }
-
-  protected abstract fun execute(): Flow<R>
+  suspend fun synchronizeAdventures(adventures: List<Adventure>): List<Adventure>
 }
