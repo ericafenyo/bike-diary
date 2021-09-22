@@ -42,7 +42,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        buildConfigField('String', 'API_SERVER_URL', "\"$API_SERVER_URL\"")
+        buildConfigField('String', 'API_SERVER_URL', stringValue("API_SERVER_URL"))
     }
 
     buildTypes {

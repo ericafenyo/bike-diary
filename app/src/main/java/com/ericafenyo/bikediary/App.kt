@@ -25,13 +25,14 @@
 package com.ericafenyo.bikediary
 
 import android.app.Application
-import android.os.StrictMode
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.ericafenyo.bikediary.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.mapbox.mapboxsdk.Mapbox
 import dagger.hilt.android.HiltAndroidApp
+import io.sentry.android.core.SentryAndroid
+import io.sentry.android.timber.SentryTimberIntegration
 import javax.inject.Inject
 import timber.log.Timber
 
@@ -40,33 +41,25 @@ class App : Application(), Configuration.Provider {
   @Inject lateinit var workerFactory: HiltWorkerFactory
 
   override fun onCreate() {
-    // Initialize the timezone information for
-    AndroidThreeTen.init(this);
-    // setup mapbox sdk
+    super.onCreate()
+    // Initialize the timezone information android three ten
+    AndroidThreeTen.init(this)
+    // Setup mapbox sdk
     Mapbox.getInstance(applicationContext, BuildConfig.MAPBOX_ACCESS_TOKEN)
 
-    // Enable strict mode before Dagger creates graph
-    if (BuildConfig.DEBUG) {
-      enableStrictMode()
+    // Initialize sentry logger service
+    SentryAndroid.init(this) { options ->
+      // Send timber error logs
+      options.environment = getString(R.string.sentry_environment)
+      options.dsn = BuildConfig.SENTRY_DSN
+      options.addIntegration(SentryTimberIntegration())
     }
 
-    super.onCreate()
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
     } else {
       Timber.plant(CrashlyticsTree())
     }
-  }
-
-  private fun enableStrictMode() {
-    StrictMode.setThreadPolicy(
-      StrictMode.ThreadPolicy.Builder()
-        .detectDiskReads()
-        .detectDiskWrites()
-        .detectNetwork()
-        .penaltyLog()
-        .build()
-    )
   }
 
   override fun getWorkManagerConfiguration(): Configuration = Configuration.Builder()
