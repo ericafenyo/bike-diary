@@ -62,3 +62,8 @@ static def buildVersionCode() {
     def formatInt = formattedDate + "0"
     return formatInt as int
 }
+
+String stringValue(String propertyName) {
+    def propertyValue = project.properties[propertyName]
+    return propertyValue != null ? "\"$propertyValue\"" : "\"\""
+}

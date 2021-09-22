@@ -24,6 +24,9 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         multiDexEnabled true
+
+        buildConfigField('String', 'SENTRY_DSN', stringValue("SENTRY_DSN"))
+        buildConfigField('String', 'MAPBOX_ACCESS_TOKEN', stringValue("MAPBOX_ACCESS_TOKEN"))
     }
 
     lintOptions {
@@ -39,9 +42,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-    buildTypes.each {
-        it.buildConfigField('String', 'MAPBOX_ACCESS_TOKEN', "\"${project.property("MAPBOX_ACCESS_TOKEN") ?: System.getenv("MAPBOX_ACCESS_TOKEN")}\"")
     }
 
     compileOptions {
@@ -133,6 +133,10 @@ dependencies {
     implementation libs.androidChart
 
     implementation libs.lottie
+
+    implementation libs.sentry.android.runtime
+    implementation libs.sentry.android.timber
+
 
     // debugImplementation libs.leakCanary
 
