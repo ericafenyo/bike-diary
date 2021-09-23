@@ -37,7 +37,6 @@ object TestDatabaseUtils {
     startedAt = "2021-08-15T18:56:50.431356",
     completedAt = "2021-08-15T23:56:50.431356",
     geojson = "{}",
-    imageUrl = "https://example.com/uploads/images/611948098ffd2b6fcd1c72e9.png",
+    images = emptyList()
   )
-
 }
