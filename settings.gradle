@@ -1,12 +1,13 @@
 include ':app'
+include ':database'
+include ':domain'
+include ':libs:serialization'
+include ':logger'
+include ':model'
+include ':network'
+include ':repositories'
 include ':shared'
 include ':tracker'
-include ':model'
-include ':database'
-include ':logger'
-include ':repositories'
-include ':domain'
-include ':network'
 
 rootProject.name = "Bike Diary"
 
