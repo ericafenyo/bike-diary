@@ -66,7 +66,7 @@ class SerializationTest {
     // Given a person object
     val person = Person()
     // When it is encoded to JSON
-    val json = serializer.toJson(Person.serializer(), person)
+    val json = serializer.toJson(person, Person.serializer())
     // Then the `json` should be equal to the control json
     assertThat(json).isEqualTo(map.toString())
   }
@@ -87,6 +87,16 @@ class SerializationTest {
     val json = map.toString()
     // When an object is decoded from JSON
     val person = serializer.fromJson(Person.serializer(), json)
+    // Then the `object`  should be equal to it's class instance
+    assertThat(Person()).isEqualTo(person)
+  }
+
+  @Test
+  fun decodeFromJson_with_type() {
+    // Given a json string
+    val json = map.toString()
+    // When an object is decoded from JSON
+    val person = serializer.fromJson(json, Person::class)
     // Then the `object`  should be equal to it's class instance
     assertThat(Person()).isEqualTo(person)
   }

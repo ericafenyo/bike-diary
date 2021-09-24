@@ -22,50 +22,19 @@
  * SOFTWARE.
  */
 
-plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlinx-serialization'
-}
+package com.ericafenyo.libs.storage
 
-android {
-    compileSdk 30
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-    defaultConfig {
-        minSdk 21
-        targetSdk 30
-        versionCode 1
-        versionName "1.0"
+@Module
+@InstallIn(SingletonComponent::class)
+internal abstract class StorageModule {
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-        freeCompilerArgs += [
-                "-Xopt-in=kotlin.RequiresOptIn"
-        ]
-    }
-}
-
-dependencies {
-    implementation libs.gson
-
-    implementation libs.kotlin.serialization.json
-    implementation libs.kotlin.stdlib
-
-    testImplementation libs.junit
-    testImplementation libs.truth
+  @Binds
+  @Singleton
+  abstract fun bindEncryptedPreferences(impl: EncryptedPreferencesImpl): EncryptedPreferences
 }
