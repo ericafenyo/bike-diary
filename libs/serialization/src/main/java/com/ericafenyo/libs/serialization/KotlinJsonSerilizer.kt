@@ -24,21 +24,35 @@
 
 package com.ericafenyo.libs.serialization
 
+import java.lang.reflect.Type
+import kotlin.reflect.KClass
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 @OptIn(ExperimentalSerializationApi::class)
 class KotlinJsonSerializer {
+
   val jsonInstance = Json {
     encodeDefaults = true
     ignoreUnknownKeys = true
   }
 
-  fun <T> toJson(serializer: SerializationStrategy<T>, value: T): String {
+  fun <T : Any> toJson(value: T, serializer: SerializationStrategy<T>): String {
+    return jsonInstance.encodeToString(serializer, value)
+  }
+
+  fun toJson(value: Any, clazz: KClass<*>): String {
+    val serializer = jsonInstance.serializersModule.serializer(clazz.java)
+    return jsonInstance.encodeToString(serializer, value)
+  }
+
+  fun toJson(value: Any, type: Type): String {
+    val serializer = jsonInstance.serializersModule.serializer(type)
     return jsonInstance.encodeToString(serializer, value)
   }
 
@@ -52,6 +66,16 @@ class KotlinJsonSerializer {
 
   inline fun <reified T> fromJson(json: String): T {
     return jsonInstance.decodeFromString(json)
+  }
+
+  fun fromJson(json: String, clazz: KClass<*>): Any {
+    val serializer = jsonInstance.serializersModule.serializer(clazz.java)
+    return jsonInstance.decodeFromString(serializer, json)
+  }
+
+  fun fromJson(json: String, type: Type): Any {
+    val serializer = jsonInstance.serializersModule.serializer(type)
+    return jsonInstance.decodeFromString(serializer, json)
   }
 
   companion object {

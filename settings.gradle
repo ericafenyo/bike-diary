@@ -2,6 +2,7 @@ include ':app'
 include ':database'
 include ':domain'
 include ':libs:serialization'
+include ':libs:storage'
 include ':logger'
 include ':model'
 include ':network'
@@ -12,3 +13,4 @@ include ':tracker'
 rootProject.name = "Bike Diary"
 
 enableFeaturePreview("VERSION_CATALOGS")
+

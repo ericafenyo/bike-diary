@@ -26,7 +26,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlinx-serialization'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -54,18 +54,22 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        freeCompilerArgs += [
-                "-Xopt-in=kotlin.RequiresOptIn"
-        ]
     }
 }
 
 dependencies {
-    implementation libs.gson
+    implementation project(path: ':libs:serialization')
+
+    implementation libs.androidx.core
+
+    implementation libs.androidx.datastore
+
+    implementation libs.androidx.securityCrypto
+
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
     implementation libs.kotlin.serialization.json
     implementation libs.kotlin.stdlib
 
-    testImplementation libs.junit
-    testImplementation libs.truth
 }
