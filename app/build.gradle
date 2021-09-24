@@ -70,10 +70,11 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':shared')
-    implementation project(path: ':model')
-    implementation project(path: ':logger')
     implementation project(path: ':domain')
+    implementation project(path: ':libs:storage')
+    implementation project(path: ':logger')
+    implementation project(path: ':model')
+    implementation project(path: ':shared')
     implementation project(path: ':tracker')
 
     testImplementation libs.junit
@@ -145,4 +146,3 @@ dependencies {
 hilt {
     enableExperimentalClasspathAggregation = true
 }
-
