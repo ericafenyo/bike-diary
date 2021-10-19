@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2021 TransWay
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.database
+package com.ericafenyo.bikediary.database.entity
 
-import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.ericafenyo.bikediary.database.dao.AdventureDao
-import com.ericafenyo.bikediary.database.entity.AdventureEntity
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
-@Database(
-  entities = [AdventureEntity::class],
-  version = 2,
-  exportSchema = false
+@Entity(
+  tableName = "last_requests",
+  indices = [Index(value = ["request"], unique = true)]
 )
-@TypeConverters(Converters::class)
-abstract class AppDatabase : RoomDatabase() {
-  abstract fun getAdventureDao(): AdventureDao
-
-  companion object {
-    private const val DB_NAME = "cache-db"
-
-    @Volatile
-    private var INSTANCE: AppDatabase? = null
-
-    @JvmStatic
-    fun getInstance(context: Context): AppDatabase {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: createCacheDatabase(context)
-          .also { INSTANCE = it }
-      }
-    }
-
-    private fun createCacheDatabase(context: Context): AppDatabase {
-      return Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        DB_NAME
-      ).build()
-    }
-  }
-}
+data class LastRequest(
+  @PrimaryKey(autoGenerate = true) val id: Long = 0,
+  val request: Request,
+  val timestamp: Long
+)

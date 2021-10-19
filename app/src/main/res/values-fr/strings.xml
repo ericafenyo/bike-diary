@@ -65,6 +65,7 @@
   <string name="kilometers_remaining">Km restants</string>
 
   <string name="map_a11y_show_devices_current_location">Afficher la localisation actuelle des appareils</string>
+  <string name="map_a11y_start_adventure">Commencer une aventure</string>
 
   <string name="profile_label_dark_mode">Mode sombre</string>
 

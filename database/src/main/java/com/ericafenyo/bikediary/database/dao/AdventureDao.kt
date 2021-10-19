@@ -62,9 +62,9 @@ interface AdventureDao {
   @Query("SELECT * FROM adventures WHERE uuid = :uuid")
   fun adventure(uuid: String): Flow<AdventureEntity>
 
-  @Query("DELETE FROM adventures WHERE id = :adventureId")
-  suspend fun deleteById(adventureId: String): Int
+  @Query("DELETE FROM adventures WHERE uuid = :uuid")
+  suspend fun deleteById(uuid: String): Int
 
   @Query("DELETE FROM adventures")
-  suspend fun clearAll(): Int
+  suspend fun deleteAll(): Int
 }

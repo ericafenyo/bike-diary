@@ -29,6 +29,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.ericafenyo.bikediary.ui.UiAction
+import com.ericafenyo.bikediary.util.Event
 import com.ericafenyo.tracker.datastore.CurrentState
 import com.ericafenyo.tracker.datastore.PreferenceDataStore
 import com.ericafenyo.tracker.datastore.RecordsProvider
@@ -48,6 +50,9 @@ class MapViewModel @Inject constructor(
   recordsProvider: RecordsProvider
 ) : ViewModel() {
 
+  private val _action = MutableLiveData<Event<UiAction>>()
+  val action: LiveData<Event<UiAction>> get() = _action
+
   val locationUpdates: LiveData<SimpleLocation> = recordsProvider.singleRecord()
     .map { record -> record?.location }
     .asLiveData()
@@ -64,6 +69,10 @@ class MapViewModel @Inject constructor(
         _isTrackingOngoing.value = currentState.isOngoing()
       }
     }
+  }
+
+  fun dispatch(uiAction: UiAction) {
+    _action.value = Event((uiAction))
   }
 }
 

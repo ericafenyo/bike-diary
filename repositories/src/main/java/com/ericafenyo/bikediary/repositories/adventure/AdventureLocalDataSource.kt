@@ -43,12 +43,15 @@ class AdventureLocalDataSource @Inject constructor(database: AppDatabase) {
     entities.map { entity -> entity.toAdventure() }
   }
 
-  suspend fun getUnprocessedAdventures(): List<Adventure> = dao.getAdventures().map { entity ->
-    entity.toAdventure()
+  suspend fun getUnprocessedAdventures(): List<Adventure> = dao.getUnprocessedAdventures()
+    .map { entity -> entity.toAdventure() }
 
-  }
-
-  suspend fun bulkInsert(adventures: List<Adventure>) = dao.bulkInsert(
+  suspend fun insertAll(adventures: List<Adventure>) = dao.bulkInsert(
     adventures.map { entity -> entity.toEntity() }
   )
+
+  suspend fun delete(uuid: String) = dao.deleteById(uuid)
+
+
+  suspend fun deleteAll() = dao.deleteAll()
 }

@@ -22,49 +22,34 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.data.model
+package com.ericafenyo.bikediary.repositories.lastrequest
 
-import com.ericafenyo.tracker.data.model.Result.Error
-import com.ericafenyo.tracker.data.model.Result.Success
+import com.ericafenyo.bikediary.database.dao.LastRequestDao
+import com.ericafenyo.bikediary.database.entity.LastRequest
+import com.ericafenyo.bikediary.database.entity.Request
+import java.time.Instant
+import java.time.temporal.TemporalAmount
 
-/**
- * A generic class that holds a value with its loading status.
- * @param <T>
- */
-sealed class Result<out R> {
+class LastRequestStore(
+  private val request: Request,
+  private val dao: LastRequestDao,
+) {
 
-  data class Success<out T>(val data: T) : Result<T>()
-  data class Error(val exception: Exception) : Result<Nothing>()
+  suspend fun updateLastRequest(timestamp: Long = Instant.now().toEpochMilli()) {
+    dao.insert(LastRequest(request = request, timestamp = timestamp))
+  }
 
-  override fun toString(): String {
-    return when (this) {
-      is Success<*> -> "Success[data=$data]"
-      is Error -> "Error[exception=$exception]"
-    }
+  suspend fun invalidateLastRequest() = updateLastRequest(Instant.EPOCH.toEpochMilli())
+
+  suspend fun isRequestExpired(threshold: TemporalAmount): Boolean {
+    val definedPastInstant = Instant.now().minus(threshold)
+    val lastRequestInstant = getLastRequestInstant()
+    return lastRequestInstant.isBefore(definedPastInstant)
+  }
+
+  private suspend fun getLastRequestInstant(): Instant {
+    return dao.getLastRequest(request)?.let {
+      Instant.ofEpochMilli(it.timestamp)
+    } ?: Instant.EPOCH
   }
 }
-
-/**
- * `true` if [Result] is of type [Success] & holds non-null [Success.data].
- */
-val Result<*>.succeeded
-  get() = this is Success && data != null
-
-fun <T> Result<T>.successOr(fallback: T): T {
-  return (this as? Success<T>)?.data ?: fallback
-}
-
-fun <T> Result<T>.getOrThrow(): T {
-  return when (this) {
-    is Success -> this.data
-    is Error -> throw this.exception
-  }
-}
-
-fun <T> Result<T>.getOrElse(block: () -> T): T {
-  return (this as? Success<T>)?.data ?: block()
-}
-
-val <T> Result<T>.data: T?
-  get() = (this as? Success)?.data
-

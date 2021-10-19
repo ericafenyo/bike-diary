@@ -33,11 +33,17 @@
       android:id="@+id/dashboard"
       android:name="com.ericafenyo.bikediary.ui.dashboard.DashboardFragment"
       android:label="DashboardFragment"
-      tools:layout="@layout/fragment_dashboard" >
+      tools:layout="@layout/fragment_dashboard">
     <action
         android:id="@+id/action_dashboard_to_achievements"
         app:destination="@id/achievementsFragment" />
   </fragment>
+
+  <fragment
+      android:id="@+id/diary"
+      android:name="com.ericafenyo.bikediary.ui.diary.DiaryFragment"
+      android:label="DiaryFragment"
+      tools:layout="@layout/fragment_diary" />
 
   <fragment
       android:id="@+id/map"
@@ -47,7 +53,8 @@
   <fragment
       android:id="@+id/profile"
       android:name="com.ericafenyo.bikediary.ProfileFragment"
-      android:label="ProfileFragment" />
+      android:label="ProfileFragment"
+      tools:layout="@layout/fragment_profile" />
 
   <fragment
       android:id="@+id/achievementsFragment"

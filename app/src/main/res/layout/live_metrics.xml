@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -24,122 +26,89 @@
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <data>
 
     <variable
         name="metrics"
         type="com.ericafenyo.bikediary.model.SimpleMetrics" />
+
+    <variable
+        name="stopTracking"
+        type="android.view.View.OnClickListener" />
+
+    <variable
+        name="launchCamera"
+        type="android.view.View.OnClickListener" />
   </data>
 
-  <com.google.android.flexbox.FlexboxLayout
+  <com.google.android.material.card.MaterialCardView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="#F6F6F6"
-      android:padding="@dimen/space_extra_small"
-      app:flexDirection="row">
+      app:cardElevation="0dp"
+      app:shapeAppearanceOverlay="@style/ShapeAppearance.BikeDiary.LargeComponent.Top">
 
-    <LinearLayout
-        android:id="@+id/distance_container"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingVertical="@dimen/space_normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/keyline_center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/speed_container">
+        android:padding="@dimen/space_normal">
+
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/fab_show_end_an_adventure"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:contentDescription="@string/map_a11y_show_devices_current_location"
+          android:onClick="@{stopTracking}"
+          android:src="@drawable/ic_stop"
+          app:backgroundTint="@color/red"
+          app:elevation="0dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:maxImageSize="32dp"
+          app:tint="@android:color/white" />
+
+      <Chronometer
+          android:id="@+id/chronometer2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/space_normal"
+          android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+          app:layout_constraintBottom_toBottomOf="@+id/fab_show_end_an_adventure"
+          app:layout_constraintStart_toEndOf="@+id/fab_show_end_an_adventure"
+          app:layout_constraintTop_toTopOf="@+id/fab_show_end_an_adventure" />
+
+      <ImageView
+          android:id="@+id/button_launch_camera"
+          style="@style/Widget.BikeDiary.Button.IconOnly"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/space_normal"
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:clickable="true"
+          android:focusable="true"
+          android:onClick="@{launchCamera}"
+          android:src="@drawable/ic_camera"
+          app:layout_constraintBottom_toBottomOf="@+id/fab_show_end_an_adventure"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@+id/fab_show_end_an_adventure" />
+
 
       <TextView
           android:id="@+id/text_metrics_distance"
-          android:layout_width="wrap_content"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@{String.valueOf(metrics.distance)}"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-          tools:text="9.99km" />
+          android:paddingTop="@dimen/space_medium"
+          android:text="@{@string/format_metrics(metrics.duration, metrics.calories, metrics.speed)}"
+          android:textAlignment="center"
+          android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+          android:textColor="?android:textColorSecondary"
+          android:textSize="@dimen/text_size_normal"
+          app:layout_constraintTop_toBottomOf="@+id/fab_show_end_an_adventure" />
 
-      <TextView
-          android:id="@+id/text_metrics_distance_label"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Distance"
-          app:layout_constraintEnd_toEndOf="@+id/text_metrics_distance"
-          app:layout_constraintStart_toStartOf="@+id/text_metrics_distance"
-          app:layout_constraintTop_toBottomOf="@+id/text_metrics_distance" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/calories_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingVertical="@dimen/space_normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/speed_container"
-        app:layout_constraintTop_toTopOf="parent">
-
-      <TextView
-          android:id="@+id/text_metrics_calories"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@{String.valueOf(metrics.duration)}"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-          tools:layout_editor_absoluteX="55dp"
-          tools:layout_editor_absoluteY="202dp"
-          tools:text="236" />
-
-      <TextView
-          android:id="@+id/text_metrics_duration_label"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Calories"
-          app:layout_constraintEnd_toEndOf="@+id/text_metrics_duration"
-          app:layout_constraintStart_toStartOf="@+id/text_metrics_duration"
-          app:layout_constraintTop_toBottomOf="@+id/text_metrics_duration" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/speed_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingVertical="@dimen/space_normal"
-        app:layout_constraintEnd_toStartOf="@+id/keyline_center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-      <TextView
-          android:id="@+id/text_metrics_speed"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@{String.valueOf(metrics.speed)}"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-          tools:layout_editor_absoluteX="186dp"
-          tools:layout_editor_absoluteY="67dp"
-          tools:text="4km/h" />
-
-      <TextView
-          android:id="@+id/text_metrics_speed_label"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Speed"
-          app:layout_constraintEnd_toEndOf="@+id/text_metrics_speed"
-          app:layout_constraintStart_toStartOf="@+id/text_metrics_speed"
-          app:layout_constraintTop_toBottomOf="@+id/text_metrics_speed" />
-    </LinearLayout>
-  </com.google.android.flexbox.FlexboxLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </com.google.android.material.card.MaterialCardView>
 </layout>

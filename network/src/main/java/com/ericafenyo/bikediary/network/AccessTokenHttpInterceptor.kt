@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2020 Transway
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,25 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.database
+package com.ericafenyo.bikediary.network
 
-import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.ericafenyo.bikediary.database.dao.AdventureDao
-import com.ericafenyo.bikediary.database.entity.AdventureEntity
+import javax.inject.Inject
+import javax.inject.Singleton
+import okhttp3.Interceptor
+import okhttp3.Response
 
-@Database(
-  entities = [AdventureEntity::class],
-  version = 2,
-  exportSchema = false
-)
-@TypeConverters(Converters::class)
-abstract class AppDatabase : RoomDatabase() {
-  abstract fun getAdventureDao(): AdventureDao
-
-  companion object {
-    private const val DB_NAME = "cache-db"
-
-    @Volatile
-    private var INSTANCE: AppDatabase? = null
-
-    @JvmStatic
-    fun getInstance(context: Context): AppDatabase {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: createCacheDatabase(context)
-          .also { INSTANCE = it }
-      }
-    }
-
-    private fun createCacheDatabase(context: Context): AppDatabase {
-      return Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        DB_NAME
-      ).build()
-    }
+@Singleton
+class AccessTokenHttpInterceptor @Inject constructor(
+//  private val user: AuthenticatedUser,
+) : Interceptor {
+  override fun intercept(chain: Interceptor.Chain): Response {
+    val request = chain.request()
+    val newRequest = request.newBuilder()
+      .addHeader(
+        "Authorization",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVyaWNAZXhhbXBsZS5jb20iLCJpYXQiOjE2MzM0MzQ3NTIsImV4cCI6MTYzMzUyMTE1MiwiYXVkIjoiaHR0cHM6Ly9iaWtlLWRpYXJ5Lmhlcm9rdWFwcC5jb20iLCJzdWIiOiJhdXRofDYxMzZiYjI3MTUxZTY4MjAzMDc3MTA0YSJ9.qsFJrXe7MbrwkS371dQss7yq7xjXTwsyD7-1-z3s0LQ"
+      )
+      .build()
+    return chain.proceed(newRequest)
   }
 }

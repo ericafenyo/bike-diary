@@ -32,12 +32,11 @@ import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.domain.user.AccountParams
 import com.ericafenyo.bikediary.domain.user.AddUserInteractor
 import com.ericafenyo.bikediary.model.UIState
-import com.ericafenyo.bikediary.shared.SimpleResult
 import com.ericafenyo.bikediary.ui.register.RegisterViewModel.Action.CREATE_ACCOUNT
 import com.ericafenyo.bikediary.util.Event
 import com.ericafenyo.bikediary.util.NetworkUtils
 import com.ericafenyo.bikediary.widget.dialog.Alert
-import com.ericafenyo.tracker.data.model.simplify
+import com.ericafenyo.tracker.data.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -85,11 +84,11 @@ class RegisterViewModel @Inject constructor(
       // Start with a loading state
       _state.value = UIState(loading = true)
       addUserInteractor(AccountParams(firstName, lastName, email, password)).also { result ->
-        when (result.simplify()) {
-          is SimpleResult.Success -> {
+        when (result) {
+          is Result.Success -> {
             _state.value = UIState(success = true)
           }
-          is SimpleResult.Error -> {
+          is Result.Error -> {
             _state.value = UIState(error = true)
           }
         }

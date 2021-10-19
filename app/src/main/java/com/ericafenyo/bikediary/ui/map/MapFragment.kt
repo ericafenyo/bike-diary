@@ -35,7 +35,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.ericafenyo.bikediary.R
+import com.ericafenyo.bikediary.R.string
 import com.ericafenyo.bikediary.databinding.FragmentMapBinding
+import com.ericafenyo.bikediary.ui.UiAction.END_TRACKING
+import com.ericafenyo.bikediary.ui.UiAction.LAUNCH_CAMERA
+import com.ericafenyo.bikediary.ui.UiAction.START_TRACKING
+import com.ericafenyo.bikediary.util.EventObserver
 import com.ericafenyo.tracker.analysis.MetricsManager
 import com.ericafenyo.tracker.datastore.RecordsProvider
 import com.ericafenyo.tracker.util.PermissionsManager
@@ -54,6 +59,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.Line
 import com.mapbox.mapboxsdk.plugins.annotation.LineManager
+import com.mapbox.mapboxsdk.plugins.annotation.LineOptions
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.atomic.AtomicBoolean
@@ -78,17 +84,22 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     binding.mapView.onCreate(savedInstanceState)
 
-    binding.trackingEvent = object : OnTrackingEvent {
-      override fun onClick(isOngoing: Boolean) {
-        if (isOngoing) {
+    mapModel.action.observe(viewLifecycleOwner, EventObserver { action ->
+      when (action) {
+        START_TRACKING -> {
           requireActivity()
-            .sendBroadcast(requireActivity().getExplicitIntent(R.string.tracker_action_stop))
-        } else {
+            .sendBroadcast(requireActivity().getExplicitIntent(string.tracker_action_start))
+        }
+
+        END_TRACKING -> {
           requireActivity()
-            .sendBroadcast(requireActivity().getExplicitIntent(R.string.tracker_action_start))
+            .sendBroadcast(requireActivity().getExplicitIntent(string.tracker_action_stop))
+        }
+        LAUNCH_CAMERA -> {
+          Timber.d("Launch camera")
         }
       }
-    }
+    })
 
     binding.mapView.getMapAsync { map ->
       mapboxMap = map
@@ -100,31 +111,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
       com.ericafenyo.tracker.util.PermissionsManager.isForegroundLocationPermissionGranted()
     }*/
 
-    displayMetrics()
+     displayMetrics()
   }
-
-/*
-if (isOngoing) {
-    val coordinates = LatLng(location.latitude(), location.longitude())
-    coordinatesList.add(coordinates)
-    val lineOptions = LineOptions()
-      .withLineColor("#4c91df")
-      .withLineWidth(6f)
-      .withLatLngs(coordinatesList)
-    if (line != null) {
-      line?.latLngs = coordinatesList
-      if (lineManager.annotations.isEmpty) {
-        line = lineManager.create(lineOptions)
-      } else {
-        lineManager.update(line)
-      }
-    } else {
-      line = lineManager.create(lineOptions)
-    }
-
-    val cameraPosition = LatLng(location.latitude(), location.longitude())
-    navigateCamera(map, cameraPosition)
-  } */
 
 
   @SuppressLint("MissingPermission")
@@ -146,7 +134,31 @@ if (isOngoing) {
       val lineManager = LineManager(binding.mapView, map, style)
       val coordinatesList = mutableListOf<LatLng>()
       mapModel.isTrackingOngoing.observe(viewLifecycleOwner) { isOngoing ->
-        //enableLocationComponent(context, style)
+        enableLocationComponent(context, style)
+
+        locationComponent.addOnIndicatorPositionChangedListener { point ->
+          if (isOngoing) {
+            val coordinates = LatLng(point.latitude(), point.longitude())
+            coordinatesList.add(coordinates)
+            val lineOptions = LineOptions()
+              .withLineColor("#4c91df")
+              .withLineWidth(7f)
+              .withLatLngs(coordinatesList)
+            if (line != null) {
+              line?.latLngs = coordinatesList
+              if (lineManager.annotations.isEmpty) {
+                line = lineManager.create(lineOptions)
+              } else {
+                lineManager.update(line)
+              }
+            } else {
+              line = lineManager.create(lineOptions)
+            }
+
+            val cameraPosition = LatLng(point.latitude(), point.longitude())
+            navigateCamera(map, cameraPosition, 17.0)
+          }
+        }
       }
     }
   }
@@ -197,13 +209,14 @@ if (isOngoing) {
       )
 
       // Set the component's camera mode
-      locationComponent.cameraMode = CameraMode.NONE
+      locationComponent.cameraMode = CameraMode.TRACKING_GPS
 
       // Set the component's render mode
-      locationComponent.renderMode = RenderMode.NORMAL
+      locationComponent.renderMode = RenderMode.COMPASS
 
       // Enable to make component visible
       locationComponent.isLocationComponentEnabled = true
+
     } else {
 
     }
@@ -215,10 +228,10 @@ if (isOngoing) {
     }
   }
 
-  private fun navigateCamera(map: MapboxMap, latLng: LatLng) {
+  private fun navigateCamera(map: MapboxMap, latLng: LatLng, zoom: Double = 15.0) {
     val position = CameraPosition.Builder()
       .target(latLng) // Sets the new camera position
-      .zoom(15.0) // Sets the zoom
+      .zoom(zoom) // Sets the zoom
       .build() // Creates a CameraPosition from the builder
     map.easeCamera(CameraUpdateFactory.newCameraPosition(position))
   }
