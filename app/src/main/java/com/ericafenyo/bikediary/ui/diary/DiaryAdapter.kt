@@ -28,9 +28,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ericafenyo.bikediary.model.Adventure
+import com.bumptech.glide.Glide
 import com.ericafenyo.bikediary.databinding.ItemDateBinding
 import com.ericafenyo.bikediary.databinding.ItemTripBinding
+import com.ericafenyo.bikediary.model.Adventure
 
 class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var _items: List<Any> = emptyList()
@@ -84,6 +85,10 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val binding: ItemTripBinding
   ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(adventure: Adventure) {
+      Glide.with(binding.root.context)
+        .load("https://images.unsplash.com/photo-1542892532-4dc205c0d41f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2064&q=80")
+        .into(binding.imageBackdrop)
+
       binding.adventure = adventure
       binding.listener = _clickListener
     }

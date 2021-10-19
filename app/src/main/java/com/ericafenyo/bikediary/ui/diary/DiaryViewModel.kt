@@ -35,13 +35,13 @@ import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.data
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @HiltViewModel
 class DiaryViewModel @Inject constructor(
-  private val getAdventures: LoadAdventuresInteractor
+  private val loadAdventuresInteractor: LoadAdventuresInteractor
 ) : ViewModel() {
   private val _state = MutableLiveData<UIState>()
   val state: LiveData<UIState> get() = _state
@@ -56,30 +56,15 @@ class DiaryViewModel @Inject constructor(
     loadAdventures()
   }
 
-  private fun loadAdventures() = viewModelScope.launch {
-    Timber.d("Loading adventures")
-    // Start with a loading state
+  private fun loadAdventures() {
     _state.value = UIState(loading = true)
 
-    kotlin.runCatching {
-      getAdventures()
-        .collect { result ->
-          Timber.d("Got adventures");
-          setAdventureResult(result)
-        }
-    }.onFailure {
-      Timber.e(it, "Loading adventures")
-    }.onSuccess {
-      Timber.d("Loading adventures success $it")
-    }
-    /* .catch {
-       Timber.d("An error occurred loading adventures")
-       _adventures.value = emptyList();
-       _state.value = UIState(error = true) }*/
-//      .launchIn(viewModelScope)/
+    loadAdventuresInteractor.invoke()
+      .onEach { result -> setAdventureResults(result) }
+      .launchIn(viewModelScope)
   }
 
-  private fun setAdventureResult(result: Result<List<Adventure>>) {
+  private fun setAdventureResults(result: Result<List<Adventure>>) {
     Timber.d("result result $result")
     val data = result.data // New variable created to benefit from smart cast.
     if (data != null) {

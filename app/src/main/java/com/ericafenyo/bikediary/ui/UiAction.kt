@@ -22,8 +22,10 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.map
+package com.ericafenyo.bikediary.ui
 
-interface OnTrackingEvent {
-  fun onClick(isOngoing: Boolean)
+enum class UiAction {
+  START_TRACKING,
+  END_TRACKING,
+  LAUNCH_CAMERA,
 }

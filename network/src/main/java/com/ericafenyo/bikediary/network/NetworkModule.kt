@@ -55,12 +55,16 @@ abstract class NetworkModule {
   object Providers {
     @Provides
     @Singleton
-    fun provideHttpClient(): OkHttpClient = OkHttpClient.Builder().apply {
+    fun provideHttpClient(
+      tokenHttpInterceptor: AccessTokenHttpInterceptor
+    ): OkHttpClient = OkHttpClient.Builder().apply {
       if (BuildConfig.DEBUG) {
         HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY).apply {
           addInterceptor(this)
         }
       }
+
+      addInterceptor(tokenHttpInterceptor)
     }.build()
 
     @Provides

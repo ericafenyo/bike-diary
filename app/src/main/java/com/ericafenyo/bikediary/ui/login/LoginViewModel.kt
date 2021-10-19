@@ -35,13 +35,12 @@ import com.ericafenyo.bikediary.model.HttpException
 import com.ericafenyo.bikediary.model.UIState
 import com.ericafenyo.bikediary.model.isNotFound
 import com.ericafenyo.bikediary.model.isUnauthorized
-import com.ericafenyo.bikediary.shared.SimpleResult
 import com.ericafenyo.bikediary.util.Event
 import com.ericafenyo.bikediary.util.NetworkUtils
 import com.ericafenyo.bikediary.util.credentials.CredentialsManager
 import com.ericafenyo.bikediary.widget.dialog.Alert
+import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.getOrElse
-import com.ericafenyo.tracker.data.model.simplify
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -100,14 +99,14 @@ class LoginViewModel @Inject constructor(
       // Start with a loading state
       _state.value = UIState(loading = true)
       authenticateInteractor.invoke(email to password).also { result ->
-        when (val simpleResult = result.simplify()) {
-          is SimpleResult.Success -> {
+        when (result) {
+          is Result.Success -> {
             credentialsManager.saveCredentials(result.getOrElse { Credentials() })
             _state.value = UIState(success = true)
           }
-          is SimpleResult.Error -> {
+          is Result.Error -> {
             _state.value = UIState(error = true)
-            handleLoginErrors(simpleResult.exception)
+            handleLoginErrors(result.exception)
           }
         }
       }

@@ -25,10 +25,12 @@
 package com.ericafenyo.bikediary.repositories.adventure
 
 import com.ericafenyo.bikediary.model.Adventure
+import com.ericafenyo.bikediary.model.RefreshType
 import kotlinx.coroutines.flow.Flow
 
 interface AdventureRepository {
   fun adventures(): Flow<List<Adventure>>
   fun adventure(uuid: String): Flow<Adventure>
+//  suspend fun updateAdventures(type: RefreshType)
   suspend fun synchronizeAdventures()
 }

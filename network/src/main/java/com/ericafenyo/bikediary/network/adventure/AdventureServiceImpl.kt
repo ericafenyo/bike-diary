@@ -25,6 +25,7 @@
 package com.ericafenyo.bikediary.network.adventure
 
 import AddAdventuresMutation
+import GetAdventuresQuery
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.ericafenyo.bikediary.model.Adventure
@@ -44,7 +45,37 @@ class AdventureServiceImpl @Inject constructor(
 ) : AdventureService {
 
   override suspend fun getAdventures(): List<Adventure> {
-    TODO("Not yet implemented")
+    val response = apolloClient.query(GetAdventuresQuery()).await()
+
+    if (response.hasErrors()) {
+      val map = response.errors?.first()?.customAttributes?.toMutableMap() ?: mutableMapOf()
+      val json = JSONObject(map).toString()
+      val apolloError = jsonSerializer.decode(ApolloErrorResponse.serializer(), json)
+
+      throw HttpException(
+        status = apolloError.extensions.exception.status,
+        message = apolloError.extensions.exception.message
+      )
+    }
+
+    val data =
+      response.data?.adventures ?: throw HttpException(HttpURLConnection.HTTP_INTERNAL_ERROR)
+
+    return data.map {
+      Adventure(
+        id = it.id,
+        uuid = it.uuid,
+        title = it.title,
+        speed = it.speed,
+        duration = it.duration,
+        distance = it.distance,
+        calories = it.calories,
+        startedAt = it.startedAt as String,
+        completedAt = it.completedAt as String,
+        geojson = it.geojson,
+        images = listOf(),
+      )
+    }
   }
 
   override suspend fun synchronizeAdventures(adventures: List<Adventure>): List<Adventure> {

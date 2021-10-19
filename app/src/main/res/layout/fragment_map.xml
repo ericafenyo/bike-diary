@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -25,8 +27,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
   <data>
 
@@ -38,9 +39,7 @@
         name="model"
         type="com.ericafenyo.bikediary.ui.map.MapViewModel" />
 
-    <variable
-        name="trackingEvent"
-        type="com.ericafenyo.bikediary.ui.map.OnTrackingEvent" />
+    <import type="com.ericafenyo.bikediary.ui.UiAction" />
   </data>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -50,38 +49,49 @@
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-      <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-          android:id="@+id/fab_start_stop_tracking"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="bottom|center_horizontal"
-          android:layout_marginBottom="@dimen/space_normal"
-          android:backgroundTint="@color/white"
-          android:fontFamily="sans-serif-medium"
-          android:onClick="@{()-> trackingEvent.onClick(model.isTrackingOngoing)}"
-          android:text="@{model.isTrackingOngoing ? @string/action_stop_adventure: @string/action_start_adventure}"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-          app:icon="@{model.isTrackingOngoing ? @drawable/ic_stop: @drawable/ic_play_arrow}"
-          app:iconSize="40dp"
-          app:iconTint="@{model.isTrackingOngoing ? @color/red :@color/color_primary}"
-          tools:ignore="ContentDescription" />
-    </com.mapbox.mapboxsdk.maps.MapView>
-
-    <include
-        layout="@layout/live_metrics"
-        bind:metrics="@{metrics}" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_show_current_location"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/space_normal"
-        android:contentDescription="@string/map_a11y_show_devices_current_location"
-        android:src="@drawable/ic_current_location"
-        app:backgroundTint="@color/white" />
+        android:orientation="vertical">
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/fab_show_current_location"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:layout_margin="@dimen/space_normal"
+          android:contentDescription="@string/map_a11y_show_devices_current_location"
+          android:src="@drawable/ic_current_location"
+          app:backgroundTint="?attr/colorSurface"
+          app:tint="?attr/colorPrimary" />
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/fab_show_start_an_adventure"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:layout_marginHorizontal="@dimen/space_normal"
+          android:layout_marginBottom="@dimen/space_normal"
+          android:contentDescription="@string/map_a11y_show_devices_current_location"
+          android:onClick="@{()-> model.dispatch(UiAction.START_TRACKING)}"
+          android:src="@drawable/ic_play_arrow"
+          app:backgroundTint="?attr/colorPrimary"
+          app:maxImageSize="32dp"
+          app:tint="@android:color/white"
+          bind:goneIf="@{model.isTrackingOngoing}" />
+
+
+      <include
+          layout="@layout/live_metrics"
+          bind:goneIf="@{!model.isTrackingOngoing}"
+          bind:launchCamera="@{()-> model.dispatch(UiAction.LAUNCH_CAMERA)}"
+          bind:metrics="@{metrics}"
+          bind:stopTracking="@{()-> model.dispatch(UiAction.END_TRACKING)}" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

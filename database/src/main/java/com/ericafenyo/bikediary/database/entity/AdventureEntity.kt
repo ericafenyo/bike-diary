@@ -25,10 +25,14 @@
 package com.ericafenyo.bikediary.database.entity
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.UUID
 
-@Entity(tableName = "adventures")
+@Entity(
+  tableName = "adventures",
+  indices = [Index(value = ["uuid"], unique = true)]
+)
 data class AdventureEntity(
   @PrimaryKey val id: String,
   val uuid: String = UUID.randomUUID().toString(),

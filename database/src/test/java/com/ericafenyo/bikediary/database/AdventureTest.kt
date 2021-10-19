@@ -108,7 +108,7 @@ class AdventureTest : DatabaseTest() {
       assertThat(adventureDao.getAdventures().size).isEqualTo(2)
 
       // When we delete all the adventures
-      adventureDao.clearAll()
+      adventureDao.deleteAll()
 
       // Then the database should be empty
       assertThat(adventureDao.getAdventures().size).isEqualTo(0)
