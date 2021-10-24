@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+        name="text"
+        type="java.lang.String" />
+  </data>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@{text}"
+      android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+      tools:text="Card title" />
+</layout>

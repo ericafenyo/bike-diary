@@ -12,7 +12,6 @@ room = "2.3.0"
 sentry = '5.2.0'
 
 [libraries]
-android-tools-desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
 android-gradlePlugin = "com.android.tools.build:gradle:4.2.2"
 
@@ -100,8 +99,6 @@ sentry-android-timber = { module = "io.sentry:sentry-android-timber", version.re
 slimChart = "com.github.mancj:SlimChart:0.1.2"
 
 speedDial = "com.leinardi.android:speed-dial:3.1.0"
-
-store = "com.dropbox.mobile.store:store4:4.0.2-KT15"
 
 threetenabp = "com.jakewharton.threetenabp:threetenabp:1.3.1"
 

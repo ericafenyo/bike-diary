@@ -24,7 +24,6 @@
 
 package com.ericafenyo.bikediary.repositories.adventure
 
-import com.dropbox.android.external.store4.ExperimentalStoreApi
 import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.network.adventure.AdventureService
 import javax.inject.Inject
@@ -38,7 +37,6 @@ class AdventureRepositoryImpl @Inject constructor(
   private val localSource: AdventureLocalDataSource,
 ) : AdventureRepository {
 
-  @OptIn(ExperimentalStoreApi::class)
   override fun adventures(): Flow<List<Adventure>> {
     return localSource.adventures()
   }
