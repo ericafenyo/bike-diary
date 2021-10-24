@@ -60,13 +60,7 @@ android {
 
     buildFeatures {
         dataBinding true
-//        comp/**/ose true
     }
-
-    /*composeOptions {
-        kotlinCompilerExtensionVersion '1.0.0-beta07'
-    }*/
-
 }
 
 dependencies {
