@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.register
+package com.ericafenyo.bikediary.ui.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,7 +32,7 @@ import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.domain.user.AccountParams
 import com.ericafenyo.bikediary.domain.user.AddUserInteractor
 import com.ericafenyo.bikediary.model.UIState
-import com.ericafenyo.bikediary.ui.register.RegisterViewModel.Action.CREATE_ACCOUNT
+import com.ericafenyo.bikediary.ui.auth.RegisterViewModel.Action.CREATE_ACCOUNT
 import com.ericafenyo.bikediary.util.Event
 import com.ericafenyo.bikediary.util.NetworkUtils
 import com.ericafenyo.bikediary.widget.dialog.Alert

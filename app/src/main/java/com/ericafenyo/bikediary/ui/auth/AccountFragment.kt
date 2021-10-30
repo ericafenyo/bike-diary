@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.register
+package com.ericafenyo.bikediary.ui.auth
 
 import android.os.Bundle
 import android.view.View
@@ -32,9 +32,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.databinding.FragmentRegisterBinding
-import com.ericafenyo.bikediary.ui.register.RegisterViewModel.Action.CREATE_ACCOUNT
-import com.ericafenyo.bikediary.ui.register.RegisterViewModel.Action.LAUNCH_LOGIN
-import com.ericafenyo.bikediary.ui.register.RegisterViewModel.Action.LAUNCH_REGISTER
+import com.ericafenyo.bikediary.ui.auth.RegisterViewModel.Action.CREATE_ACCOUNT
+import com.ericafenyo.bikediary.ui.auth.RegisterViewModel.Action.LAUNCH_LOGIN
+import com.ericafenyo.bikediary.ui.auth.RegisterViewModel.Action.LAUNCH_REGISTER
 import com.ericafenyo.bikediary.util.EventObserver
 import com.ericafenyo.bikediary.util.Validator
 import com.ericafenyo.bikediary.util.doOnTrue

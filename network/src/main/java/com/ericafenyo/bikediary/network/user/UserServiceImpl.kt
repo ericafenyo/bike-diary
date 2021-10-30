@@ -33,10 +33,9 @@ import com.ericafenyo.bikediary.model.Credentials
 import com.ericafenyo.bikediary.model.HttpException
 import com.ericafenyo.bikediary.model.User
 import com.ericafenyo.bikediary.network.ApolloErrorResponse
+import com.ericafenyo.libs.serialization.ReflectionJsonSerializer
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
 import javax.inject.Inject
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import org.json.JSONObject
 import timber.log.Timber
 import type.AddUserInput
@@ -44,10 +43,7 @@ import type.AddUserInput
 class UserServiceImpl @Inject constructor(
   private val apolloClient: ApolloClient,
 ) : UserService {
-  private val jsonSerializer = Json {
-    ignoreUnknownKeys = true
-    encodeDefaults = true
-  }
+  private val jsonSerializer = ReflectionJsonSerializer.getInstance()
 
   override suspend fun addUser(
     firstName: String,
@@ -60,8 +56,9 @@ class UserServiceImpl @Inject constructor(
       val response = apolloClient.mutate(CreateUserMutation(userInput)).await()
       if (response.hasErrors()) {
         val map = response.errors?.first()?.customAttributes?.toMutableMap() ?: mutableMapOf()
-        val jsonObject = JSONObject(map).toString()
-        val apolloError: ApolloErrorResponse = jsonSerializer.decodeFromString(jsonObject)
+        val json = JSONObject(map).toString()
+        val apolloError: ApolloErrorResponse =
+          jsonSerializer.fromJson(json, ApolloErrorResponse::class)
 
         throw HttpException(
           status = apolloError.extensions.exception.status,
@@ -95,7 +92,7 @@ class UserServiceImpl @Inject constructor(
     if (response.hasErrors()) {
       val map = response.errors?.first()?.customAttributes?.toMutableMap() ?: mutableMapOf()
       val json = JSONObject(map).toString()
-      val apolloError = jsonSerializer.decodeFromString(ApolloErrorResponse.serializer(), json)
+      val apolloError = jsonSerializer.fromJson(json, ApolloErrorResponse::class)
 
       throw HttpException(
         status = apolloError.extensions.exception.status,
@@ -106,7 +103,6 @@ class UserServiceImpl @Inject constructor(
     val data = response.data?.tokens ?: throw HttpException(HTTP_NOT_FOUND)
     return Credentials(
       accessToken = data.access_token,
-      refreshToken = data.refresh_token
     )
   }
 }

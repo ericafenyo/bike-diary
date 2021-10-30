@@ -26,8 +26,10 @@ package com.ericafenyo.bikediary.repositories.user
 
 import com.ericafenyo.bikediary.model.Credentials
 import com.ericafenyo.bikediary.model.User
+import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
+  fun user(): Flow<User?>
   suspend fun addUser(firstName: String, lastName: String, email: String, password: String): User
   suspend fun authenticate(email: String, password: String): Credentials
 }

@@ -13,7 +13,9 @@ sentry = '5.2.0'
 
 [libraries]
 
-android-gradlePlugin = "com.android.tools.build:gradle:4.2.2"
+android-gradlePlugin = "com.android.tools.build:gradle:7.0.3"
+
+android-desugarjdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
 androidChart = "com.github.PhilJay:MPAndroidChart:v3.1.0"
 

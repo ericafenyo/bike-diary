@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.login
+package com.ericafenyo.bikediary.ui.auth
 
 import android.os.Bundle
 import android.view.View

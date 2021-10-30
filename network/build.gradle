@@ -61,9 +61,10 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':logger')
+//    implementation project(path: ':logger')
     implementation project(path: ':model')
-    implementation project(path: ':shared')
+//    implementation project(path: ':shared')
+    implementation project(path: ':libs:serialization')
 
     implementation libs.kotlin.serialization.json
 

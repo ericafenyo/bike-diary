@@ -29,6 +29,8 @@ import com.ericafenyo.bikediary.model.User
 import com.ericafenyo.bikediary.network.user.UserService
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 @Singleton
 class UserRepositoryImpl @Inject constructor(
@@ -46,5 +48,9 @@ class UserRepositoryImpl @Inject constructor(
 
   override suspend fun authenticate(email: String, password: String): Credentials {
     return service.authenticate(email, password)
+  }
+
+  override fun user(): Flow<User?> {
+    return flowOf(null)
   }
 }

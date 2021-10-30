@@ -31,10 +31,7 @@ android {
 
     lintOptions {
         checkReleaseBuilds = false
-    }
-
-    lintOptions {
-        checkReleaseBuilds = false
+        checkDependencies true
     }
 
     buildTypes {
