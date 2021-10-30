@@ -35,47 +35,47 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
 @OptIn(ExperimentalSerializationApi::class)
-class KotlinJsonSerializer {
+open class KotlinJsonSerializer {
 
-  val jsonInstance = Json {
+  val serializerInstance = Json {
     encodeDefaults = true
     ignoreUnknownKeys = true
   }
 
   fun <T : Any> toJson(value: T, serializer: SerializationStrategy<T>): String {
-    return jsonInstance.encodeToString(serializer, value)
+    return serializerInstance.encodeToString(serializer, value)
   }
 
   fun toJson(value: Any, clazz: KClass<*>): String {
-    val serializer = jsonInstance.serializersModule.serializer(clazz.java)
-    return jsonInstance.encodeToString(serializer, value)
+    val serializer = serializerInstance.serializersModule.serializer(clazz.java)
+    return serializerInstance.encodeToString(serializer, value)
   }
 
   fun toJson(value: Any, type: Type): String {
-    val serializer = jsonInstance.serializersModule.serializer(type)
-    return jsonInstance.encodeToString(serializer, value)
+    val serializer = serializerInstance.serializersModule.serializer(type)
+    return serializerInstance.encodeToString(serializer, value)
   }
 
   inline fun <reified T> toJson(value: T): String {
-    return jsonInstance.encodeToString(value)
+    return serializerInstance.encodeToString(value)
   }
 
   inline fun <reified T> fromJson(deserializer: DeserializationStrategy<T>, json: String): T {
-    return jsonInstance.decodeFromString(deserializer, json)
+    return serializerInstance.decodeFromString(deserializer, json)
   }
 
   inline fun <reified T> fromJson(json: String): T {
-    return jsonInstance.decodeFromString(json)
+    return serializerInstance.decodeFromString(json)
   }
 
   fun fromJson(json: String, clazz: KClass<*>): Any {
-    val serializer = jsonInstance.serializersModule.serializer(clazz.java)
-    return jsonInstance.decodeFromString(serializer, json)
+    val serializer = serializerInstance.serializersModule.serializer(clazz.java)
+    return serializerInstance.decodeFromString(serializer, json)
   }
 
   fun fromJson(json: String, type: Type): Any {
-    val serializer = jsonInstance.serializersModule.serializer(type)
-    return jsonInstance.decodeFromString(serializer, json)
+    val serializer = serializerInstance.serializersModule.serializer(type)
+    return serializerInstance.decodeFromString(serializer, json)
   }
 
   companion object {

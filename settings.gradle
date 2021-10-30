@@ -1,16 +1,15 @@
+rootProject.name = "Bike Diary"
+
 include ':app'
 include ':database'
 include ':domain'
-include ':libs:serialization'
-include ':libs:storage'
 include ':logger'
 include ':model'
 include ':network'
 include ':repositories'
 include ':shared'
 include ':tracker'
-
-rootProject.name = "Bike Diary"
+include ':libs:serialization'
+include ':libs:storage'
 
 enableFeaturePreview("VERSION_CATALOGS")
-

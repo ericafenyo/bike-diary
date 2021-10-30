@@ -31,7 +31,7 @@ import com.apollographql.apollo.coroutines.await
 import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.model.HttpException
 import com.ericafenyo.bikediary.network.ApolloErrorResponse
-import com.ericafenyo.bikediary.shared.json.JsonSerializer
+import com.ericafenyo.libs.serialization.ReflectionJsonSerializer
 import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -41,8 +41,8 @@ import type.AdventureInput
 @Singleton
 class AdventureServiceImpl @Inject constructor(
   private val apolloClient: ApolloClient,
-  private val jsonSerializer: JsonSerializer
 ) : AdventureService {
+  private val jsonSerializer = ReflectionJsonSerializer.getInstance()
 
   override suspend fun getAdventures(): List<Adventure> {
     val response = apolloClient.query(GetAdventuresQuery()).await()
@@ -50,7 +50,7 @@ class AdventureServiceImpl @Inject constructor(
     if (response.hasErrors()) {
       val map = response.errors?.first()?.customAttributes?.toMutableMap() ?: mutableMapOf()
       val json = JSONObject(map).toString()
-      val apolloError = jsonSerializer.decode(ApolloErrorResponse.serializer(), json)
+      val apolloError = jsonSerializer.fromJson(json, ApolloErrorResponse::class)
 
       throw HttpException(
         status = apolloError.extensions.exception.status,
@@ -99,7 +99,7 @@ class AdventureServiceImpl @Inject constructor(
     if (response.hasErrors()) {
       val map = response.errors?.first()?.customAttributes?.toMutableMap() ?: mutableMapOf()
       val json = JSONObject(map).toString()
-      val apolloError = jsonSerializer.decode(ApolloErrorResponse.serializer(), json)
+      val apolloError = jsonSerializer.fromJson(json, ApolloErrorResponse::class)
 
       throw HttpException(
         status = apolloError.extensions.exception.status,

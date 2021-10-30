@@ -30,7 +30,7 @@ import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.ericafenyo.bikediary.data.settings.PreferenceStorage
 import com.ericafenyo.bikediary.data.settings.SharedPreferenceStorage
-import com.ericafenyo.bikediary.util.credentials.CredentialsManager
+import com.ericafenyo.bikediary.model.CredentialsManager
 import com.ericafenyo.bikediary.util.credentials.EncryptedCredentialsManager
 import dagger.Binds
 import dagger.Module

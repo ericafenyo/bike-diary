@@ -22,44 +22,11 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.shared.json
+package com.ericafenyo.bikediary.model
 
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.json.Json
-
-@Singleton
-class JsonSerializer @Inject constructor() {
-  private var jsonSerializer = Json {
-    ignoreUnknownKeys = true
-    encodeDefaults = true
-  }
-
-  fun swap(serializer: Json) {
-    jsonSerializer = serializer
-  }
-
-
-  fun <T> decode(deserializer: DeserializationStrategy<T>, string: String): T {
-    return jsonSerializer.decodeFromString(deserializer, string)
-  }
-
-  fun <T> encode(serializer: SerializationStrategy<T>, value: T): String {
-    return jsonSerializer.encodeToString(serializer, value)
-  }
-
-  companion object {
-    @Volatile
-    private var INSTANCE: JsonSerializer? = null
-
-    @JvmStatic
-    fun getInstance(): JsonSerializer {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: JsonSerializer()
-          .also { INSTANCE = it }
-      }
-    }
-  }
+interface CredentialsManager {
+  suspend fun saveCredentials(credentials: Credentials)
+  suspend fun getCredentials(): Credentials
+  suspend fun clearCredentials()
+  suspend fun hasValidCredentials(): Boolean
 }

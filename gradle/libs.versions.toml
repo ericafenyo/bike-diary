@@ -15,6 +15,8 @@ sentry = '5.2.0'
 
 android-gradlePlugin = "com.android.tools.build:gradle:7.1.1"
 
+android-desugarjdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
+
 androidChart = "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
 androidx-activity = "androidx.activity:activity-ktx:1.2.3"

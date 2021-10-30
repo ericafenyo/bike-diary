@@ -24,21 +24,23 @@
 
 package com.ericafenyo.bikediary.network
 
+import com.ericafenyo.bikediary.model.CredentialsManager
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
 @Singleton
 class AccessTokenHttpInterceptor @Inject constructor(
-//  private val user: AuthenticatedUser,
+  private val manager: CredentialsManager,
 ) : Interceptor {
   override fun intercept(chain: Interceptor.Chain): Response {
+    val accessToken = runBlocking { manager.getCredentials().accessToken }
     val request = chain.request()
     val newRequest = request.newBuilder()
       .addHeader(
-        "Authorization",
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVyaWNAZXhhbXBsZS5jb20iLCJpYXQiOjE2MzM0MzQ3NTIsImV4cCI6MTYzMzUyMTE1MiwiYXVkIjoiaHR0cHM6Ly9iaWtlLWRpYXJ5Lmhlcm9rdWFwcC5jb20iLCJzdWIiOiJhdXRofDYxMzZiYjI3MTUxZTY4MjAzMDc3MTA0YSJ9.qsFJrXe7MbrwkS371dQss7yq7xjXTwsyD7-1-z3s0LQ"
+        "Authorization", "Bearer $accessToken"
       )
       .build()
     return chain.proceed(newRequest)

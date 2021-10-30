@@ -24,15 +24,24 @@
 
 package com.ericafenyo.bikediary.ui.auth
 
-import android.os.Bundle
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.ericafenyo.bikediary.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AuthenticationActivity : AppCompatActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_authentication)
+class AuthenticationActivity : AppCompatActivity(R.layout.activity_authentication) {
+
+  companion object {
+    /**
+     * Creates an intent for starting this activity
+     * @param packageContext the context we are navigating from
+     *
+     * @return an [Intent]
+     */
+    fun getStartIntent(packageContext: Context): Intent {
+      return Intent(packageContext, AuthenticationActivity::class.java)
+    }
   }
 }

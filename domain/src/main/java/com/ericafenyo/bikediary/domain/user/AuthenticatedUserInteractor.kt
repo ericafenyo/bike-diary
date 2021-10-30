@@ -22,27 +22,28 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories
+package com.ericafenyo.bikediary.domain.user
 
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepositoryImpl
+import com.ericafenyo.bikediary.domain.FlowInteractor
+import com.ericafenyo.bikediary.model.Credentials
+import com.ericafenyo.bikediary.repositories.auth.AuthenticatedUser
+import com.ericafenyo.bikediary.repositories.auth.DefaultAuthenticatedUser
 import com.ericafenyo.bikediary.repositories.user.UserRepository
-import com.ericafenyo.bikediary.repositories.user.UserRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.ericafenyo.tracker.util.CoroutineDispatchers
+import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapLatest
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
-
-  @Binds
-  @Singleton
-  abstract fun bindAdventureRepository(repository: AdventureRepositoryImpl): AdventureRepository
-
-  @Binds
-  @Singleton
-  abstract fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
+@OptIn(ExperimentalCoroutinesApi::class)
+@Singleton
+class AuthenticatedUserInteractor @Inject constructor(
+  private val repository: UserRepository,
+  private val credentials: Credentials,
+  dispatchers: CoroutineDispatchers
+) : FlowInteractor<AuthenticatedUser>(dispatchers.io) {
+  override fun execute(): Flow<AuthenticatedUser> {
+    return repository.user().mapLatest { user -> DefaultAuthenticatedUser(user, credentials) }
+  }
 }

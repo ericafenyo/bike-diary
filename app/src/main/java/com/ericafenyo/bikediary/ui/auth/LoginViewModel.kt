@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.login
+package com.ericafenyo.bikediary.ui.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,7 +37,6 @@ import com.ericafenyo.bikediary.model.isNotFound
 import com.ericafenyo.bikediary.model.isUnauthorized
 import com.ericafenyo.bikediary.util.Event
 import com.ericafenyo.bikediary.util.NetworkUtils
-import com.ericafenyo.bikediary.util.credentials.CredentialsManager
 import com.ericafenyo.bikediary.widget.dialog.Alert
 import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.getOrElse
@@ -49,7 +48,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel @Inject constructor(
   private val networkUtils: NetworkUtils,
   private val authenticateInteractor: AuthenticateInteractor,
-  private val credentialsManager: CredentialsManager
+  private val credentialsManager: com.ericafenyo.bikediary.model.CredentialsManager
 ) : ViewModel() {
   // Messages
   private val _message = MutableLiveData<Alert.Message>()

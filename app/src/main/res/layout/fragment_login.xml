@@ -9,14 +9,14 @@
 
     <variable
         name="model"
-        type="com.ericafenyo.bikediary.ui.login.LoginViewModel" />
+        type="com.ericafenyo.bikediary.ui.auth.LoginViewModel" />
   </data>
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical"
-      tools:context=".ui.login.LoginFragment">
+      tools:context=".ui.auth.LoginFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_surface"
@@ -29,6 +29,12 @@
           android:clickable="true"
           android:focusable="true"
           android:focusableInTouchMode="true">
+
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/illustration_add_user" />
 
         <TextView
             android:id="@+id/text_login_title"
