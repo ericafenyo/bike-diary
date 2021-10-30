@@ -24,48 +24,27 @@
 
 package com.ericafenyo.bikediary.util.credentials
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.core.content.edit
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
 import com.ericafenyo.bikediary.model.Credentials
-import com.ericafenyo.bikediary.shared.json.JsonSerializer
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.ericafenyo.bikediary.model.CredentialsManager
+import com.ericafenyo.libs.storage.EncryptedPreferences
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class EncryptedCredentialsManager @Inject constructor(
-  @ApplicationContext context: Context,
-  private val jsonSerialize: JsonSerializer
-
+  private val storage: EncryptedPreferences
 ) : CredentialsManager {
-  private val masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-
-  private val prefs: Lazy<SharedPreferences> = lazy {
-    EncryptedSharedPreferences.create(
-      PREF_FILE_NAME,
-      masterKey,
-      context.applicationContext,
-      EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-      EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
-  }
 
   override suspend fun saveCredentials(credentials: Credentials) {
-    val json = jsonSerialize.encode(Credentials.serializer(), credentials)
-    prefs.value.edit { putString(PREF__KEY_CREDENTIALS, json) }
+    storage.store(PREF_KEY_AUTH_CREDENTIALS, credentials)
   }
 
   override suspend fun getCredentials(): Credentials {
-    val defaultValue by lazy { jsonSerialize.encode(Credentials.serializer(), Credentials()) }
-    val json = prefs.value.getString(PREF__KEY_CREDENTIALS, null) ?: defaultValue
-    return jsonSerialize.decode(Credentials.serializer(), json)
+    return storage.retrieve(PREF_KEY_AUTH_CREDENTIALS, Credentials::class) ?: Credentials()
   }
 
   override suspend fun clearCredentials() {
-    prefs.value.edit {
-      remove(PREF__KEY_CREDENTIALS)
-    }
+    storage.remove(PREF_KEY_AUTH_CREDENTIALS)
   }
 
   override suspend fun hasValidCredentials(): Boolean {
@@ -73,7 +52,6 @@ class EncryptedCredentialsManager @Inject constructor(
   }
 
   companion object {
-    private const val PREF_FILE_NAME = "encrypted_credentials_shared_prefs"
-    private const val PREF__KEY_CREDENTIALS = "com.ericafenyo.bikediary.CREDENTIALS_PREFS_KEY"
+    private const val PREF_KEY_AUTH_CREDENTIALS = "com.ericafenyo.bikediary.PREF_AUTH_CREDENTIALS"
   }
 }

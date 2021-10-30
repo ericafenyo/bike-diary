@@ -36,6 +36,7 @@ import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.data.trip.TripRepository
 import com.ericafenyo.bikediary.databinding.ActivityMainBinding
 import com.ericafenyo.bikediary.model.Theme
+import com.ericafenyo.bikediary.ui.auth.AuthenticationActivity
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -55,7 +56,10 @@ class MainActivity : AppCompatActivity() {
     // Update theme
     updateForTheme(viewModel.currentTheme)
 
+    startActivity(AuthenticationActivity.getStartIntent(this))
+
     setContentView(R.layout.activity_main)
+
 
     viewModel.theme.observe(this, Observer(::updateForTheme))
 

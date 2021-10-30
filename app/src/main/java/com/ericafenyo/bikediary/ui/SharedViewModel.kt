@@ -22,27 +22,16 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories
+package com.ericafenyo.bikediary.ui
 
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepositoryImpl
-import com.ericafenyo.bikediary.repositories.user.UserRepository
-import com.ericafenyo.bikediary.repositories.user.UserRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
+@HiltViewModel
+class SharedViewModel @Inject constructor(
+//  private val authenticatedUserInteractor: AuthenticatedUserInteractor
+) : ViewModel() {
 
-  @Binds
-  @Singleton
-  abstract fun bindAdventureRepository(repository: AdventureRepositoryImpl): AdventureRepository
-
-  @Binds
-  @Singleton
-  abstract fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
+  val authenticatedUser = false
 }

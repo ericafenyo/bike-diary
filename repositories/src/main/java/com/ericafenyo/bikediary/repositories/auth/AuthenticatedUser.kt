@@ -22,13 +22,10 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.util.credentials
+package com.ericafenyo.bikediary.repositories.auth
 
-import com.ericafenyo.bikediary.model.Credentials
-
-interface CredentialsManager {
-  suspend fun saveCredentials(credentials: Credentials)
-  suspend fun getCredentials(): Credentials
-  suspend fun clearCredentials()
-  suspend fun hasValidCredentials(): Boolean
+interface AuthenticatedUser {
+  fun isAuthenticated(): Boolean
+  fun getAccessToken(): String
+  fun getRefreshToken(): String
 }

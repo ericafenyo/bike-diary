@@ -22,10 +22,20 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.model
+package com.ericafenyo.bikediary.repositories.auth
 
-interface AuthenticatedUserInfo {
-  fun isAuthenticated(): Boolean
-  fun getAccessToken(): Boolean
-  fun getRefreshToken(): Boolean
+import com.ericafenyo.bikediary.model.Credentials
+import com.ericafenyo.bikediary.model.User
+
+open class DefaultAuthenticatedUser(
+  private val user: User?,
+  private val credentials: Credentials,
+) : AuthenticatedUser {
+  override fun isAuthenticated(): Boolean {
+    return user != null && credentials.isValid()
+  }
+
+  override fun getAccessToken(): String = credentials.accessToken
+
+  override fun getRefreshToken(): String = credentials.refreshToken
 }

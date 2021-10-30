@@ -48,6 +48,9 @@ android {
         }
     }
     compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+
         // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -70,6 +73,10 @@ dependencies {
     implementation project(path: ':model')
     //implementation project(path: ':logger')
     implementation project(path: ':shared')
+    implementation project(path: ':libs:storage')
+
+
+    coreLibraryDesugaring libs.android.desugarjdkLibs
 
     implementation libs.kotlin.stdlib
     implementation libs.kotlin.coroutines.core

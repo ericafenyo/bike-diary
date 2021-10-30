@@ -22,27 +22,34 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories
+package com.ericafenyo.libs.serialization
 
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepositoryImpl
-import com.ericafenyo.bikediary.repositories.user.UserRepository
-import com.ericafenyo.bikediary.repositories.user.UserRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import com.google.gson.Gson
+import kotlin.reflect.KClass
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
 
-  @Binds
-  @Singleton
-  abstract fun bindAdventureRepository(repository: AdventureRepositoryImpl): AdventureRepository
+open class ReflectionJsonSerializer {
 
-  @Binds
-  @Singleton
-  abstract fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
+  val serializerInstance = Gson()
+
+  inline fun <reified T> toJson(value: T): String {
+    return serializerInstance.toJson(value)
+  }
+
+  inline fun <reified T : Any> fromJson(json: String, clazz: KClass<T>): T {
+    return serializerInstance.fromJson(json, clazz.java)
+  }
+
+  companion object {
+    @Volatile
+    private var INSTANCE: ReflectionJsonSerializer? = null
+
+    @JvmStatic
+    fun getInstance(): ReflectionJsonSerializer {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: ReflectionJsonSerializer()
+          .also { INSTANCE = it }
+      }
+    }
+  }
 }

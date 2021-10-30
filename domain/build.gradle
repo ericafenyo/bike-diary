@@ -53,6 +53,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += [
+                "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            //    "-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi",
+                "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
+                "-Xopt-in=kotlin.RequiresOptIn"
+        ]
     }
 }
 
@@ -61,6 +67,7 @@ dependencies {
     implementation project(path: ':shared')
     implementation project(path: ':model')
     implementation project(path: ':logger')
+
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler
