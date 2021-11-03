@@ -56,6 +56,7 @@
   <string name="label_oops">Oups !</string>
   <string name="label_password">Mot de passe</string>
   <string name="label_start_time">Heure de départ</string>
+  <string name="label_distance">Distance</string>
 
 
   <string name="content_description_add_trip">Ajouter un trajet</string>

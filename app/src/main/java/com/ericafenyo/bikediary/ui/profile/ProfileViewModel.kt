@@ -32,6 +32,7 @@ import com.ericafenyo.bikediary.data
 import com.ericafenyo.bikediary.data.settings.ObserveThemeInteractor
 import com.ericafenyo.bikediary.data.settings.SetThemeUseCase
 import com.ericafenyo.bikediary.model.Theme
+import com.ericafenyo.bikediary.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -46,6 +47,14 @@ class ProfileViewModel @Inject constructor(
   private val _isDarkTheme = MutableLiveData<Boolean>()
   val isDarkTheme: LiveData<Boolean> get() = _isDarkTheme
 
+  private val _events = MutableLiveData<Event<ProfileAction>>()
+  val events: LiveData<Event<ProfileAction>> get() = _events
+
+  sealed class ProfileAction {
+    object SetDistanceGoal : ProfileAction()
+    object SetCaloriesGoal : ProfileAction()
+  }
+
   init {
     viewModelScope.launch {
       observeTheme(Unit).collect {
@@ -59,5 +68,14 @@ class ProfileViewModel @Inject constructor(
       val theme = if (enabled) Theme.DARK else Theme.LIGHT
       setTheme(theme)
     }
+  }
+
+  // Methods used called from xml
+  fun setDistanceGoal() {
+    _events.value = Event(ProfileAction.SetDistanceGoal)
+  }
+
+  fun setCaloriesGoal() {
+    _events.value = Event(ProfileAction.SetCaloriesGoal)
   }
 }
