@@ -28,11 +28,11 @@
     <item name="cornerSize">50%</item>
   </style>
 
-  <style name="ShapeAppearance.Application.SmallComponent" parent="ShapeAppearance.MaterialComponents">
+  <style name="ShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents">
     <item name="cornerSize">@dimen/size_small_component</item>
   </style>
 
-  <style name="ShapeAppearance.HabitDiary.MediumComponent" parent="ShapeAppearance.MaterialComponents">
+  <style name="ShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents">
     <item name="cornerSize">@dimen/size_medium_component</item>
   </style>
 
