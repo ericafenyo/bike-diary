@@ -53,9 +53,9 @@ fun View.bindGoneIf(gone: Boolean) {
   visibility = if (gone) View.GONE else View.VISIBLE
 }
 
-@BindingAdapter("onTextChanged")
-fun TextInputEditText.bindOnTextChanged(block: (view: View, text: String) -> Unit) {
-  doOnTextChanged { text, _, _, _ -> block(this, text.toString()) }
+@BindingAdapter("doOnTextChanged")
+fun TextInputEditText.bindDoOnTextChanged(block: (view: View, text: String) -> Unit) {
+  doOnTextChanged { characters, _, _, _ -> block(this, characters.toString()) }
 }
 
 @BindingAdapter("starts")

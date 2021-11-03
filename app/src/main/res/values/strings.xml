@@ -39,6 +39,7 @@
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="action_forgot_password">Forgot password?</string>
   <string name="action_login">Sign in</string>
+  <string name="action_verify_code">Verify code</string>
   <string name="action_sign_up">Sign up</string>
   <string name="action_start_adventure">Start adventure</string>
   <string name="action_stop_adventure">End adventure</string>
@@ -166,5 +167,11 @@
   <string name="title_profile">Profile</string>
   <string name="title_save">Save</string>
   <string name="title_settings">settings</string>
+ -  Generic error message texts                                                                -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="error_user_email_exists">The email already exists</string>
+  <string name="error_wrong_login_credentials">Wrong email or password</string>
+  <string name="enter_verification_code">Verification</string>
+  <string name="enter_sent_verification_code">Enter the verification code sent to: <b>%s</b> </string>
 
 </resources>

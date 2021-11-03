@@ -14,6 +14,7 @@
   <string name="action_forgot_password">Mot de passe oublié ?</string>
   <string name="action_login">Se connecter</string>
   <string name="action_sign_up">S\'inscrire</string>
+  <string name="action_verify_code">Verify code</string>
   <string name="action_start_adventure">Commencer l\'aventure</string>
   <string name="action_stop_adventure">Terminer l\'aventure</string>
   <string name="action_upload_picture">Télécharger une image</string>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+    <variable
+        name="model"
+        type="com.ericafenyo.bikediary.ui.auth.AuthenticationViewMode" />
+
+    <import type="com.ericafenyo.bikediary.ui.auth.AuthenticationViewMode.AuthenticationAction" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="?attr/colorSurface">
+
+    <ImageView
+        android:id="@+id/illustration_check_inbox"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="@dimen/space_extra_large"
+        android:contentDescription="@null"
+        android:src="@drawable/illustration_check_inbox"
+        app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+        app:layout_constraintStart_toStartOf="@+id/left_keyline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_verification_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal"
+        android:text="@string/enter_verification_code"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+        app:layout_constraintStart_toStartOf="@+id/left_keyline"
+        app:layout_constraintTop_toBottomOf="@+id/illustration_check_inbox" />
+
+    <TextView
+        android:id="@+id/text_verification_code_sent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal"
+        android:text="@string/enter_sent_verification_code"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+        app:layout_constraintStart_toStartOf="@+id/left_keyline"
+        app:layout_constraintTop_toBottomOf="@+id/text_verification_title" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_code_one"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:maxLength="1"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintDimensionRatio="1:1" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_code_two"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:maxLength="1"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintDimensionRatio="1:1" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_code_three"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:maxLength="1"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintDimensionRatio="1:1" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_code_four"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:maxLength="1"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintDimensionRatio="1:1" />
+
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_helper_code_inputs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_extra_large"
+        app:constraint_referenced_ids="edit_text_code_one,edit_text_code_two,edit_text_code_three,edit_text_code_four"
+        app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+        app:layout_constraintStart_toStartOf="@+id/left_keyline"
+        app:layout_constraintTop_toBottomOf="@+id/text_verification_code_sent" />
+
+    <TextView
+        android:id="@+id/text_login_no_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_normal"
+        android:text="Didn't receive any code?"
+        app:layout_constraintEnd_toStartOf="@+id/text_action_create_account"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flow_helper_code_inputs" />
+
+    <TextView
+        android:id="@+id/text_action_create_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{()-> model.dispatch(AuthenticationAction.RESEND_CODE)}"
+        android:padding="@dimen/space_small"
+        android:text="Resend"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/text_login_no_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/text_login_no_account"
+        app:layout_constraintTop_toTopOf="@+id/text_login_no_account" />
+
+    <com.ericafenyo.bikediary.widget.Button
+        android:id="@+id/button_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_extra_large"
+        android:onClick="@{()-> model.dispatch(AuthenticationAction.VERIFY_CODE)}"
+        android:text="@string/action_verify_code"
+        app:isLoading="@{false}"
+        app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+        app:layout_constraintStart_toStartOf="@+id/left_keyline"
+        app:layout_constraintTop_toBottomOf="@+id/barrier_resend_verification_code" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_resend_verification_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="text_login_no_account,text_action_create_account" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_keyline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/space_medium" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_keyline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/space_medium" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
