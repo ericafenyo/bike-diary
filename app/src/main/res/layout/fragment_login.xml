@@ -32,19 +32,26 @@
 
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/illustration_add_user" />
+            android:id="@+id/illustration_add_user"
+            android:layout_width="148dp"
+            android:layout_height="148dp"
+            android:layout_marginTop="@dimen/space_extra_large"
+            android:contentDescription="@null"
+            android:src="@drawable/illustration_add_user"
+            app:layout_constraintEnd_toStartOf="@+id/right_keyline"
+            app:layout_constraintStart_toStartOf="@+id/left_keyline"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_login_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/space_normal"
             android:text="@string/sign_in_page_title_text"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintEnd_toStartOf="@+id/right_keyline"
             app:layout_constraintStart_toStartOf="@+id/left_keyline"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/illustration_add_user" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_field_email"

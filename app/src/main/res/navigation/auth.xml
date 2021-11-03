@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   The MIT License (MIT)
 
@@ -28,7 +29,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/verifyCodeFragment">
 
   <fragment
       android:id="@+id/loginFragment"
@@ -38,6 +39,9 @@
     <action
         android:id="@+id/action_login_to_signup"
         app:destination="@id/signUpFragment" />
+    <action
+        android:id="@+id/action_loginFragment_to_verifyCodeFragment"
+        app:destination="@id/verifyCodeFragment" />
   </fragment>
   <fragment
       android:id="@+id/signUpFragment"
@@ -48,4 +52,9 @@
         android:id="@+id/action_signup_to_login"
         app:destination="@id/loginFragment" />
   </fragment>
+  <fragment
+      android:id="@+id/verifyCodeFragment"
+      android:name="com.ericafenyo.bikediary.ui.auth.VerifyCodeFragment"
+      android:label="VerifyCodeFragment"
+      tools:layout="@layout/fragment_verify_code" />
 </navigation>
