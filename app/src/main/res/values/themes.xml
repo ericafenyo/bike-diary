@@ -28,7 +28,7 @@
 
   <!-- Alert Dialog --><style name="ThemeOverlay.HabitDiary.AlertDialog" parent="">
   <item name="colorSurface">@android:color/white</item>
-  <item name="shapeAppearanceOverlay">@style/ShapeAppearance.HabitDiary.MediumComponent</item>
+  <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MediumComponent</item>
 </style>
 
   <style name="Widget.Application.Button.Filled" parent="Widget.MaterialComponents.Button.UnelevatedButton">
