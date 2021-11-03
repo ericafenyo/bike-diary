@@ -43,8 +43,11 @@ import com.bumptech.glide.request.transition.Transition
 import com.ericafenyo.bikediary.databinding.FragmentProfileBinding
 import com.ericafenyo.bikediary.ui.MainActivityViewModel
 import com.ericafenyo.bikediary.ui.profile.ProfileViewModel
+import com.ericafenyo.bikediary.ui.profile.ProfileViewModel.ProfileAction
+import com.ericafenyo.bikediary.util.EventObserver
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 /**
  * The class contains the user's profile information and general app settings.
@@ -58,14 +61,21 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
   private val binding: FragmentProfileBinding by dataBinding()
   private val activityModel: MainActivityViewModel by viewModels()
-  private val profileModel: ProfileViewModel by viewModels()
+  private val viewModel: ProfileViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     //binding.appbar.setupProfileAvatar(activityModel, this)
     binding.lifecycleOwner = viewLifecycleOwner
-    binding.model = profileModel
+    binding.model = viewModel
+
+    viewModel.events.observe(viewLifecycleOwner, EventObserver { action ->
+      when (action) {
+        ProfileAction.SetCaloriesGoal -> Timber.d("Set Calories Goal")
+        ProfileAction.SetDistanceGoal -> Timber.d("Set Distance Goal")
+      }
+    })
   }
 }
 
