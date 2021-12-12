@@ -10,7 +10,7 @@ plugins {
 android {
     compileSdkVersion buildConfig.compileSdk
     defaultConfig {
-        applicationId "com.ericafenyo.habitdiary"
+        applicationId "com.ericafenyo.bikediary"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
