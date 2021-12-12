@@ -19,3 +19,6 @@
 .cxx
 local.properties
 bin/download_schema.sh
+Gemfile.lock
+fastlane/.idea/
+fastlane/report.xml
