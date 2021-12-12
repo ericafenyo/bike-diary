@@ -1,5 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  The MIT License (MIT)
+
+  Copyright (C) 2021 Eric Afenyo
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  -->
+
 <resources>
   <string name="app_name" translatable="false">Bike Diary</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Content description strings                                                                 -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="a11y_add_trip">Add trip</string>
+  <string name="a11y_profile_disable_dark_mode">Disable mode</string>
+  <string name="a11y_profile_enable_dark_mode">Enable dark mode</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Action strings                                                                              -
@@ -11,19 +44,32 @@
   <string name="action_stop_adventure">End adventure</string>
   <string name="action_upload_picture">Upload picture</string>
 
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Dashboard page strings                                                                      -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="dashboard_axis_label_monday">Mon</string>
+  <string name="dashboard_axis_label_tuesday">Tue</string>
+  <string name="dashboard_axis_label_wednesday">Wed</string>
+  <string name="dashboard_axis_label_thursday">Thu</string>
+  <string name="dashboard_axis_label_friday">Fri</string>
+  <string name="dashboard_axis_label_saturday">Sat</string>
+  <string name="dashboard_axis_label_sunday">Sun</string>
+
+  <string name="diary_adventures_empty">Your adventure list is empty, recorded adventures will appear here.</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   - Alert dialog strings                                                                        -
+   - Authentication error messages                                                               -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <string name="msg_no_connection_title">No connection</string>
-  <string name="msg_no_connection_message">You are offline. Please connect to the Internet</string>
-
+  <string name="error_user_email_exists">The email already exists</string>
+  <string name="error_wrong_login_credentials">Wrong email or password</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   - Content description strings                                                                                   -
+   - Format strings                                                                              -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <string name="a11y_profile_disable_dark_mode">Disable mode</string>
-  <string name="a11y_profile_enable_dark_mode">Enable dark mode</string>
+  <string name="format_level">Level %d</string>
+  <string name="format_km_in_sec">%.2f km in %s</string>
+  <string name="format_kcal" translatable="false">%s kcal</string>
+  <string name="format_metrics" translatable="false">%.2f km • %d cal • %.0f km/h</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Gender strings                                                                              -
@@ -38,15 +84,6 @@
     <item>@string/gender_other</item>
   </string-array>
 
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   - Format strings                                                                              -
-   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <string name="format_level">Level %d</string>
-  <string name="format_km_in_sec">%.2f km in %s</string>
-  <string name="format_kcal" translatable="false">%s kcal</string>
-  <string name="format_metrics" translatable="false">%.2f km • %d cal • %.0f km/h</string>
-
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Text input errors strings                                                                   -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -56,16 +93,17 @@
   <string name="input_error_invalid_password">Password is invalid</string>
   <string name="input_error_password_not_matched">Passwords did not match</string>
 
-
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- - Text input hints strings                                                                    -
- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+   - Text input hints strings                                                                    -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="input_hint_confirm_password">Confirm password</string>
   <string name="input_hint_email">E-mail</string>
   <string name="input_hint_first_name">First Name</string>
   <string name="input_hint_last_name">Last Name</string>
   <string name="input_hint_password">Password</string>
   <string name="input_helper_text_password_constraints">Password must contain minimum 8 characters, at least 1 uppercase letter and 1 number.</string>
+
+  <string name="kilometers_remaining">Km left</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Label strings                                                                               -
@@ -84,9 +122,21 @@
   <string name="label_start_time">Start time</string>
   <string name="label_distance">Distance</string>
 
+  <string name="login_label_you_have_account">Don\'t have an account?</string>
+
+  <string name="map_a11y_show_devices_current_location">Show devices current location</string>
+  <string name="map_a11y_start_adventure">Start an adventure</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   - Settings page strings                                                                                   -
+   - Alert dialog strings                                                                        -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="msg_no_connection_title">No connection</string>
+  <string name="msg_no_connection_message">You are offline. Please connect to the Internet</string>
+
+  <string name="profile_label_dark_mode">Dark mode</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Settings page strings                                                                       -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="settings_theme_title">Choose theme</string>
   <string name="settings_theme_system">System default</string>
@@ -94,51 +144,27 @@
   <string name="settings_theme_dark">Dark</string>
   <string name="settings_theme_battery">Set by Battery Saver</string>
 
-  <string name="content_description_add_trip">Add trip</string>
-  <string name="diary_adventures_empty">Your adventure list is empty, recorded adventures will appear here.</string>
-
-
-  <string name="kilometers_remaining">Km left</string>
-
-  <string name="map_a11y_show_devices_current_location">Show devices current location</string>
-  <string name="map_a11y_start_adventure">Start an adventure</string>
-
-  <string name="profile_label_dark_mode">Dark mode</string>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Login page strings                                                                          -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="sign_in_page_title_text">Let\'s sign you in</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- - Title strings                                                             -
- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <string name="title_map">Map</string>
-  <string name="title_dashboard">Dashboard</string>
-  <string name="title_settings">settings</string>
-  <string name="title_diary">Diary</string>
-  <string name="title_profile">Profile</string>
-  <string name="title_edit_adventure">Edit adventure</string>
-  <string name="title_save">Save</string>
-
-  <string name="login_label_you_have_account">Don\'t have an account?</string>
-
-
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   - Sign up strings                                                                             -
+   - Sign up page strings                                                                        -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="sign_up_label_accept_terms_and_policies">By creating an account, you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</string>
   <string name="sign_up_page_title_text">Let\'s create an account</string>
   <string name="sign_up_label_you_have_account_question">Already have an account?</string>
-  <string name="sign_in_page_title_text">Let\'s sign you in</string>
-
-  <string name="dashboard_axis_label_monday">Mon</string>
-  <string name="dashboard_axis_label_tuesday">Tue</string>
-  <string name="dashboard_axis_label_wednesday">Wed</string>
-  <string name="dashboard_axis_label_thursday">Thu</string>
-  <string name="dashboard_axis_label_friday">Fri</string>
-  <string name="dashboard_axis_label_saturday">Sat</string>
-  <string name="dashboard_axis_label_sunday">Sun</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- -  Generic error message texts                                                                -
- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <string name="error_user_email_exists">The email already exists</string>
-  <string name="error_wrong_login_credentials">Wrong email or password</string>
+   - Title strings                                                                               -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="title_dashboard">Dashboard</string>
+  <string name="title_diary">Diary</string>
+  <string name="title_edit_adventure">Edit adventure</string>
+  <string name="title_map">Map</string>
+  <string name="title_profile">Profile</string>
+  <string name="title_save">Save</string>
+  <string name="title_settings">settings</string>
 
 </resources>
