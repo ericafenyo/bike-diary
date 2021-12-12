@@ -28,7 +28,9 @@ import com.ericafenyo.bikediary.database.dao.AdventureDao
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
@@ -36,12 +38,14 @@ import org.junit.Test
 
 @HiltAndroidTest
 @UninstallModules(DatabaseModule::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class AdventureTest : DatabaseTest() {
   @Inject lateinit var database: AppDatabase
   private lateinit var adventureDao: AdventureDao
 
   private val adventureId = "611947c1cd3f6222c84c4966"
-  private val adventure1 = TestDatabaseUtils.createAdventure(adventureId)
+  private val adventureUuid = "ac42f8ee-c3a3-4a1d-b88d-57b643483898"
+  private val adventure = TestDatabaseUtils.createAdventure(adventureId)
 
   @Before
   fun setup() {
@@ -53,13 +57,13 @@ class AdventureTest : DatabaseTest() {
   fun insert() {
     testScope.runBlockingTest {
       // Given that we insert an adventure
-      adventureDao.insert(adventure1)
+      adventureDao.insert(adventure)
 
       // When we access the inserted Adventure
-      val adventure = adventureDao.getAdventureById(adventureId)
+      val savedAdventure = adventureDao.getAdventureById(adventureId)
 
       // Then it must match the local variable 'adventureId'.
-      assertThat(adventure.id).isEqualTo(adventureId)
+      assertThat(savedAdventure.id).isEqualTo(adventureId)
     }
   }
 
@@ -67,11 +71,12 @@ class AdventureTest : DatabaseTest() {
   fun `insert with the same adventureId`() {
     testScope.runBlockingTest {
       // Given we insert an Adventure
-      adventureDao.insert(adventure1)
+      // Given that we insert an adventure
+      adventureDao.insert(adventure)
 
       // When we insert another Adventure copy with the same Id
       val newTitle = "Adventure title 2"
-      adventureDao.insert(adventure1.copy(title = newTitle))
+      adventureDao.insert(adventure.copy(title = newTitle))
 
       // Then we should have an update
       assertThat(adventureDao.getAdventureById(adventureId).title)
@@ -80,17 +85,20 @@ class AdventureTest : DatabaseTest() {
   }
 
   @Test
-  fun `delete adventure by id`() {
+  fun `delete adventure by uuid`() {
     testScope.runBlockingTest {
       // Given we insert two Adventures
-      adventureDao.insert(adventure1)
-      adventureDao.insert(adventure1.copy(id = "61197d1521b2c94704587373"))
+      adventureDao.insert(adventure)
+      val secondAdventure = TestDatabaseUtils.createAdventure(UUID.randomUUID().toString()).copy(
+        uuid = adventureUuid
+      )
+      adventureDao.insert(secondAdventure)
 
       // Then the database should contain 2 Adventures
       assertThat(adventureDao.getAdventures().size).isEqualTo(2)
 
       // When we delete one of the adventures
-      adventureDao.deleteById(adventureId)
+      adventureDao.deleteById(adventureUuid)
 
       // Then we should have only one adventure left
       assertThat(adventureDao.getAdventures().size).isEqualTo(1)
@@ -101,8 +109,13 @@ class AdventureTest : DatabaseTest() {
   fun `delete all adventures`() {
     testScope.runBlockingTest {
       // Given we insert two Adventures
-      adventureDao.insert(adventure1)
-      adventureDao.insert(adventure1.copy(id = "61197d1521b2c94704587373"))
+      adventureDao.insert(adventure)
+      adventureDao.insert(
+        adventure.copy(
+          id = "61b65f6055e6f0948b71f128",
+          uuid = "258cb9c2-9752-4002-8ec0-d31dacc739d2"
+        )
+      )
 
       // Then the database should contain 2 Adventures
       assertThat(adventureDao.getAdventures().size).isEqualTo(2)
