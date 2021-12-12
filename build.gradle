@@ -15,8 +15,6 @@ buildscript {
         classpath libs.kotlin.gradlePlugin
         classpath libs.kotlin.serialization.gradlePlugin
         classpath libs.hilt.gradlePlugin
-        classpath libs.google.gms.services
-        classpath libs.crashlytics.gradlePlugin
         classpath libs.apollo.gradlePlugin
         classpath libs.dokka
         classpath libs.androidx.navigation.gradlePlugin
