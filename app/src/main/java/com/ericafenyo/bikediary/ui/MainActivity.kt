@@ -36,7 +36,7 @@ import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.data.trip.TripRepository
 import com.ericafenyo.bikediary.databinding.ActivityMainBinding
 import com.ericafenyo.bikediary.model.Theme
-import com.ericafenyo.bikediary.ui.auth.AuthenticationActivity
+import com.ericafenyo.bikediary.ui.authentication.AuthenticationActivity
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
