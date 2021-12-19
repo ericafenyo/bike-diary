@@ -24,6 +24,6 @@
 
 package com.ericafenyo.bikediary.flux
 
-interface Dispatcher<T> {
+interface ActionDispatcher<T> {
   fun dispatch(action: T)
 }
