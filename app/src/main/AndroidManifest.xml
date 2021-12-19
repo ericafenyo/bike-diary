@@ -15,7 +15,7 @@
       android:usesCleartextTraffic="true">
     <meta-data android:name="io.sentry.auto-init" android:value="false" />
 
-    <activity android:name=".ui.auth.AuthenticationActivity" />
+    <activity android:name=".ui.authentication.AuthenticationActivity" />
     <activity android:name=".ui.diary.EditAdventureActivity" />
     <activity android:name=".SettingsActivity" />
     <activity
