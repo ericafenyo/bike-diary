@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   The MIT License (MIT)
 
@@ -28,33 +27,44 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/auth"
-    app:startDestination="@id/verifyCodeFragment">
+    android:id="@+id/authentication"
+    app:startDestination="@id/authenticationFragment">
+
+  <fragment
+      android:id="@+id/authenticationFragment"
+      android:name="com.ericafenyo.bikediary.ui.authentication.AuthenticationFragment"
+      android:label="AuthenticationFragment"
+      tools:layout="@layout/fragment_authentication">
+    <action
+        android:id="@+id/action_authentication_to_register"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_authentication_to_login"
+        app:destination="@id/loginFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+  </fragment>
 
   <fragment
       android:id="@+id/loginFragment"
-      android:name="com.ericafenyo.bikediary.ui.auth.LoginFragment"
+      android:name="com.ericafenyo.bikediary.ui.authentication.login.LoginFragment"
       android:label="fragment_login"
-      tools:layout="@layout/fragment_login">
-    <action
-        android:id="@+id/action_login_to_signup"
-        app:destination="@id/signUpFragment" />
-    <action
-        android:id="@+id/action_loginFragment_to_verifyCodeFragment"
-        app:destination="@id/verifyCodeFragment" />
-  </fragment>
+      tools:layout="@layout/fragment_login" />
+
   <fragment
-      android:id="@+id/signUpFragment"
-      android:name="com.ericafenyo.bikediary.ui.auth.AccountFragment"
+      android:id="@+id/registerFragment"
+      android:name="com.ericafenyo.bikediary.ui.authentication.RegisterFragment"
       android:label="SignUpFragment"
-      tools:layout="@layout/fragment_register">
-    <action
-        android:id="@+id/action_signup_to_login"
-        app:destination="@id/loginFragment" />
-  </fragment>
+      tools:layout="@layout/fragment_register" />
+
   <fragment
       android:id="@+id/verifyCodeFragment"
-      android:name="com.ericafenyo.bikediary.ui.auth.VerifyCodeFragment"
+      android:name="com.ericafenyo.bikediary.ui.authentication.verify.VerifyCodeFragment"
       android:label="VerifyCodeFragment"
       tools:layout="@layout/fragment_verify_code" />
 </navigation>
