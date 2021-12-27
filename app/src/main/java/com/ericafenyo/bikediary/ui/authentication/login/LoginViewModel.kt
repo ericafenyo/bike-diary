@@ -22,55 +22,80 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.auth
+package com.ericafenyo.bikediary.ui.authentication.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.domain.user.AccountParams
-import com.ericafenyo.bikediary.domain.user.AddUserInteractor
+import com.ericafenyo.bikediary.domain.user.AuthenticateInteractor
+import com.ericafenyo.bikediary.flux.ActionDispatcher
+import com.ericafenyo.bikediary.model.Credentials
+import com.ericafenyo.bikediary.model.HttpException
 import com.ericafenyo.bikediary.model.UIState
-import com.ericafenyo.bikediary.ui.auth.RegisterViewModel.Action.CREATE_ACCOUNT
+import com.ericafenyo.bikediary.model.isNotFound
+import com.ericafenyo.bikediary.model.isUnauthorized
+import com.ericafenyo.bikediary.ui.authentication.login.LoginViewModel.LoginAction
 import com.ericafenyo.bikediary.util.Event
 import com.ericafenyo.bikediary.util.NetworkUtils
 import com.ericafenyo.bikediary.widget.dialog.Alert
 import com.ericafenyo.tracker.data.model.Result
+import com.ericafenyo.tracker.data.model.getOrElse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
   private val networkUtils: NetworkUtils,
-  private val addUserInteractor: AddUserInteractor
-) : ViewModel() {
-  enum class Action { CREATE_ACCOUNT, LAUNCH_LOGIN, LAUNCH_REGISTER }
+  private val authenticateInteractor: AuthenticateInteractor,
+  private val credentialsManager: com.ericafenyo.bikediary.model.CredentialsManager
+) : ViewModel(), ActionDispatcher<LoginAction> {
+
+  enum class LoginAction {
+    NAVIGATE_UP
+  }
+
+  // Messages
+  private val _events = MutableLiveData<Event<LoginAction>>()
+  val events: LiveData<Event<LoginAction>> get() = _events
 
   // Messages
   private val _message = MutableLiveData<Alert.Message>()
   val message: LiveData<Alert.Message> get() = _message
 
-  // Events
-  private val _events = MutableLiveData<Event<Action>>()
-  val events: LiveData<Event<Action>> get() = _events
-
   // States
   private val _state = MutableLiveData<UIState>()
   val state: LiveData<UIState> get() = _state
 
-  // Android layout xml action = android:onClick="@{() -> model.onRegister()}"
-  fun register() {
-    _events.value = Event(CREATE_ACCOUNT)
+  // UI Events
+  private val _launchLoginAction = MutableLiveData<Event<Unit>>()
+  val launchLoginAction: LiveData<Event<Unit>> get() = _launchLoginAction
+
+  private val _launchRegisterAction = MutableLiveData<Event<Unit>>()
+  val launchRegisterAction: LiveData<Event<Unit>> get() = _launchRegisterAction
+
+  private val _launchForgotPasswordAction = MutableLiveData<Event<Unit>>()
+  val launchForgotPasswordAction: LiveData<Event<Unit>> get() = _launchForgotPasswordAction
+
+
+  // Android layout xml action = android:onClick="@{() -> model.onLogin()}"
+  fun onLogin() {
+    _launchLoginAction.value = Event(Unit)
   }
 
-  fun createAccount(
-    firstName: String,
-    lastName: String,
-    email: String,
-    password: String
-  ) {
+  // Android layout xml action = android:onClick="@{() -> model.onRegister()}"
+  fun onRegister() {
+    _launchRegisterAction.value = Event(Unit)
+  }
+
+  // Android layout xml action = android:onClick="@{() -> model.onForgetPassword()}"
+  fun onForgetPassword() {
+    _launchForgotPasswordAction.value = Event(Unit)
+  }
+
+  fun authenticate(email: String, password: String) {
     viewModelScope.launch {
       // Check for internet connectivity
       if (!networkUtils.hasNetworkConnection()) {
@@ -83,16 +108,40 @@ class RegisterViewModel @Inject constructor(
 
       // Start with a loading state
       _state.value = UIState(loading = true)
-      addUserInteractor(AccountParams(firstName, lastName, email, password)).also { result ->
+      authenticateInteractor.invoke(email to password).also { result ->
         when (result) {
           is Result.Success -> {
+            credentialsManager.saveCredentials(result.getOrElse { Credentials() })
             _state.value = UIState(success = true)
           }
           is Result.Error -> {
             _state.value = UIState(error = true)
+            handleLoginErrors(result.exception)
           }
         }
       }
     }
+  }
+
+  private fun handleLoginErrors(exception: Exception) {
+    if (exception is HttpException) {
+      when {
+        exception.isUnauthorized() || exception.isNotFound() -> {
+          _message.value = Alert.Message(
+            titleId = R.string.label_oops,
+            messageId = R.string.error_wrong_login_credentials
+          )
+        }
+      }
+    } else {
+      _message.value = Alert.Message(
+        titleId = R.string.msg_no_connection_title,
+        messageId = R.string.msg_no_connection_message
+      )
+    }
+  }
+
+  override fun dispatch(action: LoginAction) {
+    _events.value = Event(action)
   }
 }

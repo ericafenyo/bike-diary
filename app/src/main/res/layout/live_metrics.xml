@@ -83,7 +83,7 @@
 
       <ImageView
           android:id="@+id/button_launch_camera"
-          style="@style/Widget.BikeDiary.Button.IconOnly"
+          style="@style/Widget.Button.IconOnly"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginEnd="@dimen/space_normal"

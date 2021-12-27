@@ -173,5 +173,6 @@
   <string name="error_wrong_login_credentials">Wrong email or password</string>
   <string name="enter_verification_code">Verification</string>
   <string name="enter_sent_verification_code">Enter the verification code sent to: <b>%s</b> </string>
+  <string name="a11y_navigate_back">Navigate back</string>
 
 </resources>
