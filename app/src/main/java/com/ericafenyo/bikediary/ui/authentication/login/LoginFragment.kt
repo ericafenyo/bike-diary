@@ -22,16 +22,16 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.auth
+package com.ericafenyo.bikediary.ui.authentication.login
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.databinding.FragmentLoginBinding
+import com.ericafenyo.bikediary.ui.authentication.login.LoginViewModel.LoginAction
 import com.ericafenyo.bikediary.util.EventObserver
 import com.ericafenyo.bikediary.util.Validator
 import com.ericafenyo.bikediary.util.doOnTrue
@@ -42,43 +42,44 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
   private val binding: FragmentLoginBinding by dataBinding()
-  private val loginViewModel: LoginViewModel by viewModels()
+  private val viewModel: LoginViewModel by viewModels()
   private val inputValidator by lazy { Validator(requireContext()) }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     binding.lifecycleOwner = viewLifecycleOwner
-    binding.model = loginViewModel
+    binding.model = viewModel
 
-    loginViewModel.message.observe(viewLifecycleOwner, { message ->
+    viewModel.message.observe(viewLifecycleOwner) { message ->
       if (message != null) {
         Alert.Builder(requireContext())
           .from(message)
           .build()
           .show(this)
       }
-    })
+    }
 
-    loginViewModel.state.observe(viewLifecycleOwner, { state ->
-      if (state != null && state.success) {
-        requireActivity().onBackPressed()
+    viewModel.events.observe(viewLifecycleOwner, EventObserver { action ->
+      when (action) {
+        LoginAction.NAVIGATE_UP -> requireActivity().onBackPressed()
       }
     })
+
+//    viewModel.state.observe(viewLifecycleOwner) { state ->
+//      if (state != null && state.success) {
+//        requireActivity().onBackPressed()
+//      }
+//    }
 
     // Clear input errors when the user is typing
     clearInputErrorsOnChange()
 
     // Listen and handle sign in button press
-    loginViewModel.launchLoginAction.observe(viewLifecycleOwner, EventObserver {
+    viewModel.launchLoginAction.observe(viewLifecycleOwner, EventObserver {
       onSubmit()
     })
 
-    // Listen and handle sign up button press. Note:
-    // This just launches the signup page.
-    loginViewModel.launchRegisterAction.observe(viewLifecycleOwner, EventObserver {
-      findNavController().navigate((R.id.action_login_to_signup))
-    })
   }
 
   private fun clearInputErrorsOnChange() {
@@ -106,7 +107,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
   }
 
   private fun submit(email: String, password: String) {
-    loginViewModel.authenticate(email, password)
+    viewModel.authenticate(email, password)
   }
 
   private fun validateInputs(email: String, password: String): Boolean = with(binding) {

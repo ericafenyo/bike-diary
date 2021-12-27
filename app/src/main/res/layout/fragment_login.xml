@@ -3,20 +3,36 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
     <variable
         name="model"
-        type="com.ericafenyo.bikediary.ui.auth.LoginViewModel" />
+        type="com.ericafenyo.bikediary.ui.authentication.login.LoginViewModel" />
+
+    <import type="com.ericafenyo.bikediary.ui.authentication.login.LoginViewModel.LoginAction" />
   </data>
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical"
-      tools:context=".ui.auth.LoginFragment">
+      tools:context=".ui.authentication.login.LoginFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_login"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_background"
+        android:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        bind:onNavigationClickListener="@{() -> model.dispatch(LoginAction.NAVIGATE_UP)}" />
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_surface"
@@ -124,36 +140,6 @@
             app:layout_constraintEnd_toStartOf="@+id/right_keyline"
             app:layout_constraintStart_toStartOf="@+id/left_keyline"
             app:layout_constraintTop_toBottomOf="@+id/text_action_forgot_password" />
-
-        <TextView
-            android:id="@+id/text_login_no_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/login_label_you_have_account"
-            app:layout_constraintEnd_toStartOf="@+id/text_action_create_account"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_login" />
-
-        <TextView
-            android:id="@+id/text_action_create_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{() -> model.onRegister()}"
-            android:padding="@dimen/space_small"
-            android:text="Sign up"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="?attr/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@+id/text_login_no_account"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/text_login_no_account"
-            app:layout_constraintTop_toTopOf="@+id/text_login_no_account" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/left_keyline"

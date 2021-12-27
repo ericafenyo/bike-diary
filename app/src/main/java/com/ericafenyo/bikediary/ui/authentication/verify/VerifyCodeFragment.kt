@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.auth
+package com.ericafenyo.bikediary.ui.authentication.verify
 
 import android.os.Bundle
 import android.text.Editable
@@ -34,7 +34,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.databinding.FragmentVerifyCodeBinding
-import com.ericafenyo.bikediary.ui.auth.AuthenticationViewMode.AuthenticationAction
+import com.ericafenyo.bikediary.ui.authentication.verify.VerifyAccountViewModel.VerifyAccountAction
 import com.ericafenyo.bikediary.util.EventObserver
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +42,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class VerifyCodeFragment : Fragment(R.layout.fragment_verify_code) {
   private val binding: FragmentVerifyCodeBinding by dataBinding()
-  private val viewModel: AuthenticationViewMode by viewModels()
+  private val viewModel: VerifyAccountViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -52,8 +52,8 @@ class VerifyCodeFragment : Fragment(R.layout.fragment_verify_code) {
 
     viewModel.events.observe(viewLifecycleOwner, EventObserver { action ->
       when (action) {
-        AuthenticationAction.VERIFY_CODE -> onSubmit()
-        AuthenticationAction.RESEND_CODE -> viewModel.resendCode()
+        VerifyAccountAction.VERIFY_CODE -> onSubmit()
+        VerifyAccountAction.RESEND_CODE -> viewModel.resendCode()
       }
     })
 
