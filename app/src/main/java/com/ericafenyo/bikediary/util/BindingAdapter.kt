@@ -28,12 +28,12 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.graphics.ColorUtils
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.ericafenyo.bikediary.R
 import com.google.android.material.textfield.TextInputEditText
 import com.mancj.slimchart.SlimChart
 
@@ -79,6 +79,12 @@ fun TextView.bindHtml(html: String) {
 @BindingAdapter(value = ["captionSuffix"])
 fun TextView.bindCaptionSuffix(suffix: String) {
   val content = text.toString() + suffix
-    //setTextAppearance(R.style.TextAppearance_MaterialComponents_Caption)
+  //setTextAppearance(R.style.TextAppearance_MaterialComponents_Caption)
   text = content
 }
+
+@BindingAdapter("onNavigationClickListener")
+fun Toolbar.bindOnNavigationClickListener(block: () -> Unit) {
+  setNavigationOnClickListener { block() }
+}
+

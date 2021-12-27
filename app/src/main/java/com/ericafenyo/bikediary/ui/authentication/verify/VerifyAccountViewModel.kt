@@ -22,26 +22,35 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.auth
+package com.ericafenyo.bikediary.ui.authentication.verify
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import com.ericafenyo.bikediary.R
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.ericafenyo.bikediary.flux.ActionDispatcher
+import com.ericafenyo.bikediary.ui.authentication.verify.VerifyAccountViewModel.VerifyAccountAction
+import com.ericafenyo.bikediary.util.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-@AndroidEntryPoint
-class AuthenticationActivity : AppCompatActivity(R.layout.activity_authentication) {
+@HiltViewModel
+class VerifyAccountViewModel @Inject constructor() : ViewModel(),
+  ActionDispatcher<VerifyAccountAction> {
 
-  companion object {
-    /**
-     * Creates an intent for starting this activity
-     * @param packageContext the context we are navigating from
-     *
-     * @return an [Intent]
-     */
-    fun getStartIntent(packageContext: Context): Intent {
-      return Intent(packageContext, AuthenticationActivity::class.java)
-    }
+  private val _events = MutableLiveData<Event<VerifyAccountAction>>()
+  val events: LiveData<Event<VerifyAccountAction>> get() = _events
+
+  enum class VerifyAccountAction { RESEND_CODE, VERIFY_CODE }
+
+  override fun dispatch(action: VerifyAccountAction) {
+    _events.value = Event(action)
+  }
+
+  fun verifyCode(code: Int) {
+    TODO()
+  }
+
+  fun resendCode() {
+    TODO()
   }
 }

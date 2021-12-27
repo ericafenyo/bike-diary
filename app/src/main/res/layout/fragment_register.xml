@@ -8,7 +8,7 @@
 
     <variable
         name="model"
-        type="com.ericafenyo.bikediary.ui.auth.RegisterViewModel" />
+        type="com.ericafenyo.bikediary.ui.authentication.RegisterViewModel" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
