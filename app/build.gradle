@@ -57,6 +57,11 @@ android {
 
     buildFeatures {
         dataBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.1.0"
     }
 }
 
@@ -103,7 +108,6 @@ dependencies {
     implementation libs.databinding
     implementation libs.glide
 
-    //implementation libs.slimChart
     implementation libs.speedDial
 
     implementation libs.androidx.room.runtime
@@ -128,10 +132,26 @@ dependencies {
     implementation libs.sentry.android.runtime
     implementation libs.sentry.android.timber
 
-
     // debugImplementation libs.leakCanary
 
     implementation 'com.github.ericafenyo:ProgressButton:1.0.1'
+
+    // Experimental compose dependencies
+    implementation 'androidx.compose.ui:ui:1.1.0'
+
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.1.0'
+
+    // Material Design
+    implementation 'androidx.compose.material:material:1.1.0'
+
+    // Foundation
+    implementation 'androidx.compose.foundation:foundation:1.1.0'
+
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.4.0'
+
+    implementation "androidx.compose.material:material-icons-extended:1.1.0"
 }
 
 hilt {

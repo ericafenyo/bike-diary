@@ -20,6 +20,7 @@
     <activity android:name=".SettingsActivity" />
     <activity
         android:name=".ui.MainActivity"
+        android:exported="true"
         tools:ignore="IntentFilterExportedReceiver">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
