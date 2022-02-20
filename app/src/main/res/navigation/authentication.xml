@@ -36,14 +36,15 @@
       android:label="AuthenticationFragment"
       tools:layout="@layout/fragment_authentication">
     <action
-        android:id="@+id/action_authentication_to_register"
+        android:id="@+id/action_authentication_to_login"
+        app:destination="@id/loginFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
     <action
-        android:id="@+id/action_authentication_to_login"
-        app:destination="@id/loginFragment"
+        android:id="@+id/action_authentication_to_register"
+        app:destination="@id/registerFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
