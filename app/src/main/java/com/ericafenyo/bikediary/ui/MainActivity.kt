@@ -28,18 +28,22 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.data.trip.TripRepository
 import com.ericafenyo.bikediary.databinding.ActivityMainBinding
 import com.ericafenyo.bikediary.model.Theme
 import com.ericafenyo.bikediary.ui.authentication.AuthenticationActivity
 import com.wada811.databinding.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -48,31 +52,36 @@ class MainActivity : AppCompatActivity() {
   private val binding: ActivityMainBinding by dataBinding()
   private val viewModel: MainActivityViewModel by viewModels()
 
-  @Inject lateinit var tripRepository: TripRepository
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.isUserLoggedIn().collect { isLoggedIn ->
+          Timber.d("User logged in: $isLoggedIn")
+          if (!isLoggedIn) {
+            // The user is not logged in, Launch the login page
+            startActivity(AuthenticationActivity.getStartIntent(this@MainActivity))
+          }
+        }
+      }
+    }
 
     // Update theme
     updateForTheme(viewModel.currentTheme)
 
-    startActivity(AuthenticationActivity.getStartIntent(this))
-
     setContentView(R.layout.activity_main)
-
 
     viewModel.theme.observe(this, Observer(::updateForTheme))
 
     navController = getNavController()
 
     binding.bottomNavigation.setupWithNavController(navController)
-
-    // startActivity(Intent(this, AuthenticationActivity::class.java))
   }
 
   private fun getNavController(): NavController {
-    val navHostFragment = supportFragmentManager
-      .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
+    val navHostFragment =
+      supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
     return navHostFragment.navController
   }
 }

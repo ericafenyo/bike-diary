@@ -24,8 +24,11 @@
 
 package com.ericafenyo.bikediary.theme
 
+import androidx.compose.material.Colors
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 val color_primary_light = Color(0xff0060aa)
@@ -35,6 +38,27 @@ val color_surface_light = Color(0xffffffff)
 val color_primary_dark = Color(0xffa0c9ff)
 val color_background_dark = Color(0xff1a1c18)
 val color_surface_dark = Color(0xff1b1b1b)
+
+// Warning color theme
+val color_warning_primary_light = Color(0xffFFEDD5)
+val color_warning_background_light = Color(0xffFFEDD5)
+
+val color_warning_primary_dark = Color(0xffFFEDD5)
+val color_warning_background_dark = Color(0xffFFEDD5)
+
+fun Colors.toWarning() = if (isLight) {
+  lightColors(
+    primary = color_warning_primary_light,
+    background = color_warning_background_light
+  )
+} else {
+  darkColors(
+    primary = color_warning_primary_dark,
+    background = color_warning_background_dark
+  )
+}
+
+val LocalColors: ProvidableCompositionLocal<Colors> = compositionLocalOf { lightColors() }
 
 val LightColors = lightColors(
   primary = color_primary_light,
@@ -47,3 +71,4 @@ val DarkColors = darkColors(
   surface = color_surface_dark,
   background = color_background_dark,
 )
+

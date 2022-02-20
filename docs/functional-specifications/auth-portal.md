@@ -19,12 +19,14 @@
 
 ### Acceptance criteria
 
-**1-Accessing the login form**<br>
+1. #### Accessing the login form<br>
+
 _When_ I am on the authentication portal page<br>
 _And_ click on the "Login" button<br>
 _Then_ I arrive on the login page<br>
 
-**2-Accessing the account creation form**<br>
+2. #### Accessing the account creation form<br>
+
 _When_ I am on the authentication portal page<br>
 _And_ click on the "Create Account" button<br>
 _Then_ I arrive on the account creation page<br>

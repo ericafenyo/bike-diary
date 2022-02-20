@@ -30,20 +30,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericafenyo.bikediary.data.settings.SetThemeUseCase
 import com.ericafenyo.bikediary.model.Theme
+import com.ericafenyo.bikediary.model.UserAuthenticationStatus
 import com.ericafenyo.bikediary.ui.theme.ThemeDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
   private val themeDelegate: ThemeDelegate,
   private val switchTheme: SetThemeUseCase,
+  private val userAuthenticationStatus: UserAuthenticationStatus,
 ) : ViewModel(), ThemeDelegate by themeDelegate {
+
+  private val _isLoggedIn = MutableStateFlow(false)
+  val isLoggedIn = _isLoggedIn.asStateFlow()
 
   val currentUserImageUri = MutableLiveData<Uri>()
 
-  fun onProfileClicked() {}
+  fun isUserLoggedIn(): Flow<Boolean> = flow {
+    emit(userAuthenticationStatus.isLoggedIn())
+  }
 
   fun setTheme(theme: Theme) {
     viewModelScope.launch {

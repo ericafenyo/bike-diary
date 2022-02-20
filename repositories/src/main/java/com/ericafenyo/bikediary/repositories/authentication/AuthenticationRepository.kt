@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,14 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories.auth
+package com.ericafenyo.bikediary.repositories.authentication
 
-interface AuthenticatedUser {
-  fun isAuthenticated(): Boolean
-  fun getAccessToken(): String
-  fun getRefreshToken(): String
+interface AuthenticationRepository {
+  suspend fun signIn(
+    name: String,
+    email: String,
+    password: String,
+  )
+
+  suspend fun login(password: String, email: String)
 }

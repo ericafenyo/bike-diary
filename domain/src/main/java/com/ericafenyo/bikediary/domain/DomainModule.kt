@@ -22,29 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.theme
+package com.ericafenyo.bikediary.domain
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
+import com.ericafenyo.bikediary.domain.authentication.UserAuthenticationStatusImpl
+import com.ericafenyo.bikediary.model.UserAuthenticationStatus
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val Shapes = Shapes(
-  small = RoundedCornerShape(8.dp),
-  medium = RoundedCornerShape(8.dp),
-  large = RoundedCornerShape(8.dp)
-)
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class DomainModule {
 
-@Composable
-fun AppTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable () -> Unit
-) {
-  MaterialTheme(
-    colors = if (useDarkTheme) DarkColors else LightColors,
-    shapes = Shapes,
-    content = content
-  )
+  @Binds
+  @Singleton
+  abstract fun bindUserAuthenticationStatus(impl: UserAuthenticationStatusImpl): UserAuthenticationStatus
 }

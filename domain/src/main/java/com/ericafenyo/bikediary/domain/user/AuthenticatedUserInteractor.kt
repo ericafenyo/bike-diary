@@ -26,8 +26,8 @@ package com.ericafenyo.bikediary.domain.user
 
 import com.ericafenyo.bikediary.domain.FlowInteractor
 import com.ericafenyo.bikediary.model.Credentials
-import com.ericafenyo.bikediary.repositories.auth.AuthenticatedUser
-import com.ericafenyo.bikediary.repositories.auth.DefaultAuthenticatedUser
+import com.ericafenyo.bikediary.repositories.authentication.AuthenticatedUser
+import com.ericafenyo.bikediary.repositories.authentication.DefaultAuthenticatedUser
 import com.ericafenyo.bikediary.repositories.user.UserRepository
 import com.ericafenyo.tracker.util.CoroutineDispatchers
 import javax.inject.Inject
