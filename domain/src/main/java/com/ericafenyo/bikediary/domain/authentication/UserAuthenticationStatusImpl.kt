@@ -22,29 +22,26 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.theme
+package com.ericafenyo.bikediary.domain.authentication
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
+import com.ericafenyo.bikediary.di.qualifier.IODispatcher
+import com.ericafenyo.bikediary.model.CredentialsManager
+import com.ericafenyo.bikediary.model.UserAuthenticationStatus
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
-val Shapes = Shapes(
-  small = RoundedCornerShape(8.dp),
-  medium = RoundedCornerShape(8.dp),
-  large = RoundedCornerShape(8.dp)
-)
+@Singleton
+class UserAuthenticationStatusImpl @Inject constructor(
+  private val credentialsManager: CredentialsManager,
+  @IODispatcher private val dispatcher: CoroutineDispatcher
+) : UserAuthenticationStatus {
+  override suspend fun isLoggedIn(): Boolean = withContext(dispatcher) {
+    credentialsManager.hasValidCredentials()
+  }
 
-@Composable
-fun AppTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable () -> Unit
-) {
-  MaterialTheme(
-    colors = if (useDarkTheme) DarkColors else LightColors,
-    shapes = Shapes,
-    content = content
-  )
+  override suspend fun isRegistered(): Boolean = withContext(dispatcher) {
+    TODO()
+  }
 }

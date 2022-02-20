@@ -45,7 +45,7 @@ class App : Application(), Configuration.Provider {
     // Initialize the timezone information android three ten
     AndroidThreeTen.init(this)
     // Setup mapbox sdk
-    Mapbox.getInstance(applicationContext, BuildConfig.MAPBOX_ACCESS_TOKEN)
+//    Mapbox.getInstance(applicationContext, BuildConfig.MAPBOX_ACCESS_TOKEN)
 
     // Initialize sentry logger service
     SentryAndroid.init(this) { options ->
