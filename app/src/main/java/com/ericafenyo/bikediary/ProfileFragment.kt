@@ -86,7 +86,7 @@ fun Toolbar.setupProfileAvatar(
   inflateMenu(R.menu.avatar)
   val profileItem = menu.findItem(R.id.action_profile) ?: return
   profileItem.setOnMenuItemClickListener {
-    viewModel.onProfileClicked()
+//    viewModel.onProfileClicked()
     true
   }
 

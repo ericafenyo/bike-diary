@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2022 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +22,10 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.theme
+package com.ericafenyo.bikediary.repositories.authentication
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
-
-val Shapes = Shapes(
-  small = RoundedCornerShape(8.dp),
-  medium = RoundedCornerShape(8.dp),
-  large = RoundedCornerShape(8.dp)
-)
-
-@Composable
-fun AppTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable () -> Unit
-) {
-  MaterialTheme(
-    colors = if (useDarkTheme) DarkColors else LightColors,
-    shapes = Shapes,
-    content = content
-  )
+interface AuthenticatedUser {
+  fun isAuthenticated(): Boolean
+  fun getAccessToken(): String
+  fun getRefreshToken(): String
 }

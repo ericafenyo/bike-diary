@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   The MIT License (MIT)
 
@@ -163,6 +162,7 @@
   <string name="title_dashboard">Dashboard</string>
   <string name="title_diary">Diary</string>
   <string name="title_edit_adventure">Edit adventure</string>
+  <string name="title_login">Login</string>
   <string name="title_map">Map</string>
   <string name="title_profile">Profile</string>
   <string name="title_save">Save</string>

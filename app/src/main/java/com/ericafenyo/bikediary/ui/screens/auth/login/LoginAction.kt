@@ -22,29 +22,8 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.theme
+package com.ericafenyo.bikediary.ui.screens.auth.login
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
-
-val Shapes = Shapes(
-  small = RoundedCornerShape(8.dp),
-  medium = RoundedCornerShape(8.dp),
-  large = RoundedCornerShape(8.dp)
-)
-
-@Composable
-fun AppTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable () -> Unit
-) {
-  MaterialTheme(
-    colors = if (useDarkTheme) DarkColors else LightColors,
-    shapes = Shapes,
-    content = content
-  )
+sealed class LoginAction {
+  data class Authenticate(val email: String, val password: String) : LoginAction()
 }

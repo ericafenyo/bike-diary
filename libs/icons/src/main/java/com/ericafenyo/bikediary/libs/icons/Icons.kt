@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,17 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.model
+package com.ericafenyo.bikediary.libs.icons
 
-data class AlertMessage(
-  /** Resource string ID of the message to show */
-  val messageId: Int,
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 
-  /** Optional resource string ID for the action (example: "Got it!") */
-  val actionId: Int? = null,
+object Icons {
 
-  /** Optional resource string ID of the title to show */
-  val titleId: Int? = null,
+  val Information: Painter
+    @Composable get() = painterResource(R.drawable.ic_info)
 
-  /** Set to true for a Snackbar with long duration  */
-  val dismiss: Boolean = false,
-)
+  val Error: Painter
+    @Composable get() = painterResource(R.drawable.ic_error)
+}

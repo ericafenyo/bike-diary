@@ -44,6 +44,9 @@ import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.getOrElse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -66,8 +69,8 @@ class LoginViewModel @Inject constructor(
   val message: LiveData<Alert.Message> get() = _message
 
   // States
-  private val _state = MutableLiveData<UIState>()
-  val state: LiveData<UIState> get() = _state
+  private val _state = MutableStateFlow(UIState())
+  val state: StateFlow<UIState> = _state.asStateFlow()
 
   // UI Events
   private val _launchLoginAction = MutableLiveData<Event<Unit>>()
@@ -108,18 +111,19 @@ class LoginViewModel @Inject constructor(
 
       // Start with a loading state
       _state.value = UIState(loading = true)
-      authenticateInteractor.invoke(email to password).also { result ->
-        when (result) {
-          is Result.Success -> {
-            credentialsManager.saveCredentials(result.getOrElse { Credentials() })
-            _state.value = UIState(success = true)
-          }
-          is Result.Error -> {
-            _state.value = UIState(error = true)
-            handleLoginErrors(result.exception)
+      authenticateInteractor.invoke(email to password)
+        .also { result ->
+          when (result) {
+            is Result.Success -> {
+              credentialsManager.saveCredentials(result.getOrElse { Credentials() })
+              _state.value = UIState(success = true)
+            }
+            is Result.Error -> {
+              _state.value = UIState(error = true)
+              handleLoginErrors(result.exception)
+            }
           }
         }
-      }
     }
   }
 
