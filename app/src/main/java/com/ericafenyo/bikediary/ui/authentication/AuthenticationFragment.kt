@@ -25,42 +25,40 @@
 package com.ericafenyo.bikediary.ui.authentication
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.databinding.FragmentAuthenticationBinding
-import com.ericafenyo.bikediary.ui.authentication.AuthenticationViewModel.AuthenticationAction.LAUNCH_LOGIN_PAGE
-import com.ericafenyo.bikediary.ui.authentication.AuthenticationViewModel.AuthenticationAction.LAUNCH_REGISTER_PAGE
-import com.ericafenyo.bikediary.util.EventObserver
-import com.wada811.databinding.dataBinding
+import com.ericafenyo.bikediary.theme.AppTheme
+import com.ericafenyo.bikediary.ui.screens.auth.portal.AuthenticationPortal
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Android Fragment subclass that has two buttons
+ * for navigating to the login and account creation page.
+ */
 @AndroidEntryPoint
-class AuthenticationFragment : Fragment(R.layout.fragment_authentication) {
-  private val binding: FragmentAuthenticationBinding by dataBinding()
-  private val viewModel: AuthenticationViewModel by viewModels()
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
-    binding.lifecycleOwner = viewLifecycleOwner
-    binding.model = viewModel
-
-    viewModel.events.observe(viewLifecycleOwner, EventObserver { event ->
-      when (event) {
-        LAUNCH_LOGIN_PAGE -> launchLoginPage()
-        LAUNCH_REGISTER_PAGE -> launchRegisterPage()
+class AuthenticationFragment : Fragment() {
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    return ComposeView(requireContext()).apply {
+      setContent {
+        AppTheme {
+          AuthenticationPortal(
+            onClickLogin = {
+              findNavController().navigate(AuthenticationFragmentDirections.actionAuthenticationToLogin())
+            },
+            onClickRegister = {
+              findNavController().navigate(AuthenticationFragmentDirections.actionAuthenticationToRegister())
+            }
+          )
+        }
       }
-    })
-  }
-
-  private fun launchRegisterPage() {
-    findNavController().navigate(AuthenticationFragmentDirections.actionAuthenticationToRegister())
-  }
-
-  private fun launchLoginPage() {
-    findNavController().navigate(AuthenticationFragmentDirections.actionAuthenticationToLogin())
+    }
   }
 }
