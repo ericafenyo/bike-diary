@@ -169,10 +169,10 @@
   <string name="title_settings">settings</string>
  -  Generic error message texts                                                                -
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <string name="error_user_email_exists">The email already exists</string>
-  <string name="error_wrong_login_credentials">Wrong email or password</string>
   <string name="enter_verification_code">Verification</string>
   <string name="enter_sent_verification_code">Enter the verification code sent to: <b>%s</b> </string>
   <string name="a11y_navigate_back">Navigate back</string>
+  <string name="auth_portal_page_title">Welcome!</string>
+  <string name="auth_portal_page_description">Explore and share your bike adventures</string>
 
 </resources>
