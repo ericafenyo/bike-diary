@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
   Copyright (C) 2021 TransWay
@@ -26,7 +25,7 @@
 <set
     xmlns:android="http://schemas.android.com/apk/res/android">
   <translate
-      android:duration="@integer/anim_slide_duration_long"
+      android:duration="@integer/anim_slide_short_duration"
       android:fromXDelta="0%"
       android:fromYDelta="0%"
       android:interpolator="@android:anim/accelerate_decelerate_interpolator"
