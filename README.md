@@ -12,7 +12,9 @@ An android app that allows users to record their cycling routes, save memorable 
 > coming soon
 
 ## Documentation
-> coming soon
+### Functional specifications
+* [Authentication portal](docs/functional-specifications/auth-portal.md) &mdash; Access the login and registration page
+* [Login](docs/functional-specifications/login.md) &mdash; Log in to a user account
 
 ## Development setup
 
