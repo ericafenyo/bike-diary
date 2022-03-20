@@ -134,6 +134,7 @@
   <string name="msg_no_connection_message">You are offline. Please connect to the Internet</string>
 
   <string name="profile_label_dark_mode">Dark mode</string>
+  <string name="profile_label_fitness_goal">Fitness goals</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Settings page strings                                                                       -

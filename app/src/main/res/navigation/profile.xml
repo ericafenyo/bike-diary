@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.ericafenyo.bikediary.ProfileFragment"
+        android:name="com.ericafenyo.bikediary.ui.screens.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment

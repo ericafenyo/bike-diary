@@ -22,38 +22,47 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.libs.icons
+package com.ericafenyo.bikediary.ui.screens.profile
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.ericafenyo.bikediary.theme.AppTheme
+import com.ericafenyo.bikediary.ui.profile.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-object Icons {
+/**
+ * The class contains the user's profile information and general app settings.
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2020-11-09
+ */
+@AndroidEntryPoint
+class ProfileFragment : Fragment() {
+  private val viewModel: ProfileViewModel by viewModels()
 
-  val InformationCircle: Painter
-    @Composable get() = painterResource(R.drawable.ic_information_circle)
 
-  val ExclamationCircle: Painter
-    @Composable get() = painterResource(R.drawable.ic_exclamation_circle)
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    return ComposeView(requireContext()).apply {
+      setContent {
+        AppTheme {
+          Profile()
+        }
+      }
+    }
+  }
 
-  val Exclamation: Painter
-    @Composable get() = painterResource(R.drawable.ic_exclamation)
-
-  val CheckCircle: Painter
-    @Composable get() = painterResource(R.drawable.ic_check_circle)
-
-  val Close: Painter
-    @Composable get() = painterResource(R.drawable.ic_close)
-
-  val BrightnessMedium: Painter
-    @Composable get() = painterResource(R.drawable.ic_brightness_medium)
-
-  val ArrowDropDown: Painter
-    @Composable get() = painterResource(R.drawable.ic_arrow_drop_down)
-
-  val Add: Painter
-    @Composable get() = painterResource(R.drawable.ic_add)
-
-  val Remove: Painter
-    @Composable get() = painterResource(R.drawable.ic_remove)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+  }
 }
