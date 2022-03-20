@@ -52,7 +52,7 @@
       tools:layout="@layout/fragment_map" />
   <fragment
       android:id="@+id/profile"
-      android:name="com.ericafenyo.bikediary.ProfileFragment"
+      android:name="com.ericafenyo.bikediary.ui.screens.profile.ProfileFragment"
       android:label="ProfileFragment"
       tools:layout="@layout/fragment_profile" />
 

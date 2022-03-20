@@ -32,12 +32,50 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 val color_primary_light = Color(0xff0060aa)
-val color_background_light = Color(0xfffdfcff)
+val color_background_light = Color(0xffe3e5e8)
 val color_surface_light = Color(0xffffffff)
 
 val color_primary_dark = Color(0xffa0c9ff)
-val color_background_dark = Color(0xff1a1c18)
-val color_surface_dark = Color(0xff1b1b1b)
+val color_background_dark = Color(0xff151E27)
+val color_surface_dark = Color(0xff1D2733)
+
+// Success color theme
+val color_success_primary_light = Color(0xff22C55E)
+val color_success_background_light = Color(0xffDCFCE7)
+
+val color_success_primary_dark = Color(0xffFFEDD5)
+val color_success_background_dark = Color(0xffFFEDD5)
+
+fun Colors.toSuccess() = if (isLight) {
+  lightColors(
+    primary = color_success_primary_light,
+    background = color_success_background_light
+  )
+} else {
+  darkColors(
+    primary = color_success_primary_dark,
+    background = color_success_background_dark
+  )
+}
+
+// Info color theme
+val color_info_primary_light = Color(0xff3B82F6)
+val color_info_background_light = Color(0xffDBEAFE)
+
+val color_info_primary_dark = Color(0xffFFEDD5)
+val color_info_background_dark = Color(0xffFFEDD5)
+
+fun Colors.toInfo() = if (isLight) {
+  lightColors(
+    primary = color_info_primary_light,
+    background = color_info_background_light
+  )
+} else {
+  darkColors(
+    primary = color_info_primary_dark,
+    background = color_info_background_dark
+  )
+}
 
 // Success color theme
 val color_success_primary_light = Color(0xff22C55E)
