@@ -22,24 +22,19 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.authentication.login
+package com.ericafenyo.bikediary.ui.screens.auth.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.domain.user.AuthenticateInteractor
-import com.ericafenyo.bikediary.flux.ActionDispatcher
 import com.ericafenyo.bikediary.model.Credentials
 import com.ericafenyo.bikediary.model.HttpException
 import com.ericafenyo.bikediary.model.UIState
 import com.ericafenyo.bikediary.model.isNotFound
 import com.ericafenyo.bikediary.model.isUnauthorized
-import com.ericafenyo.bikediary.ui.authentication.login.LoginViewModel.LoginAction
-import com.ericafenyo.bikediary.util.Event
+import com.ericafenyo.bikediary.ui.components.dialog.AlertMessage
 import com.ericafenyo.bikediary.util.NetworkUtils
-import com.ericafenyo.bikediary.widget.dialog.Alert
 import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.getOrElse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,55 +49,21 @@ class LoginViewModel @Inject constructor(
   private val networkUtils: NetworkUtils,
   private val authenticateInteractor: AuthenticateInteractor,
   private val credentialsManager: com.ericafenyo.bikediary.model.CredentialsManager
-) : ViewModel(), ActionDispatcher<LoginAction> {
-
-  enum class LoginAction {
-    NAVIGATE_UP
-  }
+) : ViewModel() {
 
   // Messages
-  private val _events = MutableLiveData<Event<LoginAction>>()
-  val events: LiveData<Event<LoginAction>> get() = _events
-
-  // Messages
-  private val _message = MutableLiveData<Alert.Message>()
-  val message: LiveData<Alert.Message> get() = _message
+  private val _message = MutableStateFlow<AlertMessage?>(null)
+  val message: StateFlow<AlertMessage?> get() = _message
 
   // States
   private val _state = MutableStateFlow(UIState())
   val state: StateFlow<UIState> = _state.asStateFlow()
 
-  // UI Events
-  private val _launchLoginAction = MutableLiveData<Event<Unit>>()
-  val launchLoginAction: LiveData<Event<Unit>> get() = _launchLoginAction
-
-  private val _launchRegisterAction = MutableLiveData<Event<Unit>>()
-  val launchRegisterAction: LiveData<Event<Unit>> get() = _launchRegisterAction
-
-  private val _launchForgotPasswordAction = MutableLiveData<Event<Unit>>()
-  val launchForgotPasswordAction: LiveData<Event<Unit>> get() = _launchForgotPasswordAction
-
-
-  // Android layout xml action = android:onClick="@{() -> model.onLogin()}"
-  fun onLogin() {
-    _launchLoginAction.value = Event(Unit)
-  }
-
-  // Android layout xml action = android:onClick="@{() -> model.onRegister()}"
-  fun onRegister() {
-    _launchRegisterAction.value = Event(Unit)
-  }
-
-  // Android layout xml action = android:onClick="@{() -> model.onForgetPassword()}"
-  fun onForgetPassword() {
-    _launchForgotPasswordAction.value = Event(Unit)
-  }
-
   fun authenticate(email: String, password: String) {
     viewModelScope.launch {
       // Check for internet connectivity
       if (!networkUtils.hasNetworkConnection()) {
-        _message.value = Alert.Message(
+        _message.value = AlertMessage(
           titleId = R.string.msg_no_connection_title,
           messageId = R.string.msg_no_connection_message
         )
@@ -131,21 +92,17 @@ class LoginViewModel @Inject constructor(
     if (exception is HttpException) {
       when {
         exception.isUnauthorized() || exception.isNotFound() -> {
-          _message.value = Alert.Message(
+          _message.value = AlertMessage(
             titleId = R.string.label_oops,
             messageId = R.string.error_wrong_login_credentials
           )
         }
       }
     } else {
-      _message.value = Alert.Message(
+      _message.value = AlertMessage(
         titleId = R.string.msg_no_connection_title,
         messageId = R.string.msg_no_connection_message
       )
     }
-  }
-
-  override fun dispatch(action: LoginAction) {
-    _events.value = Event(action)
   }
 }

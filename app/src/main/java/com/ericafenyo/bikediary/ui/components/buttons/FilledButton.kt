@@ -25,26 +25,29 @@
 package com.ericafenyo.bikediary.ui.components.buttons
 
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ButtonElevation
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ericafenyo.bikediary.theme.labelLarge
 
 @Composable
-fun FilledButton(
-  onClick: () -> Unit,
+fun Button(
   text: String,
+  onClick: () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
+  isLoading: Boolean = false,
   elevation: ButtonElevation = ButtonDefaults.elevation()
 ) {
-  Button(
+  androidx.compose.material.Button(
     onClick = onClick,
     modifier = Modifier
       .height(48.dp)
@@ -52,5 +55,12 @@ fun FilledButton(
     shape = RoundedCornerShape(4.dp),
     enabled = enabled,
     elevation = elevation
-  ) { Text(text = text, style = MaterialTheme.typography.labelLarge) }
+  ) {
+
+    if (isLoading) {
+      CircularProgressIndicator(modifier = Modifier.size(32.dp), color = Color.White)
+    } else {
+      Text(text = text, style = MaterialTheme.typography.labelLarge)
+    }
+  }
 }

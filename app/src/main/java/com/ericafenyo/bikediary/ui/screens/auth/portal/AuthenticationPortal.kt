@@ -54,7 +54,6 @@ fun AuthenticationPortal(
   Column(
     modifier = Modifier
       .fillMaxSize()
-      .background(Color.White)
       .padding(horizontal = 24.dp),
   ) {
     Text(

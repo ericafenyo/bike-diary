@@ -31,5 +31,5 @@ data class Credentials(
   val accessToken: String = "",
   val refreshToken: String = "",
 ) {
-  fun isValid() = false
+  fun isValid() = accessToken.isNotBlank()
 }

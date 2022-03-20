@@ -53,7 +53,7 @@
 
   <fragment
       android:id="@+id/loginFragment"
-      android:name="com.ericafenyo.bikediary.ui.authentication.login.LoginFragment"
+      android:name="com.ericafenyo.bikediary.ui.screens.auth.login.LoginFragment"
       android:label="fragment_login"
       tools:layout="@layout/fragment_login" />
 

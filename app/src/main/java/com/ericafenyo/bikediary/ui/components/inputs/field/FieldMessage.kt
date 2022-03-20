@@ -93,8 +93,8 @@ fun FieldMessage(
           .then(modifier)
         ) {
         val (icon, tint) = when (message) {
-          is Error -> Icons.Error to MaterialTheme.colors.error
-          is Info -> Icons.Information to Color.Blue
+          is Error -> Icons.Exclamation to MaterialTheme.colors.error
+          is Info -> Icons.InformationCircle to Color.Blue
         }
 
         Icon(

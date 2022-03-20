@@ -30,15 +30,33 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Colors
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import com.ericafenyo.bikediary.R.string
+import com.ericafenyo.bikediary.libs.icons.Icons
 import com.ericafenyo.bikediary.theme.AppTheme
 import com.ericafenyo.bikediary.theme.LocalColors
+import com.ericafenyo.bikediary.theme.bodyMedium
+import com.ericafenyo.bikediary.theme.titleMedium
+import com.ericafenyo.bikediary.theme.toCritical
+import com.ericafenyo.bikediary.theme.toInfo
+import com.ericafenyo.bikediary.theme.toSuccess
 import com.ericafenyo.bikediary.theme.toWarning
 import com.ericafenyo.bikediary.ui.components.dialog.ColorTheme.CRITICAL
 import com.ericafenyo.bikediary.ui.components.dialog.ColorTheme.INFO
@@ -52,13 +70,14 @@ fun Alert(
   modifier: Modifier = Modifier,
   actions: (@Composable () -> Unit)? = null,
   onDismissed: (() -> Unit)? = null,
-  theme: ColorTheme = ColorTheme.INFO
+  appearance: ColorTheme = INFO,
+  isInline: Boolean = false,
 ) {
-  val themeColor = when (theme) {
-    INFO -> MaterialTheme.colors.toWarning()
-    SUCCESS -> MaterialTheme.colors.toWarning()
-    WARNING -> MaterialTheme.colors.toWarning()
-    CRITICAL -> MaterialTheme.colors.toWarning()
+  val (themeColor: Colors, icon: Painter) = when (appearance) {
+    INFO -> MaterialTheme.colors.toInfo() to Icons.InformationCircle
+    SUCCESS -> MaterialTheme.colors.toSuccess() to Icons.CheckCircle
+    WARNING -> MaterialTheme.colors.toWarning() to Icons.Exclamation
+    CRITICAL -> MaterialTheme.colors.toCritical() to Icons.ExclamationCircle
   }
 
   CompositionLocalProvider(
@@ -72,15 +91,74 @@ fun Alert(
     Box(
       modifier
         .fillMaxWidth()
-        .background(backgroundColor)
         .clip(shape)
-        .border(1.dp, borderColor, shape)
+        .background(backgroundColor)
+        .border(1.5.dp, borderColor, shape)
+        .padding(16.dp)
     ) {
+      ConstraintLayout(
+        Modifier
+          .fillMaxWidth()
+      ) {
+        val (iconRef, dismissRef, titleRef, messageRef, actionRef) = createRefs()
 
+        Icon(
+          painter = icon, contentDescription = null,
+          tint = mainColor,
+          modifier = Modifier
+            .padding(end = 8.dp)
+            .size(16.dp)
+            .constrainAs(iconRef) {
+              start.linkTo(parent.start)
+              top.linkTo(parent.top)
+            }
+        )
+
+        Text(
+          text = title,
+          modifier = Modifier.constrainAs(titleRef) {
+            top.linkTo(iconRef.top)
+            bottom.linkTo(iconRef.bottom)
+            start.linkTo(iconRef.end)
+          },
+          style = MaterialTheme.typography.titleMedium
+        )
+
+        if (onDismissed != null) {
+          IconButton(
+            onClick = onDismissed,
+            modifier = Modifier
+              .offset(x = (16).dp, y = (-16).dp)
+              .constrainAs(dismissRef) {
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+              }
+          ) {
+            Icon(
+              painter = Icons.Close,
+              contentDescription = stringResource(string.label_close),
+              modifier = Modifier.size(18.dp)
+            )
+          }
+        }
+
+        val barrier = createBottomBarrier(iconRef, titleRef)
+        Text(
+          text = message,
+          modifier = Modifier
+            .padding(top = 8.dp)
+            .constrainAs(messageRef) {
+              top.linkTo(barrier)
+              start.linkTo(titleRef.start)
+              end.linkTo(parent.end)
+              width = Dimension.fillToConstraints
+            },
+          style = MaterialTheme.typography.bodyMedium
+        )
+      }
     }
   }
 }
-
 
 /**
  * A data class containing properties for creating an [Alert]
@@ -105,7 +183,8 @@ fun AlertPreview() {
   AppTheme {
     Alert(
       title = "Invalid credentials",
-      message = "Your email or password is invalid"
+      message = "Your email or password is invalid",
+      onDismissed = {}
     )
   }
 }
