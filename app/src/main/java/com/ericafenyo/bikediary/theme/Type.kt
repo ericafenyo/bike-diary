@@ -128,7 +128,7 @@ val Typography.labelSmall
 
 val Typography.bodyLarge
   get() = TextStyle(
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Normal,
     fontSize = 16.sp,
     lineHeight = 24.sp,
     letterSpacing = 0.15.sp,
@@ -136,7 +136,7 @@ val Typography.bodyLarge
 
 val Typography.bodyMedium
   get() = TextStyle(
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Normal,
     fontSize = 14.sp,
     lineHeight = 20.sp,
     letterSpacing = 0.25.sp,

@@ -39,11 +39,49 @@ val color_primary_dark = Color(0xffa0c9ff)
 val color_background_dark = Color(0xff1a1c18)
 val color_surface_dark = Color(0xff1b1b1b)
 
+// Success color theme
+val color_success_primary_light = Color(0xff22C55E)
+val color_success_background_light = Color(0xffDCFCE7)
+
+val color_success_primary_dark = Color(0xffFFEDD5)
+val color_success_background_dark = Color(0xffFFEDD5)
+
+fun Colors.toSuccess() = if (isLight) {
+  lightColors(
+    primary = color_success_primary_light,
+    background = color_success_background_light
+  )
+} else {
+  darkColors(
+    primary = color_success_primary_dark,
+    background = color_success_background_dark
+  )
+}
+
+// Info color theme
+val color_info_primary_light = Color(0xff3B82F6)
+val color_info_background_light = Color(0xffDBEAFE)
+
+val color_info_primary_dark = Color(0xffFFEDD5)
+val color_info_background_dark = Color(0xffFFEDD5)
+
+fun Colors.toInfo() = if (isLight) {
+  lightColors(
+    primary = color_info_primary_light,
+    background = color_info_background_light
+  )
+} else {
+  darkColors(
+    primary = color_info_primary_dark,
+    background = color_info_background_dark
+  )
+}
+
 // Warning color theme
-val color_warning_primary_light = Color(0xffFFEDD5)
+val color_warning_primary_light = Color(0xffF97316)
 val color_warning_background_light = Color(0xffFFEDD5)
 
-val color_warning_primary_dark = Color(0xffFFEDD5)
+val color_warning_primary_dark = Color(0xffF97316)
 val color_warning_background_dark = Color(0xffFFEDD5)
 
 fun Colors.toWarning() = if (isLight) {
@@ -55,6 +93,25 @@ fun Colors.toWarning() = if (isLight) {
   darkColors(
     primary = color_warning_primary_dark,
     background = color_warning_background_dark
+  )
+}
+
+// Critical color theme
+val color_critical_primary_light = Color(0xffEF4444)
+val color_critical_background_light = Color(0xffFEE2E2)
+
+val color_critical_primary_dark = Color(0xffFFEDD5)
+val color_critical_background_dark = Color(0xffFFEDD5)
+
+fun Colors.toCritical() = if (isLight) {
+  lightColors(
+    primary = color_critical_primary_light,
+    background = color_critical_background_light
+  )
+} else {
+  darkColors(
+    primary = color_critical_primary_dark,
+    background = color_critical_background_dark
   )
 }
 

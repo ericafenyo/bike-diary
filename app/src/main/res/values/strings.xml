@@ -174,5 +174,5 @@
   <string name="a11y_navigate_back">Navigate back</string>
   <string name="auth_portal_page_title">Welcome!</string>
   <string name="auth_portal_page_description">Explore and share your bike adventures</string>
-
+  <string name="label_close">close</string>
 </resources>
