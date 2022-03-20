@@ -24,6 +24,8 @@
 
 package com.ericafenyo.bikediary.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -83,6 +85,18 @@ class MainActivity : AppCompatActivity() {
     val navHostFragment =
       supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
     return navHostFragment.navController
+  }
+
+  companion object {
+    /**
+     * Creates an intent for starting this activity
+     * @param packageContext the context we are navigating from
+     *
+     * @return an [Intent]
+     */
+    fun getStartIntent(packageContext: Context): Intent {
+      return Intent(packageContext, MainActivity::class.java)
+    }
   }
 }
 

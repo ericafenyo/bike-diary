@@ -24,36 +24,32 @@
 
 package com.ericafenyo.bikediary.ui.components.inputs
 
+import android.content.res.Configuration
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons.Filled
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ericafenyo.bikediary.theme.AppTheme
 import com.ericafenyo.bikediary.ui.components.inputs.field.FieldMessage
 
 @Composable
-fun PasswordTextField(
+fun TextField(
   modifier: Modifier = Modifier,
   value: String,
   label: String = "Password",
+  singleLine: Boolean = true,
   enabled: Boolean = true,
   keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
   keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -62,7 +58,6 @@ fun PasswordTextField(
   onChange: (String) -> Unit,
   interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-  val showPassword = remember { mutableStateOf(false) }
   val isFocused = interactionSource.collectIsFocusedAsState().value
 
   OutlinedTextField(
@@ -72,20 +67,11 @@ fun PasswordTextField(
     value = value,
     onValueChange = onChange,
     label = { Text(text = label) },
-    singleLine = true,
+    singleLine = singleLine,
     enabled = enabled,
     interactionSource = interactionSource,
-    visualTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
-    keyboardOptions = keyboardOptions.copy(keyboardType = KeyboardType.Password),
+    keyboardOptions = keyboardOptions,
     keyboardActions = keyboardActions,
-    trailingIcon = {
-      IconButton(onClick = { showPassword.value = !showPassword.value }) {
-        Icon(
-          if (showPassword.value) Filled.Visibility else Filled.VisibilityOff,
-          contentDescription = "Visibility",
-        )
-      }
-    },
   )
 
   FieldMessage(
@@ -112,4 +98,18 @@ fun PasswordTextField(
     }
   )
 }
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun TextFieldPreview() {
+  AppTheme {
+    TextField(
+      label = "Email",
+      onChange = {},
+      value = ""
+    )
+  }
+}
+
 

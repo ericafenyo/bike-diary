@@ -30,9 +30,18 @@ import androidx.compose.ui.res.painterResource
 
 object Icons {
 
-  val Information: Painter
-    @Composable get() = painterResource(R.drawable.ic_info)
+  val InformationCircle: Painter
+    @Composable get() = painterResource(R.drawable.ic_information_circle)
 
-  val Error: Painter
-    @Composable get() = painterResource(R.drawable.ic_error)
+  val ExclamationCircle: Painter
+    @Composable get() = painterResource(R.drawable.ic_exclamation_circle)
+
+  val Exclamation: Painter
+    @Composable get() = painterResource(R.drawable.ic_exclamation)
+
+  val CheckCircle: Painter
+    @Composable get() = painterResource(R.drawable.ic_check_circle)
+
+  val Close: Painter
+    @Composable get() = painterResource(R.drawable.ic_close)
 }
