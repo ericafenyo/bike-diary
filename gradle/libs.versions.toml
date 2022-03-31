@@ -53,7 +53,7 @@ androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxt
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxtest" }
 androidx-work-hilt = { module = "androidx.hilt:hilt-work", version.ref = "jetpackHilt" }
 androidx-work-hiltCompiler = { module = "androidx.hilt:hilt-compiler", version.ref = "jetpackHilt" }
-androidx-work-runtime = "androidx.work:work-runtime-ktx:2.6.0"
+androidx-work-runtime = "androidx.work:work-runtime-ktx:2.7.1"
 
 apollo-coroutines = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo" }
 apollo-gradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo" }
