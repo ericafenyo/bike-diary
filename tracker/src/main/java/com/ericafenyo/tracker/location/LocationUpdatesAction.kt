@@ -64,7 +64,12 @@ class LocationUpdatesAction(private val context: Context) {
     val intent = Intent(context, LocationUpdatesReceiver::class.java)
     // FLAG_UPDATE_CURRENT replaces any existing broadcast.
     // We want to handle one location update at a time.
-    return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    return PendingIntent.getBroadcast(
+      context,
+      0,
+      intent,
+      PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+    )
   }
 
   companion object {

@@ -205,7 +205,7 @@ class StateMachineService : Service(), CoroutineScope {
       addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
       addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
     }
-    return PendingIntent.getActivity(this, 0, intent, 0)
+    return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
   }
 
   private fun handleStop(currentState: String, action: String) {
