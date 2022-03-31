@@ -70,11 +70,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Update theme
-    updateForTheme(viewModel.currentTheme)
+    updateForTheme(Theme.LIGHT)
 
     setContentView(R.layout.activity_main)
 
-    viewModel.theme.observe(this, Observer(::updateForTheme))
+//    viewModel.theme.observe(this, Observer(::updateForTheme))
 
     navController = getNavController()
 
