@@ -60,7 +60,7 @@ open class KotlinJsonSerializer {
     return serializerInstance.encodeToString(value)
   }
 
-  inline fun <reified T> fromJson(deserializer: DeserializationStrategy<T>, json: String): T {
+  inline fun <reified T> fromJson(json: String, deserializer: DeserializationStrategy<T>): T {
     return serializerInstance.decodeFromString(deserializer, json)
   }
 
