@@ -38,7 +38,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ericafenyo.bikediary.theme.AppTheme
@@ -48,11 +47,14 @@ import com.ericafenyo.bikediary.ui.components.inputs.field.FieldMessage
 fun TextField(
   modifier: Modifier = Modifier,
   value: String,
-  label: String = "Password",
+  label: String? = null,
   singleLine: Boolean = true,
   enabled: Boolean = true,
   keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
   keyboardActions: KeyboardActions = KeyboardActions.Default,
+  placeholder: @Composable (() -> Unit)? = null,
+  leadingIcon: @Composable (() -> Unit)? = null,
+  trailingIcon: @Composable (() -> Unit)? = null,
   error: String? = null,
   info: String? = null,
   onChange: (String) -> Unit,
@@ -61,14 +63,15 @@ fun TextField(
   val isFocused = interactionSource.collectIsFocusedAsState().value
 
   OutlinedTextField(
-    modifier = Modifier
-      .fillMaxWidth()
-      .then(modifier),
+    modifier = Modifier.fillMaxWidth().then(modifier),
     value = value,
     onValueChange = onChange,
-    label = { Text(text = label) },
+    label = label?.let { { Text(text = label) } },
     singleLine = singleLine,
     enabled = enabled,
+    placeholder = placeholder,
+    leadingIcon = leadingIcon,
+    trailingIcon = trailingIcon,
     interactionSource = interactionSource,
     keyboardOptions = keyboardOptions,
     keyboardActions = keyboardActions,
