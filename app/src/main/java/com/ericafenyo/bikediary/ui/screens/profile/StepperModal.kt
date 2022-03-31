@@ -25,6 +25,7 @@
 package com.ericafenyo.bikediary.ui.screens.profile
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -32,6 +33,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -48,19 +53,37 @@ import com.ericafenyo.bikediary.theme.titleMedium
 
 @Composable
 fun StepperModal(
-  value: Int,
-  onChange: (Int) -> Unit,
-  onDismiss: () -> Unit
+  onAction: (Int) -> Unit,
+  modifier: Modifier = Modifier,
+  initialValue: Int = 0,
+  step: Int = 1,
+  min: Int = 0,
+  max: Int = Int.MAX_VALUE,
+  onDismiss: () -> Unit,
 ) {
+  var inputValue by remember { mutableStateOf(initialValue) }
+
+  fun increaseValue() {
+    if (inputValue <= max) {
+      inputValue += step
+    }
+  }
+
+  fun decreaseValue() {
+    if (inputValue >= min) {
+      inputValue -= step
+    }
+  }
+
   Dialog(onDismissRequest = onDismiss) {
     ConstraintLayout(
-      modifier = Modifier
+      modifier = modifier
+        .fillMaxWidth()
         .clip(MaterialTheme.shapes.medium)
         .background(MaterialTheme.colors.surface)
         .padding(16.dp)
     ) {
       val (titleRef, increaseRef, decreaseRef, valueRef, buttonCancelRef, buttonSaveRef) = createRefs()
-
 
       Text(text = stringResource(id = string.profile_label_fitness_goal),
         style = MaterialTheme.typography.titleMedium,
@@ -72,10 +95,9 @@ fun StepperModal(
 
       createHorizontalChain(decreaseRef, valueRef, increaseRef)
       val barrier = createBottomBarrier(decreaseRef, valueRef, increaseRef)
-      val centerGuideline = createGuidelineFromStart(0.5f)
 
       IconButton(
-        onClick = { },
+        onClick = { decreaseValue() },
         modifier = Modifier.constrainAs(decreaseRef) {
           top.linkTo(titleRef.bottom, 16.dp)
         }) {
@@ -83,7 +105,7 @@ fun StepperModal(
       }
 
       Text(
-        text = "$value",
+        text = "$inputValue",
         style = MaterialTheme.typography.titleLarge,
         modifier = Modifier.constrainAs(valueRef) {
           top.linkTo(decreaseRef.top)
@@ -91,10 +113,12 @@ fun StepperModal(
         }
       )
 
-      IconButton(onClick = { }, modifier = Modifier.constrainAs(increaseRef) {
-        top.linkTo(valueRef.top)
-        bottom.linkTo(valueRef.bottom)
-      }) {
+      IconButton(
+        onClick = { increaseValue() },
+        modifier = Modifier.constrainAs(increaseRef) {
+          top.linkTo(valueRef.top)
+          bottom.linkTo(valueRef.bottom)
+        }) {
         Icon(painter = Icons.Add, contentDescription = "Increase")
       }
 
@@ -115,22 +139,21 @@ fun StepperModal(
       }
 
       TextButton(
-        onClick = { },
+        onClick = { onAction.invoke(inputValue) },
         modifier = Modifier
-
           .padding(start = 8.dp)
           .constrainAs(buttonSaveRef) {
             top.linkTo(buttonCancelRef.top)
             bottom.linkTo(buttonCancelRef.bottom)
             end.linkTo(parent.end)
             width = Dimension.fillToConstraints
-
           }
       ) {
         Text(text = "Save")
       }
     }
   }
+
 
 }
 
@@ -140,9 +163,9 @@ fun StepperModal(
 fun StepperModalPreview() {
   AppTheme {
     StepperModal(
-      value = 6000,
-      onChange = { },
+      initialValue = 6000,
       onDismiss = { },
+      onAction = {}
     )
   }
 }

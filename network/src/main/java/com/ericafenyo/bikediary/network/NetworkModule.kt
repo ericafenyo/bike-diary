@@ -27,6 +27,8 @@ package com.ericafenyo.bikediary.network
 import com.apollographql.apollo.ApolloClient
 import com.ericafenyo.bikediary.network.adventure.AdventureService
 import com.ericafenyo.bikediary.network.adventure.AdventureServiceImpl
+import com.ericafenyo.bikediary.network.settings.SettingsService
+import com.ericafenyo.bikediary.network.settings.SettingsServiceImpl
 import com.ericafenyo.bikediary.network.user.UserService
 import com.ericafenyo.bikediary.network.user.UserServiceImpl
 import dagger.Binds
@@ -49,6 +51,10 @@ abstract class NetworkModule {
   @Binds
   @Singleton
   abstract fun bindAdventureService(impl: AdventureServiceImpl): AdventureService
+
+  @Binds
+  @Singleton
+  abstract fun bindSettingsService(impl: SettingsServiceImpl): SettingsService
 
   @Module
   @InstallIn(SingletonComponent::class)
@@ -73,11 +79,5 @@ abstract class NetworkModule {
       .serverUrl("${BuildConfig.API_SERVER_URL}/graphql")
       .okHttpClient(okHttpClient)
       .build()
-
-//    @Provides
-//    @Singleton
-//    fun provideAdventureRemoteDataSource(
-//      client: ApolloClient
-//    ): AdventureService = AdventureServiceImpl(client)
   }
 }

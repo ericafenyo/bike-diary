@@ -70,6 +70,9 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':model')
+    implementation project(path: ':libs:serialization')
+
     implementation libs.androidx.room.ktx
     api libs.androidx.room.runtime
     kapt libs.androidx.room.compiler

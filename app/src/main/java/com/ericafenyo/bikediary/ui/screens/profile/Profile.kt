@@ -26,39 +26,49 @@ package com.ericafenyo.bikediary.ui.screens.profile
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ExposedDropdownMenuBox
-import androidx.compose.material.Icon
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
-import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.libs.icons.Icons
+import androidx.compose.ui.window.Dialog
+import com.ericafenyo.bikediary.model.Settings
 import com.ericafenyo.bikediary.theme.AppTheme
 import com.ericafenyo.bikediary.theme.titleMedium
+import com.ericafenyo.bikediary.ui.components.inputs.TextField
+import timber.log.Timber
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Profile() {
+internal fun Profile(
+  state: State<ProfileViewState>,
+  dispatch: (ProfileAction) -> Unit,
+) {
   var isDarkTheme by remember { mutableStateOf(false) }
+
+  val settings = state.value.settings
+  val isLoading = state.value.isLoading
+
+  var showCaloriesDialog by remember { mutableStateOf(false) }
+  var showDistanceDialog by remember { mutableStateOf(false) }
 
   Column(
     modifier = Modifier
@@ -69,12 +79,102 @@ fun Profile() {
     Spacer(modifier = Modifier.height(16.dp))
     ThemeSwitcher(isChecked = isDarkTheme, onChecked = { value -> isDarkTheme = value })
     Spacer(modifier = Modifier.height(16.dp))
-
-    StepperModal(
-      value = 6000,
-      onChange = { },
-      onDismiss = { },
+    FitnessGoals(
+      calories = settings.quests.calories.target,
+      distance = settings.quests.distance.target,
+      changeCalories = { showCaloriesDialog = true },
+      changeDistance = { showDistanceDialog = true },
     )
+    if (showCaloriesDialog) {
+      NumberPickerModel(
+        title = "Calories per day",
+        suffixText = "kcal",
+        initialValue = settings.quests.calories.target,
+        onDismiss = { showCaloriesDialog = false },
+        onAction = { caloriesTarget ->
+          Timber.d("THis : $caloriesTarget")
+          val action = ProfileAction.UpdateSettings(
+            Settings.Builder(settings).apply {
+              calories = settings.quests.calories.copy(target = caloriesTarget.toInt())
+            }.build()
+          )
+          dispatch(action)
+        },
+      )
+    }
+
+    if (showDistanceDialog) {
+      NumberPickerModel(
+        title = "Distance per day",
+        suffixText = "km",
+        initialValue = settings.quests.distance.target,
+        onDismiss = { showDistanceDialog = false },
+        onAction = { distanceTarget ->
+          val builder = Settings.Builder(settings)
+          builder.distance = settings.quests.distance.copy(target = distanceTarget.toDouble())
+          val action = ProfileAction.UpdateSettings(builder.build())
+          dispatch(action)
+        },
+      )
+    }
+  }
+}
+
+@Composable
+private fun NumberPickerModel(
+  title: String,
+  suffixText: String,
+  initialValue: Number,
+  onAction: (Number) -> Unit,
+  onDismiss: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  var inputValue by remember { mutableStateOf("$initialValue") }
+
+  Dialog(onDismissRequest = onDismiss) {
+    Column(
+      modifier = modifier
+        .fillMaxWidth()
+        .clip(MaterialTheme.shapes.medium)
+        .background(MaterialTheme.colors.surface)
+        .padding(16.dp)
+    ) {
+
+      Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium
+      )
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      TextField(
+        value = inputValue,
+        onChange = { value -> inputValue = value },
+        modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        trailingIcon = { Text(text = suffixText) }
+      )
+
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .offset(x = 8.dp, y = 16.dp),
+        horizontalArrangement = Arrangement.End
+      ) {
+
+        TextButton(
+          onClick = { onDismiss.invoke() },
+        ) {
+          Text(text = "Cancel")
+        }
+
+        TextButton(
+          onClick = { onAction.invoke(inputValue.toDouble()).also { onDismiss() } }
+        ) {
+          Text(text = "Save")
+        }
+      }
+    }
   }
 }
 
@@ -83,6 +183,12 @@ fun Profile() {
 @Composable
 fun ProfilePreview() {
   AppTheme {
-    Profile()
+    NumberPickerModel(
+      initialValue = 500,
+      onDismiss = {},
+      onAction = {},
+      title = "Calories per day",
+      suffixText = "kcal"
+    )
   }
 }

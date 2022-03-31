@@ -22,33 +22,27 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories
+package com.ericafenyo.bikediary.database.dao
 
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepositoryImpl
-import com.ericafenyo.bikediary.repositories.settings.SettingsRepository
-import com.ericafenyo.bikediary.repositories.settings.SettingsRepositoryImpl
-import com.ericafenyo.bikediary.repositories.user.UserRepository
-import com.ericafenyo.bikediary.repositories.user.UserRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import com.ericafenyo.bikediary.database.entity.SettingsEntity
+import kotlinx.coroutines.flow.Flow
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
+@Dao
+interface SettingsDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(entity: SettingsEntity)
 
-  @Binds
-  @Singleton
-  abstract fun bindAdventureRepository(repository: AdventureRepositoryImpl): AdventureRepository
+  @Query("SELECT * FROM settings LIMIT 1")
+  suspend fun getSettings(): SettingsEntity
 
-  @Binds
-  @Singleton
-  abstract fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
+  @Query("SELECT * FROM settings LIMIT 1")
+  fun settings(): Flow<SettingsEntity?>
 
-  @Binds
-  @Singleton
-  abstract fun bindSettingsRepository(repository: SettingsRepositoryImpl): SettingsRepository
+  @Update
+  suspend fun update(entity: SettingsEntity)
 }

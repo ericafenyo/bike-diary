@@ -28,12 +28,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.ericafenyo.bikediary.theme.AppTheme
-import com.ericafenyo.bikediary.ui.profile.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 
 /**
  * The class contains the user's profile information and general app settings.
@@ -47,7 +50,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProfileFragment : Fragment() {
   private val viewModel: ProfileViewModel by viewModels()
 
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -56,13 +58,24 @@ class ProfileFragment : Fragment() {
     return ComposeView(requireContext()).apply {
       setContent {
         AppTheme {
-          Profile()
+          Profile(
+            state = viewModel.state.collectAsState(initial = ProfileViewState.Default),
+            dispatch = { action ->
+              when(action){
+               is ProfileAction.UpdateSettings -> viewModel.updateSettings(action.settings)
+              }
+            }
+          )
         }
       }
     }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+    lifecycleScope.launchWhenCreated {
+      viewModel.state.collect {
+        Timber.d("This is the profile state: $it")
+      }
+    }
   }
 }

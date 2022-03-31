@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,15 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories
+package com.ericafenyo.bikediary.ui.screens.profile
 
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepositoryImpl
-import com.ericafenyo.bikediary.repositories.settings.SettingsRepository
-import com.ericafenyo.bikediary.repositories.settings.SettingsRepositoryImpl
-import com.ericafenyo.bikediary.repositories.user.UserRepository
-import com.ericafenyo.bikediary.repositories.user.UserRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import com.ericafenyo.bikediary.model.Settings
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
-
-  @Binds
-  @Singleton
-  abstract fun bindAdventureRepository(repository: AdventureRepositoryImpl): AdventureRepository
-
-  @Binds
-  @Singleton
-  abstract fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
-
-  @Binds
-  @Singleton
-  abstract fun bindSettingsRepository(repository: SettingsRepositoryImpl): SettingsRepository
+internal data class ProfileViewState(
+  val isLoading: Boolean = false,
+  val settings: Settings = Settings.Default,
+) {
+  companion object {
+    val Default = ProfileViewState()
+  }
 }

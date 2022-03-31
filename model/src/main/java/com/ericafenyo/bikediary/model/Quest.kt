@@ -22,33 +22,32 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories
+package com.ericafenyo.bikediary.model
 
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepositoryImpl
-import com.ericafenyo.bikediary.repositories.settings.SettingsRepository
-import com.ericafenyo.bikediary.repositories.settings.SettingsRepositoryImpl
-import com.ericafenyo.bikediary.repositories.user.UserRepository
-import com.ericafenyo.bikediary.repositories.user.UserRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import kotlinx.serialization.Serializable
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
-
-  @Binds
-  @Singleton
-  abstract fun bindAdventureRepository(repository: AdventureRepositoryImpl): AdventureRepository
-
-  @Binds
-  @Singleton
-  abstract fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
-
-  @Binds
-  @Singleton
-  abstract fun bindSettingsRepository(repository: SettingsRepositoryImpl): SettingsRepository
+interface Quest<T : Number> {
+  val target: T
+  val min: T
+  val max: T
 }
+
+@Serializable
+data class CaloriesQuest(
+  override val target: Int,
+  override val min: Int,
+  override val max: Int,
+) : Quest<Int>
+
+@Serializable
+data class DistanceQuest(
+  override val target: Double,
+  override val min: Double,
+  override val max: Double,
+) : Quest<Double>
+
+@Serializable
+data class Quests(
+  val calories: CaloriesQuest,
+  val distance: DistanceQuest,
+)
