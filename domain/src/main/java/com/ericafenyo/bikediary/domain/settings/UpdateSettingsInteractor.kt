@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,25 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories
+package com.ericafenyo.bikediary.domain.settings
 
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepositoryImpl
+import com.ericafenyo.bikediary.di.qualifier.DefaultDispatcher
+import com.ericafenyo.bikediary.domain.ParameterizedInteractor
+import com.ericafenyo.bikediary.domain.SubjectInteractor
+import com.ericafenyo.bikediary.model.Settings
 import com.ericafenyo.bikediary.repositories.settings.SettingsRepository
-import com.ericafenyo.bikediary.repositories.settings.SettingsRepositoryImpl
-import com.ericafenyo.bikediary.repositories.user.UserRepository
-import com.ericafenyo.bikediary.repositories.user.UserRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class RepositoryModule {
+@Singleton
+class UpdateSettingsInteractor @Inject constructor(
+  @DefaultDispatcher dispatcher: CoroutineDispatcher,
+  private val repository: SettingsRepository
+) : ParameterizedInteractor<Settings, Unit>(dispatcher) {
 
-  @Binds
-  @Singleton
-  abstract fun bindAdventureRepository(repository: AdventureRepositoryImpl): AdventureRepository
-
-  @Binds
-  @Singleton
-  abstract fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
-
-  @Binds
-  @Singleton
-  abstract fun bindSettingsRepository(repository: SettingsRepositoryImpl): SettingsRepository
+  override suspend fun execute(params: Settings) {
+    repository.updateSettings(params)
+  }
 }

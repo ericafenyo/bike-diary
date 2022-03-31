@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.model
+package com.ericafenyo.bikediary.repositories.settings
 
-import kotlinx.serialization.Serializable
+import com.ericafenyo.bikediary.model.Settings
+import kotlinx.coroutines.flow.Flow
 
-@Serializable
-data class Goals(
-  val distance: Double,
-  val calories: Int
-)
+interface SettingsRepository {
+  fun settings(): Flow<Settings>
+  suspend fun updateSettings(settings: Settings)
+}

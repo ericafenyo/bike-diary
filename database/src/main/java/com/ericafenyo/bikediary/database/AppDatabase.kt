@@ -30,19 +30,22 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.ericafenyo.bikediary.database.dao.AdventureDao
+import com.ericafenyo.bikediary.database.dao.SettingsDao
 import com.ericafenyo.bikediary.database.entity.AdventureEntity
+import com.ericafenyo.bikediary.database.entity.SettingsEntity
 
 @Database(
-  entities = [AdventureEntity::class],
-  version = 2,
+  entities = [AdventureEntity::class, SettingsEntity::class],
+  version = 1,
   exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
   abstract fun getAdventureDao(): AdventureDao
+  abstract fun settingsDao(): SettingsDao
 
   companion object {
-    private const val DB_NAME = "cache-db"
+    private const val DB_NAME = "com.ericafenyo.bikediary.database.AppDatabase"
 
     @Volatile
     private var INSTANCE: AppDatabase? = null

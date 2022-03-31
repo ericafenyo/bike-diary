@@ -24,6 +24,7 @@
 
 package com.ericafenyo.bikediary.ui.screens.profile
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
@@ -36,17 +37,22 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.ericafenyo.bikediary.R.string
 import com.ericafenyo.bikediary.libs.icons.Icons
+import com.ericafenyo.bikediary.theme.AppTheme
 import com.ericafenyo.bikediary.theme.titleMedium
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FitnessGoals(
-
+  calories: Int = 0,
+  distance: Double = 0.0,
+  changeCalories: () -> Unit,
+  changeDistance: () -> Unit,
 ) {
   Card(modifier = Modifier.fillMaxWidth(), elevation = 0.dp) {
     ConstraintLayout(
@@ -66,7 +72,7 @@ fun FitnessGoals(
 
       ExposedDropdownMenuBox(
         expanded = false,
-        onExpandedChange = {},
+        onExpandedChange = { changeDistance.invoke() },
         modifier = Modifier.constrainAs(distanceRef) {
           top.linkTo(titleRef.bottom, 16.dp)
           start.linkTo(parent.start)
@@ -75,7 +81,7 @@ fun FitnessGoals(
         }
       ) {
         OutlinedTextField(
-          value = "6000",
+          value = String.format("%.1f", distance),
           onValueChange = {},
           readOnly = true,
           label = { Text(text = "Distance") },
@@ -85,7 +91,7 @@ fun FitnessGoals(
 
       ExposedDropdownMenuBox(
         expanded = false,
-        onExpandedChange = {},
+        onExpandedChange = { changeCalories.invoke() },
         modifier = Modifier.constrainAs(caloriesRef) {
           top.linkTo(distanceRef.top)
           start.linkTo(centerGuideline, 8.dp)
@@ -94,7 +100,7 @@ fun FitnessGoals(
         }
       ) {
         OutlinedTextField(
-          value = "1000",
+          value = "$calories",
           onValueChange = {},
           readOnly = true,
           label = { Text(text = "Clories") },
@@ -102,5 +108,19 @@ fun FitnessGoals(
         )
       }
     }
+  }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun FitnessGoalsPreview() {
+  AppTheme {
+    FitnessGoals(
+      calories = 500,
+      distance = 1000.0,
+      changeCalories = { },
+      changeDistance = {},
+    )
   }
 }

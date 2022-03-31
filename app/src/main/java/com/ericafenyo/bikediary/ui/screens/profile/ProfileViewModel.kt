@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,44 +22,57 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.profile
+package com.ericafenyo.bikediary.ui.screens.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ericafenyo.bikediary.data
 import com.ericafenyo.bikediary.data.settings.ObserveThemeInteractor
 import com.ericafenyo.bikediary.data.settings.SetThemeUseCase
+import com.ericafenyo.bikediary.domain.settings.ObserveSettingsInteractor
+import com.ericafenyo.bikediary.domain.settings.UpdateSettingsInteractor
+import com.ericafenyo.bikediary.model.Settings
 import com.ericafenyo.bikediary.model.Theme
-import com.ericafenyo.bikediary.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
+internal class ProfileViewModel @Inject constructor(
   private val observeTheme: ObserveThemeInteractor,
   private val setTheme: SetThemeUseCase,
+  private val settingsInteractor: ObserveSettingsInteractor,
+  private val updateSettingsInteractor: UpdateSettingsInteractor,
 ) : ViewModel() {
   private val _isDarkTheme = MutableLiveData<Boolean>()
   val isDarkTheme: LiveData<Boolean> get() = _isDarkTheme
 
-  private val _events = MutableLiveData<Event<ProfileAction>>()
-  val events: LiveData<Event<ProfileAction>> get() = _events
+  private val _isLoading = MutableStateFlow(false)
 
-  sealed class ProfileAction {
-    object SetDistanceGoal : ProfileAction()
-    object SetCaloriesGoal : ProfileAction()
+  val state: Flow<ProfileViewState> = combine(
+    _isLoading,
+    settingsInteractor.asFlow().distinctUntilChanged()
+  ) { isLoading, settings ->
+    ProfileViewState(
+      isLoading = isLoading,
+      settings = settings
+    )
   }
 
   init {
+    settingsInteractor.invoke(Unit)
+
     viewModelScope.launch {
-      observeTheme(Unit).collect {
-        _isDarkTheme.value = it.data == Theme.DARK
-      }
+      delay(2000)
+      _isLoading.value = true
     }
   }
 
@@ -70,12 +83,10 @@ class ProfileViewModel @Inject constructor(
     }
   }
 
-  // Methods used called from xml
-  fun setDistanceGoal() {
-    _events.value = Event(ProfileAction.SetDistanceGoal)
-  }
-
-  fun setCaloriesGoal() {
-    _events.value = Event(ProfileAction.SetCaloriesGoal)
+  fun updateSettings(settings: Settings) {
+    Timber.d("Updating settings: $settings")
+    viewModelScope.launch {
+      updateSettingsInteractor(settings)
+    }
   }
 }

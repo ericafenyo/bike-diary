@@ -25,10 +25,14 @@
 package com.ericafenyo.bikediary.database
 
 import androidx.room.TypeConverter
+import com.ericafenyo.bikediary.model.Quests
+import com.ericafenyo.libs.serialization.KotlinJsonSerializer
 import org.json.JSONArray
 
 
-class Converters {
+object Converters {
+  val serializer = KotlinJsonSerializer.getInstance()
+
   @TypeConverter
   fun fromStrings(points: String): List<String> {
     return listOf()
@@ -37,5 +41,15 @@ class Converters {
   @TypeConverter
   fun toStrings(points: List<String>): String {
     return JSONArray().toString()
+  }
+
+  @TypeConverter
+  fun fromQuests(quests: String): Quests {
+    return serializer.fromJson(quests, Quests.serializer())
+  }
+
+  @TypeConverter
+  fun toQuests(quests: Quests): String {
+    return serializer.toJson(quests, Quests.serializer())
   }
 }

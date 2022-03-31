@@ -34,7 +34,7 @@
 
     <variable
         name="model"
-        type="com.ericafenyo.bikediary.ui.profile.ProfileViewModel" />
+        type="com.ericafenyo.bikediary.ui.screens.profile.ProfileViewModel" />
   </data>
 
   <LinearLayout
@@ -129,7 +129,6 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:inputType="none"
-                  android:onClick="@{()-> model.setDistanceGoal()}"
                   android:text="6000"
                   android:textAppearance="@style/TextAppearance.Title.Medium"
                   app:counterEnabled="true" />
@@ -153,7 +152,6 @@
                   android:layout_height="wrap_content"
                   android:hint="@string/label_calories"
                   android:inputType="none"
-                  android:onClick="@{()-> model.setCaloriesGoal()}"
                   android:text="1000"
                   android:textAppearance="@style/TextAppearance.Title.Medium"
                   app:counterEnabled="true"

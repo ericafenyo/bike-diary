@@ -29,21 +29,42 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Settings(
-  val goals: Goals,
+  val id: String,
   val gender: Gender,
   val height: Double,
   val weight: Double,
+  val quests: Quests,
 ) {
+
+  class Builder(settings: Settings) {
+    private val id: String = settings.id
+    var gender: Gender = settings.gender
+    var height: Double = settings.height
+    var weight: Double = settings.weight
+    var calories: CaloriesQuest = settings.quests.calories
+    var distance: DistanceQuest = settings.quests.distance
+
+    fun build(): Settings {
+      return Settings(
+        id = id,
+        gender = gender,
+        height = height,
+        weight = weight,
+        quests = Quests(calories = calories, distance = distance)
+      )
+    }
+  }
+
   companion object {
-    const val STORAGE_KEY = "com.ericafenyo.bikediary.STORAGE_SETTINGS"
-    val DEFAULT = Settings(
-      goals = Goals(
-        distance = 0.0,
-        calories = 1000,
-      ),
+    val Default = Settings(
+      id = "62459ab8da79e2aaf1c2fd82",
       gender = UNSPECIFIED,
-      height = -1.0,
-      weight = 68.0
+      height = 73.0,
+      weight = 64.0,
+      quests = Quests(
+        distance = DistanceQuest(target = 1000.0, min = 0.0, max = 1000.0),
+        calories = CaloriesQuest(target = 500, min = 100, max = 1000)
+      )
     )
   }
 }
