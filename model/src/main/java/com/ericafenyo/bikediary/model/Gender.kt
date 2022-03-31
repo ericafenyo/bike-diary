@@ -24,13 +24,8 @@
 
 package com.ericafenyo.bikediary.model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
 @Serializable
-enum class Gender {
-  @SerialName("male") MALE,
-  @SerialName("female") FEMALE,
-  @SerialName("unspecified") UNSPECIFIED;
-}
+enum class Gender { MALE, FEMALE, UNSPECIFIED }
