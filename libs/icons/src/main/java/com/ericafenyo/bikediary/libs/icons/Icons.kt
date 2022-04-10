@@ -56,4 +56,19 @@ object Icons {
 
   val Remove: Painter
     @Composable get() = painterResource(R.drawable.ic_remove)
+
+  val Bolt: Painter
+    @Composable get() = painterResource(R.drawable.ic_bolt)
+
+  val Fire: Painter
+    @Composable get() = painterResource(R.drawable.ic_fire)
+
+  val Map: Painter
+    @Composable get() = painterResource(R.drawable.ic_map)
+
+  val Eye: Painter
+    @Composable get() = painterResource(R.drawable.ic_eye)
+
+  val EyeOff: Painter
+    @Composable get() = painterResource(R.drawable.ic_eye_off)
 }
