@@ -62,8 +62,8 @@ data class Settings(
       height = 73.0,
       weight = 64.0,
       quests = Quests(
-        distance = DistanceQuest(target = 1000.0, min = 0.0, max = 1000.0),
-        calories = CaloriesQuest(target = 500, min = 100, max = 1000)
+        distance = DistanceQuest(target = 1000.0),
+        calories = CaloriesQuest(target = 500)
       )
     )
   }

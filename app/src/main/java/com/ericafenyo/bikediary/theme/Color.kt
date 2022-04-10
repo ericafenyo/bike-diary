@@ -31,6 +31,7 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
+
 val color_primary_light = Color(0xff0060aa)
 val color_background_light = Color(0xffe3e5e8)
 val color_surface_light = Color(0xffffffff)
@@ -39,43 +40,9 @@ val color_primary_dark = Color(0xffa0c9ff)
 val color_background_dark = Color(0xff151E27)
 val color_surface_dark = Color(0xff1D2733)
 
-// Success color theme
-val color_success_primary_light = Color(0xff22C55E)
-val color_success_background_light = Color(0xffDCFCE7)
-
-val color_success_primary_dark = Color(0xffFFEDD5)
-val color_success_background_dark = Color(0xffFFEDD5)
-
-fun Colors.toSuccess() = if (isLight) {
-  lightColors(
-    primary = color_success_primary_light,
-    background = color_success_background_light
-  )
-} else {
-  darkColors(
-    primary = color_success_primary_dark,
-    background = color_success_background_dark
-  )
-}
-
-// Info color theme
-val color_info_primary_light = Color(0xff3B82F6)
-val color_info_background_light = Color(0xffDBEAFE)
-
-val color_info_primary_dark = Color(0xffFFEDD5)
-val color_info_background_dark = Color(0xffFFEDD5)
-
-fun Colors.toInfo() = if (isLight) {
-  lightColors(
-    primary = color_info_primary_light,
-    background = color_info_background_light
-  )
-} else {
-  darkColors(
-    primary = color_info_primary_dark,
-    background = color_info_background_dark
-  )
-}
+val color_grey_900 = Color(0xff111827)
+val color_grey_500 = Color(0xff6b7280)
+val color_grey_200 = Color(0xffe5e7eb)
 
 // Success color theme
 val color_success_primary_light = Color(0xff22C55E)
@@ -165,5 +132,21 @@ val DarkColors = darkColors(
   primary = color_primary_dark,
   surface = color_surface_dark,
   background = color_background_dark,
+  onSurface = color_grey_900,
+  onBackground = color_grey_900
 )
 
+val Colors.contentHigh
+  get() = if (isLight) color_grey_900 else Color.White.copy(Alpha.high)
+
+val Colors.contentMedium
+  get() = if (isLight) color_grey_500 else Color.White.copy(Alpha.medium)
+
+val Colors.contentDisabled
+  get() = if (isLight) color_grey_200 else Color.White.copy(Alpha.disabled)
+
+object Alpha {
+  const val high: Float = 0.87f
+  const val medium: Float = 0.60f
+  const val disabled: Float = 0.38f
+}

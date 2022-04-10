@@ -28,22 +28,16 @@ import kotlinx.serialization.Serializable
 
 interface Quest<T : Number> {
   val target: T
-  val min: T
-  val max: T
 }
 
 @Serializable
 data class CaloriesQuest(
-  override val target: Int,
-  override val min: Int,
-  override val max: Int,
+  override val target: Int
 ) : Quest<Int>
 
 @Serializable
 data class DistanceQuest(
-  override val target: Double,
-  override val min: Double,
-  override val max: Double,
+  override val target: Double
 ) : Quest<Double>
 
 @Serializable

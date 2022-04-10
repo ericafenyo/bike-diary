@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,11 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.dashboard
+package com.ericafenyo.bikediary.ui
 
-import android.content.Context
-import com.ericafenyo.bikediary.R.string
-import com.github.mikephil.charting.charts.BarLineChartBase
-import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlinx.coroutines.flow.StateFlow
 
-class DayAxisValueFormatter(val context: Context, chart: BarLineChartBase<*>) : ValueFormatter() {
-  override fun getFormattedValue(value: Float): String {
-    return when (value.toInt()) {
-      0 -> context.getString(string.dashboard_axis_label_monday)
-      1 -> context.getString(string.dashboard_axis_label_tuesday)
-      2 -> context.getString(string.dashboard_axis_label_wednesday)
-      3 -> context.getString(string.dashboard_axis_label_thursday)
-      4 -> context.getString(string.dashboard_axis_label_friday)
-      5 -> context.getString(string.dashboard_axis_label_saturday)
-      6 -> context.getString(string.dashboard_axis_label_sunday)
-      else -> ""
-    }
-  }
+interface Store<STATE, ACTION> {
+  val state: StateFlow<STATE>
+  fun dispatch(action: ACTION)
 }

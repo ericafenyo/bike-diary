@@ -27,9 +27,7 @@ package com.ericafenyo.bikediary
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.ericafenyo.bikediary.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.mapbox.mapboxsdk.Mapbox
 import dagger.hilt.android.HiltAndroidApp
 import io.sentry.android.core.SentryAndroid
 import io.sentry.android.timber.SentryTimberIntegration
@@ -57,8 +55,6 @@ class App : Application(), Configuration.Provider {
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
-    } else {
-      Timber.plant(CrashlyticsTree())
     }
   }
 
