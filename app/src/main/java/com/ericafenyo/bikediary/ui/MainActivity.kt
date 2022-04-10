@@ -31,17 +31,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.databinding.ActivityMainBinding
 import com.ericafenyo.bikediary.model.Theme
 import com.ericafenyo.bikediary.ui.authentication.AuthenticationActivity
-import com.wada811.databinding.dataBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -49,9 +47,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-  private lateinit var navController: NavController
-
-  private val binding: ActivityMainBinding by dataBinding()
   private val viewModel: MainActivityViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,16 +71,11 @@ class MainActivity : AppCompatActivity() {
 
 //    viewModel.theme.observe(this, Observer(::updateForTheme))
 
-    navController = getNavController()
-
-    binding.bottomNavigation.setupWithNavController(navController)
+    findViewById<BottomNavigationView>(R.id.bottom_navigation).setupWithNavController(navController)
   }
 
-  private fun getNavController(): NavController {
-    val navHostFragment =
-      supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
-    return navHostFragment.navController
-  }
+  private val navController: NavController
+    get() = (supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment).navController
 
   companion object {
     /**

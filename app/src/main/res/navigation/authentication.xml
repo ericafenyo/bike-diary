@@ -33,8 +33,7 @@
   <fragment
       android:id="@+id/authenticationFragment"
       android:name="com.ericafenyo.bikediary.ui.authentication.AuthenticationFragment"
-      android:label="AuthenticationFragment"
-      tools:layout="@layout/fragment_authentication">
+      android:label="AuthenticationFragment">
     <action
         android:id="@+id/action_authentication_to_login"
         app:destination="@id/loginFragment"
@@ -54,8 +53,7 @@
   <fragment
       android:id="@+id/loginFragment"
       android:name="com.ericafenyo.bikediary.ui.screens.auth.login.LoginFragment"
-      android:label="fragment_login"
-      tools:layout="@layout/fragment_login" />
+      android:label="fragment_login" />
 
   <fragment
       android:id="@+id/registerFragment"
