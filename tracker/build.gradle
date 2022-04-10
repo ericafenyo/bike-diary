@@ -48,9 +48,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each {
-        it.buildConfigField('String', 'MAPBOX_ACCESS_TOKEN', "\"${project.property("MAPBOX_ACCESS_TOKEN") ?: System.getenv("MAPBOX_ACCESS_TOKEN")}\"")
-    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
