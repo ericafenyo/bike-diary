@@ -35,9 +35,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons.Filled
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +44,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.ericafenyo.bikediary.libs.icons.Icons
 import com.ericafenyo.bikediary.ui.components.inputs.field.FieldMessage
 
 @Composable
@@ -81,7 +79,7 @@ fun PasswordTextField(
     trailingIcon = {
       IconButton(onClick = { showPassword.value = !showPassword.value }) {
         Icon(
-          if (showPassword.value) Filled.Visibility else Filled.VisibilityOff,
+          if (showPassword.value) Icons.Eye else Icons.EyeOff,
           contentDescription = "Visibility",
         )
       }

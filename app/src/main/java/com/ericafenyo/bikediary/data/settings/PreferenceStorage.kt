@@ -34,16 +34,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 
 interface PreferenceStorage {
   var selectedTheme: String
   var observableSelectedTheme: Flow<String>
 }
 
+@OptIn(ObsoleteCoroutinesApi::class)
 class SharedPreferenceStorage(context: Context) : PreferenceStorage {
   private val selectedThemeChannel: ConflatedBroadcastChannel<String> by lazy {
     ConflatedBroadcastChannel<String>().also { channel ->
-      channel.offer(selectedTheme)
+      channel.trySend(selectedTheme).isSuccess
     }
   }
 
@@ -57,7 +59,7 @@ class SharedPreferenceStorage(context: Context) : PreferenceStorage {
 
   private val changeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
     when (key) {
-      PREF_DARK_MODE_ENABLED -> selectedThemeChannel.offer(selectedTheme)
+      PREF_DARK_MODE_ENABLED -> selectedThemeChannel.trySend(selectedTheme).isSuccess
     }
   }
 
