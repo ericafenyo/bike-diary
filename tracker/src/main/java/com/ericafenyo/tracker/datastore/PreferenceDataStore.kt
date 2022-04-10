@@ -25,23 +25,27 @@
 package com.ericafenyo.tracker.datastore
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
-import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PreferenceDataStore private constructor(context: Context) {
-  private val dataStore = context.createDataStore(name = "tracker_data_store")
+class PreferenceDataStore private constructor(private val context: Context) {
+  val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "tracker_data_store")
 
   suspend fun putString(key: String, value: String) {
-    dataStore.edit { preference ->
-      preference[preferencesKey(key)] = value
+    context.dataStore.edit { preference ->
+      preference[stringPreferencesKey(key)] = value
     }
   }
 
   fun getString(key: String, defaultValue: String): Flow<String> {
-    return dataStore.data.map { preference -> preference[preferencesKey(key)] ?: defaultValue }
+    return context.dataStore.data.map { preference ->
+      preference[stringPreferencesKey(key)] ?: defaultValue
+    }
   }
 
   companion object {

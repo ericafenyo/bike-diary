@@ -29,13 +29,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.graphics.ColorUtils
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
-import com.mancj.slimchart.SlimChart
 
 
 @BindingAdapter("image")
@@ -56,17 +54,6 @@ fun View.bindGoneIf(gone: Boolean) {
 @BindingAdapter("doOnTextChanged")
 fun TextInputEditText.bindDoOnTextChanged(block: (view: View, text: String) -> Unit) {
   doOnTextChanged { characters, _, _, _ -> block(this, characters.toString()) }
-}
-
-@BindingAdapter("starts")
-fun SlimChart.bindStarts(progress: Int = 0) {
-  stats = floatArrayOf(progress.toFloat(), 100F)
-}
-
-@BindingAdapter("color")
-fun SlimChart.bindColor(color: Int) {
-  val track = ColorUtils.setAlphaComponent(color, 50)
-  colors = intArrayOf(color, track)
 }
 
 @BindingAdapter("html")
