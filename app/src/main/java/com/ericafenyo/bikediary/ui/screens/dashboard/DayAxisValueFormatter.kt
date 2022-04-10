@@ -22,25 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.dashboard
+package com.ericafenyo.bikediary.ui.screens.dashboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.ericafenyo.bikediary.util.Event
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import android.content.Context
+import com.ericafenyo.bikediary.R.string
+import com.github.mikephil.charting.charts.BarLineChartBase
+import com.github.mikephil.charting.formatter.ValueFormatter
 
-@HiltViewModel
-class DashboardViewModel @Inject constructor() : ViewModel() {
-  private val _events = MutableLiveData<Event<Action>>()
-  val events: LiveData<Event<Action>> get() = _events
-
-  enum class Action {
-    LAUNCH_ACHIEVEMENTS
-  }
-
-  fun dispatchAction(action: Action) {
-    _events.value = Event(action)
+class DayAxisValueFormatter(val context: Context, chart: BarLineChartBase<*>) : ValueFormatter() {
+  override fun getFormattedValue(value: Float): String {
+    return when (value.toInt()) {
+      0 -> context.getString(string.dashboard_axis_label_monday)
+      1 -> context.getString(string.dashboard_axis_label_tuesday)
+      2 -> context.getString(string.dashboard_axis_label_wednesday)
+      3 -> context.getString(string.dashboard_axis_label_thursday)
+      4 -> context.getString(string.dashboard_axis_label_friday)
+      5 -> context.getString(string.dashboard_axis_label_saturday)
+      6 -> context.getString(string.dashboard_axis_label_sunday)
+      else -> ""
+    }
   }
 }

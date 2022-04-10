@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 TransWay
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +22,41 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.database
+package com.ericafenyo.bikediary.ui.screens.dashboard
 
-import androidx.room.TypeConverter
-import com.ericafenyo.bikediary.model.Quests
-import com.ericafenyo.libs.serialization.KotlinJsonSerializer
-import org.json.JSONArray
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.ericafenyo.bikediary.theme.AppTheme
 
 
-object Converters {
-  private val serializer = KotlinJsonSerializer.getInstance()
+/**
+ * A simple [Fragment] subclass for displaying users adventure metrics.
+ */
+class DashboardFragment : Fragment() {
+  private val viewModel: DashboardViewModel by viewModels()
 
-  @TypeConverter
-  fun fromStrings(points: String): List<String> {
-    return listOf()
-  }
-
-  @TypeConverter
-  fun toStrings(points: List<String>): String {
-    return JSONArray().toString()
-  }
-
-  @TypeConverter
-  fun fromQuests(quests: String): Quests {
-    return serializer.fromJson(quests, Quests.serializer())
-  }
-
-  @TypeConverter
-  fun toQuests(quests: Quests): String {
-    return serializer.toJson(quests, Quests.serializer())
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    return ComposeView(requireContext()).apply {
+      setContent {
+        AppTheme {
+          val state by viewModel.state.collectAsState()
+          Dashboard(
+            state = state,
+            dispatch = viewModel::dispatch
+          )
+        }
+      }
+    }
   }
 }
