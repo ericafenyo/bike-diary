@@ -25,56 +25,31 @@
 package com.ericafenyo.bikediary.ui.diary
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.ericafenyo.bikediary.Constants.ARGUMENT_ADVENTURE_ID
-import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.databinding.FragmentDiaryBinding
-import com.ericafenyo.bikediary.ui.diary.DiaryAdapter.OnItemClickListener
-import com.ericafenyo.bikediary.util.SpaceItemDecoration
-import com.ericafenyo.bikediary.util.dp2px
-import com.wada811.databinding.dataBinding
+import com.ericafenyo.bikediary.theme.AppTheme
+import com.ericafenyo.bikediary.ui.screens.adventures.Adventures
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
-class DiaryFragment : Fragment(R.layout.fragment_diary) {
-  private val binding: FragmentDiaryBinding by dataBinding()
-  private val model: DiaryViewModel by viewModels()
-  private val diaryAdapter = DiaryAdapter()
+class DiaryFragment : Fragment() {
+  private val viewModel: DiaryViewModel by viewModels()
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
-    diaryAdapter.setListener(diaryItemClickListener)
-    binding.lifecycleOwner = viewLifecycleOwner
-    binding.model = model
-
-    binding.diaryRecyclerView.apply {
-      adapter = diaryAdapter
-      setHasFixedSize(true)
-      addItemDecoration(SpaceItemDecoration(dp2px(6), dp2px(12)))
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    return ComposeView(requireContext()).apply {
+      setContent {
+        AppTheme {
+          Adventures()
+        }
+      }
     }
-
-    model.adventures.observe(viewLifecycleOwner, { trips ->
-      Timber.d("adventures observe $trips")
-      diaryAdapter.submitList(trips)
-    })
-  }
-
-  private val diaryItemClickListener = object : OnItemClickListener {
-    override fun onItemClick(view: View, adventureId: String) {
-
-      val args = Bundle().apply { putString(ARGUMENT_ADVENTURE_ID, adventureId) }
-      findNavController().navigate(R.id.action_diaryFragment_to_adventureDetailsFragment, args)
-    }
-  }
-
-  override fun onDestroyView() {
-    diaryAdapter.setListener(null)
-    binding.diaryRecyclerView.adapter = null
-    super.onDestroyView()
   }
 }

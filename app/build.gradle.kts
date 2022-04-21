@@ -102,6 +102,7 @@ dependencies {
   kapt(libs.androidx.work.hiltCompiler)
 
   implementation(libs.compose.activity)
+  implementation(libs.compose.coil)
   implementation(libs.compose.constraintlayout)
   implementation(libs.compose.foundation)
   implementation(libs.compose.material)

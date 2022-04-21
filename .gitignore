@@ -22,3 +22,4 @@ bin/download_schema.sh
 Gemfile.lock
 fastlane/.idea/
 fastlane/report.xml
+.idea/inspectionProfiles/Project_Default.xml
