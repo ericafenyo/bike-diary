@@ -33,8 +33,7 @@
   <fragment
       android:id="@+id/diaryFragment"
       android:name="com.ericafenyo.bikediary.ui.diary.DiaryFragment"
-      android:label="fragment_diary"
-      tools:layout="@layout/fragment_diary">
+      android:label="fragment_diary">
     <action
         android:id="@+id/action_diaryFragment_to_adventureDetailsFragment"
         app:destination="@id/adventureDetailsFragment" />
