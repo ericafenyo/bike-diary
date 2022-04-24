@@ -28,6 +28,7 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.mapbox.maps.ResourceOptionsManager
 import dagger.hilt.android.HiltAndroidApp
 import io.sentry.android.core.SentryAndroid
 import io.sentry.android.timber.SentryTimberIntegration
@@ -43,8 +44,7 @@ class App : Application(), Configuration.Provider {
     // Initialize the timezone information android three ten
     AndroidThreeTen.init(this)
     // Setup mapbox sdk
-//    Mapbox.getInstance(applicationContext, BuildConfig.MAPBOX_ACCESS_TOKEN)
-
+    ResourceOptionsManager.getDefault(applicationContext, BuildConfig.MAPBOX_PUBLIC_TOKEN)
     // Initialize sentry logger service
     SentryAndroid.init(this) { options ->
       // Send timber error logs

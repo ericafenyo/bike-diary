@@ -100,8 +100,7 @@ leakCanary = "com.squareup.leakcanary:leakcanary-android:2.8.1"
 
 lottie = "com.airbnb.android:lottie:4.1.0"
 
-mapbox-android = "com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1"
-mapbox-annotation = "com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v9:0.9.0"
+mapbox-android = "com.mapbox.maps:android:10.4.0"
 
 materialratingbar = "me.zhanghai.android.materialratingbar:library:1.4.0"
 
