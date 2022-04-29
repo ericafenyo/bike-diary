@@ -7,8 +7,8 @@ plugins {
   id("androidx.navigation.safeargs")
 }
 
-val SENTRY_DSN: Any by project
-val MAPBOX_ACCESS_TOKEN: Any by project
+@Suppress("PropertyName") val SENTRY_DSN: Any by project
+@Suppress("PropertyName") val MAPBOX_PUBLIC_TOKEN: Any by project
 
 android {
   compileSdk = libs.versions.compileSdk.get().toInt()
@@ -27,7 +27,7 @@ android {
     multiDexEnabled = true
 
     buildConfigField("String", "SENTRY_DSN", "\"$SENTRY_DSN\"")
-    buildConfigField("String", "MAPBOX_ACCESS_TOKEN", "\"$MAPBOX_ACCESS_TOKEN\"")
+    buildConfigField("String", "MAPBOX_PUBLIC_TOKEN", "\"$MAPBOX_PUBLIC_TOKEN\"")
   }
 
 //  lintOptions {
@@ -127,7 +127,6 @@ dependencies {
   implementation(libs.lottie)
 
   implementation(libs.mapbox.android)
-  implementation(libs.mapbox.annotation)
 
   implementation(libs.materialratingbar)
 
@@ -143,5 +142,5 @@ dependencies {
 }
 
 hilt {
-  enableExperimentalClasspathAggregation = true
+  enableAggregatingTask = true
 }
