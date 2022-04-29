@@ -24,55 +24,9 @@
 
 package com.ericafenyo.bikediary.ui.map
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.ericafenyo.bikediary.ui.UiAction
-import com.ericafenyo.bikediary.util.Event
-import com.ericafenyo.tracker.datastore.CurrentState
-import com.ericafenyo.tracker.datastore.PreferenceDataStore
-import com.ericafenyo.tracker.datastore.RecordsProvider
-import com.ericafenyo.tracker.location.SimpleLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 
 @HiltViewModel
-class MapViewModel @Inject constructor(
-  private val dataStore: PreferenceDataStore,
-  recordsProvider: RecordsProvider
-) : ViewModel() {
-
-  private val _action = MutableLiveData<Event<UiAction>>()
-  val action: LiveData<Event<UiAction>> get() = _action
-
-  val locationUpdates: LiveData<SimpleLocation> = recordsProvider.singleRecord()
-    .map { record -> record?.location }
-    .asLiveData()
-
-  val currentTrackerState: CurrentState = runBlocking { recordsProvider.getCurrentState().first() }
-
-  private val _isTrackingOngoing = MutableLiveData<Boolean>()
-  val isTrackingOngoing: LiveData<Boolean> get() = _isTrackingOngoing
-
-  init {
-    viewModelScope.launch {
-      recordsProvider.getCurrentState().collect { currentState ->
-        Timber.d("PreferenceDataStore $currentState")
-        _isTrackingOngoing.value = currentState.isOngoing()
-      }
-    }
-  }
-
-  fun dispatch(uiAction: UiAction) {
-    _action.value = Event((uiAction))
-  }
-}
-
+class MapViewModel @Inject constructor() : ViewModel()

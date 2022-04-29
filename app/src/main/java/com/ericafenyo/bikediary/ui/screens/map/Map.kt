@@ -24,24 +24,82 @@
 
 package com.ericafenyo.bikediary.ui.screens.map
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetState
+import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.ericafenyo.bikediary.libs.icons.Icons
+import com.ericafenyo.bikediary.theme.AppTheme
+import com.ericafenyo.bikediary.theme.bodyLarge
+import com.ericafenyo.bikediary.theme.contentMedium
+import com.ericafenyo.bikediary.theme.displayMedium
 import com.mapbox.maps.MapView
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Map() {
-  Scaffold {
-    Box(modifier = Modifier.fillMaxWidth()) {
-      MapboxView()
+  Box(modifier = Modifier.fillMaxSize()) {
+    val sheetState = rememberBottomSheetScaffoldState(
+      bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
+    )
+    BottomSheetScaffold(
+      sheetShape = RoundedCornerShape(
+        topStart = 24.dp,
+        topEnd = 24.dp,
+        bottomEnd = 0.dp,
+        bottomStart = 0.dp
+      ),
+      scaffoldState = sheetState,
+      sheetContent = {
+        TrackingMetrics()
+      },
+      sheetGesturesEnabled = false,
+      floatingActionButton = {
+        FloatingActionButton(
+          modifier = Modifier.offset(y = (-34).dp),
+          onClick = { /*TODO*/ },
+          backgroundColor = Color.White,
+        ) {
+          Icon(
+            tint = MaterialTheme.colors.primary,
+            painter = Icons.CurrentLocation,
+            contentDescription = null
+          )
+        }
+      },
+      floatingActionButtonPosition = FabPosition.End
+    ) {
+      Box(modifier = Modifier.fillMaxWidth()) {
+        MapboxView()
+      }
     }
   }
 }
@@ -56,4 +114,53 @@ fun MapboxView(modifier: Modifier = Modifier) {
 fun rememberMapView(): MapView {
   val context = LocalContext.current
   return remember { MapView(context) }
+}
+
+@Composable
+fun TrackingMetrics(modifier: Modifier = Modifier) {
+  Box(
+    modifier = modifier
+  ) {
+    Column {
+      Spacer(modifier = Modifier.height(8.dp))
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+      ) {
+        IconButton(onClick = {
+
+        }, modifier = Modifier.padding(16.dp)) {
+          Icon(
+            painter = Icons.Close, contentDescription = "End adventure"
+          )
+        }
+        Text(
+          text = "01:32:56",
+          color = MaterialTheme.colors.primary,
+          style = MaterialTheme.typography.displayMedium
+        )
+        IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(16.dp)) {
+          Icon(painter = Icons.Camera, contentDescription = "Take Photo")
+        }
+      }
+
+      Text(
+        text = "2.6 km . 156 kcal",
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = Modifier.align(Alignment.CenterHorizontally),
+        color = MaterialTheme.colors.contentMedium
+      )
+
+      Spacer(modifier = Modifier.height(16.dp))
+    }
+  }
+}
+
+@Preview
+@Composable
+fun TrackingMetricsPreview() {
+  AppTheme {
+    Map()
+  }
 }
