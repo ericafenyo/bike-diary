@@ -71,4 +71,11 @@ object Icons {
 
   val EyeOff: Painter
     @Composable get() = painterResource(R.drawable.ic_eye_off)
+
+  val Camera: Painter
+    @Composable get() = painterResource(R.drawable.ic_camera)
+
+
+  val CurrentLocation: Painter
+    @Composable get() = painterResource(R.drawable.ic_current_location)
 }
