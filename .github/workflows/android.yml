@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+      MAPBOX_DOWNLOAD_TOKEN: ${{ secrets.MAPBOX_DOWNLOAD_TOKEN }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: chmod +x gradlew
         
       - name: Run Unit Tests
-        run: ./gradlew test -PMAPBOX_ACCESS_TOKEN="${MAPBOX_ACCESS_TOKEN}" -PSENTRY_DSN="${SENTRY_DSN}"
+        run: ./gradlew test -PMAPBOX_DOWNLOAD_TOKEN="${MAPBOX_DOWNLOAD_TOKEN}" -PSENTRY_DSN="${SENTRY_DSN}"
         
       - name: Build with Gradle
-        run: ./gradlew assembleDebug -PMAPBOX_ACCESS_TOKEN="${MAPBOX_ACCESS_TOKEN}" -PSENTRY_DSN="${SENTRY_DSN}"
+        run: ./gradlew assembleDebug -PMAPBOX_DOWNLOAD_TOKEN="${MAPBOX_DOWNLOAD_TOKEN}" -PSENTRY_DSN="${SENTRY_DSN}"
