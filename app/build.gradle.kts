@@ -7,9 +7,6 @@ plugins {
   id("androidx.navigation.safeargs")
 }
 
-@Suppress("PropertyName") val SENTRY_DSN: Any by project
-@Suppress("PropertyName") val MAPBOX_PUBLIC_TOKEN: Any by project
-
 android {
   compileSdk = libs.versions.compileSdk.get().toInt()
 
@@ -26,8 +23,8 @@ android {
 
     multiDexEnabled = true
 
-    buildConfigField("String", "SENTRY_DSN", "\"$SENTRY_DSN\"")
-    buildConfigField("String", "MAPBOX_PUBLIC_TOKEN", "\"$MAPBOX_PUBLIC_TOKEN\"")
+    buildConfigField("String", "SENTRY_DSN", "\"${findProperty("SENTRY_DSN")}\"")
+    buildConfigField("String", "MAPBOX_PUBLIC_TOKEN", "\"${findProperty("MAPBOX_PUBLIC_TOKEN")}\"" )
   }
 
 //  lintOptions {
