@@ -26,7 +26,7 @@ jobs:
         run: chmod +x gradlew
         
       - name: Run Unit Tests
-        run: ./gradlew test -PMAPBOX_DOWNLOAD_TOKEN="${MAPBOX_DOWNLOAD_TOKEN} -PMAPBOX_PUBLIC_TOKEN="${MAPBOX_PUBLIC_TOKEN} -PSENTRY_DSN="${SENTRY_DSN}"
+        run: ./gradlew test -PMAPBOX_DOWNLOAD_TOKEN="${MAPBOX_DOWNLOAD_TOKEN}" -PMAPBOX_PUBLIC_TOKEN="${MAPBOX_PUBLIC_TOKEN}" -PSENTRY_DSN="${SENTRY_DSN}"
         
       - name: Build with Gradle
-        run: ./gradlew assembleDebug -PMAPBOX_DOWNLOAD_TOKEN="${MAPBOX_DOWNLOAD_TOKEN} -PMAPBOX_PUBLIC_TOKEN="${MAPBOX_PUBLIC_TOKEN} -PSENTRY_DSN="${SENTRY_DSN}"
+        run: ./gradlew assembleDebug -PMAPBOX_DOWNLOAD_TOKEN="${MAPBOX_DOWNLOAD_TOKEN}" -PMAPBOX_PUBLIC_TOKEN="${MAPBOX_PUBLIC_TOKEN}" -PSENTRY_DSN="${SENTRY_DSN}"
