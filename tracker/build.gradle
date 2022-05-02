@@ -27,6 +27,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlinx-serialization'
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -73,6 +74,9 @@ dependencies {
     implementation libs.androidx.room.runtime
     implementation libs.androidx.room.ktx
     kapt libs.androidx.room.compiler
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     implementation libs.androidx.datastore
 
