@@ -27,6 +27,8 @@ package com.ericafenyo.tracker.location
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import com.ericafenyo.bikediary.logger.Logger
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -64,12 +66,13 @@ class LocationUpdatesAction(private val context: Context) {
     val intent = Intent(context, LocationUpdatesReceiver::class.java)
     // FLAG_UPDATE_CURRENT replaces any existing broadcast.
     // We want to handle one location update at a time.
-    return PendingIntent.getBroadcast(
-      context,
-      0,
-      intent,
-      PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-    )
+    return PendingIntent.getBroadcast(context, 0, intent, pendingIntentFlag)
+  }
+
+  private val pendingIntentFlag = if (VERSION.SDK_INT >= VERSION_CODES.S) {
+    PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+  } else {
+    PendingIntent.FLAG_UPDATE_CURRENT
   }
 
   companion object {

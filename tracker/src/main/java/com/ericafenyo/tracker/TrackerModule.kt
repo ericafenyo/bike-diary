@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,30 @@
 
 package com.ericafenyo.tracker
 
-object Constants {
-  const val TRACKER_STATE_START = "tracker.state.start"
-  const val TRACKER_STATE_READY = "tracker.state.ready"
-  const val TRACKER_STATE_ONGOING = "tracker.state.ongoing"
-  const val TRACKER_STATE_DISABLED = "tracker.state.disabled"
+import com.ericafenyo.tracker.internal.TrackerImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-  const val TRACKER_CURRENT_STATE_KEY = "com.ericafenyo.tracker.TRACKER_CURRENT_STATE"
+@Module
+@InstallIn(SingletonComponent::class)
+internal abstract class TrackerModule {
+
+  @Binds
+  @Singleton
+  abstract fun bindTracker(impl: TrackerImpl): Tracker
+
+//  @Provides
+//  @Singleton
+//  fun provideTrackerDataSource(@ApplicationContext context: Context): RecordsProvider {
+//    return RecordsProvider(context)
+//  }
+
+//  @Provides
+//  @Singleton
+//  fun providePreferenceDataStore(@ApplicationContext context: Context): PreferenceDataStore {
+//    return PreferenceDataStore.getInstance(context)
+//  }
 }
