@@ -64,6 +64,7 @@ dependencies {
     implementation project(path: ':model')
     implementation project(path: ':database')
     implementation project(path: ':logger')
+    implementation project(path: ':libs:storage')
 
     testImplementation libs.junit
 

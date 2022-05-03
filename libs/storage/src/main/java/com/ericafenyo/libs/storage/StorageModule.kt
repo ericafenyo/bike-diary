@@ -37,4 +37,8 @@ internal abstract class StorageModule {
   @Binds
   @Singleton
   abstract fun bindEncryptedPreferences(impl: EncryptedPreferencesImpl): EncryptedPreferences
+
+  @Binds
+  @Singleton
+  abstract fun bindPreferenceStorage(impl: PreferenceStorageImpl): PreferenceStorage
 }

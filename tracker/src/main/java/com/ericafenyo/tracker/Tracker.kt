@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.di
+package com.ericafenyo.tracker
 
-import android.content.Context
-import com.ericafenyo.tracker.datastore.RecordsProvider
-import com.ericafenyo.tracker.datastore.PreferenceDataStore
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
 
-@Module
-@InstallIn(SingletonComponent::class)
-object TrackerModule {
+interface Tracker {
+  val state: Flow<State>
 
-  @Provides
-  @Singleton
-  fun provideTrackerDataSource(@ApplicationContext context: Context): RecordsProvider {
-    return RecordsProvider(context)
-  }
+  suspend fun updateState(state: State)
 
-  @Provides
-  @Singleton
-  fun providePreferenceDataStore(@ApplicationContext context: Context): PreferenceDataStore {
-    return PreferenceDataStore.getInstance(context)
-  }
+  suspend fun start()
+
+  suspend fun stop()
+
+  enum class State { READY, ONGOING, DISABLED }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,31 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker
+package com.ericafenyo.bikediary.ui.screens.map
 
-object Constants {
-  const val TRACKER_STATE_START = "tracker.state.start"
-  const val TRACKER_STATE_READY = "tracker.state.ready"
-  const val TRACKER_STATE_ONGOING = "tracker.state.ongoing"
-  const val TRACKER_STATE_DISABLED = "tracker.state.disabled"
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.bikediary.ui.Store
+import com.ericafenyo.bikediary.ui.screens.map.TrackerAction.START
+import com.ericafenyo.bikediary.ui.screens.map.TrackerAction.STOP
+import com.ericafenyo.tracker.Tracker
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-  const val TRACKER_CURRENT_STATE_KEY = "com.ericafenyo.tracker.TRACKER_CURRENT_STATE"
+@HiltViewModel
+class MapViewModel @Inject constructor(
+  private val tracker: Tracker,
+) : ViewModel(), Store<Unit, TrackerAction> {
+
+  override val state: StateFlow<Unit>
+    get() = TODO("Not yet implemented")
+
+  override fun dispatch(action: TrackerAction) {
+    when (action) {
+      START -> viewModelScope.launch { tracker.start() }
+      STOP -> viewModelScope.launch { tracker.stop() }
+    }
+  }
 }

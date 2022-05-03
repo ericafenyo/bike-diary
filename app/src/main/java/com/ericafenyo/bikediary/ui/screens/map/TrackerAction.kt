@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,9 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.map
+package com.ericafenyo.bikediary.ui.screens.map
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-
-@HiltViewModel
-class MapViewModel @Inject constructor() : ViewModel()
+sealed class TrackerAction {
+  object START : TrackerAction()
+  object STOP : TrackerAction()
+}

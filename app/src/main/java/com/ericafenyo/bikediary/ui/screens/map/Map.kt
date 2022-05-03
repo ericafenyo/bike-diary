@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetState
@@ -65,7 +66,9 @@ import com.mapbox.maps.MapView
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Map() {
+fun Map(
+  dispatch: (TrackerAction) -> Unit
+) {
   Box(modifier = Modifier.fillMaxSize()) {
     val sheetState = rememberBottomSheetScaffoldState(
       bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
@@ -79,13 +82,16 @@ fun Map() {
       ),
       scaffoldState = sheetState,
       sheetContent = {
-        TrackingMetrics()
+        TrackingMetrics(
+          stop = { dispatch(TrackerAction.STOP) },
+          takePicture = {}
+        )
       },
       sheetGesturesEnabled = false,
       floatingActionButton = {
         FloatingActionButton(
           modifier = Modifier.offset(y = (-34).dp),
-          onClick = { /*TODO*/ },
+          onClick = { },
           backgroundColor = Color.White,
         ) {
           Icon(
@@ -97,8 +103,24 @@ fun Map() {
       },
       floatingActionButtonPosition = FabPosition.End
     ) {
-      Box(modifier = Modifier.fillMaxWidth()) {
+      Box(modifier = Modifier.fillMaxSize()) {
         MapboxView()
+        FloatingActionButton(
+          modifier = Modifier
+            .padding(
+              bottom = 200.dp,
+              end = 16.dp
+            )
+            .align(Alignment.BottomEnd),
+          backgroundColor = Color.White,
+          onClick = { dispatch(TrackerAction.START) }) {
+          Icon(
+            modifier = Modifier.size(36.dp),
+            tint = MaterialTheme.colors.primary,
+            painter = Icons.Play,
+            contentDescription = null
+          )
+        }
       }
     }
   }
@@ -117,7 +139,11 @@ fun rememberMapView(): MapView {
 }
 
 @Composable
-fun TrackingMetrics(modifier: Modifier = Modifier) {
+fun TrackingMetrics(
+  stop: () -> Unit,
+  takePicture: () -> Unit,
+  modifier: Modifier = Modifier
+) {
   Box(
     modifier = modifier
   ) {
@@ -128,9 +154,7 @@ fun TrackingMetrics(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
       ) {
-        IconButton(onClick = {
-
-        }, modifier = Modifier.padding(16.dp)) {
+        IconButton(onClick = stop, modifier = Modifier.padding(16.dp)) {
           Icon(
             painter = Icons.Close, contentDescription = "End adventure"
           )
@@ -140,7 +164,7 @@ fun TrackingMetrics(modifier: Modifier = Modifier) {
           color = MaterialTheme.colors.primary,
           style = MaterialTheme.typography.displayMedium
         )
-        IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(16.dp)) {
+        IconButton(onClick = takePicture, modifier = Modifier.padding(16.dp)) {
           Icon(painter = Icons.Camera, contentDescription = "Take Photo")
         }
       }
@@ -161,6 +185,6 @@ fun TrackingMetrics(modifier: Modifier = Modifier) {
 @Composable
 fun TrackingMetricsPreview() {
   AppTheme {
-    Map()
+    Map(dispatch = {})
   }
 }

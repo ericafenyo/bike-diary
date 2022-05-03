@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.map
+package com.ericafenyo.bikediary.ui.screens.map
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,7 +32,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ericafenyo.bikediary.theme.AppTheme
-import com.ericafenyo.bikediary.ui.screens.map.Map
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,7 +51,7 @@ class MapFragment : Fragment() {
     return ComposeView(requireContext()).apply {
       setContent {
         AppTheme {
-          Map()
+          Map(dispatch = { action -> viewModel.dispatch(action) })
         }
       }
     }

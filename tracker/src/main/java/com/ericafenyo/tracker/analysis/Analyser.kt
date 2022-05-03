@@ -87,8 +87,8 @@ class Analyser constructor(private val context: Context) {
     // TODO: 06/05/2021 How many points determine a valid point?
     try {
       if (records.size < 10) {
-        Logger.debug(context, TAG, "Invalid record list, returning empty list")
-        throw RuntimeException("Invalid record list, returning empty list")
+        Logger.debug(context, TAG, "Invalid record list, skipping")
+        return@withContext null
       }
 
       // Create LineString feature for trip path
@@ -114,7 +114,7 @@ class Analyser constructor(private val context: Context) {
         geojson = featureCollection.toJson(),
         completedAt = metrics.completedAt,
         uuid = "",
-       )
+      )
     } catch (exception: Exception) {
       Logger.error(
         context,
@@ -155,7 +155,7 @@ class Analyser constructor(private val context: Context) {
       Logger.error(context, TAG, "An error occurred while trying to save documents: $exception")
       Result.Error(exception)
     } finally {
-      context.sendBroadcast(context.getExplicitIntent(R.string.tracker_action_end_analysis))
+//      context.sendBroadcast(context.getExplicitIntent(R.string.tracker_action_end_analysis))
     }
   }
 

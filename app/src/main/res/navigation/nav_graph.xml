@@ -42,14 +42,12 @@
   <fragment
       android:id="@+id/diary"
       android:name="com.ericafenyo.bikediary.ui.diary.DiaryFragment"
-      android:label="DiaryFragment"
-      tools:layout="@layout/fragment_diary" />
+      android:label="DiaryFragment" />
 
   <fragment
       android:id="@+id/map"
-      android:name="com.ericafenyo.bikediary.ui.map.MapFragment"
-      android:label="MapFragment"
-      tools:layout="@layout/fragment_map" />
+      android:name="com.ericafenyo.bikediary.ui.screens.map.MapFragment"
+      android:label="MapFragment" />
   <fragment
       android:id="@+id/profile"
       android:name="com.ericafenyo.bikediary.ui.screens.profile.ProfileFragment"
