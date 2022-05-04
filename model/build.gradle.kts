@@ -23,42 +23,17 @@
  */
 
 plugins {
-  id("com.android.library")
-  id("kotlin-android")
+  id("java-library")
+  id("kotlin")
+  id("kotlinx-serialization")
 }
 
-android {
-  compileSdk = libs.versions.compileSdk.get().toInt()
-
-  defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  buildFeatures {
-    compose = true
-    buildConfig = false
-  }
-
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.get()
-  }
-
-  lint {
-//    disable.add("ObsoleteLintCustomCheck")
-//    abortOnError = true
-//    warningsAsErrors = true
-  }
+java {
+  sourceCompatibility = JavaVersion.VERSION_1_8
+  targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 dependencies {
+  implementation(libs.kotlin.serialization.json)
   implementation(libs.kotlin.stdlib)
-  implementation(libs.androidx.core)
-  implementation(libs.compose.runtime)
-  implementation(libs.compose.ui)
 }

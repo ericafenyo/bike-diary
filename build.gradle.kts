@@ -22,43 +22,48 @@
  * SOFTWARE.
  */
 
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath(libs.android.gradlePlugin)
+    classpath(libs.kotlin.gradlePlugin)
+    classpath(libs.kotlin.serialization.gradlePlugin)
+    classpath(libs.hilt.gradlePlugin)
+    classpath(libs.apollo.gradlePlugin)
+    classpath(libs.dokka)
+    classpath(libs.androidx.navigation.gradlePlugin)
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+  }
+}
+
 plugins {
-  id("com.android.library")
-  id("kotlin-android")
+  id("com.osacky.doctor") version "0.8.0"
 }
 
-android {
-  compileSdk = libs.versions.compileSdk.get().toInt()
-
-  defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  buildFeatures {
-    compose = true
-    buildConfig = false
-  }
-
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.get()
-  }
-
-  lint {
-//    disable.add("ObsoleteLintCustomCheck")
-//    abortOnError = true
-//    warningsAsErrors = true
+allprojects {
+  repositories {
+    google()
+    mavenCentral()
+    jcenter()
+    maven {
+      url = uri("https://api.mapbox.com/downloads/v2/releases/maven")
+      authentication {
+        create<BasicAuthentication>("basic")
+      }
+      credentials {
+        username = "mapbox"
+        password = property("MAPBOX_DOWNLOAD_TOKEN") as String?
+      }
+    }
+    maven { url = uri("https://jitpack.io") }
   }
 }
 
-dependencies {
-  implementation(libs.kotlin.stdlib)
-  implementation(libs.androidx.core)
-  implementation(libs.compose.runtime)
-  implementation(libs.compose.ui)
+task("clean") {
+  delete("${rootProject.buildDir}")
 }

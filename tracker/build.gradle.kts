@@ -25,6 +25,9 @@
 plugins {
   id("com.android.library")
   id("kotlin-android")
+  id("kotlin-kapt")
+  id("kotlinx-serialization")
+  id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -32,12 +35,6 @@ android {
 
   defaultConfig {
     minSdk = libs.versions.minSdk.get().toInt()
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  buildFeatures {
-    compose = true
-    buildConfig = false
   }
 
   compileOptions {
@@ -45,20 +42,34 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.get()
-  }
-
-  lint {
-//    disable.add("ObsoleteLintCustomCheck")
-//    abortOnError = true
-//    warningsAsErrors = true
+  kotlinOptions {
+    jvmTarget = "1.8"
   }
 }
 
 dependencies {
+  implementation(projects.database)
+  implementation(projects.logger)
+  implementation(projects.model)
+  implementation(projects.shared)
+  implementation(projects.libs.storage)
+
+  implementation((libs.hilt.android))
+  kapt(libs.hilt.compiler)
+
+  implementation(libs.androidx.datastore)
+  implementation(libs.androidx.room.ktx)
+  implementation(libs.androidx.room.runtime)
+  kapt(libs.androidx.room.compiler)
+
+  implementation(libs.google.gms.location)
+
+  implementation(libs.gson)
+
+  implementation(libs.kotlin.serialization.json)
   implementation(libs.kotlin.stdlib)
-  implementation(libs.androidx.core)
-  implementation(libs.compose.runtime)
-  implementation(libs.compose.ui)
+
+  implementation(libs.threetenabp)
+
+  implementation(libs.timber)
 }

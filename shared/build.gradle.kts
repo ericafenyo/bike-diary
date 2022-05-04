@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,46 +23,34 @@
  */
 
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
+  id("com.android.library")
+  id("kotlin-android")
+  id("kotlin-kapt")
 }
 
 android {
-    compileSdkVersion 30
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+  defaultConfig {
+    minSdk = libs.versions.minSdk.get().toInt()
+  }
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
 }
 
 dependencies {
-    implementation libs.kotlin.stdlib
+  implementation(libs.androidx.core)
 
-    implementation libs.androidx.room.runtime
-    implementation libs.androidx.room.ktx
-    kapt libs.androidx.room.compiler
+  implementation(libs.kotlin.stdlib)
+  implementation(libs.kotlin.coroutines.core)
 
-    implementation libs.timber
-    implementation libs.threetenabp
+  implementation(libs.hilt.android)
+  kapt(libs.hilt.compiler)
 }
