@@ -25,6 +25,7 @@
 plugins {
   id("com.android.library")
   id("kotlin-android")
+  id("kotlin-kapt")
 }
 
 android {
@@ -32,12 +33,6 @@ android {
 
   defaultConfig {
     minSdk = libs.versions.minSdk.get().toInt()
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  buildFeatures {
-    compose = true
-    buildConfig = false
   }
 
   compileOptions {
@@ -45,20 +40,37 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.get()
-  }
-
-  lint {
-//    disable.add("ObsoleteLintCustomCheck")
-//    abortOnError = true
-//    warningsAsErrors = true
+  kotlinOptions {
+    jvmTarget = "1.8"
   }
 }
 
 dependencies {
-  implementation(libs.kotlin.stdlib)
-  implementation(libs.androidx.core)
-  implementation(libs.compose.runtime)
-  implementation(libs.compose.ui)
+  implementation(projects.model)
+  implementation(projects.libs.serialization)
+
+  implementation(libs.androidx.room.ktx)
+  api(libs.androidx.room.runtime)
+  kapt(libs.androidx.room.compiler)
+
+  implementation(libs.hilt.android)
+  kapt(libs.hilt.compiler)
+
+  // For Robolectric tests
+  testImplementation(libs.robolectric)
+  testImplementation(libs.androidx.test.core)
+  testImplementation(libs.androidx.test.junit)
+  testImplementation(libs.androidx.archCoreTesting)
+
+  // Test Assertion
+  testImplementation(libs.truth)
+
+  // Use dagger hilt in tests
+  testImplementation(libs.hilt.testing)
+  kaptTest(libs.hilt.compiler)
+
+  testImplementation(libs.kotlin.coroutines.test)
+
+  testImplementation(libs.androidx.room.testing)
+  kaptTest(libs.androidx.room.compiler)
 }

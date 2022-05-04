@@ -25,6 +25,9 @@
 plugins {
   id("com.android.library")
   id("kotlin-android")
+  id("kotlin-kapt")
+  id("kotlinx-serialization")
+  id("com.apollographql.apollo")
 }
 
 android {
@@ -32,33 +35,44 @@ android {
 
   defaultConfig {
     minSdk = libs.versions.minSdk.get().toInt()
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    buildConfigField("String", "API_SERVER_URL", "\"${findProperty("API_SERVER_URL")}\"")
   }
 
-  buildFeatures {
-    compose = true
-    buildConfig = false
-  }
 
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
   }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.get()
+  kotlinOptions {
+    jvmTarget = "1.8"
   }
 
-  lint {
-//    disable.add("ObsoleteLintCustomCheck")
-//    abortOnError = true
-//    warningsAsErrors = true
+  buildFeatures {
+    buildConfig = true
   }
 }
 
 dependencies {
-  implementation(libs.kotlin.stdlib)
-  implementation(libs.androidx.core)
-  implementation(libs.compose.runtime)
-  implementation(libs.compose.ui)
+  implementation(projects.model)
+  implementation(projects.libs.serialization)
+
+
+  implementation((libs.okhttp3.loggingInterceptor))
+  implementation((libs.okhttp3.okhttp))
+
+  implementation(libs.apollo.coroutines)
+  api(libs.apollo.runtime)
+
+  implementation(libs.hilt.android)
+  kapt(libs.hilt.compiler)
+
+  implementation(libs.kotlin.serialization.json)
+
+  implementation(libs.timber)
+}
+
+apollo {
+  // instruct the compiler to generate Kotlin models
+  generateKotlinModels.set(true)
 }

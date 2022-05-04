@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,41 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.shared
+plugins {
+  id("com.android.library")
+  id("kotlin-android")
+  id("kotlin-kapt")
+  id("dagger.hilt.android.plugin")
+}
 
-abstract class SharedModule {
+android {
+  compileSdk = libs.versions.compileSdk.get().toInt()
+
+  defaultConfig {
+    minSdk = libs.versions.minSdk.get().toInt()
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
+
+dependencies {
+  implementation(projects.libs.serialization)
+
+  implementation(libs.androidx.core)
+  implementation(libs.androidx.datastore)
+  implementation(libs.androidx.securityCrypto)
+
+  implementation(libs.hilt.android)
+  kapt(libs.hilt.compiler)
+
+  implementation(libs.kotlin.serialization.json)
+  implementation(libs.kotlin.stdlib)
 
 }

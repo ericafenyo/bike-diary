@@ -1,0 +1,15 @@
+rootProject.name = "BikeDiary"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+include(":app")
+include(":database")
+include(":domain")
+include(":logger")
+include(":model")
+include(":network")
+include(":repositories")
+include(":shared")
+include(":tracker")
+include(":libs:icons")
+include(":libs:serialization")
+include(":libs:storage")

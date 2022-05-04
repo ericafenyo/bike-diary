@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,49 +23,38 @@
  */
 
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlinx-serialization'
+  id("com.android.library")
+  id("kotlin-android")
+  id("kotlin-kapt")
 }
 
 android {
-    compileSdk 30
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
-    defaultConfig {
-        minSdk 21
-        targetSdk 30
-        versionCode 1
-        versionName "1.0"
+  defaultConfig {
+    minSdk = libs.versions.minSdk.get().toInt()
+  }
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-        freeCompilerArgs += [
-                "-Xopt-in=kotlin.RequiresOptIn"
-        ]
-    }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
 }
 
 dependencies {
-    implementation libs.gson
+  implementation(projects.logger)
+  implementation(projects.model)
+  implementation(projects.repositories)
+  implementation(projects.shared)
 
-    implementation libs.kotlin.stdlib
-    api libs.kotlin.serialization.json
+  implementation(libs.hilt.android)
+  kapt(libs.hilt.compiler)
 
-    testImplementation libs.junit
-    testImplementation libs.truth
+  implementation(libs.kotlin.coroutines.core)
+  implementation(libs.kotlin.stdlib)
+
+  implementation(libs.timber)
 }
