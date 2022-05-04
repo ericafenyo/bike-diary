@@ -26,7 +26,7 @@ package com.ericafenyo.bikediary.logger
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.threeten.bp.LocalDateTime
+import java.time.LocalDateTime
 
 @Entity(tableName = "logs")
 data class Log(
