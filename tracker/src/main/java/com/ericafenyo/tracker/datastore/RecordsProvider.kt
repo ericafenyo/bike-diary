@@ -25,9 +25,6 @@
 package com.ericafenyo.tracker.datastore
 
 import android.content.Context
-import com.ericafenyo.tracker.R
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 /**
  * Exposes methods for accessing the records database.
@@ -39,19 +36,8 @@ import kotlinx.coroutines.flow.map
  */
 class RecordsProvider(context: Context) {
   private val records = RecordCache.getInstance(context)
-  private val dataStore = PreferenceDataStore.getInstance(context)
   private val resources = AndroidResourceProvider(context)
 
-  fun singleRecord() = records.single()
-
-  fun provideRecords() = records.streams()
-
-  fun getCurrentState(): Flow<CurrentState> {
-    return dataStore.getString(
-      resources.getString(R.string.tracker_current_state_key),
-      resources.getString(R.string.tracker_state_start)
-    ).map { state -> CurrentState(state) }
-  }
 
   companion object {
     @Volatile

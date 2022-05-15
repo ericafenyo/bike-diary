@@ -25,6 +25,7 @@
 package com.ericafenyo.tracker.datastore
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -58,5 +59,5 @@ interface RecordDao {
   fun single(): Flow<Record>
 
   @Query("DELETE FROM records")
-  fun clear()
+  suspend fun clear()
 }

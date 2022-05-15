@@ -32,10 +32,10 @@ data class SimpleLocation(
   val latitude: Double,
   val longitude: Double,
   val altitude: Double,
-  val ts: Double,
+  val time: Long,
   val speed: Float,
   val accuracy: Float,
-  val bearing: Float
+  val bearing: Float,
 ) {
 
   /**
@@ -58,7 +58,7 @@ fun Location.simplify() = SimpleLocation(
   latitude = latitude,
   longitude = longitude,
   altitude = altitude,
-  ts = time.toDouble(),
+  time = time,
   speed = speed,
   accuracy = accuracy,
   bearing = bearing,

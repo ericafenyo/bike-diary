@@ -30,19 +30,20 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 object Logger {
-  private fun database(context: Context) = LoggerDatabase.getInstance(context).logs()
   private val IOContext = Dispatchers.IO
 
-  fun clear(context: Context) = runBlocking(IOContext) { database(context).clear() }
+  fun clear(context: Context) = runBlocking(IOContext) {
+//    database(context).clear()
+  }
 
   private fun log(context: Context, level: String, tag: String, message: String) =
     runBlocking(IOContext) {
-      database(context).insert(Log(level = level, message = "$tag, $message"))
+//      database(context).insert(Log(level = level, message = "$tag, $message"))
     }
 
   fun debug(context: Context, tag: String, message: String) {
     log(context, "DEBUG", tag, message)
-    Timber.tag(tag).d(tag, message)
+    Timber.tag(tag).d(message)
   }
 
   fun info(context: Context, tag: String, message: String) {

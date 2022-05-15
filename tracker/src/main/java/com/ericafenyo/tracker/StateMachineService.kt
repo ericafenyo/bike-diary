@@ -33,8 +33,12 @@ import android.os.IBinder
 import android.provider.Settings
 import androidx.core.app.NotificationCompat.Action
 import com.ericafenyo.bikediary.logger.Logger
+import com.ericafenyo.libs.storage.PreferenceStorage
+import com.ericafenyo.libs.storage.PreferenceStorageImpl
+import com.ericafenyo.tracker.Tracker.State
+import com.ericafenyo.tracker.Tracker.State.ONGOING
+import com.ericafenyo.tracker.Tracker.State.READY
 import com.ericafenyo.tracker.analysis.AnalysisJobIntentService
-import com.ericafenyo.tracker.datastore.PreferenceDataStore
 import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID
@@ -43,14 +47,20 @@ import com.ericafenyo.tracker.util.Notifications.Config
 import com.ericafenyo.tracker.util.ONGOING_NOTIFICATION_ID
 import com.ericafenyo.tracker.util.PermissionsManager
 import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 class StateMachineService : Service(), CoroutineScope {
-  private val tag = "StateMachineService"
+  private val storage: PreferenceStorage by lazy {
+    PreferenceStorageImpl.getInstance(applicationContext)
+  }
 
-  private val ioContext = Dispatchers.IO
   private val job = Job()
 
   override val coroutineContext: CoroutineContext = job + Dispatchers.Main
@@ -60,37 +70,29 @@ class StateMachineService : Service(), CoroutineScope {
   }
 
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-    com.ericafenyo.bikediary.logger.Logger.debug(
+    Logger.debug(
       this,
-      tag,
+      TAG,
       "onStartCommand(intent: $intent,  flags: $flags, startId: $startId)"
     )
 
     if (flags == START_FLAG_REDELIVERY) {
       // Service restated after being killed before calling stopSelf(int) for the given Intent.
       // https://developer.android.com/reference/android/app/Service#START_FLAG_REDELIVERY
-      com.ericafenyo.bikediary.logger.Logger.debug(
+      Logger.debug(
         this,
-        tag,
+        TAG,
         "Service restarted! need to check idempotence!"
       )
     }
 
-    // TODO: 1/10/21 change runBlocking with a proper coroutine builder
-    launch(ioContext) {
-      val currentState = PreferenceDataStore.getInstance(this@StateMachineService)
-        .getString(
-          getString(R.string.tracker_current_state_key),
-          getString(R.string.tracker_state_start)
-        ).first()
+    launch {
+      val currentState = storage.retrieve(Constants.TRACKER_CURRENT_STATE_KEY, State::class)
+        .map { it ?: READY }
+        .first()
 
+      Logger.debug(applicationContext, TAG, "The current state is $currentState")
 
-      com.ericafenyo.bikediary.logger.Logger.debug(
-        this@StateMachineService,
-        tag,
-        "The current state is $currentState"
-      )
-      // 1. TODO: 1/10/21 Save action to database
       handleAction(currentState, intent.action)
     }
 
@@ -102,18 +104,14 @@ class StateMachineService : Service(), CoroutineScope {
 
   override fun onDestroy() {
     super.onDestroy()
-    Logger.debug(this, tag, "onDestroy()")
+    Logger.debug(applicationContext, TAG, "onDestroy()")
     job.cancel()
   }
 
-  private fun handleAction(currentState: String, action: String?) {
-    com.ericafenyo.bikediary.logger.Logger.debug(
-      this,
-      tag,
-      "handleAction(currentState: $currentState , action: $action)"
-    )
+  private fun handleAction(currentState: State, action: String?) {
+    Logger.debug(this, TAG, "handleAction(currentState: $currentState , action: $action)")
     if (action == null) {
-      com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "action is null, exiting")
+      Logger.debug(this, TAG, "action is null, exiting")
       return
     }
 
@@ -124,21 +122,17 @@ class StateMachineService : Service(), CoroutineScope {
     }
   }
 
-  private fun handleInitialize(currentState: String, action: String) {
-    com.ericafenyo.bikediary.logger.Logger.debug(
-      this,
-      tag,
-      "handleInitialize(currentState: $currentState, action: $action)"
-    )
+  private fun handleInitialize(currentState: State, action: String) {
+    Logger.debug(this, TAG, "handleInitialize(currentState: $currentState, action: $action)")
     // Exit quickly if tracking is disabled
     exitOnTrackingDisabled(currentState)
-    setNewState(this, currentState, getString(R.string.tracker_state_ready))
+    setNewState(this, currentState, READY)
   }
 
-  private fun handleStart(currentState: String, action: String) {
-    com.ericafenyo.bikediary.logger.Logger.debug(
+  private fun handleStart(currentState: State, action: String) {
+    Logger.debug(
       this,
-      tag,
+      TAG,
       "handleStart(currentState: $currentState, action: $action)"
     )
 
@@ -146,16 +140,14 @@ class StateMachineService : Service(), CoroutineScope {
     exitOnTrackingDisabled(currentState)
 
     // Only start tracking if the state machine is ready.
-    if (currentState == getString(R.string.tracker_state_ready)
-      || currentState == getString(R.string.tracker_state_start)
-    ) {
+    if (currentState == READY) {
       // Start the location-updates request
       LocationUpdatesAction(this).start()?.addOnCompleteListener { task ->
         if (task.isSuccessful) {
           launch { RecordCache.getInstance(applicationContext).clear() }
           //Change the current state to ongoing
           // We should now get location updates at a particular interval
-          setNewState(this, currentState, getString(R.string.tracker_state_ongoing))
+          setNewState(this, currentState, ONGOING)
           val notificationConfig = Config(
             notificationId = ONGOING_NOTIFICATION_ID,
             message = getString(R.string.tracking_notification_content_text),
@@ -167,9 +159,9 @@ class StateMachineService : Service(), CoroutineScope {
           Notifications.create(this, notificationConfig)
         }
       }?.addOnFailureListener {
-        com.ericafenyo.bikediary.logger.Logger.error(
+        Logger.error(
           this,
-          tag,
+          TAG,
           "Start location request unsuccessful: $it"
         )
         if (!PermissionsManager.isForegroundLocationPermissionGranted(this)) {
@@ -205,66 +197,69 @@ class StateMachineService : Service(), CoroutineScope {
       addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
       addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
     }
-    return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+    return PendingIntent.getActivity(
+      this,
+      0,
+      intent,
+      PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+    )
   }
 
-  private fun handleStop(currentState: String, action: String) {
-    com.ericafenyo.bikediary.logger.Logger.debug(
+  private fun handleStop(currentState: State, action: String) {
+    Logger.debug(
       this,
-      tag,
+      TAG,
       "handleStop(currentState: $currentState, action: $action)"
     )
     // Stop the location-updates request
     LocationUpdatesAction(this).stop()?.addOnSuccessListener {
       // If the request is successful, change the current state to ongoing
       // We should now get location updates at a particular interval
-      setNewState(this, currentState, getString(R.string.tracker_state_ready))
+      setNewState(this, currentState, READY)
       Notifications.cancel(this, ONGOING_NOTIFICATION_ID)
 
       // Notify trip end so we can analyse and parse
       // Start the trip analysis process
       AnalysisJobIntentService.enqueueWork(this, Intent(this, AnalysisJobIntentService::class.java))
     }?.addOnFailureListener {
-      Logger.error(this, tag, "Stop Location updates request unsuccessful: $it")
-      Timber.tag(tag).e(it, "Error")
+      Logger.error(this, TAG, "Stop Location updates request unsuccessful: $it")
+      Timber.tag(TAG).e(it, "Error")
     }
   }
 
-  private fun exitOnTrackingDisabled(currentState: String) {
-    if (currentState == getString(R.string.tracker_state_disabled)) {
-      com.ericafenyo.bikediary.logger.Logger.debug(this, tag, "Tracking is disabled, exiting")
+  private fun exitOnTrackingDisabled(currentState: State) {
+    if (currentState == State.DISABLED) {
+      Logger.debug(this, TAG, "Tracking is disabled, exiting")
       return
     }
   }
 
-  private fun exitOnEqualState(currentState: String, newState: String) {
+  private fun exitOnEqualState(currentState: State, newState: State) {
     if (currentState == newState) {
-      com.ericafenyo.bikediary.logger.Logger.debug(
+      Logger.debug(
         this,
-        tag,
+        TAG,
         "Already in the state: $newState, exiting"
       )
       return
     }
   }
 
-  private fun setNewState(context: Context, currentState: String, newState: String) {
-    com.ericafenyo.bikediary.logger.Logger.debug(
+  private fun setNewState(context: Context, currentState: State, newState: State) {
+    Logger.debug(
       context,
-      tag,
+      TAG,
       "New state after handling action is $newState"
     )
 
-    //Exit quickly if current state is same as state ready
+    // Exit quickly if current state is same as state ready
     exitOnEqualState(currentState, newState)
 
-    // TODO: 1/10/21  exit if new state is same as current state
     runBlocking {
-      PreferenceDataStore.getInstance(context)
-        .putString(getString(R.string.tracker_current_state_key), newState)
-      com.ericafenyo.bikediary.logger.Logger.debug(
+      storage.store(Constants.TRACKER_CURRENT_STATE_KEY, newState)
+      Logger.debug(
         context,
-        tag,
+        TAG,
         "New state saved to preference storage"
       )
     }
@@ -272,6 +267,7 @@ class StateMachineService : Service(), CoroutineScope {
   }
 
   companion object {
+    private const val TAG = "StateMachineService"
 
     @JvmStatic
     fun getStartIntent(context: Context): Intent {

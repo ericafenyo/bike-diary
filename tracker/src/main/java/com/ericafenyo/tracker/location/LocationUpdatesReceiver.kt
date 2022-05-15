@@ -33,17 +33,16 @@ import com.ericafenyo.tracker.datastore.RecordCache
 import com.google.android.gms.location.LocationResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 
 /**
  * Receiver for broadcasts sent by [LocationUpdatesAction] through pending intent.
  */
 class LocationUpdatesReceiver : BroadcastReceiver() {
-  private val tag = "LocationUpdatesReceiver"
+  @Suppress("PrivatePropertyName") private val TAG = "LocationUpdatesReceiver"
 
   override fun onReceive(context: Context, intent: Intent) {
-    Logger.debug(context, tag, "onReceive(context: $context, intent: $intent)")
-    Timber.d("Location updates: ${LocationResult.extractResult(intent)}")
+    Logger.debug(context, TAG, "onReceive(context: $context, intent: $intent)")
+
     val locations = if (LocationResult.hasResult(intent)) {
       LocationResult.extractResult(intent).locations
     } else {
@@ -51,13 +50,14 @@ class LocationUpdatesReceiver : BroadcastReceiver() {
     }
 
     // Skip if we don't have a location object
-    if (locations.isNullOrEmpty()) return
+    if (locations.isNullOrEmpty()) {
+      Logger.debug(context, TAG, "Location value is null, skipping")
+      return
+    }
 
     val location = locations.first().simplify()
     runBlocking(Dispatchers.IO) {
-      RecordCache.getInstance(context).put(
-        Record.fromSimpleLocation(location)
-      )
+      RecordCache.getInstance(context).put(Record.fromSimpleLocation(location))
     }
   }
 }

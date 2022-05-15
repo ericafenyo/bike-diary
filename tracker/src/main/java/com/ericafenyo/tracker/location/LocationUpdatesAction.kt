@@ -35,22 +35,25 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 
 /**
- * This class contains methods for starting and stopping a location update.
+ * This class is responsible for starting and stopping a location update.
+ *
+ * @author Eric
  */
+
 class LocationUpdatesAction(private val context: Context) {
-  private val tag = "LocationUpdatesAction"
+  @Suppress("PrivatePropertyName") private val TAG = "LocationUpdatesAction"
+  private val client = LocationServices.getFusedLocationProviderClient(context)
 
   fun start(): Task<Void>? {
-    return try {
-      LocationServices.getFusedLocationProviderClient(context)
-        .requestLocationUpdates(locationRequest, getPendingIntent())
+    try {
+      return client.requestLocationUpdates(locationRequest, getPendingIntent())
     } catch (exception: SecurityException) {
       Logger.error(
         context,
-        tag,
+        TAG,
         "Security error: ${exception.message} while starting location updates"
       )
-      null
+      return null
     }
   }
 
@@ -59,16 +62,17 @@ class LocationUpdatesAction(private val context: Context) {
     .setSmallestDisplacement(10F) // In meters
     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 
-  fun stop(): Task<Void>? = LocationServices.getFusedLocationProviderClient(context)
-    .removeLocationUpdates(getPendingIntent())
+  fun stop(): Task<Void>? = client.removeLocationUpdates(getPendingIntent())
 
   private fun getPendingIntent(): PendingIntent {
     val intent = Intent(context, LocationUpdatesReceiver::class.java)
-    // FLAG_UPDATE_CURRENT replaces any existing broadcast.
-    // We want to handle one location update at a time.
     return PendingIntent.getBroadcast(context, 0, intent, pendingIntentFlag)
   }
 
+  /**
+   * FLAG_UPDATE_CURRENT replaces any existing broadcast.
+   * We want to handle one location update at a time.
+   */
   private val pendingIntentFlag = if (VERSION.SDK_INT >= VERSION_CODES.S) {
     PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
   } else {
@@ -76,7 +80,6 @@ class LocationUpdatesAction(private val context: Context) {
   }
 
   companion object {
-    const val TEN_SECONDS: Long = 10 * 1000 // For debug purpose
-    const val FIVE_SECONDS: Long = 5 * 1000 // For debug purpose
+    const val FIVE_SECONDS: Long = 5 * 1000
   }
 }

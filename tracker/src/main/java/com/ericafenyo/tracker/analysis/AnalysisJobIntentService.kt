@@ -28,12 +28,15 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.ericafenyo.bikediary.logger.Logger
+import kotlinx.coroutines.runBlocking
 
 class AnalysisJobIntentService : JobIntentService() {
 
   override fun onHandleWork(intent: Intent) {
     Logger.debug(applicationContext, TAG, "onHandleWork(intent: $intent)")
-    Analyser(applicationContext).startAnalysis()
+    runBlocking {
+      Analyser(applicationContext).startAnalysis()
+    }
   }
 
   override fun onDestroy() {
