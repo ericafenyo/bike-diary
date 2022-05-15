@@ -24,9 +24,12 @@
 
 package com.ericafenyo.libs.storage
 
+import android.content.Context
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -38,7 +41,12 @@ internal abstract class StorageModule {
   @Singleton
   abstract fun bindEncryptedPreferences(impl: EncryptedPreferencesImpl): EncryptedPreferences
 
-  @Binds
-  @Singleton
-  abstract fun bindPreferenceStorage(impl: PreferenceStorageImpl): PreferenceStorage
+
+  companion object {
+    @Provides
+    @Singleton
+    fun providePreferenceStorage(@ApplicationContext context: Context): PreferenceStorage {
+      return PreferenceStorageImpl.getInstance(context)
+    }
+  }
 }

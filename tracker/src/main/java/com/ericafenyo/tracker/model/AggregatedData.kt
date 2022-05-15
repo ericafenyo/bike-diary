@@ -29,8 +29,8 @@ data class AggregatedData(
   val id: String,
   val uuid: String,
   val calories: Int,
-  val distance: String,
-  val duration: String,
+  val distance: Double,
+  val duration: Double,
   val startTime: String,
   val endTime: String,
   val speed: Double,
@@ -39,9 +39,8 @@ data class AggregatedData(
 )
 
 data class Trace(
-  val timeZone: String,
-  val writeTime: String,
-  val offsetTime: String,
+  val timezone: String,
+  val writeTime: Double,
   val location: SensorLocation,
 )
 

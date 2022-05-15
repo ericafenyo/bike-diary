@@ -24,14 +24,11 @@
 
 package com.ericafenyo.tracker.datastore
 
-import kotlinx.coroutines.flow.Flow
-
 
 /**
- * Abstract object with variety of query methods.
- * This is used to
+ * An abstract object that defines the methods for saving and retrieving cached data.
  *
- * @param T the type of data to be passed to the declared methods
+ * @param T the type of data to be saved.
  *
  * @author Eric
  * @since 1.0
@@ -41,11 +38,20 @@ import kotlinx.coroutines.flow.Flow
  * created on 2021-01-30
  */
 interface Cache<T : Any> {
-  suspend fun put(value: T)
-  suspend fun putMany(values: List<T>)
-  suspend fun getAll(): List<T>
-  fun streams(): Flow<List<T>>
-  fun single(): Flow<T>
-  suspend fun getLatest(): T
+  /**
+   * Add the given entry into the cache.
+   *
+   * @param entry the entry to be saved
+   */
+  suspend fun put(entry: T)
+
+  /**
+   * Returns a list of all entries in the cache.
+   */
+  suspend fun entries(): List<T>
+
+  /**
+   * Removes all elements from the cache.
+   */
   suspend fun clear()
 }

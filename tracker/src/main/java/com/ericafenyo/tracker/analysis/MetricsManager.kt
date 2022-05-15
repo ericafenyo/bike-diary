@@ -31,7 +31,7 @@ import kotlin.math.roundToInt
 /**
  * Contains variety of methods for metric conversions.
  */
-object MetricsManager {
+internal object MetricsManager {
   /**
    * Returns the number of calories burnt per minute during a cycling activity.
    *
@@ -115,11 +115,11 @@ object MetricsManager {
       }
     }
 
-    val times = locations.map { it.ts }
+    val times = locations.map { (it.time/1000).toDouble() }
 
     val timeDeltas = mutableListOf<Double>()
     var index = 0
-    while (index < (times.size - 1)) {
+    while (index < times.lastIndex) {
       timeDeltas.add(times[index + 1] - times[index])
       index++
     }
@@ -136,7 +136,7 @@ object MetricsManager {
     // Get the origin and destination locations
     val origin = locations.first()
     val destination = locations.last()
-    val duration = destination.ts - origin.ts
+    val duration = destination.time - origin.time
     val averageSpeed = speeds.average()
 
     /*
@@ -147,9 +147,9 @@ object MetricsManager {
      */
     return SimpleMetrics(
       speed = metersPerSecondsToKilometersPerHour(destination.speed.toDouble()),
-      duration = destination.ts - origin.ts,
+      duration = (destination.time/1000).toDouble() - (origin.time/1000).toDouble(),
       distance = (distances.sum() * 0.001),
-      calories = getCalories(averageSpeed, duration),
+      calories = getCalories(averageSpeed, duration.toDouble()),
     )
   }
 }

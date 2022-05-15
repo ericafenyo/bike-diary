@@ -25,159 +25,108 @@
 package com.ericafenyo.tracker.analysis
 
 import android.content.Context
-import com.ericafenyo.bikediary.database.AppDatabase
-import com.ericafenyo.bikediary.database.entity.AdventureEntity
+import androidx.annotation.WorkerThread
 import com.ericafenyo.bikediary.logger.Logger
 import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.model.Metrics
-import com.ericafenyo.tracker.R
-import com.ericafenyo.tracker.data.model.FeatureCollection
-import com.ericafenyo.tracker.data.model.LineString
-import com.ericafenyo.tracker.data.model.Point
-import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.datastore.Record
 import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.SimpleLocation
-import com.ericafenyo.tracker.util.Identity
-import com.ericafenyo.tracker.util.getExplicitIntent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import com.ericafenyo.tracker.model.AggregatedData
+import com.ericafenyo.tracker.model.SensorLocation
+import com.ericafenyo.tracker.model.Trace
+import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 import timber.log.Timber
 
 /**
  * This class contain methods for reading raw gps data and converting them into a GeoJson data.
  * Our gps data is stored in a local SQLite database as a list of [SimpleLocation] with some metadata.
  *
- * @see generateAdventure
  * @see getCoordinate
  *
  * @author Eric
- * @since 1.0
  *
  * created on 2021-01-25
  */
-class Analyser constructor(private val context: Context) {
-  private val computation = Dispatchers.Default
-  private val io = Dispatchers.IO
+@Singleton
+class Analyser @Inject constructor(@ApplicationContext val context: Context) {
+  // Minimum points that defines a valid adventure.
+  private val minimumPoints = 5
 
-  fun startAnalysis() = runBlocking {
-    generateAdventure().run { saveAdventure(this) }
+  @WorkerThread
+  suspend fun startAnalysis() {
+    composeAdventure()
+  }
+
+  private suspend fun composeAdventure(): Adventure? {
+    val records = loadRecords()
+
+    // Exit early if records are less than 5
+    if (records.size < minimumPoints) {
+      Logger.debug(context, TAG, "Invalid record list, skipping")
+      return null
+    }
+
+    runCatching {
+      val metrics = buildMetrics(records)
+
+      val result = AggregatedData(
+        id = "",
+        uuid = UUID.randomUUID().toString(),
+        calories = metrics.calories,
+        distance = metrics.distance,
+        duration = metrics.duration,
+        startTime = metrics.startedAt,
+        endTime = metrics.completedAt,
+        speed = metrics.speed,
+        geometry = "",
+        traces = records.map(::toTrace),
+      )
+
+      Timber.d("The resulting data: ${Gson().toJson(result)}")
+
+    }.onFailure {
+      Logger.error(context, TAG, "An error occurred while trying to get last record: $it")
+    }.getOrDefault(null)
+
+    return null
   }
 
   private suspend fun loadRecords(): List<Record> {
     Logger.debug(context, TAG, "*** Retrieving records ***")
-    // Suppress Return should be lifted out of 'try
-    return try {
-      RecordCache.getInstance(context).getAll()
-    } catch (exception: Exception) {
-      Logger.error(
-        context,
-        TAG,
-        "An error occurred while trying to retrieve records: $exception"
-      )
-      emptyList()
-    }
-  }
 
-  private suspend fun generateAdventure(): Adventure? = withContext(computation) {
-    val records = loadRecords()
-
-    // We need at least ten records to build our feature collections.
-    // TODO: 06/05/2021 How many points determine a valid point?
-    try {
-      if (records.size < 10) {
-        Logger.debug(context, TAG, "Invalid record list, skipping")
-        return@withContext null
-      }
-
-      // Create LineString feature for trip path
-      val coordinates = records.map { record -> record.location.getCoordinate() }
-
-      // Create start feature point
-      val startFeature = coordinates.first().run { Point(coordinates = this).toFeature() }
-      val endFeature = coordinates.last().run { Point(coordinates = this).toFeature() }
-      val lineStringFeature = LineString(coordinates = coordinates).toFeature()
-      val metrics = buildMetrics(records)
-      val featureCollection =
-        FeatureCollection(listOf(startFeature, endFeature, lineStringFeature))
-
-      return@withContext Adventure(
-        id = "Unprocessed-${Identity.generateObjectId()}",
-        title = "Untitled",
-        speed = metrics.speed,
-        duration = metrics.duration,
-        distance = metrics.distance,
-        calories = metrics.calories,
-        startedAt = metrics.startedAt,
-        images = listOf(),
-        geojson = featureCollection.toJson(),
-        completedAt = metrics.completedAt,
-        uuid = "",
-      )
-    } catch (exception: Exception) {
-      Logger.error(
-        context,
-        TAG,
-        "An error occurred while trying to get last record: $exception"
-      )
-      return@withContext null
-    }
+    return runCatching { RecordCache.getInstance(context).entries() }
+      .onFailure { Logger.error(context, TAG, "An error occurred while retrieving records: $it") }
+      .getOrDefault(emptyList())
   }
 
   private fun getCoordinate(location: SimpleLocation): List<Double> {
     return listOf(location.longitude, location.latitude)
   }
 
-  private suspend fun saveAdventure(adventure: Adventure?): Result<Boolean> = withContext(io) {
-    try {
-      if (adventure != null) {
-        Timber.d("Adventure $adventure")
-        val adventureEntity = AdventureEntity(
-          id = adventure.id,
-          title = adventure.title,
-          speed = adventure.speed,
-          duration = adventure.duration,
-          distance = adventure.distance,
-          calories = adventure.calories,
-          startedAt = adventure.startedAt,
-          completedAt = adventure.completedAt,
-          geojson = adventure.geojson,
-          images = adventure.images,
-        )
-        AppDatabase.getInstance(context)
-          .getAdventureDao().insert(adventureEntity)
-        Result.Success(true)
-      } else {
-        Result.Success(false)
-      }
-    } catch (exception: Exception) {
-      Logger.error(context, TAG, "An error occurred while trying to save documents: $exception")
-      Result.Error(exception)
-    } finally {
-//      context.sendBroadcast(context.getExplicitIntent(R.string.tracker_action_end_analysis))
-    }
-  }
-
-  fun buildMetrics(records: List<Record>): Metrics {
-    if (records.size < 2) {
+  private fun buildMetrics(records: List<Record>): Metrics {
+    if (records.size < minimumPoints) {
       return Metrics.default()
     }
 
     val distances = mutableListOf<Float>()
     for (index in records.indices) {
-      if (index != records.size - 1) {
+      if (index != records.lastIndex) {
         val startLocation = records[index].location
         val nextLocation = records[index + 1].location
         startLocation.distanceTo(nextLocation).also { distances.add(it) }
       }
     }
 
-    val times = records.map { it.ts }
+    val times = records.map { (it.location.time / 1000).toDouble() }
 
     val timeDeltas = mutableListOf<Double>()
     var index = 0
-    while (index < (times.size - 1)) {
+    while (index < times.lastIndex) {
       timeDeltas.add(times[index + 1] - times[index])
       index++
     }
@@ -194,7 +143,7 @@ class Analyser constructor(private val context: Context) {
     // Get the origin and destination locations
     val origin = records.first()
     val destination = records.last()
-    val duration = destination.ts - origin.ts
+    val duration = destination.writeTime - origin.writeTime
     val averageSpeed = speeds.average()
 
     /*
@@ -206,13 +155,27 @@ class Analyser constructor(private val context: Context) {
      */
     return Metrics(
       speed = speeds.average(),
-      duration = destination.ts - origin.ts,
+      duration = destination.writeTime - origin.writeTime,
       distance = (distances.sum() * 0.001),
       calories = MetricsManager.getCalories(averageSpeed, duration),
       startedAt = destination.fmt,
       completedAt = origin.fmt
     )
   }
+
+  private fun toTrace(record: Record): Trace = Trace(
+    timezone = record.timezone,
+    writeTime = record.writeTime,
+    location = SensorLocation(
+      latitude = record.location.latitude,
+      longitude = record.location.longitude,
+      altitude = record.location.altitude,
+      time = record.location.time,
+      speed = record.location.speed.toDouble(),
+      accuracy = record.location.accuracy.toDouble(),
+      bearing = record.location.bearing.toDouble()
+    )
+  )
 
   companion object {
     private const val TAG = "Analyser"

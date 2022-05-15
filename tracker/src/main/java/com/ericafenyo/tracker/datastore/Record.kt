@@ -27,14 +27,14 @@ package com.ericafenyo.tracker.datastore
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ericafenyo.tracker.location.SimpleLocation
+import java.time.LocalDateTime
 import java.util.TimeZone
-import org.threeten.bp.LocalDateTime
 
 /**
  * A Record is a room database [Entity] containing location data with additional metadata.
  *
  * @property id an auto generated int for identifying a specific Record
- * @property ts the time in seconds at which the Record object was written to the database
+ * @property writeTime the time in seconds at which the Record object was written to the database
  * @property timezone the devices current timezone code. Example Europe/Paris
  * @property location a [SimpleLocation] object
  *
@@ -47,14 +47,14 @@ import org.threeten.bp.LocalDateTime
 data class Record(
   @PrimaryKey(autoGenerate = true)
   val id: Int = 0,
-  val ts: Double,
+  val writeTime: Double,
   val fmt: String,
   val timezone: String,
   val location: SimpleLocation
 ) {
   companion object {
     fun fromSimpleLocation(location: SimpleLocation): Record = Record(
-      ts = (System.currentTimeMillis() / 1000).toDouble(),
+      writeTime = (System.currentTimeMillis() / 1000).toDouble(),
       fmt = LocalDateTime.now().toString(),
       timezone = TimeZone.getDefault().id,
       location = location

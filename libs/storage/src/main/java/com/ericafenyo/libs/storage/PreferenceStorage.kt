@@ -33,21 +33,15 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.ericafenyo.libs.serialization.KotlinJsonSerializer
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 
 interface PreferenceStorage : FlowStorage
 
-@Singleton
- class PreferenceStorageImpl @Inject constructor(
-  @ApplicationContext private val context: Context
-) : PreferenceStorage {
+class PreferenceStorageImpl private constructor(context: Context) : PreferenceStorage {
   private val Context.dataStore by preferencesDataStore(name = "app_data_store")
+  private val dataStore = context.dataStore
 
   override suspend fun store(key: String, value: Long) {
     putValue(longPreferencesKey(key), value)
@@ -102,23 +96,31 @@ interface PreferenceStorage : FlowStorage
       Boolean::class -> intPreferencesKey(key)
       else -> throw UnsupportedOperationException("Key type $clazz not supported")
     }
-    context.dataStore.edit { preferences ->
-      preferences.remove(preferenceKey)
-    }
+    dataStore.edit { preferences -> preferences.remove(preferenceKey) }
   }
 
   override suspend fun clear() {
-    context.dataStore.edit { preferences -> preferences.clear() }
+    dataStore.edit { preferences -> preferences.clear() }
   }
 
   private inline fun <reified T> getValue(key: Preferences.Key<T>): Flow<T?> {
-    return context.dataStore.data.map { preference -> preference[key] }
+    return dataStore.data.map { preference -> preference[key] }
   }
 
-  private inline fun <reified T : Any> putValue(key: Preferences.Key<T>, value: T) {
-    runBlocking {
-      context.dataStore.edit { preference ->
-        preference[key] = value
+  private suspend inline fun <reified T : Any> putValue(key: Preferences.Key<T>, value: T) {
+    dataStore.edit { preference -> preference[key] = value }
+  }
+
+  companion object {
+    @Volatile
+    private var INSTANCE: PreferenceStorageImpl? = null
+
+    @JvmStatic
+    fun getInstance(context: Context): PreferenceStorageImpl {
+
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: PreferenceStorageImpl(context)
+          .also { INSTANCE = it }
       }
     }
   }

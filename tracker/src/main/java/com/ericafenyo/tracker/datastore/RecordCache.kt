@@ -25,35 +25,28 @@
 package com.ericafenyo.tracker.datastore
 
 import android.content.Context
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 /**
- * An implementation of the [Cache] interface providing methods for performing
- * operations on [Record] objects.
+ * An implementation of the [Cache] interface responsible for
+ * saving [Record] data into an SQLite database.
  *
  * @author Eric
- * @since 1.0
- *
  * created on 2021-01-25
  */
 class RecordCache constructor(context: Context) : Cache<Record> {
   private val records = DataStore.getInstance(context).getRecords()
 
-  override suspend fun put(value: Record) = records.insert(value)
+  override suspend fun put(entry: Record) {
+    records.insert(entry)
+  }
 
-  override suspend fun putMany(values: List<Record>) = records.bulkInsert(values)
+  override suspend fun entries(): List<Record> {
+    return records.getAll()
+  }
 
-  override suspend fun getAll(): List<Record> = records.getAll()
-
-  override suspend fun getLatest(): Record = records.getLatest()
-
-  override fun streams(): Flow<List<Record>> = records.streams()
-
-  override fun single(): Flow<Record> = records.single()
-
-  override suspend fun clear() = withContext(Dispatchers.IO) { records.clear() }
+  override suspend fun clear() {
+    records.clear()
+  }
 
   companion object {
     @Volatile
@@ -61,7 +54,6 @@ class RecordCache constructor(context: Context) : Cache<Record> {
 
     /**
      * Use this to replace the current [RecordCache] with a custom implementation
-     * with
      *
      * @param cache a custom [Cache] implementation
      */
