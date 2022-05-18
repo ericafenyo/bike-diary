@@ -54,13 +54,15 @@ dependencies {
   implementation(projects.shared)
   implementation(projects.libs.storage)
 
-  implementation((libs.hilt.android))
-  kapt(libs.hilt.compiler)
-
   implementation(libs.androidx.datastore)
   implementation(libs.androidx.room.ktx)
   implementation(libs.androidx.room.runtime)
   kapt(libs.androidx.room.compiler)
+
+  implementation(libs.androidx.work.ktx)
+  implementation(libs.androidx.work.hilt)
+  implementation((libs.hilt.android))
+  kapt(libs.hilt.compiler)
 
   implementation(libs.google.gms.location)
 

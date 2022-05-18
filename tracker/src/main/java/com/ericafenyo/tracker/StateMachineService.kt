@@ -32,13 +32,14 @@ import android.net.Uri
 import android.os.IBinder
 import android.provider.Settings
 import androidx.core.app.NotificationCompat.Action
+import androidx.work.WorkManager
 import com.ericafenyo.bikediary.logger.Logger
 import com.ericafenyo.libs.storage.PreferenceStorage
 import com.ericafenyo.libs.storage.PreferenceStorageImpl
 import com.ericafenyo.tracker.Tracker.State
 import com.ericafenyo.tracker.Tracker.State.ONGOING
 import com.ericafenyo.tracker.Tracker.State.READY
-import com.ericafenyo.tracker.analysis.AnalysisJobIntentService
+import com.ericafenyo.tracker.analysis.worker.AnalysisWorker
 import com.ericafenyo.tracker.datastore.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID
@@ -46,24 +47,17 @@ import com.ericafenyo.tracker.util.Notifications
 import com.ericafenyo.tracker.util.Notifications.Config
 import com.ericafenyo.tracker.util.ONGOING_NOTIFICATION_ID
 import com.ericafenyo.tracker.util.PermissionsManager
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
-class StateMachineService : Service(), CoroutineScope {
+@AndroidEntryPoint
+class StateMachineService : Service() {
   private val storage: PreferenceStorage by lazy {
     PreferenceStorageImpl.getInstance(applicationContext)
   }
-
-  private val job = Job()
-
-  override val coroutineContext: CoroutineContext = job + Dispatchers.Main
 
   override fun onBind(intent: Intent): IBinder? {
     return null
@@ -86,15 +80,17 @@ class StateMachineService : Service(), CoroutineScope {
       )
     }
 
-    launch {
-      val currentState = storage.retrieve(Constants.TRACKER_CURRENT_STATE_KEY, State::class)
+
+    val currentState = runBlocking {
+      storage.retrieve(Constants.TRACKER_CURRENT_STATE_KEY, State::class)
         .map { it ?: READY }
         .first()
-
-      Logger.debug(applicationContext, TAG, "The current state is $currentState")
-
-      handleAction(currentState, intent.action)
     }
+
+    Logger.debug(applicationContext, TAG, "The current state is $currentState")
+
+    handleAction(currentState, intent.action)
+
 
     // Return START_REDELIVER_INTENT to scheduled for a restart with the same Intent
     // if the service's process is killed while it is started.
@@ -105,7 +101,6 @@ class StateMachineService : Service(), CoroutineScope {
   override fun onDestroy() {
     super.onDestroy()
     Logger.debug(applicationContext, TAG, "onDestroy()")
-    job.cancel()
   }
 
   private fun handleAction(currentState: State, action: String?) {
@@ -144,7 +139,7 @@ class StateMachineService : Service(), CoroutineScope {
       // Start the location-updates request
       LocationUpdatesAction(this).start()?.addOnCompleteListener { task ->
         if (task.isSuccessful) {
-          launch { RecordCache.getInstance(applicationContext).clear() }
+          runBlocking { RecordCache.getInstance(applicationContext).clear() }
           //Change the current state to ongoing
           // We should now get location updates at a particular interval
           setNewState(this, currentState, ONGOING)
@@ -218,9 +213,8 @@ class StateMachineService : Service(), CoroutineScope {
       setNewState(this, currentState, READY)
       Notifications.cancel(this, ONGOING_NOTIFICATION_ID)
 
-      // Notify trip end so we can analyse and parse
       // Start the trip analysis process
-      AnalysisJobIntentService.enqueueWork(this, Intent(this, AnalysisJobIntentService::class.java))
+      WorkManager.getInstance(this).enqueue(AnalysisWorker.request)
     }?.addOnFailureListener {
       Logger.error(this, TAG, "Stop Location updates request unsuccessful: $it")
       Timber.tag(TAG).e(it, "Error")
