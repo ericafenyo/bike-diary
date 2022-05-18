@@ -15,6 +15,7 @@ nav_version = "2.3.5"
 okhttp = "4.9.0"
 room = "2.4.1"
 sentry = '5.2.0'
+work = "2.7.1"
 
 [libraries]
 
@@ -54,6 +55,7 @@ androidx-test-runner = { module = "androidx.test:runner", version.ref = "android
 androidx-work-hilt = { module = "androidx.hilt:hilt-work", version.ref = "jetpackHilt" }
 androidx-work-hiltCompiler = { module = "androidx.hilt:hilt-compiler", version.ref = "jetpackHilt" }
 androidx-work-runtime = "androidx.work:work-runtime-ktx:2.7.1"
+androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
 
 apollo-coroutines = { module = "com.apollographql.apollo:apollo-coroutines-support", version.ref = "apollo" }
 apollo-gradlePlugin = { module = "com.apollographql.apollo:apollo-gradle-plugin", version.ref = "apollo" }
