@@ -45,9 +45,8 @@ class AnalysisWorker @AssistedInject constructor(
   @Assisted private val context: Context,
   @Assisted params: WorkerParameters,
   @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
-  private val analyser: Analyser
+  private val analyser: Analyser,
 ) : CoroutineWorker(context, params) {
-
   override suspend fun doWork(): Result = withContext(ioDispatcher) {
     Logger.debug(context, TAG, "doWork()")
     analyser.startAnalysis()
@@ -58,7 +57,7 @@ class AnalysisWorker @AssistedInject constructor(
     private const val TAG: String = "AnalysisWorker"
 
     val request: WorkRequest = OneTimeWorkRequestBuilder<AnalysisWorker>()
-
+      .setExpedited(RUN_AS_NON_EXPEDITED_WORK_REQUEST)
       .build()
   }
 }

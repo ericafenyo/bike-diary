@@ -63,6 +63,7 @@ dependencies {
   implementation(libs.androidx.work.hilt)
   implementation((libs.hilt.android))
   kapt(libs.hilt.compiler)
+  kapt(libs.androidx.work.hiltCompiler)
 
   implementation(libs.google.gms.location)
 
