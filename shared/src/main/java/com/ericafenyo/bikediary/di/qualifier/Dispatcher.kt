@@ -22,27 +22,13 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.di
+package com.ericafenyo.bikediary.di.qualifier
 
-import com.ericafenyo.bikediary.di.qualifier.Dispatcher
-import com.ericafenyo.bikediary.di.qualifier.DispatcherType.DEFAULT
-import com.ericafenyo.bikediary.di.qualifier.DispatcherType.IO
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import javax.inject.Qualifier
+import kotlin.annotation.AnnotationRetention.RUNTIME
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DispatchersModule {
+@Qualifier
+@Retention(RUNTIME)
+annotation class Dispatcher(val type: DispatcherType)
 
-  @Dispatcher(IO)
-  @Provides
-  fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
-
-  @Dispatcher(DEFAULT)
-  @Provides
-  fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
-}
+enum class DispatcherType { IO, DEFAULT }
