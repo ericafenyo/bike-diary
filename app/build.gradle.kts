@@ -131,6 +131,7 @@ dependencies {
   implementation(libs.compose.runtime)
   implementation(libs.compose.tooling)
   implementation(libs.compose.ui)
+  implementation(libs.androidx.compose.navigation)
 
   implementation(libs.databinding)
 
