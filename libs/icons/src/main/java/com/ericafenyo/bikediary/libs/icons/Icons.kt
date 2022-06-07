@@ -80,4 +80,13 @@ object Icons {
 
   val Play: Painter
     @Composable get() = painterResource(R.drawable.ic_play)
+
+  val User: Painter
+    @Composable get() = painterResource(R.drawable.ic_user)
+
+  val ChartPie: Painter
+    @Composable get() = painterResource(R.drawable.ic_chart_pie)
+
+  val Feed: Painter
+    @Composable get() = painterResource(R.drawable.ic_feed)
 }
