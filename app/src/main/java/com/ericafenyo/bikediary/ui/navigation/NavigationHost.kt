@@ -24,13 +24,20 @@
 
 package com.ericafenyo.bikediary.ui.navigation
 
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.ericafenyo.bikediary.libs.icons.Icons
+import com.ericafenyo.bikediary.ui.screens.dashboard.dashboardGraph
 
 @Composable
 fun NavigationHost(
@@ -38,10 +45,13 @@ fun NavigationHost(
   navController: NavHostController = rememberNavController(),
   startDestination: String = "dashboard"
 ) {
-  NavHost(navController = navController,
-    graph = TODO()
-
-  )
+  NavHost(
+    navController = navController,
+    startDestination = startDestination,
+    modifier = modifier
+  ) {
+    dashboardGraph()
+  }
 }
 
 data class NavigationDestination(
@@ -68,5 +78,29 @@ class BottomNavigation(private val navController: NavHostController) {
 
 @Composable
 fun BottomNavigationBar(modifier: Modifier = Modifier) {
+  BottomNavigation(
+    modifier = modifier,
+    backgroundColor = MaterialTheme.colors.background,
+  ) {
+    BottomNavigationItem(
+      selected = false,
+      icon = { Icon(painter = Icons.ChartPie, contentDescription = null) },
+      onClick = { })
 
+    BottomNavigationItem(
+      selected = false,
+      icon = { Icon(painter = Icons.Feed, contentDescription = null) },
+      onClick = { })
+
+    BottomNavigationItem(
+      selected = false,
+      icon = { Icon(painter = Icons.User, contentDescription = null) },
+      onClick = { })
+  }
+}
+
+@Preview
+@Composable
+fun BottomNavigationBarPreview() {
+  BottomNavigationBar()
 }
