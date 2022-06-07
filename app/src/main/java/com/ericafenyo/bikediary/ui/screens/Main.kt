@@ -24,18 +24,39 @@
 
 package com.ericafenyo.bikediary.ui.screens
 
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.ericafenyo.bikediary.ui.navigation.BottomNavigation
 import com.ericafenyo.bikediary.ui.navigation.BottomNavigationBar
-import com.ericafenyo.bikediary.ui.navigation.NavigationDestination
+import com.ericafenyo.bikediary.ui.navigation.NavigationHost
 
 @Composable
 fun MainContent() {
   val navController = rememberNavController()
   val bottomNavigation = remember(navController) {
-
+    BottomNavigation(navController)
   }
-  Text(text = "Main content")
+
+  val navBackStackEntry by navController.currentBackStackEntryAsState()
+  val currentDestination = navBackStackEntry?.destination
+  Scaffold(
+    bottomBar = {
+      BottomNavigationBar()
+    }
+  ) { padding ->
+
+    /*
+     * This is where all the screens  are inflated.
+     */
+    NavigationHost(
+      navController = navController,
+      modifier = Modifier.padding(padding)
+    )
+  }
 }

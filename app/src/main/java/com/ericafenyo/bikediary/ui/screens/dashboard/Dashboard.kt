@@ -61,6 +61,11 @@ import com.ericafenyo.bikediary.theme.titleMedium
 import com.ericafenyo.bikediary.theme.titleSmall
 
 @Composable
+fun DashboardContent() {
+  Text(text = "Dashboard")
+}
+
+@Composable
 fun Dashboard(
   state: DashboardViewState,
   dispatch: (DashboardAction) -> Unit,
