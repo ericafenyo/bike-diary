@@ -58,6 +58,11 @@ import com.ericafenyo.bikediary.ui.components.inputs.TextField
 import timber.log.Timber
 
 @Composable
+fun ProfileContent() {
+  Text(text = "Profile")
+}
+
+@Composable
 internal fun Profile(
   state: State<ProfileViewState>,
   dispatch: (ProfileAction) -> Unit,

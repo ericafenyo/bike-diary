@@ -70,6 +70,11 @@ import com.ericafenyo.bikediary.theme.titleLarge
 import com.ericafenyo.bikediary.theme.titleMedium
 
 @Composable
+fun AdventuresContent() {
+  Text(text = "Adventures")
+}
+
+@Composable
 fun Adventures(
 
 ) {

@@ -47,7 +47,9 @@ fun MainContent() {
   val currentDestination = navBackStackEntry?.destination
   Scaffold(
     bottomBar = {
-      BottomNavigationBar()
+      BottomNavigationBar(currentDestination = currentDestination, onItemClicked = { destination ->
+        bottomNavigation.navigateTo(destination)
+      })
     }
   ) { padding ->
 
