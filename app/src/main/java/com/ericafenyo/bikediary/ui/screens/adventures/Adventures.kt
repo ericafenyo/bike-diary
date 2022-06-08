@@ -45,6 +45,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,6 +58,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ericafenyo.bikediary.libs.icons.Icons
@@ -68,16 +70,16 @@ import com.ericafenyo.bikediary.theme.contentMedium
 import com.ericafenyo.bikediary.theme.labelMedium
 import com.ericafenyo.bikediary.theme.titleLarge
 import com.ericafenyo.bikediary.theme.titleMedium
+import kotlinx.coroutines.flow.asStateFlow
 
 @Composable
-fun AdventuresContent() {
-  Text(text = "Adventures")
+fun AdventuresContent(viewModel: AdventureViewModel = viewModel()) {
+  Adventures(viewModel)
 }
 
 @Composable
-fun Adventures(
-
-) {
+fun Adventures(viewModel: AdventureViewModel) {
+  val state = viewModel.title.collectAsState()
   Scaffold(
     topBar = {
       val titleStyle = MaterialTheme.typography.titleLarge.copy(
@@ -90,7 +92,7 @@ fun Adventures(
       ) {
         Row(modifier = Modifier.padding(horizontal = 16.dp)) {
           Text(
-            text = "Adventures",
+            text = state.value,
             style = titleStyle,
             color = MaterialTheme.colors.contentHigh
           )
@@ -237,6 +239,6 @@ fun MetricItem(
 @Preview()
 fun MetricItemPreview() {
   AppTheme {
-    Adventures()
+//    Adventures(model)
   }
 }

@@ -162,6 +162,8 @@ dependencies {
   implementation(libs.timber)
 
 //   debugImplementation(libs.leakCanary)
+
+  implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 }
 
 hilt {

@@ -73,7 +73,7 @@ class LoginFragment : Fragment() {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         viewModel.state.collect { state ->
           if (state.success) {
-            startActivity(MainActivity.getStartIntent(requireActivity()))
+//            startActivity(MainActivity.getStartIntent(requireActivity()))
             requireActivity().finish()
           }
         }
