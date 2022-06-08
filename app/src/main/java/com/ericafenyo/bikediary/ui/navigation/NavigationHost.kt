@@ -30,20 +30,27 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.ericafenyo.bikediary.libs.icons.Icons
+import com.ericafenyo.bikediary.R
+import com.ericafenyo.bikediary.ui.screens.adventures.AdventuresNavigation
+import com.ericafenyo.bikediary.ui.screens.adventures.adventuresGraph
+import com.ericafenyo.bikediary.ui.screens.dashboard.DashboardNavigation
 import com.ericafenyo.bikediary.ui.screens.dashboard.dashboardGraph
+import com.ericafenyo.bikediary.ui.screens.profile.ProfileNavigation
+import com.ericafenyo.bikediary.ui.screens.profile.profileGraph
 
 @Composable
 fun NavigationHost(
   modifier: Modifier = Modifier,
   navController: NavHostController = rememberNavController(),
-  startDestination: String = "dashboard"
+  startDestination: String = DashboardNavigation.ROUTE
 ) {
   NavHost(
     navController = navController,
@@ -51,13 +58,38 @@ fun NavigationHost(
     modifier = modifier
   ) {
     dashboardGraph()
+    adventuresGraph()
+    profileGraph()
   }
 }
 
+val bottomNavigationItems = listOf(
+  NavigationDestination(
+    route = DashboardNavigation.ROUTE,
+    activeIcon = R.drawable.ic_chart_pie,
+    inactiveIcon = R.drawable.ic_chart_pie,
+    label = R.string.title_dashboard
+  ),
+
+  NavigationDestination(
+    route = AdventuresNavigation.ROUTE,
+    activeIcon = R.drawable.ic_feed,
+    inactiveIcon = R.drawable.ic_feed,
+    label = R.string.title_diary
+  ),
+
+  NavigationDestination(
+    route = ProfileNavigation.ROUTE,
+    activeIcon = R.drawable.ic_user,
+    inactiveIcon = R.drawable.ic_user,
+    label = R.string.title_profile
+  )
+)
+
 data class NavigationDestination(
   val route: String,
-  val activeIcon: ImageVector,
-  val inactiveIcon: ImageVector,
+  val activeIcon: Int,
+  val inactiveIcon: Int,
   val label: Int
 )
 
@@ -77,30 +109,39 @@ class BottomNavigation(private val navController: NavHostController) {
 }
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier = Modifier) {
+fun BottomNavigationBar(
+  modifier: Modifier = Modifier,
+  currentDestination: NavDestination?,
+  onItemClicked: (NavigationDestination) -> Unit,
+) {
   BottomNavigation(
     modifier = modifier,
     backgroundColor = MaterialTheme.colors.background,
   ) {
-    BottomNavigationItem(
-      selected = false,
-      icon = { Icon(painter = Icons.ChartPie, contentDescription = null) },
-      onClick = { })
 
-    BottomNavigationItem(
-      selected = false,
-      icon = { Icon(painter = Icons.Feed, contentDescription = null) },
-      onClick = { })
+    bottomNavigationItems.forEach { item ->
+      val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
 
-    BottomNavigationItem(
-      selected = false,
-      icon = { Icon(painter = Icons.User, contentDescription = null) },
-      onClick = { })
+      BottomNavigationItem(
+        selected = false,
+        icon = {
+          Icon(
+            painter = if (selected) {
+              painterResource(id = item.activeIcon)
+            } else {
+              painterResource(id = item.inactiveIcon)
+            },
+            contentDescription = null
+          )
+        },
+        onClick = { onItemClicked(item) }
+      )
+    }
   }
 }
 
 @Preview
 @Composable
 fun BottomNavigationBarPreview() {
-  BottomNavigationBar()
+  BottomNavigationBar(onItemClicked = {}, currentDestination = null)
 }

@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.screens.dashboard
+package com.ericafenyo.bikediary.ui.screens.profile
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.dashboardGraph() {
-  composable(route = DashboardNavigation.ROUTE, content = { DashboardContent() })
+fun NavGraphBuilder.profileGraph() {
+  composable(route = ProfileNavigation.ROUTE, content = { ProfileContent() })
 }
 
-object DashboardNavigation {
-  const val ROUTE = "dashboard"
+object ProfileNavigation {
+  const val ROUTE = "profile"
 }
