@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.diary
+package com.ericafenyo.bikediary.ui.screens.adventures
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.ericafenyo.bikediary.theme.AppTheme
-import com.ericafenyo.bikediary.ui.screens.adventures.Adventures
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class DiaryFragment : Fragment() {
-  private val viewModel: DiaryViewModel by viewModels()
+@HiltViewModel
+class AdventureViewModel @Inject constructor() : ViewModel() {
+  val title = MutableStateFlow("Adventure")
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    return ComposeView(requireContext()).apply {
-      setContent {
-        AppTheme {
-//          Adventures(model)
-        }
-      }
+  init {
+    viewModelScope.launch {
+      delay(5000)
+      title.value = "Title changed"
     }
   }
 }
