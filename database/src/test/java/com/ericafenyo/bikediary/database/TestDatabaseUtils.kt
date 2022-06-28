@@ -34,9 +34,8 @@ object TestDatabaseUtils {
     duration = 2000.0,
     distance = 200.0,
     calories = 1200,
-    startedAt = "2021-08-15T18:56:50.431356",
-    completedAt = "2021-08-15T23:56:50.431356",
-    geojson = "{}",
+    startTime = "2021-08-15T18:56:50.431356",
+    endTime = "2021-08-15T23:56:50.431356",
     images = emptyList()
   )
 }

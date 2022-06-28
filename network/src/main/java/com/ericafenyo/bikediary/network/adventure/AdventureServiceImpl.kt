@@ -64,7 +64,6 @@ class AdventureServiceImpl @Inject constructor(
     return data.map {
       Adventure(
         id = it.id,
-        uuid = it.uuid,
         title = it.title,
         speed = it.speed,
         duration = it.duration,
@@ -72,7 +71,6 @@ class AdventureServiceImpl @Inject constructor(
         calories = it.calories,
         startedAt = it.startedAt as String,
         completedAt = it.completedAt as String,
-        geojson = it.geojson,
         images = listOf(),
       )
     }
@@ -81,7 +79,7 @@ class AdventureServiceImpl @Inject constructor(
   override suspend fun synchronizeAdventures(adventures: List<Adventure>): List<Adventure> {
     val input = adventures.map { adventure ->
       AdventureInput(
-        uuid = adventure.uuid,
+        uuid = adventure.id,
         title = adventure.title,
         speed = adventure.speed,
         duration = adventure.duration,
@@ -89,7 +87,7 @@ class AdventureServiceImpl @Inject constructor(
         calories = adventure.calories,
         startedAt = adventure.startedAt,
         completedAt = adventure.completedAt,
-        geojson = adventure.geojson,
+        geojson = "",
         images = adventure.images,
       )
     }
@@ -113,7 +111,6 @@ class AdventureServiceImpl @Inject constructor(
     return data.map {
       Adventure(
         id = it.id,
-        uuid = it.uuid,
         title = it.title,
         speed = it.speed,
         duration = it.duration,
@@ -121,7 +118,6 @@ class AdventureServiceImpl @Inject constructor(
         calories = it.calories,
         startedAt = it.startedAt as String,
         completedAt = it.completedAt as String,
-        geojson = it.geojson,
         images = listOf(),
       )
     }

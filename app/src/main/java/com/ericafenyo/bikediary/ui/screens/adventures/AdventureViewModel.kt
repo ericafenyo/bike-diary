@@ -25,21 +25,28 @@
 package com.ericafenyo.bikediary.ui.screens.adventures
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.ericafenyo.bikediary.domain.adventure.AdventuresInteractor
+import com.ericafenyo.bikediary.model.Adventure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 
 @HiltViewModel
-class AdventureViewModel @Inject constructor() : ViewModel() {
-  val title = MutableStateFlow("Adventure")
+class AdventureViewModel @Inject constructor(
+  adventuresInteractor: AdventuresInteractor,
+) : ViewModel() {
 
-  init {
-    viewModelScope.launch {
-      delay(5000)
-      title.value = "Title changed"
-    }
+  val state: Flow<AdventureUiState> = combine(
+    flowOf(false),
+    adventuresInteractor.observe()
+  ) { isLoading, adventures ->
+    AdventureUiState(isLoading, adventures)
   }
 }
+
+data class AdventureUiState(
+  val isLoading: Boolean = false,
+  val adventures: List<Adventure>
+)

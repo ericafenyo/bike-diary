@@ -29,6 +29,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.ericafenyo.bikediary.ui.screens.MainContent
+import com.mapbox.geojson.utils.PolylineUtils
 
 //@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

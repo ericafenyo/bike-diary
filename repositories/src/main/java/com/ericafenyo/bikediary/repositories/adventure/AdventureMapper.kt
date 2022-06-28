@@ -29,28 +29,24 @@ import com.ericafenyo.bikediary.model.Adventure
 
 fun Adventure.toEntity() = AdventureEntity(
   id = id,
-  uuid = uuid,
   title = title,
   speed = speed,
   duration = duration,
   distance = distance,
   calories = calories,
-  startedAt = startedAt,
-  completedAt = completedAt,
-  geojson = geojson,
+  startTime = startedAt,
+  endTime = completedAt,
   images = images,
 )
 
 fun AdventureEntity.toAdventure() = Adventure(
   id = id,
-  uuid = uuid,
   title = title,
   speed = speed,
   duration = duration,
   distance = distance,
   calories = calories,
-  startedAt = startedAt,
-  completedAt = completedAt,
-  geojson = geojson,
+  startedAt = startTime,
+  completedAt = endTime,
   images = images,
 )
