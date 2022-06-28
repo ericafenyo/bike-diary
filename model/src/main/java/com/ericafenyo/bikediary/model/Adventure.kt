@@ -24,18 +24,18 @@
 
 package com.ericafenyo.bikediary.model
 
+import java.time.Instant
+
 data class Adventure(
   val id: String,
-  val uuid: String,
   val title: String,
   val speed: Double,
   val duration: Double,
   val distance: Double,
   val calories: Int,
-  val startedAt: String,
-  val completedAt: String,
-  val geojson: String,
-  val images: List<String> = listOf("https://images.unsplash.com/photo-1542892532-4dc205c0d41f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2064&q=80"),
+  val startTime: Instant,
+  val endTime: Instant,
+  val image: String,
 ) {
   fun isPushed() = !id.contains("Unprocessed")
 }

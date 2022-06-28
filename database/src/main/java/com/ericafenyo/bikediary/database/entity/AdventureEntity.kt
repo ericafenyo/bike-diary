@@ -24,25 +24,37 @@
 
 package com.ericafenyo.bikediary.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.util.UUID
 
-@Entity(
-  tableName = "adventures",
-  indices = [Index(value = ["uuid"], unique = true)]
-)
+@Entity(tableName = "adventures")
 data class AdventureEntity(
-  @PrimaryKey val id: String,
-  val uuid: String = UUID.randomUUID().toString(),
+  @PrimaryKey
+  @ColumnInfo(name = "id")
+  val id: String,
+
+  @ColumnInfo(name = "title")
   val title: String,
+
+  @ColumnInfo(name = "speed")
   val speed: Double,
+
+  @ColumnInfo(name = "duration")
   val duration: Double,
+
+  @ColumnInfo(name = "distance")
   val distance: Double,
+
+  @ColumnInfo(name = "calories")
   val calories: Int,
-  val startedAt: String,
-  val completedAt: String,
-  val geojson: String,
+
+  @ColumnInfo(name = "start_time")
+  val startTime: String,
+
+  @ColumnInfo(name = "end_time")
+  val endTime: String,
+
+  @ColumnInfo(name = "images")
   val images: List<String>,
 )

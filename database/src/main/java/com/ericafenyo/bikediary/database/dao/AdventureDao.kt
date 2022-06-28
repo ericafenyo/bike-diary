@@ -41,14 +41,23 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface AdventureDao {
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  /**
+   * Inserts a list of [adventures] into the database. Ignore entities that already exist.
+   */
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun bulkInsert(adventures: List<AdventureEntity>)
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  /**
+   * Inserts [adventure] into the database. Ignore entities that already exist.
+   */
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun insert(adventure: AdventureEntity)
 
-  @Query("SELECT * FROM adventures WHERE id = :adventureId")
-  suspend fun getAdventureById(adventureId: String): AdventureEntity
+  /**
+   *
+   */
+  @Query("SELECT * FROM adventures WHERE id = :id")
+  suspend fun getAdventure(id: String): AdventureEntity
 
   @Query("SELECT * FROM adventures")
   suspend fun getAdventures(): List<AdventureEntity>
@@ -59,10 +68,10 @@ interface AdventureDao {
   @Query("SELECT * FROM adventures")
   fun adventures(): Flow<List<AdventureEntity>>
 
-  @Query("SELECT * FROM adventures WHERE uuid = :uuid")
+  @Query("SELECT * FROM adventures WHERE id = :uuid")
   fun adventure(uuid: String): Flow<AdventureEntity>
 
-  @Query("DELETE FROM adventures WHERE uuid = :uuid")
+  @Query("DELETE FROM adventures WHERE id = :uuid")
   suspend fun deleteById(uuid: String): Int
 
   @Query("DELETE FROM adventures")

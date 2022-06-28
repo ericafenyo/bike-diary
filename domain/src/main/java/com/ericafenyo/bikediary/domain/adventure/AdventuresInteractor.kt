@@ -22,30 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.domain
+package com.ericafenyo.bikediary.domain.adventure
 
-import com.ericafenyo.tracker.data.model.Result
+import com.ericafenyo.bikediary.di.qualifier.Dispatcher
+import com.ericafenyo.bikediary.di.qualifier.DispatcherType.IO
+import com.ericafenyo.bikediary.domain.FlowInteractor
+import com.ericafenyo.bikediary.model.Adventure
+import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import timber.log.Timber
 
-/**
- * Executes business logic in its execute method and keep posting updates to the result as
- * [Result<R>].
- * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
- */
-abstract class FlowInteractor<R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
-  operator fun invoke(): Flow<Result<R>> = createResult()
-    .catch { e -> Timber.e(e); emit(Result.Error(Exception(e))) }
-    .flowOn(coroutineDispatcher)
+class AdventuresInteractor @Inject constructor(
+  private val repository: AdventureRepository,
+  @Dispatcher(IO) dispatcher: CoroutineDispatcher,
+) : FlowInteractor<List<Adventure>>(dispatcher) {
 
-  private fun createResult(): Flow<Result<R>> = execute().map { Result.Success(it) }
-
-  fun observe(): Flow<R> = execute()
-
-  protected abstract fun execute(): Flow<R>
+  override fun execute(): Flow<List<Adventure>> = repository.adventures()
 }

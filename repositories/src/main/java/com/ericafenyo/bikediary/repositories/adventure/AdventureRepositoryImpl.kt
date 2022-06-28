@@ -33,20 +33,18 @@ import timber.log.Timber
 
 @Singleton
 class AdventureRepositoryImpl @Inject constructor(
-  private val remoteSource: AdventureService,
+  private val service: AdventureService,
   private val localSource: AdventureLocalDataSource,
 ) : AdventureRepository {
 
-  override fun adventures(): Flow<List<Adventure>> {
-    return localSource.adventures()
-  }
+  override fun adventures(): Flow<List<Adventure>> = localSource.adventures()
 
   override fun adventure(uuid: String): Flow<Adventure> = localSource.adventure(uuid)
 
   override suspend fun synchronizeAdventures() {
     val unprocessedAdventures = localSource.getUnprocessedAdventures()
     if (unprocessedAdventures.isNotEmpty()) {
-      val syncedAdventures = remoteSource.synchronizeAdventures(unprocessedAdventures)
+      val syncedAdventures = service.synchronizeAdventures(unprocessedAdventures)
       if (syncedAdventures.isNotEmpty()) {
         localSource.insertAll(syncedAdventures)
       }

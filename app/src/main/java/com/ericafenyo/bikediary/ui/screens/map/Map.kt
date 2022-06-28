@@ -104,7 +104,7 @@ fun Map(
       floatingActionButtonPosition = FabPosition.End
     ) {
       Box(modifier = Modifier.fillMaxSize()) {
-        MapboxView()
+//        MapboxView()
         FloatingActionButton(
           modifier = Modifier
             .padding(

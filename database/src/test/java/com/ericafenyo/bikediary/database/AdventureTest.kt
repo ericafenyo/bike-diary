@@ -60,7 +60,7 @@ class AdventureTest : DatabaseTest() {
       adventureDao.insert(adventure)
 
       // When we access the inserted Adventure
-      val savedAdventure = adventureDao.getAdventureById(adventureId)
+      val savedAdventure = adventureDao.getAdventure(adventureId)
 
       // Then it must match the local variable 'adventureId'.
       assertThat(savedAdventure.id).isEqualTo(adventureId)
@@ -79,7 +79,7 @@ class AdventureTest : DatabaseTest() {
       adventureDao.insert(adventure.copy(title = newTitle))
 
       // Then we should have an update
-      assertThat(adventureDao.getAdventureById(adventureId).title)
+      assertThat(adventureDao.getAdventure(adventureId).title)
         .isEqualTo(newTitle)
     }
   }
@@ -90,7 +90,7 @@ class AdventureTest : DatabaseTest() {
       // Given we insert two Adventures
       adventureDao.insert(adventure)
       val secondAdventure = TestDatabaseUtils.createAdventure(UUID.randomUUID().toString()).copy(
-        uuid = adventureUuid
+        id = adventureUuid
       )
       adventureDao.insert(secondAdventure)
 
@@ -112,8 +112,7 @@ class AdventureTest : DatabaseTest() {
       adventureDao.insert(adventure)
       adventureDao.insert(
         adventure.copy(
-          id = "61b65f6055e6f0948b71f128",
-          uuid = "258cb9c2-9752-4002-8ec0-d31dacc739d2"
+          id = "258cb9c2-9752-4002-8ec0-d31dacc739d2"
         )
       )
 
