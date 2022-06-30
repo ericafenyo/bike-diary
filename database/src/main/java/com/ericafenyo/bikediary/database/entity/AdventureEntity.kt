@@ -27,6 +27,7 @@ package com.ericafenyo.bikediary.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.Instant
 
 @Entity(tableName = "adventures")
 data class AdventureEntity(
@@ -50,11 +51,11 @@ data class AdventureEntity(
   val calories: Int,
 
   @ColumnInfo(name = "start_time")
-  val startTime: String,
+  val startTime: Instant,
 
   @ColumnInfo(name = "end_time")
-  val endTime: String,
+  val endTime: Instant,
 
-  @ColumnInfo(name = "images")
-  val images: List<String>,
+  @ColumnInfo(name = "image_path")
+  val imagePath: String,
 )

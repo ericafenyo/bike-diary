@@ -25,7 +25,7 @@
 package com.ericafenyo.bikediary.repositories
 
 import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepositoryImpl
+import com.ericafenyo.bikediary.repositories.adventure.internal.AdventureRepositoryImpl
 import com.ericafenyo.bikediary.repositories.settings.SettingsRepository
 import com.ericafenyo.bikediary.repositories.settings.SettingsRepositoryImpl
 import com.ericafenyo.bikediary.repositories.user.UserRepository

@@ -25,12 +25,24 @@
 package com.ericafenyo.bikediary.repositories.adventure
 
 import com.ericafenyo.bikediary.model.Adventure
-import com.ericafenyo.bikediary.model.RefreshType
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository implementation serving as a single point of access to adventure data.
+ */
 interface AdventureRepository {
+
+  /**
+   * Returns available observable adventures
+   */
   fun adventures(): Flow<List<Adventure>>
-  fun adventure(uuid: String): Flow<Adventure>
-//  suspend fun updateAdventures(type: RefreshType)
+
+  /**
+   * Returns a specific adventure
+   *
+   * @param id unique string identifying the adventure.
+   */
+  fun adventure(id: String): Flow<Adventure>
+
   suspend fun synchronizeAdventures()
 }

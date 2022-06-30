@@ -30,16 +30,17 @@ import com.ericafenyo.bikediary.model.Adventure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 
 @HiltViewModel
 class AdventureViewModel @Inject constructor(
   adventuresInteractor: AdventuresInteractor,
 ) : ViewModel() {
+  private val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
   val state: Flow<AdventureUiState> = combine(
-    flowOf(false),
+    isLoading,
     adventuresInteractor.observe()
   ) { isLoading, adventures ->
     AdventureUiState(isLoading, adventures)

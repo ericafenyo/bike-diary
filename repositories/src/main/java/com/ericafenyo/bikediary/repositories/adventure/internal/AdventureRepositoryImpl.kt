@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,12 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories.adventure
+package com.ericafenyo.bikediary.repositories.adventure.internal
 
 import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.network.adventure.AdventureService
+import com.ericafenyo.bikediary.repositories.adventure.AdventureLocalDataSource
+import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +41,7 @@ class AdventureRepositoryImpl @Inject constructor(
 
   override fun adventures(): Flow<List<Adventure>> = localSource.adventures()
 
-  override fun adventure(uuid: String): Flow<Adventure> = localSource.adventure(uuid)
+  override fun adventure(id: String): Flow<Adventure> = localSource.adventure(id)
 
   override suspend fun synchronizeAdventures() {
     val unprocessedAdventures = localSource.getUnprocessedAdventures()
