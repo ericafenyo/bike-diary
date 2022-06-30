@@ -27,8 +27,16 @@ package com.ericafenyo.bikediary.database
 import androidx.room.TypeConverter
 import com.ericafenyo.bikediary.model.Quests
 import com.ericafenyo.libs.serialization.KotlinJsonSerializer
+import java.time.Instant
 import org.json.JSONArray
 
+class InstantConverter {
+  @TypeConverter
+  fun toInstant(milliseconds: Long): Instant = Instant.ofEpochMilli(milliseconds)
+
+  @TypeConverter
+  fun toLong(instant: Instant): Long = instant.toEpochMilli()
+}
 
 object Converters {
   private val serializer = KotlinJsonSerializer.getInstance()

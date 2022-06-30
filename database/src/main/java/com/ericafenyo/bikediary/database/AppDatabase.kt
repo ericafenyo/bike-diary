@@ -39,7 +39,10 @@ import com.ericafenyo.bikediary.database.entity.SettingsEntity
   version = 1,
   exportSchema = false
 )
-@TypeConverters(Converters::class)
+@TypeConverters(
+  Converters::class,
+  InstantConverter::class
+)
 abstract class AppDatabase : RoomDatabase() {
   abstract fun getAdventureDao(): AdventureDao
   abstract fun settingsDao(): SettingsDao
