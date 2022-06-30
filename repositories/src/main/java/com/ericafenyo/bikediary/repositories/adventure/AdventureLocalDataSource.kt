@@ -25,6 +25,7 @@
 package com.ericafenyo.bikediary.repositories.adventure
 
 import com.ericafenyo.bikediary.database.AppDatabase
+import com.ericafenyo.bikediary.database.entity.AdventureEntity
 import com.ericafenyo.bikediary.model.Adventure
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -50,8 +51,27 @@ class AdventureLocalDataSource @Inject constructor(database: AppDatabase) {
     adventures.map { entity -> entity.toEntity() }
   )
 
-  suspend fun delete(uuid: String) = dao.deleteById(uuid)
+  private fun Adventure.toEntity() = AdventureEntity(
+    id = id,
+    title = title,
+    speed = speed,
+    duration = duration,
+    distance = distance,
+    calories = calories,
+    startTime = startTime,
+    endTime = endTime,
+    imagePath = image,
+  )
 
-
-  suspend fun deleteAll() = dao.deleteAll()
+  private fun AdventureEntity.toAdventure() = Adventure(
+    id = id,
+    title = title,
+    speed = speed,
+    duration = duration,
+    distance = distance,
+    calories = calories,
+    startTime = startTime,
+    endTime = endTime,
+    image = imagePath,
+  )
 }
