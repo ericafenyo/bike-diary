@@ -31,6 +31,7 @@ import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 @Singleton
@@ -39,16 +40,28 @@ class AdventureRepositoryImpl @Inject constructor(
   private val localSource: AdventureLocalDataSource,
 ) : AdventureRepository {
 
-  override fun adventures(): Flow<List<Adventure>> = localSource.adventures()
+  override fun adventures(): Flow<List<Adventure>> {
+    return flow { emit(service.getAdventures()) }
+//    return localSource.adventures()
+  }
 
   override fun adventure(id: String): Flow<Adventure> = localSource.adventure(id)
+
+  override suspend fun updateAdventures(refresh: Boolean): Boolean {
+    if (!refresh) {
+      return true
+    }
+
+    return runCatching { service.getAdventures() }
+      .onSuccess { adventures -> localSource.bulkInsert(adventures) }.isSuccess
+  }
 
   override suspend fun synchronizeAdventures() {
     val unprocessedAdventures = localSource.getUnprocessedAdventures()
     if (unprocessedAdventures.isNotEmpty()) {
       val syncedAdventures = service.synchronizeAdventures(unprocessedAdventures)
       if (syncedAdventures.isNotEmpty()) {
-        localSource.insertAll(syncedAdventures)
+        localSource.bulkInsert(syncedAdventures)
       }
     } else {
       Timber.d("No adventures to sync")

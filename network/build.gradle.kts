@@ -27,7 +27,7 @@ plugins {
   id("kotlin-android")
   id("kotlin-kapt")
   id("kotlinx-serialization")
-  id("com.apollographql.apollo")
+  id("com.apollographql.apollo3")
 }
 
 android {
@@ -61,7 +61,6 @@ dependencies {
   implementation((libs.okhttp3.loggingInterceptor))
   implementation((libs.okhttp3.okhttp))
 
-  implementation(libs.apollo.coroutines)
   api(libs.apollo.runtime)
 
   implementation(libs.hilt.android)
@@ -73,6 +72,8 @@ dependencies {
 }
 
 apollo {
-  // instruct the compiler to generate Kotlin models
-  generateKotlinModels.set(true)
+  packageName.set("com.ericafenyo.bikediary")
+
+  // Mapping for GraphQL custom scalars
+  mapScalarToKotlinString("DateTime")
 }

@@ -22,37 +22,27 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories.adventure
+package com.ericafenyo.bikediary.domain.adventure
 
-import com.ericafenyo.bikediary.model.Adventure
-import kotlinx.coroutines.flow.Flow
+import com.ericafenyo.bikediary.di.qualifier.IODispatcher
+import com.ericafenyo.bikediary.domain.Interactor
+import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
- * Repository implementation serving as a single point of access to adventure data.
+ * TODO
+ *
+ * @param repository
+ * @param dispatcher
+ *
  */
-interface AdventureRepository {
+class UpdateAdventuresInteractor @Inject constructor(
+  private val repository: AdventureRepository,
+  @IODispatcher dispatcher: CoroutineDispatcher,
+) : Interactor<Boolean>(dispatcher) {
 
-  /**
-   * Returns available observable adventures
-   */
-  fun adventures(): Flow<List<Adventure>>
-
-  /**
-   * Returns a specific adventure
-   *
-   * @param id unique string identifying the adventure.
-   */
-
-  fun adventure(id: String): Flow<Adventure>
-
-  /**
-   * Replace the local database with fresh data from the remote source.
-   *
-   * @param refresh force remote data fetching.
-   *
-   * @return 'true' if the update was successful.
-   */
-  suspend fun updateAdventures(refresh: Boolean): Boolean
-
-  suspend fun synchronizeAdventures()
+  override suspend fun execute(): Boolean {
+    return repository.updateAdventures(true)
+  }
 }

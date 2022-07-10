@@ -29,9 +29,11 @@ import java.time.Instant
 data class Adventure(
   val id: String,
   val title: String,
-  val speed: Double,
-  val duration: Double,
+  val description: String,
+  val altitude: Double,
   val distance: Double,
+  val duration: Double,
+  val speed: Double,
   val calories: Int,
   val startTime: Instant,
   val endTime: Instant,

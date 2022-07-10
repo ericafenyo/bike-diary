@@ -24,9 +24,10 @@
 
 package com.ericafenyo.bikediary.network
 
-import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.okHttpClient
 import com.ericafenyo.bikediary.network.adventure.AdventureService
-import com.ericafenyo.bikediary.network.adventure.AdventureServiceImpl
+import com.ericafenyo.bikediary.network.adventure.internal.AdventureServiceImpl
 import com.ericafenyo.bikediary.network.settings.SettingsService
 import com.ericafenyo.bikediary.network.settings.SettingsServiceImpl
 import com.ericafenyo.bikediary.network.user.UserService
@@ -42,7 +43,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class NetworkModule {
+internal abstract class NetworkModule {
 
   @Binds
   @Singleton
@@ -75,7 +76,7 @@ abstract class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApolloClient(okHttpClient: OkHttpClient): ApolloClient = ApolloClient.builder()
+    fun provideApolloClient(okHttpClient: OkHttpClient): ApolloClient = ApolloClient.Builder()
       .serverUrl("${BuildConfig.API_SERVER_URL}/graphql")
       .okHttpClient(okHttpClient)
       .build()

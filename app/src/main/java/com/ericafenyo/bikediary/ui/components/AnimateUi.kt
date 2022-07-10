@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,37 +22,41 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories.adventure
+package com.ericafenyo.bikediary.ui.components
 
-import com.ericafenyo.bikediary.model.Adventure
-import kotlinx.coroutines.flow.Flow
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.Composable
+import com.ericafenyo.bikediary.ui.components.UIState.Loading
+import com.ericafenyo.bikediary.ui.components.UIState.Success
 
-/**
- * Repository implementation serving as a single point of access to adventure data.
- */
-interface AdventureRepository {
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun AnimateUi(
+  loading: @Composable (() -> Unit)? = null,
+  success: @Composable (() -> Unit)? = null,
+  error: @Composable (() -> Unit)? = null,
+  empty: @Composable (() -> Unit)? = null,
+) {
 
-  /**
-   * Returns available observable adventures
-   */
-  fun adventures(): Flow<List<Adventure>>
+  val state = when {
+    loading != null -> Loading(loading)
+    success != null -> Success(success)
+    else -> null
+  }
 
-  /**
-   * Returns a specific adventure
-   *
-   * @param id unique string identifying the adventure.
-   */
+  AnimatedContent(targetState = state) { targetState: UIState? ->
+    targetState?.content
+  }
+}
 
-  fun adventure(id: String): Flow<Adventure>
+private sealed class UIState(
+  open val content: @Composable () -> Unit
+) {
+  data class Loading(
+    override val content: @Composable () -> Unit
+  ) : UIState(content)
 
-  /**
-   * Replace the local database with fresh data from the remote source.
-   *
-   * @param refresh force remote data fetching.
-   *
-   * @return 'true' if the update was successful.
-   */
-  suspend fun updateAdventures(refresh: Boolean): Boolean
-
-  suspend fun synchronizeAdventures()
+  data class Success(
+    override val content: @Composable () -> Unit) : UIState(content)
 }

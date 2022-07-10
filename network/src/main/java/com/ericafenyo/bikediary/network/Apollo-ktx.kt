@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,38 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@file:JvmName("ApolloGraphqlUtils")
 
-package com.ericafenyo.bikediary.repositories.adventure
+package com.ericafenyo.bikediary.network
 
-import com.ericafenyo.bikediary.model.Adventure
-import kotlinx.coroutines.flow.Flow
+import com.apollographql.apollo3.ApolloCall
+import com.apollographql.apollo3.api.Operation
+import com.apollographql.apollo3.exception.ApolloException
+
+fun toHttpException(exception: ApolloException) {
+//  val jsonSerializer = ReflectionJsonSerializer.getInstance()
+}
 
 /**
- * Repository implementation serving as a single point of access to adventure data.
+ * A shorthand to get a non-nullable data.
  */
-interface AdventureRepository {
-
-  /**
-   * Returns available observable adventures
-   */
-  fun adventures(): Flow<List<Adventure>>
-
-  /**
-   * Returns a specific adventure
-   *
-   * @param id unique string identifying the adventure.
-   */
-
-  fun adventure(id: String): Flow<Adventure>
-
-  /**
-   * Replace the local database with fresh data from the remote source.
-   *
-   * @param refresh force remote data fetching.
-   *
-   * @return 'true' if the update was successful.
-   */
-  suspend fun updateAdventures(refresh: Boolean): Boolean
-
-  suspend fun synchronizeAdventures()
+suspend fun <T : Operation.Data> ApolloCall<T>.invoke(): T {
+  return execute().run {
+    if (hasErrors()) {
+      throw errors?.firstOrNull()?.let { ApolloHttpException(it) }
+        ?: ApolloException("The server did not return errors")
+    } else {
+      data ?: throw  ApolloException("The server did not return any data")
+    }
+  }
 }

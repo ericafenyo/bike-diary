@@ -27,9 +27,11 @@ package com.ericafenyo.bikediary.repositories.adventure
 import com.ericafenyo.bikediary.database.AppDatabase
 import com.ericafenyo.bikediary.database.entity.AdventureEntity
 import com.ericafenyo.bikediary.model.Adventure
+import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 @Singleton
@@ -47,15 +49,17 @@ class AdventureLocalDataSource @Inject constructor(database: AppDatabase) {
   suspend fun getUnprocessedAdventures(): List<Adventure> = dao.getUnprocessedAdventures()
     .map { entity -> entity.toAdventure() }
 
-  suspend fun insertAll(adventures: List<Adventure>) = dao.bulkInsert(
+  suspend fun bulkInsert(adventures: List<Adventure>) = dao.bulkInsert(
     adventures.map { entity -> entity.toEntity() }
   )
 
   private fun Adventure.toEntity() = AdventureEntity(
     id = id,
     title = title,
+
     speed = speed,
     duration = duration,
+
     distance = distance,
     calories = calories,
     startTime = startTime,
@@ -67,6 +71,8 @@ class AdventureLocalDataSource @Inject constructor(database: AppDatabase) {
     id = id,
     title = title,
     speed = speed,
+    description = "",
+    altitude = 0.9,
     duration = duration,
     distance = distance,
     calories = calories,

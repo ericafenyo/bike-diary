@@ -27,11 +27,10 @@ package com.ericafenyo.bikediary.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import com.ericafenyo.bikediary.ui.screens.MainContent
-import com.mapbox.geojson.utils.PolylineUtils
+import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 //  private val viewModel: MainActivityViewModel by viewModels()
 

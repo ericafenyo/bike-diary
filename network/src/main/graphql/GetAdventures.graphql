@@ -1,15 +1,14 @@
 query getAdventures {
-  adventures {
-    id
-    uuid
-    title
-    speed
-    distance
-    duration
-    geojson
-    startedAt
-    completedAt
-    createdAt
-    calories
-  }
+	adventures {
+	    id
+		uuid
+		title
+		altitude
+		distance
+		duration
+		speed
+		calories
+		startTime
+		endTime
+	}
 }
