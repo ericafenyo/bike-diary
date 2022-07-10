@@ -164,6 +164,9 @@ dependencies {
 //   debugImplementation(libs.leakCanary)
 
   implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+  
+  implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
 }
 
 hilt {

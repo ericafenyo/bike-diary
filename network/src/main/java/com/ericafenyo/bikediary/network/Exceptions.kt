@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,37 +22,11 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories.adventure
+package com.ericafenyo.bikediary.network
 
-import com.ericafenyo.bikediary.model.Adventure
-import kotlinx.coroutines.flow.Flow
+import com.apollographql.apollo3.api.Error
+import com.apollographql.apollo3.exception.ApolloException
 
-/**
- * Repository implementation serving as a single point of access to adventure data.
- */
-interface AdventureRepository {
+class ApolloHttpException(val error: Error) : ApolloException("")
 
-  /**
-   * Returns available observable adventures
-   */
-  fun adventures(): Flow<List<Adventure>>
-
-  /**
-   * Returns a specific adventure
-   *
-   * @param id unique string identifying the adventure.
-   */
-
-  fun adventure(id: String): Flow<Adventure>
-
-  /**
-   * Replace the local database with fresh data from the remote source.
-   *
-   * @param refresh force remote data fetching.
-   *
-   * @return 'true' if the update was successful.
-   */
-  suspend fun updateAdventures(refresh: Boolean): Boolean
-
-  suspend fun synchronizeAdventures()
-}
+class ApolloGraphQLException(message: String = "") : ApolloException(message)

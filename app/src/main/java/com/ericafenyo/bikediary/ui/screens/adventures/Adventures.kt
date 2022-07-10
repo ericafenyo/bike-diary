@@ -24,6 +24,8 @@
 
 package com.ericafenyo.bikediary.ui.screens.adventures
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,25 +40,31 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ericafenyo.bikediary.theme.AppTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.ericafenyo.bikediary.theme.contentHigh
 import com.ericafenyo.bikediary.theme.titleLarge
+import com.ericafenyo.bikediary.ui.components.LoadingState
+import com.ericafenyo.bikediary.ui.screens.adventures.AdventureUiState.Loading
+import com.ericafenyo.bikediary.ui.screens.adventures.AdventureUiState.Success
+import timber.log.Timber
 
 @Composable
-fun AdventuresContent(viewModel: AdventureViewModel = viewModel()) {
+fun AdventuresContent(viewModel: AdventureViewModel = hiltViewModel()) {
   Adventures(viewModel)
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Adventures(viewModel: AdventureViewModel) {
-  val state = viewModel.state
+  val state by viewModel.state.collectAsState()
 
   Scaffold(
     topBar = {
@@ -79,13 +87,48 @@ fun Adventures(viewModel: AdventureViewModel) {
     }
   ) { paddingValues ->
 
-    LazyColumn(
-      contentPadding = paddingValues,
-      modifier = Modifier.fillMaxWidth()
-    ) {
-      repeat(10) {
-        item {
-//          AdventureItem(modifier = Modifier.padding(vertical = 4.dp))
+//    AnimateUi(
+//      loading = if (isLoading) {
+//        { LoadingState() }
+//      } else {
+//        null
+//      }
+//    )
+
+    Timber.d("This is the state: $state")
+
+    val isLoading = state is Loading
+
+//    when (state) {
+//      is Loading -> {}
+//      is Success -> {}
+//      is Empty -> {}
+//    }
+
+    AnimatedContent(targetState = isLoading) { targetEmpty ->
+      if (targetEmpty) {
+        LoadingState()
+      } else {
+        when (state) {
+          is Success -> {
+            LazyColumn(
+              contentPadding = paddingValues,
+              modifier = Modifier.fillMaxWidth()
+            ) {
+              (state as Success).adventures.forEach { adventure ->
+                item {
+                  AdventureItem(
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    metrics = "23km - 43m",
+                    title = adventure.title,
+                    time = "34",
+                    image = adventure.image
+                  )
+                }
+              }
+            }
+          }
+          else -> {}
         }
       }
     }
@@ -98,6 +141,7 @@ fun AdventureItem(
   title: String,
   time: String,
   metrics: String,
+  image: String,
   modifier: Modifier = Modifier
 ) {
   Card(
@@ -106,6 +150,7 @@ fun AdventureItem(
     elevation = 0.dp
   ) {
     Column(modifier = Modifier.fillMaxWidth()) {
+      AsyncImage(model = image, contentDescription = null)
       Box(
         modifier = Modifier
           .padding(16.dp)
@@ -122,14 +167,9 @@ fun AdventureItem(
   }
 }
 
-@Composable
-@Preview()
-fun MetricItemPreview() {
-  AppTheme {
-    AdventureItem(
-      title = "NP - Côte de la fosse Garreau",
-      time = "7h43 - 13h34",
-      metrics = "23km - 63h"
-    )
-  }
+sealed class UIState {
+  object Loading : UIState()
+  object Success : UIState()
+  object Error : UIState()
+  object Empty : UIState()
 }

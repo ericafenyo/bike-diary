@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,37 +22,29 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.repositories.adventure
+package com.ericafenyo.bikediary.ui.components
 
-import com.ericafenyo.bikediary.model.Adventure
-import kotlinx.coroutines.flow.Flow
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 
-/**
- * Repository implementation serving as a single point of access to adventure data.
- */
-interface AdventureRepository {
 
-  /**
-   * Returns available observable adventures
-   */
-  fun adventures(): Flow<List<Adventure>>
+@Composable
+fun LoadingState(modifier: Modifier = Modifier) {
+  Box(
+    modifier = modifier.fillMaxSize(),
+    contentAlignment = Alignment.Center
+  ) {
+    CircularProgressIndicator()
+  }
+}
 
-  /**
-   * Returns a specific adventure
-   *
-   * @param id unique string identifying the adventure.
-   */
-
-  fun adventure(id: String): Flow<Adventure>
-
-  /**
-   * Replace the local database with fresh data from the remote source.
-   *
-   * @param refresh force remote data fetching.
-   *
-   * @return 'true' if the update was successful.
-   */
-  suspend fun updateAdventures(refresh: Boolean): Boolean
-
-  suspend fun synchronizeAdventures()
+@Preview
+@Composable
+fun PreviewLoadingState() {
+  LoadingState()
 }

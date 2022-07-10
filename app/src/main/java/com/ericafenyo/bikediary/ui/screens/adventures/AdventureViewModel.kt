@@ -25,29 +25,52 @@
 package com.ericafenyo.bikediary.ui.screens.adventures
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ericafenyo.bikediary.domain.adventure.AdventuresInteractor
+import com.ericafenyo.bikediary.domain.adventure.UpdateAdventuresInteractor
 import com.ericafenyo.bikediary.model.Adventure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AdventureViewModel @Inject constructor(
+  private val updateAdventuresInteractor: UpdateAdventuresInteractor,
   adventuresInteractor: AdventuresInteractor,
 ) : ViewModel() {
   private val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-  val state: Flow<AdventureUiState> = combine(
-    isLoading,
-    adventuresInteractor.observe()
-  ) { isLoading, adventures ->
-    AdventureUiState(isLoading, adventures)
+  val state: StateFlow<AdventureUiState> = adventuresInteractor.observe()
+    .map { adventures ->
+      if (adventures.isEmpty()) {
+        AdventureUiState.Empty
+      } else {
+        AdventureUiState.Success(adventures)
+      }
+    }
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.Eagerly,
+      initialValue = AdventureUiState.Loading
+    )
+
+  init {
+    viewModelScope.launch {
+      isLoading.value = true
+      updateAdventuresInteractor.invoke().run {
+        isLoading.value = false
+      }
+    }
   }
 }
 
-data class AdventureUiState(
-  val isLoading: Boolean = false,
-  val adventures: List<Adventure>
-)
+sealed class AdventureUiState {
+  object Loading : AdventureUiState()
+  object Empty : AdventureUiState()
+  data class Success(val adventures: List<Adventure> = emptyList()) : AdventureUiState()
+}
