@@ -22,18 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker
+package com.ericafenyo.tracker.analysis.worker;
 
-import kotlinx.coroutines.flow.Flow
+import com.ericafenyo.bikediary.network.analysis.AnalyzedAdventureRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-interface Tracker {
-  val state: Flow<State>
+import java.lang.reflect.Type;
+import java.util.List;
 
-  suspend fun updateState(state: State)
+public class Test {
+    public static Type getType() {
+        return new TypeToken<List<AnalyzedAdventureRequest>>() {
+        }.getType();
+    }
 
-  suspend fun start()
-
-  suspend fun stop()
-
-  enum class State { IDLE, READY, ONGOING, DISABLED }
+    public static List<AnalyzedAdventureRequest> parse(String json) {
+        return new Gson().fromJson(json, getType());
+    }
 }

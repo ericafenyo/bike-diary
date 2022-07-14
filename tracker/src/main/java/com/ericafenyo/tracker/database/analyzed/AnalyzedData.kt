@@ -22,12 +22,15 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.model
+package com.ericafenyo.tracker.database.analyzed
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
-data class AggregatedData(
-  val id: String,
-  val uuid: String,
+@Entity(tableName = "analyzed_data")
+data class AnalyzedData(
+  @PrimaryKey val uuid: String,
   val calories: Int,
   val distance: Double,
   val duration: Double,
@@ -38,12 +41,14 @@ data class AggregatedData(
   val traces: List<Trace>,
 )
 
+@Serializable
 data class Trace(
   val timezone: String,
   val writeTime: Double,
   val location: SensorLocation,
 )
 
+@Serializable
 data class SensorLocation(
   val latitude: Double,
   val longitude: Double,

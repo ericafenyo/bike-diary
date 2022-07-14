@@ -32,7 +32,7 @@ data class Adventure(
   val description: String,
   val altitude: Double,
   val distance: Double,
-  val duration: Double,
+  val duration: Int,
   val speed: Double,
   val calories: Int,
   val startTime: Instant,

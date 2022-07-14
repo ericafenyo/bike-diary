@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,37 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.work
+package com.ericafenyo.tracker.database.analyzed
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
-import androidx.work.CoroutineWorker
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkRequest
-import androidx.work.WorkerParameters
-import com.ericafenyo.bikediary.domain.adventure.SynchronizeAdventuresInteractor
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import timber.log.Timber
+import com.ericafenyo.tracker.database.Cache
+import com.ericafenyo.tracker.database.TrackerDatabase
 
-@HiltWorker
-class SynchronizationWorker @AssistedInject constructor(
-  @Assisted context: Context,
-  @Assisted params: WorkerParameters,
-  private val synchronizeAdventuresInteractor: SynchronizeAdventuresInteractor
-) : CoroutineWorker(context, params) {
+class AnalyzedDataCache(context: Context) : Cache<AnalyzedData> {
+  private val dao = TrackerDatabase.getInstance(context).getAnalyzedDataDao()
 
-  override suspend fun doWork(): Result {
-    Timber.d("Working ...")
-    Timber.d("Work done, submitting results")
-    synchronizeAdventuresInteractor.invoke()
-    return Result.success()
+  override suspend fun put(entry: AnalyzedData) {
+    dao.insert(entry)
+  }
+
+  override suspend fun entries(): List<AnalyzedData> {
+    return dao.getAll()
+  }
+
+  override suspend fun clear() {
+    dao.clear()
   }
 
   companion object {
-    val request: WorkRequest = OneTimeWorkRequestBuilder<SynchronizationWorker>().build()
+    @Volatile
+    private var INSTANCE: AnalyzedDataCache? = null
+
+    @JvmStatic
+    fun getInstance(context: Context): AnalyzedDataCache {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: AnalyzedDataCache(context)
+          .also { INSTANCE = it }
+      }
+    }
   }
 }
-
-
-
-

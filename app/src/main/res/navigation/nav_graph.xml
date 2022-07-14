@@ -45,10 +45,6 @@
       android:label="DiaryFragment" />
 
   <fragment
-      android:id="@+id/map"
-      android:name="com.ericafenyo.bikediary.ui.screens.map.MapFragment"
-      android:label="MapFragment" />
-  <fragment
       android:id="@+id/profile"
       android:name="com.ericafenyo.bikediary.ui.screens.profile.ProfileFragment"
       android:label="ProfileFragment" />

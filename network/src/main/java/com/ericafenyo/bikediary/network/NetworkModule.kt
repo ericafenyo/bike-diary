@@ -28,6 +28,8 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.ericafenyo.bikediary.network.adventure.AdventureService
 import com.ericafenyo.bikediary.network.adventure.internal.AdventureServiceImpl
+import com.ericafenyo.bikediary.network.analysis.AnalysisService
+import com.ericafenyo.bikediary.network.analysis.internal.AnalysisServiceImpl
 import com.ericafenyo.bikediary.network.settings.SettingsService
 import com.ericafenyo.bikediary.network.settings.SettingsServiceImpl
 import com.ericafenyo.bikediary.network.user.UserService
@@ -56,6 +58,10 @@ internal abstract class NetworkModule {
   @Binds
   @Singleton
   abstract fun bindSettingsService(impl: SettingsServiceImpl): SettingsService
+
+  @Binds
+  @Singleton
+  abstract fun bindSyncService(impl: AnalysisServiceImpl): AnalysisService
 
   @Module
   @InstallIn(SingletonComponent::class)

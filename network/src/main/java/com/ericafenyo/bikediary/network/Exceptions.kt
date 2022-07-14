@@ -27,6 +27,6 @@ package com.ericafenyo.bikediary.network
 import com.apollographql.apollo3.api.Error
 import com.apollographql.apollo3.exception.ApolloException
 
-class ApolloHttpException(val error: Error) : ApolloException("")
+class ApolloHttpException(val error: Error) : ApolloException(error.message)
 
 class ApolloGraphQLException(message: String = "") : ApolloException(message)

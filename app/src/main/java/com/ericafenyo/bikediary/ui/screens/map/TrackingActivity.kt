@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2020 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,33 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+package com.ericafenyo.bikediary.ui.screens.map
 
-import androidx.room.TypeConverter
-import com.ericafenyo.tracker.location.SimpleLocation
-import com.ericafenyo.tracker.util.JsonSerializerManager
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class Converters {
-  private val json = JsonSerializerManager.serializer()
+@AndroidEntryPoint
+class TrackingActivity : AppCompatActivity() {
 
-  @TypeConverter
-  fun fromSimpleLocation(value: SimpleLocation): String = json.encodeToString(value)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-  @TypeConverter
-  fun toSimpleLocation(value: String): SimpleLocation = json.decodeFromString(value)
+    setContent { MapContent() }
+  }
+
+  companion object {
+    /**
+     * Creates an intent for starting this activity
+     * @param packageContext the context we are navigating from
+     *
+     * @return an [Intent]
+     */
+    fun getStartIntent(packageContext: Context): Intent {
+      return Intent(packageContext, TrackingActivity::class.java)
+    }
+  }
 }

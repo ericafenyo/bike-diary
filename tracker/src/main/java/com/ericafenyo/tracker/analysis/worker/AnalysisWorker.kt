@@ -28,36 +28,48 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST
 import androidx.work.WorkRequest
 import androidx.work.WorkerParameters
 import com.ericafenyo.bikediary.di.qualifier.Dispatcher
 import com.ericafenyo.bikediary.di.qualifier.DispatcherType.IO
 import com.ericafenyo.bikediary.logger.Logger
+import com.ericafenyo.bikediary.network.analysis.AnalysisService
 import com.ericafenyo.tracker.analysis.Analyser
+import com.google.gson.Gson
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 @HiltWorker
 class AnalysisWorker @AssistedInject constructor(
   @Assisted private val context: Context,
   @Assisted params: WorkerParameters,
   @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
+  private val service: AnalysisService,
   private val analyser: Analyser,
 ) : CoroutineWorker(context, params) {
   override suspend fun doWork(): Result = withContext(ioDispatcher) {
     Logger.debug(context, TAG, "doWork()")
-    analyser.startAnalysis()
+
+    val successful = analyser.startAnalysis()
+
+    if (successful) {
+      val data = analyser.getAnalysedAdventures()
+      val json = Gson().toJson(data)
+
+      val request = Test.parse(json)
+      Timber.d("The graphql request: $request")
+      service.synchronize(request)
+    }
+
     Result.success()
   }
 
   companion object {
     private const val TAG: String = "AnalysisWorker"
 
-    val request: WorkRequest = OneTimeWorkRequestBuilder<AnalysisWorker>()
-      .setExpedited(RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-      .build()
+    val request: WorkRequest = OneTimeWorkRequestBuilder<AnalysisWorker>().build()
   }
 }

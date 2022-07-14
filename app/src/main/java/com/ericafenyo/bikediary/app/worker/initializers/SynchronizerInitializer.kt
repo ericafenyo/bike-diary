@@ -22,18 +22,34 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker
+package com.ericafenyo.bikediary.app.worker.initializers
 
-import kotlinx.coroutines.flow.Flow
+import android.content.Context
+import androidx.startup.AppInitializer
+import androidx.startup.Initializer
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
+import com.ericafenyo.bikediary.app.worker.SynchronizationWorker
 
-interface Tracker {
-  val state: Flow<State>
+object Synchronizer {
+  fun initialize(context: Context) {
+    AppInitializer.getInstance(context)
+      .initializeComponent(SynchronizerInitializer::class.java)
+  }
+}
 
-  suspend fun updateState(state: State)
+// This name should not be changed
+private const val workerName = "com.ericafenyo.bikediary.app.worker.SYNCHRONIZATION_WORKER_NAME"
 
-  suspend fun start()
+class SynchronizerInitializer : Initializer<Synchronizer> {
+  override fun create(context: Context): Synchronizer {
+    WorkManager.getInstance(context).apply {
+      // Run sync on app startup and ensure only one sync worker runs at any time
+      enqueueUniqueWork(workerName, ExistingWorkPolicy.REPLACE, SynchronizationWorker.start())
+    }
 
-  suspend fun stop()
+    return Synchronizer
+  }
 
-  enum class State { IDLE, READY, ONGOING, DISABLED }
+  override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

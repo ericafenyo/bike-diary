@@ -48,27 +48,35 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ericafenyo.bikediary.libs.icons.Icons
-import com.ericafenyo.bikediary.theme.AppTheme
 import com.ericafenyo.bikediary.theme.bodyLarge
 import com.ericafenyo.bikediary.theme.contentMedium
 import com.ericafenyo.bikediary.theme.displayMedium
 import com.mapbox.maps.MapView
+import timber.log.Timber
 
+
+@Composable
+fun MapContent(viewModel: TrackerViewModel = hiltViewModel()) {
+  Map(viewModel)
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Map(
-  dispatch: (TrackerAction) -> Unit
-) {
+fun Map(viewModel: TrackerViewModel) {
+  val state by viewModel.state.collectAsState()
+  Timber.d("This is the map state $state")
+
   Box(modifier = Modifier.fillMaxSize()) {
     val sheetState = rememberBottomSheetScaffoldState(
       bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
@@ -83,7 +91,7 @@ fun Map(
       scaffoldState = sheetState,
       sheetContent = {
         TrackingMetrics(
-          stop = { dispatch(TrackerAction.STOP) },
+          stop = { viewModel.dispatch(TrackerAction.STOP) },
           takePicture = {}
         )
       },
@@ -113,7 +121,7 @@ fun Map(
             )
             .align(Alignment.BottomEnd),
           backgroundColor = Color.White,
-          onClick = { dispatch(TrackerAction.START) }) {
+          onClick = { viewModel.dispatch(TrackerAction.START) }) {
           Icon(
             modifier = Modifier.size(36.dp),
             tint = MaterialTheme.colors.primary,
@@ -178,13 +186,5 @@ fun TrackingMetrics(
 
       Spacer(modifier = Modifier.height(16.dp))
     }
-  }
-}
-
-@Preview
-@Composable
-fun TrackingMetricsPreview() {
-  AppTheme {
-    Map(dispatch = {})
   }
 }
