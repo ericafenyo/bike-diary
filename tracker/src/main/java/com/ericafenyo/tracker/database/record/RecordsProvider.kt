@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,49 +22,32 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+package com.ericafenyo.tracker.database.record
 
 import android.content.Context
+import com.ericafenyo.tracker.database.AndroidResourceProvider
 
 /**
- * An implementation of the [Cache] interface responsible for
- * saving [Record] data into an SQLite database.
+ * Exposes methods for accessing the records database.
  *
  * @author Eric
- * created on 2021-01-25
+ * @since 1.0
+ *
+ * created on 2021-01-31
  */
-class RecordCache constructor(context: Context) : Cache<Record> {
-  private val records = DataStore.getInstance(context).getRecords()
+class RecordsProvider(context: Context) {
+  private val records = RecordCache.getInstance(context)
+  private val resources = AndroidResourceProvider(context)
 
-  override suspend fun put(entry: Record) {
-    records.insert(entry)
-  }
-
-  override suspend fun entries(): List<Record> {
-    return records.getAll()
-  }
-
-  override suspend fun clear() {
-    records.clear()
-  }
 
   companion object {
     @Volatile
-    private var INSTANCE: Cache<Record>? = null
-
-    /**
-     * Use this to replace the current [RecordCache] with a custom implementation
-     *
-     * @param cache a custom [Cache] implementation
-     */
-    fun swap(cache: Cache<Record>?) {
-      INSTANCE = cache
-    }
+    private var INSTANCE: RecordsProvider? = null
 
     @JvmStatic
-    fun getInstance(context: Context): Cache<Record> {
+    fun getInstance(context: Context): RecordsProvider {
       return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: RecordCache(context).also { INSTANCE = it }
+        INSTANCE ?: RecordsProvider(context).also { INSTANCE = it }
       }
     }
   }

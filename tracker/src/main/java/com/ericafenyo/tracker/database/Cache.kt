@@ -22,42 +22,37 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+package com.ericafenyo.tracker.database
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.ericafenyo.tracker.location.SimpleLocation
-import java.time.LocalDateTime
-import java.util.TimeZone
 
 /**
- * A Record is a room database [Entity] containing location data with additional metadata.
+ * An abstract object that defines the methods for saving and retrieving cached data.
  *
- * @property id an auto generated int for identifying a specific Record
- * @property writeTime the time in seconds at which the Record object was written to the database
- * @property timezone the devices current timezone code. Example Europe/Paris
- * @property location a [SimpleLocation] object
+ * @param T the type of data to be saved.
  *
  * @author Eric
  * @since 1.0
  *
+ * @see [com.ericafenyo.tracker.database.record.RecordCache]
+ * @see [com.ericafenyo.tracker.database.analyzed.AnalyzedDataCache]
+ *
  * created on 2021-01-30
  */
-@Entity(tableName = "records")
-data class Record(
-  @PrimaryKey(autoGenerate = true)
-  val id: Int = 0,
-  val writeTime: Double,
-  val fmt: String,
-  val timezone: String,
-  val location: SimpleLocation
-) {
-  companion object {
-    fun fromSimpleLocation(location: SimpleLocation): Record = Record(
-      writeTime = (System.currentTimeMillis() / 1000).toDouble(),
-      fmt = LocalDateTime.now().toString(),
-      timezone = TimeZone.getDefault().id,
-      location = location
-    )
-  }
+interface Cache<T : Any> {
+  /**
+   * Add the given entry into the cache.
+   *
+   * @param entry the entry to be saved
+   */
+  suspend fun put(entry: T)
+
+  /**
+   * Returns a list of all entries in the cache.
+   */
+  suspend fun entries(): List<T>
+
+  /**
+   * Removes all elements from the cache.
+   */
+  suspend fun clear()
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="synchronization_notification_title">Performing sync</string>
+  <string name="synchronization_notification_channel_name">Synchronization</string>
+  <string name="synchronization_notification_channel_description">Background tasks for app syncing</string>
+</resources>

@@ -76,4 +76,6 @@ apollo {
 
   // Mapping for GraphQL custom scalars
   mapScalarToKotlinString("DateTime")
+  mapScalarToKotlinLong("Timestamp")
+//  mapScalarToKotlinLong("Long")
 }

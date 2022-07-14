@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +22,32 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+package com.ericafenyo.bikediary.network.analysis
 
-import com.ericafenyo.tracker.Constants
+class AnalyzedAdventureRequest(
+  val uuid: String,
+  val calories: Int,
+  val distance: Double,
+  val duration: Int,
+  val startTime: String,
+  val endTime: String,
+  val speed: Double,
+  val polyline: String,
+  val traces: List<Trace>
+)
 
-data class CurrentState(val state: String) {
-  fun isOngoing(): Boolean {
-    return this.state == Constants.TRACKER_STATE_ONGOING
-  }
+class Trace(
+  val timezone: String,
+  val writeTime: String,
+  val location: SensorLocation,
+)
 
-  fun isReady(): Boolean {
-    return this.state == Constants.TRACKER_STATE_READY
-  }
-
-  fun isStarted(): Boolean {
-    return this.state == Constants.TRACKER_STATE_START
-  }
-}
+class SensorLocation(
+  val latitude: Double,
+  val longitude: Double,
+  val altitude: Double,
+  val time: Long,
+  val speed: Double,
+  val accuracy: Double,
+  val bearing: Double,
+  )

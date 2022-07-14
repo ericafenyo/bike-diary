@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2022 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,40 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker
+package com.ericafenyo.tracker.database
 
-import kotlinx.coroutines.flow.Flow
+import androidx.room.TypeConverter
+import com.ericafenyo.tracker.database.analyzed.Trace
+import com.ericafenyo.tracker.location.SimpleLocation
+import com.ericafenyo.tracker.util.JsonSerializerManager
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 
-interface Tracker {
-  val state: Flow<State>
+class TracesConverter() {
+  private val jsonSerializer = JsonSerializerManager.serializer()
 
-  suspend fun updateState(state: State)
+  @TypeConverter
+  fun fromTrace(value: List<Trace>): String {
+    return jsonSerializer.encodeToString(value)
+  }
 
-  suspend fun start()
+  @TypeConverter
+  fun toTrace(value: String): List<Trace> {
+    return jsonSerializer.decodeFromString(value)
+  }
+}
 
-  suspend fun stop()
 
-  enum class State { IDLE, READY, ONGOING, DISABLED }
+class SimpleLocationConverter {
+  private val json = JsonSerializerManager.serializer()
+
+  @TypeConverter
+  fun fromSimpleLocation(value: SimpleLocation): String {
+    return json.encodeToString(SimpleLocation.serializer(), value)
+  }
+
+  @TypeConverter
+  fun toSimpleLocation(value: String): SimpleLocation {
+    return json.decodeFromString(SimpleLocation.serializer(), value)
+  }
 }

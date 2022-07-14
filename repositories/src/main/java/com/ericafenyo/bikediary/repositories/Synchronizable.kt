@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,8 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+package com.ericafenyo.bikediary.repositories
 
-
-/**
- * An abstract object that defines the methods for saving and retrieving cached data.
- *
- * @param T the type of data to be saved.
- *
- * @author Eric
- * @since 1.0
- *
- * @see [RecordCache]
- *
- * created on 2021-01-30
- */
-interface Cache<T : Any> {
-  /**
-   * Add the given entry into the cache.
-   *
-   * @param entry the entry to be saved
-   */
-  suspend fun put(entry: T)
-
-  /**
-   * Returns a list of all entries in the cache.
-   */
-  suspend fun entries(): List<T>
-
-  /**
-   * Removes all elements from the cache.
-   */
-  suspend fun clear()
+interface Synchronizable {
+  suspend fun synchronize(): Boolean
 }

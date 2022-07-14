@@ -22,18 +22,8 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker
+package com.ericafenyo.tracker.analysis
 
-import kotlinx.coroutines.flow.Flow
-
-interface Tracker {
-  val state: Flow<State>
-
-  suspend fun updateState(state: State)
-
-  suspend fun start()
-
-  suspend fun stop()
-
-  enum class State { IDLE, READY, ONGOING, DISABLED }
+interface AnalysisManager {
+  suspend fun getAnalysedData(): List<Analyser>
 }

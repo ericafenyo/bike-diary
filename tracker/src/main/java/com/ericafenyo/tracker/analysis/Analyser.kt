@@ -27,14 +27,14 @@ package com.ericafenyo.tracker.analysis
 import android.content.Context
 import androidx.annotation.WorkerThread
 import com.ericafenyo.bikediary.logger.Logger
-import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.model.Metrics
-import com.ericafenyo.tracker.datastore.Record
-import com.ericafenyo.tracker.datastore.RecordCache
+import com.ericafenyo.tracker.database.analyzed.AnalyzedData
+import com.ericafenyo.tracker.database.analyzed.AnalyzedDataCache
+import com.ericafenyo.tracker.database.analyzed.SensorLocation
+import com.ericafenyo.tracker.database.analyzed.Trace
+import com.ericafenyo.tracker.database.record.Record
+import com.ericafenyo.tracker.database.record.RecordCache
 import com.ericafenyo.tracker.location.SimpleLocation
-import com.ericafenyo.tracker.model.AggregatedData
-import com.ericafenyo.tracker.model.SensorLocation
-import com.ericafenyo.tracker.model.Trace
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.UUID
@@ -58,11 +58,19 @@ class Analyser @Inject constructor(@ApplicationContext val context: Context) {
   private val minimumPoints = 5
 
   @WorkerThread
-  suspend fun startAnalysis() {
-    composeAdventure()
+  suspend fun startAnalysis(): Boolean {
+    val analyzedData = analyzeData()
+    if (analyzedData != null) {
+      AnalyzedDataCache.getInstance(context).put(analyzedData)
+    }
+    return true
   }
 
-  private suspend fun composeAdventure(): Adventure? {
+  suspend fun getAnalysedAdventures(): List<AnalyzedData> {
+    return AnalyzedDataCache.getInstance(context).entries()
+  }
+
+  private suspend fun analyzeData(): AnalyzedData? {
     val records = loadRecords()
 
     // Exit early if records are less than 5
@@ -74,8 +82,7 @@ class Analyser @Inject constructor(@ApplicationContext val context: Context) {
     runCatching {
       val metrics = buildMetrics(records)
 
-      val result = AggregatedData(
-        id = "",
+      val result = AnalyzedData(
         uuid = UUID.randomUUID().toString(),
         calories = metrics.calories,
         distance = metrics.distance,
@@ -89,6 +96,7 @@ class Analyser @Inject constructor(@ApplicationContext val context: Context) {
 
       Timber.d("The resulting data: ${Gson().toJson(result)}")
 
+      return result
     }.onFailure {
       Logger.error(context, TAG, "An error occurred while trying to get last record: $it")
     }.getOrDefault(null)

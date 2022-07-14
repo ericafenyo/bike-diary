@@ -48,7 +48,7 @@ android {
 }
 
 dependencies {
-  implementation(projects.database)
+  implementation(projects.network)
   implementation(projects.logger)
   implementation(projects.model)
   implementation(projects.shared)

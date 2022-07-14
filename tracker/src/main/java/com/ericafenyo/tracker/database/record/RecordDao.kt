@@ -22,14 +22,42 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+package com.ericafenyo.tracker.database.record
 
-import android.content.Context
-import androidx.annotation.StringRes
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.ericafenyo.tracker.database.record.Record
+import kotlinx.coroutines.flow.Flow
 
-class AndroidResourceProvider(val context: Context) {
+/**
+ * Data access object for the [Record] entity
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-01-30
+ */
+@Dao
+interface RecordDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(record: Record)
 
-  fun getString(@StringRes resId: Int): String {
-    return context.getString(resId)
-  }
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun bulkInsert(recodes: List<Record>)
+
+  @Query("SELECT * FROM records ORDER BY id ASC")
+  suspend fun getAll(): List<Record>
+
+  @Query("SELECT * FROM records ORDER BY id ASC")
+  fun streams(): Flow<List<Record>>
+
+  @Query("SELECT * FROM records ORDER BY id DESC Limit 1")
+  suspend fun getLatest(): Record
+
+  @Query("SELECT * FROM records ORDER BY id DESC Limit 1")
+  fun single(): Flow<Record>
+
+  @Query("DELETE FROM records")
+  suspend fun clear()
 }

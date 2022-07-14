@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,18 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.domain.adventure
+package com.ericafenyo.tracker.sync
 
-import com.ericafenyo.bikediary.di.qualifier.IODispatcher
-import com.ericafenyo.bikediary.domain.Interactor
-import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
+import com.ericafenyo.bikediary.model.ParameterizedSynchronizable
+import com.ericafenyo.tracker.database.analyzed.AnalyzedData
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Singleton
 
+@Singleton
+class AnalysedDataSynchronizer @Inject constructor(
 
-class SynchronizeAdventuresInteractor @Inject constructor(
-  private val repository: AdventureRepository,
-  @IODispatcher dispatcher: CoroutineDispatcher,
-) : Interactor<Unit>(dispatcher) {
-
-  override suspend fun execute() {
-    return repository.synchronizeAdventures()
+) : ParameterizedSynchronizable<List<AnalyzedData>> {
+  override suspend fun synchronize(value: List<AnalyzedData>): Boolean {
+    return true
   }
 }

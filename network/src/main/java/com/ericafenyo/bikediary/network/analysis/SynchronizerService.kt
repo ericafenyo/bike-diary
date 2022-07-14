@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,42 +22,9 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+package com.ericafenyo.bikediary.network.analysis
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
-/**
- * Data access object for the [Record] entity
- * @author Eric
- * @since 1.0
- *
- * created on 2021-01-30
- */
-@Dao
-interface RecordDao {
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(record: Record)
-
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun bulkInsert(recodes: List<Record>)
-
-  @Query("SELECT * FROM records ORDER BY id ASC")
-  suspend fun getAll(): List<Record>
-
-  @Query("SELECT * FROM records ORDER BY id ASC")
-  fun streams(): Flow<List<Record>>
-
-  @Query("SELECT * FROM records ORDER BY id DESC Limit 1")
-  suspend fun getLatest(): Record
-
-  @Query("SELECT * FROM records ORDER BY id DESC Limit 1")
-  fun single(): Flow<Record>
-
-  @Query("DELETE FROM records")
-  suspend fun clear()
+interface AnalysisService {
+  suspend fun synchronize(requests: List<AnalyzedAdventureRequest>): Boolean
 }

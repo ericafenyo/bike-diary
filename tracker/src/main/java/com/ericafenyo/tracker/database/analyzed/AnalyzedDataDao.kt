@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,44 +22,21 @@
  * SOFTWARE.
  */
 
+package com.ericafenyo.tracker.database.analyzed
 
-package com.ericafenyo.tracker.datastore
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
-import android.content.Context
+@Dao
+interface AnalyzedDataDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(entity: AnalyzedData)
 
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+  @Query("SELECT * FROM analyzed_data")
+  suspend fun getAll(): List<AnalyzedData>
 
-@TypeConverters(Converters::class)
-@Database(
-  version = 1,
-  exportSchema = false,
-  entities = [Record::class]
-)
-abstract class DataStore : RoomDatabase() {
-  abstract fun getRecords(): RecordDao
-
-  companion object {
-    @Volatile
-    private var INSTANCE: DataStore? = null
-
-    @JvmStatic
-    fun getInstance(context: Context): DataStore {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: createDatabase(context)
-          .also { INSTANCE = it }
-      }
-    }
-
-    private fun createDatabase(context: Context): DataStore {
-      return Room.databaseBuilder(
-        context,
-        DataStore::class.java,
-        "com.ericafenyo.tracker.Cache"
-      ).fallbackToDestructiveMigration()
-        .build()
-    }
-  }
+  @Query("DELETE FROM analyzed_data")
+  suspend fun clear()
 }

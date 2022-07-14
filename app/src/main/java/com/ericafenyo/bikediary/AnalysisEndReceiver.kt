@@ -28,7 +28,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.work.WorkManager
-import com.ericafenyo.bikediary.work.SynchronizationWorker
+import com.ericafenyo.bikediary.app.worker.SynchronizationWorker
+import com.ericafenyo.bikediary.app.worker.initializers.Synchronizer
 
 class AnalysisEndReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent?) {
@@ -36,8 +37,7 @@ class AnalysisEndReceiver : BroadcastReceiver() {
       context, TAG, "onReceive(context: $context, intent: $intent)"
     )
 
-    WorkManager.getInstance(context.applicationContext)
-      .enqueue(SynchronizationWorker.request)
+//    Synchronizer.initialize(context.applicationContext)
   }
 
   companion object {

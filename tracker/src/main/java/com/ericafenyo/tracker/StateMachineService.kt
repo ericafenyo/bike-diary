@@ -40,7 +40,7 @@ import com.ericafenyo.tracker.Tracker.State
 import com.ericafenyo.tracker.Tracker.State.ONGOING
 import com.ericafenyo.tracker.Tracker.State.READY
 import com.ericafenyo.tracker.analysis.worker.AnalysisWorker
-import com.ericafenyo.tracker.datastore.RecordCache
+import com.ericafenyo.tracker.database.record.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
 import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID
 import com.ericafenyo.tracker.util.Notifications

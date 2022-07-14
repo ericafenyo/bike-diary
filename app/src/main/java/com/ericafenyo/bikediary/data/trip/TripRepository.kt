@@ -25,7 +25,7 @@
 package com.ericafenyo.bikediary.data.trip
 
 import com.ericafenyo.bikediary.model.Trip
-import com.ericafenyo.tracker.datastore.RecordsProvider
+import com.ericafenyo.tracker.database.record.RecordsProvider
 import javax.inject.Inject
 
 interface TripRepository {

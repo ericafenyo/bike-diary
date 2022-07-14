@@ -22,32 +22,51 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker.datastore
+
+package com.ericafenyo.tracker.database
 
 import android.content.Context
 
-/**
- * Exposes methods for accessing the records database.
- *
- * @author Eric
- * @since 1.0
- *
- * created on 2021-01-31
- */
-class RecordsProvider(context: Context) {
-  private val records = RecordCache.getInstance(context)
-  private val resources = AndroidResourceProvider(context)
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.ericafenyo.tracker.database.analyzed.AnalyzedData
+import com.ericafenyo.tracker.database.analyzed.AnalyzedDataDao
+import com.ericafenyo.tracker.database.record.Record
+import com.ericafenyo.tracker.database.record.RecordDao
 
+@TypeConverters(
+  SimpleLocationConverter::class,
+  TracesConverter::class
+)
+@Database(
+  version = 1,
+  exportSchema = false,
+  entities = [Record::class, AnalyzedData::class]
+)
+abstract class TrackerDatabase : RoomDatabase() {
+  abstract fun getRecords(): RecordDao
+  abstract fun getAnalyzedDataDao(): AnalyzedDataDao
 
   companion object {
     @Volatile
-    private var INSTANCE: RecordsProvider? = null
+    private var INSTANCE: TrackerDatabase? = null
 
     @JvmStatic
-    fun getInstance(context: Context): RecordsProvider {
+    fun getInstance(context: Context): TrackerDatabase {
       return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: RecordsProvider(context).also { INSTANCE = it }
+        INSTANCE ?: createDatabase(context)
+          .also { INSTANCE = it }
       }
+    }
+
+    private fun createDatabase(context: Context): TrackerDatabase {
+      return Room.databaseBuilder(
+        context,
+        TrackerDatabase::class.java,
+        "com.ericafenyo.tracker.database.TrackerDatabase"
+      ).fallbackToDestructiveMigration().build()
     }
   }
 }

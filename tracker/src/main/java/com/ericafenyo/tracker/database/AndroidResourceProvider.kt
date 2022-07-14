@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2022 Eric Afenyo
+ * Copyright (C) 2021 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,15 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker
+package com.ericafenyo.tracker.database
 
-import kotlinx.coroutines.flow.Flow
+import android.content.Context
+import androidx.annotation.StringRes
 
-interface Tracker {
-  val state: Flow<State>
+// TODO: Remove this
+class AndroidResourceProvider(val context: Context) {
 
-  suspend fun updateState(state: State)
-
-  suspend fun start()
-
-  suspend fun stop()
-
-  enum class State { IDLE, READY, ONGOING, DISABLED }
+  fun getString(@StringRes resId: Int): String {
+    return context.getString(resId)
+  }
 }

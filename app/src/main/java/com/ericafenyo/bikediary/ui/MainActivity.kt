@@ -27,6 +27,7 @@ package com.ericafenyo.bikediary.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import com.ericafenyo.bikediary.app.worker.initializers.Synchronizer
 import com.ericafenyo.bikediary.ui.screens.MainContent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    Synchronizer.initialize(this.applicationContext)
 
 //    WindowCompat.setDecorFitsSystemWindows(window, false)
 

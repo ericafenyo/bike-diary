@@ -22,18 +22,31 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.tracker
+package com.ericafenyo.tracker.sync.worker
 
-import kotlinx.coroutines.flow.Flow
+import android.content.Context
+import androidx.hilt.work.HiltWorker
+import androidx.work.CoroutineWorker
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkerParameters
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-interface Tracker {
-  val state: Flow<State>
+@HiltWorker
+class SynchronizationWorker @AssistedInject constructor(
+  @Assisted context: Context,
+  @Assisted params: WorkerParameters,
+) : CoroutineWorker(context, params) {
 
-  suspend fun updateState(state: State)
+  override suspend fun doWork(): Result {
+    return Result.success()
+  }
 
-  suspend fun start()
-
-  suspend fun stop()
-
-  enum class State { IDLE, READY, ONGOING, DISABLED }
+  companion object {
+    fun start(): OneTimeWorkRequest = OneTimeWorkRequestBuilder<SynchronizationWorker>()
+//      .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+//      .setConstraints(constraints)
+      .build()
+  }
 }

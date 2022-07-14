@@ -22,31 +22,12 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.screens.map
+package com.ericafenyo.bikediary.model
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.ericafenyo.bikediary.ui.Store
-import com.ericafenyo.bikediary.ui.screens.map.TrackerAction.START
-import com.ericafenyo.bikediary.ui.screens.map.TrackerAction.STOP
-import com.ericafenyo.tracker.Tracker
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+interface ParameterizedSynchronizable<T : Any> {
+  suspend fun synchronize(value: T): Boolean;
+}
 
-@HiltViewModel
-class MapViewModel @Inject constructor(
-  private val tracker: Tracker,
-) : ViewModel(), Store<Unit, TrackerAction> {
-
-  override val state: StateFlow<Unit>
-    get() = TODO("Not yet implemented")
-
-  override fun dispatch(action: TrackerAction) {
-    when (action) {
-      START -> viewModelScope.launch { tracker.start() }
-      STOP -> viewModelScope.launch { tracker.stop() }
-    }
-  }
+interface Synchronizable {
+  suspend fun synchronize(): Boolean;
 }

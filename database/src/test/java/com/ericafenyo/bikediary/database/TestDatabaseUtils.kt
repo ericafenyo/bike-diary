@@ -25,17 +25,18 @@
 package com.ericafenyo.bikediary.database
 
 import com.ericafenyo.bikediary.database.entity.AdventureEntity
+import java.time.Instant
 
 object TestDatabaseUtils {
   fun createAdventure(adventureId: String) = AdventureEntity(
     id = adventureId,
     title = "Adventure title",
     speed = 20.0,
-    duration = 2000.0,
+    duration = 2000,
     distance = 200.0,
     calories = 1200,
-    startTime = "2021-08-15T18:56:50.431356",
-    endTime = "2021-08-15T23:56:50.431356",
-    images = emptyList()
+    startTime = Instant.parse("2021-08-15T18:56:50.431356"),
+    endTime = Instant.parse("2021-08-15T23:56:50.431356"),
+    imagePath = ""
   )
 }

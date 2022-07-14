@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,40 +22,43 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.database.entity
+package com.ericafenyo.tracker.database.record
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.Instant
+import com.ericafenyo.tracker.location.SimpleLocation
+import java.time.LocalDateTime
+import java.util.TimeZone
 
-@Entity(tableName = "adventures")
-data class AdventureEntity(
-  @PrimaryKey
-  @ColumnInfo(name = "id")
-  val id: String,
-
-  @ColumnInfo(name = "title")
-  val title: String,
-
-  @ColumnInfo(name = "speed")
-  val speed: Double,
-
-  @ColumnInfo(name = "duration")
-  val duration: Int,
-
-  @ColumnInfo(name = "distance")
-  val distance: Double,
-
-  @ColumnInfo(name = "calories")
-  val calories: Int,
-
-  @ColumnInfo(name = "start_time")
-  val startTime: Instant,
-
-  @ColumnInfo(name = "end_time")
-  val endTime: Instant,
-
-  @ColumnInfo(name = "image_path")
-  val imagePath: String,
-)
+/**
+ * A Record is an entry containing location data with additional metadata.
+ *
+ * @property id an auto generated int for identifying a specific Record
+ * @property writeTime the time in seconds at which the Record was added to the database
+ * @property fmt a human readable time
+ * @property timezone the devices current timezone. Example Europe/Paris
+ * @property location a [SimpleLocation] object
+ *
+ * @author Eric
+ * @since 1.0
+ *
+ * created on 2021-01-30
+ */
+@Entity(tableName = "records")
+data class Record(
+  @PrimaryKey(autoGenerate = true)
+  val id: Int = 0,
+  val writeTime: Double,
+  val fmt: String,
+  val timezone: String,
+  val location: SimpleLocation
+) {
+  companion object {
+    fun fromSimpleLocation(location: SimpleLocation): Record = Record(
+      writeTime = (System.currentTimeMillis() / 1000).toDouble(),
+      fmt = LocalDateTime.now().toString(),
+      timezone = TimeZone.getDefault().id,
+      location = location
+    )
+  }
+}
