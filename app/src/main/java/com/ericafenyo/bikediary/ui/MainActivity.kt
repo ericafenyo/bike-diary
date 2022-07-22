@@ -27,67 +27,19 @@ package com.ericafenyo.bikediary.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.ericafenyo.bikediary.app.worker.initializers.Synchronizer
 import com.ericafenyo.bikediary.ui.screens.MainContent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-//  private val viewModel: MainActivityViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    Synchronizer.initialize(this.applicationContext)
+//    Synchronizer.initialize(this.applicationContext)
 
 //    WindowCompat.setDecorFitsSystemWindows(window, false)
 
     setContent { MainContent() }
   }
 }
-
-
-//
-//    lifecycleScope.launch {
-//      repeatOnLifecycle(Lifecycle.State.STARTED) {
-//        viewModel.isUserLoggedIn().collect { isLoggedIn ->
-//          Timber.d("User logged in: $isLoggedIn")
-//          if (!isLoggedIn) {
-//            // The user is not logged in, Launch the login page
-////            startActivity(AuthenticationActivity.getStartIntent(this@MainActivity))
-//          }
-//        }
-//      }
-//    }
-
-//    // Update theme
-//    updateForTheme(Theme.LIGHT)
-//
-//    setContentView(R.layout.activity_main)
-//
-////    viewModel.theme.observe(this, Observer(::updateForTheme))
-//
-//    findViewById<BottomNavigationView>(R.id.bottom_navigation).setupWithNavController(navController)
-//  }
-
-//  private val navController: NavController
-//    get() = (supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment).navController
-//
-//  companion object {
-//    /**
-//     * Creates an intent for starting this activity
-//     * @param packageContext the context we are navigating from
-//     *
-//     * @return an [Intent]
-//     */
-//    fun getStartIntent(packageContext: Context): Intent {
-//      return Intent(packageContext, MainActivity::class.java)
-//    }
-//  }
-//}
-
-//
-//fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
-//  Theme.DARK -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-//  Theme.LIGHT -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
-//}
