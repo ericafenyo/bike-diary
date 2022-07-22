@@ -24,6 +24,8 @@
 
 package com.ericafenyo.bikediary.ui.screens.adventures
 
+import android.content.Context
+import android.graphics.drawable.Drawable
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
@@ -40,11 +42,14 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,7 +59,6 @@ import com.ericafenyo.bikediary.theme.titleLarge
 import com.ericafenyo.bikediary.ui.components.LoadingState
 import com.ericafenyo.bikediary.ui.screens.adventures.AdventureUiState.Loading
 import com.ericafenyo.bikediary.ui.screens.adventures.AdventureUiState.Success
-import timber.log.Timber
 
 @Composable
 fun AdventuresContent(viewModel: AdventureViewModel = hiltViewModel()) {
@@ -65,6 +69,7 @@ fun AdventuresContent(viewModel: AdventureViewModel = hiltViewModel()) {
 @Composable
 fun Adventures(viewModel: AdventureViewModel) {
   val state by viewModel.state.collectAsState()
+  val context = LocalContext.current
 
   Scaffold(
     topBar = {
@@ -86,24 +91,7 @@ fun Adventures(viewModel: AdventureViewModel) {
       }
     }
   ) { paddingValues ->
-
-//    AnimateUi(
-//      loading = if (isLoading) {
-//        { LoadingState() }
-//      } else {
-//        null
-//      }
-//    )
-
-    Timber.d("This is the state: $state")
-
     val isLoading = state is Loading
-
-//    when (state) {
-//      is Loading -> {}
-//      is Success -> {}
-//      is Empty -> {}
-//    }
 
     AnimatedContent(targetState = isLoading) { targetEmpty ->
       if (targetEmpty) {
@@ -116,13 +104,18 @@ fun Adventures(viewModel: AdventureViewModel) {
               modifier = Modifier.fillMaxWidth()
             ) {
               (state as Success).adventures.forEach { adventure ->
+
                 item {
                   AdventureItem(
                     modifier = Modifier.padding(vertical = 4.dp),
-                    metrics = "23km - 43m",
+                    metrics = "${adventure.distance} - ${adventure.duration}",
                     title = adventure.title,
-                    time = "34",
-                    image = adventure.image
+                    time = "${adventure.startTime} - ${adventure.endTime}",
+                    image = loadImage(
+                      context = context,
+                      key = adventure.image,
+                      viewModel = viewModel
+                    ).value
                   )
                 }
               }
@@ -135,13 +128,23 @@ fun Adventures(viewModel: AdventureViewModel) {
   }
 }
 
+@Composable
+fun loadImage(
+  context: Context,
+  key: String,
+  viewModel: AdventureViewModel
+): State<Drawable?> {
+  return produceState<Drawable?>(initialValue = null) {
+    value = viewModel.loadImage(context, key)
+  }
+}
 
 @Composable
 fun AdventureItem(
   title: String,
   time: String,
   metrics: String,
-  image: String,
+  image: Drawable?,
   modifier: Modifier = Modifier
 ) {
   Card(
@@ -150,7 +153,11 @@ fun AdventureItem(
     elevation = 0.dp
   ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-      AsyncImage(model = image, contentDescription = null)
+      AsyncImage(
+        model = image,
+        contentDescription = null,
+        modifier = Modifier.fillMaxWidth()
+      )
       Box(
         modifier = Modifier
           .padding(16.dp)
