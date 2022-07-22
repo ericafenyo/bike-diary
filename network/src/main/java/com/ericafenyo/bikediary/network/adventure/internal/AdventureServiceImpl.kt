@@ -59,7 +59,7 @@ internal class AdventureServiceImpl @Inject constructor(
           calories = 7,
           startTime = Instant.parse(it.startTime),
           endTime = Instant.parse(it.endTime),
-          image = "",
+          image =  it.image,
         )
       }
     } catch (exception: ApolloException) {
