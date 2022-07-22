@@ -24,8 +24,12 @@
 
 package com.ericafenyo.bikediary.ui.screens.adventures
 
+import android.content.Context
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.ImageLoader
+import com.ericafenyo.bikediary.app.imageloader.ImageLoaderManager
 import com.ericafenyo.bikediary.domain.adventure.AdventuresInteractor
 import com.ericafenyo.bikediary.domain.adventure.UpdateAdventuresInteractor
 import com.ericafenyo.bikediary.model.Adventure
@@ -42,6 +46,7 @@ import kotlinx.coroutines.launch
 class AdventureViewModel @Inject constructor(
   private val updateAdventuresInteractor: UpdateAdventuresInteractor,
   adventuresInteractor: AdventuresInteractor,
+  private val imageLoader: ImageLoader
 ) : ViewModel() {
   private val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
@@ -58,6 +63,12 @@ class AdventureViewModel @Inject constructor(
       started = SharingStarted.Eagerly,
       initialValue = AdventureUiState.Loading
     )
+
+  suspend fun loadImage(context: Context, imagePath: String): Drawable? {
+    val url = "https://d2ucnymlzowcof.cloudfront.net/$imagePath"
+    val request = ImageLoaderManager.createRequest(context, url, imagePath)
+    return imageLoader.execute(request).drawable
+  }
 
   init {
     viewModelScope.launch {
