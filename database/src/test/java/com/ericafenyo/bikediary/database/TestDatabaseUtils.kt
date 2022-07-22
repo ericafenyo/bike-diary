@@ -35,8 +35,8 @@ object TestDatabaseUtils {
     duration = 2000,
     distance = 200.0,
     calories = 1200,
-    startTime = Instant.parse("2021-08-15T18:56:50.431356"),
-    endTime = Instant.parse("2021-08-15T23:56:50.431356"),
-    imagePath = ""
+    startTime = Instant.parse("2022-07-22T18:30:19.314021Z"),
+    endTime = Instant.parse("2022-07-23T00:30:19.341963Z"),
+    imagePath = "https://images.example.com/01392b74d79b482f891be0dc71e37acb.png"
   )
 }
