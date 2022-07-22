@@ -73,6 +73,8 @@ type Adventure {
 
   traces: [Trace!]!
 
+  image: String!
+
   createdAt: DateTime!
 
   updatedAt: DateTime!
