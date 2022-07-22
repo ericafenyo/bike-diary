@@ -78,14 +78,14 @@ class AdventureTest : DatabaseTest() {
       val newTitle = "Adventure title 2"
       adventureDao.insert(adventure.copy(title = newTitle))
 
-      // Then we should have an update
+      // Then we should not have the update
       assertThat(adventureDao.getAdventure(adventureId).title)
-        .isEqualTo(newTitle)
+        .isNotEqualTo(newTitle)
     }
   }
 
   @Test
-  fun `delete adventure by uuid`() {
+  fun `delete adventure by id`() {
     testScope.runBlockingTest {
       // Given we insert two Adventures
       adventureDao.insert(adventure)
