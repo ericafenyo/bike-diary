@@ -39,8 +39,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.ui.screens.adventures.AdventuresNavigation
-import com.ericafenyo.bikediary.ui.screens.adventures.adventuresGraph
+import com.ericafenyo.bikediary.ui.screens.adventure.AdventuresNavigation
+import com.ericafenyo.bikediary.ui.screens.adventure.adventuresGraph
+import com.ericafenyo.bikediary.ui.screens.adventure.details.AdventureDetailsNavigation
+import com.ericafenyo.bikediary.ui.screens.adventure.details.adventureDetailsGraph
 import com.ericafenyo.bikediary.ui.screens.dashboard.DashboardNavigation
 import com.ericafenyo.bikediary.ui.screens.dashboard.dashboardGraph
 import com.ericafenyo.bikediary.ui.screens.profile.ProfileNavigation
@@ -58,7 +60,12 @@ fun NavigationHost(
     modifier = modifier
   ) {
     dashboardGraph()
-    adventuresGraph()
+    adventuresGraph(
+      navigateToDetails = {
+        navController.navigate(AdventureDetailsNavigation.ROUTE)
+      }
+    )
+    adventureDetailsGraph(onBackPressed = { navController.popBackStack() })
     profileGraph()
   }
 }

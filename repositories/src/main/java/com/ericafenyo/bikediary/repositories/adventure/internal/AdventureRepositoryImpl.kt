@@ -45,7 +45,9 @@ class AdventureRepositoryImpl @Inject constructor(
 //    return localSource.adventures()
   }
 
-  override fun adventure(id: String): Flow<Adventure> = localSource.adventure(id)
+  override fun adventure(id: String): Flow<Adventure> = flow {
+    emit(service.getAdventure(id))
+  }
 
   override suspend fun updateAdventures(refresh: Boolean): Boolean {
     if (!refresh) {

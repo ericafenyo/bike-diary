@@ -26,6 +26,7 @@ package com.ericafenyo.bikediary.network.adventure.internal
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
+import com.ericafenyo.bikediary.GetAdventureByIdQuery
 import com.ericafenyo.bikediary.GetAdventuresQuery
 import com.ericafenyo.bikediary.model.Adventure
 import com.ericafenyo.bikediary.network.ApolloHttpException
@@ -56,10 +57,10 @@ internal class AdventureServiceImpl @Inject constructor(
           altitude = it.altitude,
           duration = it.duration,
           distance = it.distance,
-          calories = 7,
+          calories = it.calories,
           startTime = Instant.parse(it.startTime),
           endTime = Instant.parse(it.endTime),
-          image =  it.image,
+          image = it.image,
         )
       }
     } catch (exception: ApolloException) {
@@ -71,6 +72,30 @@ internal class AdventureServiceImpl @Inject constructor(
     }
   }
 
+  override suspend fun getAdventure(id: String): Adventure {
+    try {
+      val response = apolloClient.query(GetAdventureByIdQuery(id)).invoke()
+      return Adventure(
+        id = response.adventure.id,
+        title = response.adventure.title,
+        description = response.adventure.description,
+        speed = response.adventure.speed,
+        altitude = response.adventure.altitude,
+        duration = response.adventure.duration,
+        distance = response.adventure.distance,
+        calories = response.adventure.calories,
+        startTime = Instant.parse(response.adventure.startTime),
+        endTime = Instant.parse(response.adventure.endTime),
+        image = response.adventure.image,
+      )
+    } catch (exception: ApolloException) {
+      if (exception is ApolloHttpException) {
+        Timber.e("${exception.error.nonStandardFields}")
+      }
+//      throw toHttpException(exception)
+      throw exception
+    }
+  }
 
   override suspend fun synchronizeAdventures(adventures: List<Adventure>): List<Adventure> {
 //    val input = adventures.map { adventure ->
@@ -121,4 +146,3 @@ internal class AdventureServiceImpl @Inject constructor(
     return emptyList()
   }
 }
-

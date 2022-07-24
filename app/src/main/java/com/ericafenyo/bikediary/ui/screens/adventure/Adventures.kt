@@ -22,12 +22,13 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.screens.adventures
+package com.ericafenyo.bikediary.ui.screens.adventure
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,21 +58,30 @@ import coil.compose.AsyncImage
 import com.ericafenyo.bikediary.theme.contentHigh
 import com.ericafenyo.bikediary.theme.titleLarge
 import com.ericafenyo.bikediary.ui.components.LoadingState
-import com.ericafenyo.bikediary.ui.screens.adventures.AdventureUiState.Loading
-import com.ericafenyo.bikediary.ui.screens.adventures.AdventureUiState.Success
+import com.ericafenyo.bikediary.ui.screens.adventure.AdventureUiState.Loading
+import com.ericafenyo.bikediary.ui.screens.adventure.AdventureUiState.Success
 
 @Composable
-fun AdventuresContent(viewModel: AdventureViewModel = hiltViewModel()) {
-  Adventures(viewModel)
+fun AdventuresContent(
+  modifier: Modifier = Modifier,
+  navigateToDetails: (String) -> Unit,
+  viewModel: AdventureViewModel = hiltViewModel()
+) {
+  Adventures(modifier, navigateToDetails, viewModel)
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Adventures(viewModel: AdventureViewModel) {
+fun Adventures(
+  modifier: Modifier,
+  navigateToDetails: (String) -> Unit,
+  viewModel: AdventureViewModel
+) {
   val state by viewModel.state.collectAsState()
   val context = LocalContext.current
 
   Scaffold(
+    modifier = modifier,
     topBar = {
       val titleStyle = MaterialTheme.typography.titleLarge.copy(
         fontWeight = FontWeight.Medium
@@ -115,7 +125,8 @@ fun Adventures(viewModel: AdventureViewModel) {
                       context = context,
                       key = adventure.image,
                       viewModel = viewModel
-                    ).value
+                    ).value,
+                    onClick = navigateToDetails
                   )
                 }
               }
@@ -145,12 +156,13 @@ fun AdventureItem(
   time: String,
   metrics: String,
   image: Drawable?,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  onClick: (String) -> Unit
 ) {
   Card(
     shape = RectangleShape,
-    modifier = modifier,
-    elevation = 0.dp
+    modifier = modifier.clickable { onClick("This should be an id") },
+    elevation = 0.dp,
   ) {
     Column(modifier = Modifier.fillMaxWidth()) {
       AsyncImage(

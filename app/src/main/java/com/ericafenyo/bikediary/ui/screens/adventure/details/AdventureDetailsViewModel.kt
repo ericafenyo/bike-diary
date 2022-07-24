@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,38 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.network.adventure
+package com.ericafenyo.bikediary.ui.screens.adventure.details
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ericafenyo.bikediary.domain.adventure.AdventureInteractor
 import com.ericafenyo.bikediary.model.Adventure
+import com.ericafenyo.tracker.data.model.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
-interface AdventureService {
-  suspend fun getAdventures(): List<Adventure>
+@HiltViewModel
+class AdventureDetailsViewModel @Inject constructor(
+  adventureInteractor: AdventureInteractor
+) : ViewModel() {
 
-  suspend fun getAdventure(id: String): Adventure
+  val state: StateFlow<AdventureDetailsUiState> =
+    adventureInteractor.invoke("62d077d8d69f8add7c478f9d").map {
+      AdventureDetailsUiState.Success(it.getOrThrow())
+    }
+      .stateIn(
+        initialValue = AdventureDetailsUiState.Loading,
+        started = SharingStarted.Eagerly,
+        scope = viewModelScope
+      )
+}
 
-  suspend fun synchronizeAdventures(adventures: List<Adventure>): List<Adventure>
+
+sealed class AdventureDetailsUiState {
+  object Loading : AdventureDetailsUiState()
+  data class Success(val adventure: Adventure) : AdventureDetailsUiState()
 }

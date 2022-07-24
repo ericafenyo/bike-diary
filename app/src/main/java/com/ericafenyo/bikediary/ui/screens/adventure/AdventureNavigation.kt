@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (C) 2021 Eric Afenyo
+ * Copyright (C) 2022 Eric Afenyo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,17 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.diary
+package com.ericafenyo.bikediary.ui.screens.adventure
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.ericafenyo.bikediary.theme.AppTheme
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 
-@AndroidEntryPoint
-class DiaryFragment : Fragment() {
-  private val viewModel: DiaryViewModel by viewModels()
+fun NavGraphBuilder.adventuresGraph(navigateToDetails: (String) -> Unit) {
+  composable(route = AdventuresNavigation.ROUTE, content = {
+    AdventuresContent(navigateToDetails = navigateToDetails)
+  })
+}
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    return ComposeView(requireContext()).apply {
-      setContent {
-        AppTheme {
-//          Adventures(model)
-        }
-      }
-    }
-  }
+object AdventuresNavigation {
+  const val ROUTE = "adventures"
 }

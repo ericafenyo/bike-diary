@@ -22,33 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.diary
+package com.ericafenyo.bikediary.domain.adventure
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.ericafenyo.bikediary.theme.AppTheme
-import dagger.hilt.android.AndroidEntryPoint
+import com.ericafenyo.bikediary.di.qualifier.Dispatcher
+import com.ericafenyo.bikediary.di.qualifier.DispatcherType.IO
+import com.ericafenyo.bikediary.domain.ParameterizedFlowInteractor
+import com.ericafenyo.bikediary.model.Adventure
+import com.ericafenyo.bikediary.repositories.adventure.AdventureRepository
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 
-@AndroidEntryPoint
-class DiaryFragment : Fragment() {
-  private val viewModel: DiaryViewModel by viewModels()
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    return ComposeView(requireContext()).apply {
-      setContent {
-        AppTheme {
-//          Adventures(model)
-        }
-      }
-    }
-  }
+class AdventureInteractor @Inject constructor(
+  private val repository: AdventureRepository,
+  @Dispatcher(IO) dispatcher: CoroutineDispatcher,
+) : ParameterizedFlowInteractor<String, Adventure>(dispatcher) {
+
+  override fun execute(params: String): Flow<Adventure> = repository.adventure(params)
 }

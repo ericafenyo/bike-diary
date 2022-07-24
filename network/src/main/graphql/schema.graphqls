@@ -93,6 +93,8 @@ type JWTokensType {
 type Query {
   getUser: String!
 
+  adventure(id: String!): Adventure!
+
   adventures: [Adventure!]!
 }
 

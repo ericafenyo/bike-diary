@@ -22,15 +22,17 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.screens.adventures
+package com.ericafenyo.bikediary.ui.screens.adventure.details
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.adventuresGraph() {
-  composable(route = AdventuresNavigation.ROUTE, content = { AdventuresContent() })
+fun NavGraphBuilder.adventureDetailsGraph(onBackPressed: () -> Unit) {
+  composable(route = AdventureDetailsNavigation.ROUTE, content = {
+    AdventureDetailsContent(onBackPressed = onBackPressed)
+  })
 }
 
-object AdventuresNavigation {
-  const val ROUTE = "adventures"
+object AdventureDetailsNavigation {
+  const val ROUTE = "adventure_details"
 }

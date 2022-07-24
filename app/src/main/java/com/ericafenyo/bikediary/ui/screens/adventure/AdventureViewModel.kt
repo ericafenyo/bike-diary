@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.bikediary.ui.screens.adventures
+package com.ericafenyo.bikediary.ui.screens.adventure
 
 import android.content.Context
 import android.graphics.drawable.Drawable

@@ -89,4 +89,7 @@ object Icons {
 
   val Feed: Painter
     @Composable get() = painterResource(R.drawable.ic_feed)
+
+  val ArrowLeft: Painter
+    @Composable get() = painterResource(R.drawable.ic_arrow_left)
 }
