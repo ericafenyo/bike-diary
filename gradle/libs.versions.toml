@@ -63,6 +63,8 @@ androidx-compose-navigation = { group = "androidx.navigation", name = "navigatio
 apollo-gradlePlugin = { module = "com.apollographql.apollo3:apollo-gradle-plugin", version.ref = "apollo" }
 apollo-runtime = { group = "com.apollographql.apollo3", name = "apollo-runtime", version.ref = "apollo" }
 
+accompanist-pager = "com.google.accompanist:accompanist-pager:0.24.13-rc"
+
 compose-activity = "androidx.activity:activity-compose:1.4.0"
 compose-coil = "io.coil-kt:coil-compose:2.0.0-rc02"
 compose-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0"

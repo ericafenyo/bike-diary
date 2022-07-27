@@ -167,6 +167,7 @@ dependencies {
   
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
+  implementation(libs.accompanist.pager)
 }
 
 hilt {
