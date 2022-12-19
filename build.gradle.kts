@@ -42,7 +42,7 @@ buildscript {
 }
 
 plugins {
-  id("com.osacky.doctor") version "0.8.0"
+  id("com.osacky.doctor") version "0.8.1"
 }
 
 allprojects {
