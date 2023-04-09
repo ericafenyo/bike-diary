@@ -31,7 +31,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.IBinder
 import android.provider.Settings
-import androidx.core.app.NotificationCompat.Action
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.WorkManager
 import com.ericafenyo.bikediary.logger.Logger
 import com.ericafenyo.libs.storage.PreferenceStorage
@@ -42,15 +42,12 @@ import com.ericafenyo.tracker.Tracker.State.READY
 import com.ericafenyo.tracker.analysis.worker.AnalysisWorker
 import com.ericafenyo.tracker.database.record.RecordCache
 import com.ericafenyo.tracker.location.LocationUpdatesAction
-import com.ericafenyo.tracker.util.LOCATION_REQUIRED_NOTIFICATION_ID
-import com.ericafenyo.tracker.util.Notifications
-import com.ericafenyo.tracker.util.Notifications.Config
-import com.ericafenyo.tracker.util.ONGOING_NOTIFICATION_ID
 import com.ericafenyo.tracker.util.PermissionsManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import okhttp3.internal.notify
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -58,6 +55,8 @@ class StateMachineService : Service() {
   private val storage: PreferenceStorage by lazy {
     PreferenceStorageImpl.getInstance(applicationContext)
   }
+
+  private val options: TrackerOptions by lazy { Tracker.getInstance().options }
 
   override fun onBind(intent: Intent): IBinder? {
     return null
@@ -90,7 +89,6 @@ class StateMachineService : Service() {
     Logger.debug(applicationContext, TAG, "The current state is $currentState")
 
     handleAction(currentState, intent.action)
-
 
     // Return START_REDELIVER_INTENT to scheduled for a restart with the same Intent
     // if the service's process is killed while it is started.
@@ -143,15 +141,10 @@ class StateMachineService : Service() {
           //Change the current state to ongoing
           // We should now get location updates at a particular interval
           setNewState(this, currentState, ONGOING)
-          val notificationConfig = Config(
-            notificationId = ONGOING_NOTIFICATION_ID,
-            message = getString(R.string.tracking_notification_content_text),
-            title = getString(R.string.tracking_notification_title_text),
-            icon = R.drawable.ic_bike,
-            cancellable = false
-          )
-
-          Notifications.create(this, notificationConfig)
+          val notification = options.notification
+          if (notification != null) {
+            NotificationManagerCompat.from(applicationContext).notify(6454653, notification)
+          }
         }
       }?.addOnFailureListener {
         Logger.error(
@@ -167,20 +160,20 @@ class StateMachineService : Service() {
   }
 
   private fun showNotificationToAppSettings() {
-    val config = Config(
-      LOCATION_REQUIRED_NOTIFICATION_ID,
-      "Location permission required",
-      "Click here to enable it",
-      R.drawable.ic_bike
-    )
+//    val config = Config(
+//      LOCATION_REQUIRED_NOTIFICATION_ID,
+//      "Location permission required",
+//      "Click here to enable it",
+//      R.drawable.ic_bike
+//    )
+//
+//    val permissionAction = Action(
+//      R.drawable.ic_bike,
+//      "Change Permissions",
+//      appSettingsPendingIntent()
+//    )
 
-    val permissionAction = Action(
-      R.drawable.ic_bike,
-      "Change Permissions",
-      appSettingsPendingIntent()
-    )
-
-    Notifications.createWithAction(this, config, permissionAction)
+//    com.ericafenyo.bikediary.util.Notifications.createWithAction(this, config, permissionAction)
   }
 
   private fun appSettingsPendingIntent(): PendingIntent? {
@@ -211,7 +204,7 @@ class StateMachineService : Service() {
       // If the request is successful, change the current state to ongoing
       // We should now get location updates at a particular interval
       setNewState(this, currentState, READY)
-      Notifications.cancel(this, ONGOING_NOTIFICATION_ID)
+//      com.ericafenyo.bikediary.util.Notifications.cancel(this, ONGOING_NOTIFICATION_ID)
 
       // Start the trip analysis process
       WorkManager.getInstance(this).enqueue(AnalysisWorker.request)

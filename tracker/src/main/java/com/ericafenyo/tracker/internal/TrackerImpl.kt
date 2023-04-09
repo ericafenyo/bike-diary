@@ -28,14 +28,12 @@ import android.content.Context
 import com.ericafenyo.libs.storage.PreferenceStorage
 import com.ericafenyo.tracker.Constants.TRACKER_CURRENT_STATE_KEY
 import com.ericafenyo.tracker.R
-import com.ericafenyo.tracker.Tracker
 import com.ericafenyo.tracker.Tracker.State
 import com.ericafenyo.tracker.Tracker.State.READY
 import com.ericafenyo.tracker.util.ExplicitIntent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.math.log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
@@ -45,21 +43,21 @@ import timber.log.Timber
 internal class TrackerImpl @Inject constructor(
   @ApplicationContext private val context: Context,
   private val storage: PreferenceStorage,
-) : Tracker {
+)  {
 
-  override val state: Flow<State>
+   val state: Flow<State>
     get() = storage.retrieve(TRACKER_CURRENT_STATE_KEY, State::class).map { it ?: READY }
 
-  override suspend fun updateState(state: State) {
+   suspend fun updateState(state: State) {
     storage.store(TRACKER_CURRENT_STATE_KEY, state)
   }
 
-  override suspend fun start() {
+   suspend fun start() {
     Timber.d("Tracker start called")
     context.sendBroadcast(ExplicitIntent(context, R.string.tracker_action_start))
   }
 
-  override suspend fun stop() {
+   suspend fun stop() {
     Timber.d("Tracker stop called")
     context.sendBroadcast(ExplicitIntent(context, R.string.tracker_action_stop))
   }

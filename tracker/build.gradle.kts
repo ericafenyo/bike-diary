@@ -53,6 +53,7 @@ dependencies {
   implementation(projects.model)
   implementation(projects.shared)
   implementation(projects.libs.storage)
+  implementation(projects.libs.serialization)
 
   implementation(libs.androidx.datastore)
   implementation(libs.androidx.room.ktx)
@@ -67,12 +68,8 @@ dependencies {
 
   implementation(libs.google.gms.location)
 
-  implementation(libs.gson)
-
   implementation(libs.kotlin.serialization.json)
   implementation(libs.kotlin.stdlib)
-
-  implementation(libs.threetenabp)
 
   implementation(libs.timber)
 }

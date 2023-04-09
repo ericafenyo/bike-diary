@@ -35,12 +35,10 @@ import com.ericafenyo.bikediary.di.qualifier.DispatcherType.IO
 import com.ericafenyo.bikediary.logger.Logger
 import com.ericafenyo.bikediary.network.analysis.AnalysisService
 import com.ericafenyo.tracker.analysis.Analyser
-import com.google.gson.Gson
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 @HiltWorker
 class AnalysisWorker @AssistedInject constructor(
@@ -56,12 +54,12 @@ class AnalysisWorker @AssistedInject constructor(
     val successful = analyser.startAnalysis()
 
     if (successful) {
-      val data = analyser.getAnalysedAdventures()
-      val json = Gson().toJson(data)
-
-      val request = Test.parse(json)
-      Timber.d("The graphql request: $request")
-      service.synchronize(request)
+//      val data = analyser.getAnalysedAdventures()
+//      val json = Gson().toJson(data)
+//
+//      val request = Test.parse(json)
+//      Timber.d("The graphql request: $request")
+//      service.synchronize(request)
     }
 
     Result.success()

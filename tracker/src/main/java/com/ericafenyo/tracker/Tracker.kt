@@ -24,16 +24,144 @@
 
 package com.ericafenyo.tracker
 
+import android.app.Application
+import android.app.Notification
+import android.content.Context
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import com.ericafenyo.libs.serialization.KotlinJsonSerializer
+import com.ericafenyo.tracker.R.string
+import com.ericafenyo.tracker.util.ExplicitIntent
+import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
 
-interface Tracker {
-  val state: Flow<State>
+class Tracker private constructor(val options: TrackerOptions) {
 
-  suspend fun updateState(state: State)
+  companion object {
+    private val currentOptions: ThreadLocal<TrackerOptions> = ThreadLocal<TrackerOptions>()
 
-  suspend fun start()
+    private fun getTrackerOptions(): TrackerOptions {
+      var options = currentOptions.get()
 
-  suspend fun stop()
+      if (options == null) {
+        options = TrackerOptions()
+        currentOptions.set(options)
+      }
+
+      return options
+    }
+
+    fun init(application: Application, optionsConfiguration: (TrackerOptions) -> TrackerOptions) {
+      val defaultOptions = TrackerOptions()
+      currentOptions.set(optionsConfiguration(defaultOptions))
+    }
+
+    @Volatile
+    private var INSTANCE: Tracker? = null
+
+    @JvmStatic
+    fun getInstance(): Tracker {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: Tracker(getTrackerOptions())
+          .also { INSTANCE = it }
+      }
+    }
+  }
+
+  val state: Flow<State> = TODO()
+
+  suspend fun start() {
+//    application.sendBroadcast(ExplicitIntent(context, string.tracker_action_start))
+  }
+
+  suspend fun pause() {
+    TODO("Not implemented")
+  }
+
+  suspend fun resume() {
+    TODO("Not implemented")
+  }
+
+  suspend fun stop() {
+    TODO("Not implemented")
+  }
+
+  class Storage private constructor(context: Context) {
+    companion object {
+      @Volatile
+      private var INSTANCE: Storage? = null
+
+      @JvmStatic
+      fun getInstance(context: Context): Storage {
+        return INSTANCE ?: synchronized(this) {
+          INSTANCE ?: Storage(context)
+            .also { INSTANCE = it }
+        }
+      }
+    }
+
+    private val Context.dataStore by preferencesDataStore(name = "tracker_data_storage")
+    private val dataStore = context.dataStore
+
+    /**
+     * Store a given value in the Storage.
+     *
+     * @param key  the key of the value to store.
+     * @param value the value to store.
+     */
+    suspend fun <T : Any> store(key: String, value: T) {
+      val json = KotlinJsonSerializer.getInstance().toJson(value, value::class)
+      dataStore.edit { preference -> preference[stringPreferencesKey(key)] = json }
+    }
+
+
+    /**
+     * Retrieve a value from the Storage.
+     *
+     * @param key the key of the value to retrieve.
+     * @return the value that was previously saved.
+     */
+    fun <T : Any> retrieve(key: String, clazz: KClass<T>): Flow<T?> {
+      TODO()
+    }
+
+
+    /**
+     * Removes a value from the storage.
+     *
+     * @param key the key of the value to remove.
+     */
+    suspend fun <T : Any> remove(key: String, clazz: KClass<T>) {
+      val preferenceKey = when (clazz) {
+        Int::class -> intPreferencesKey(key)
+        Long::class -> intPreferencesKey(key)
+        String::class -> intPreferencesKey(key)
+        Boolean::class -> intPreferencesKey(key)
+        else -> throw UnsupportedOperationException("Key type $clazz not supported")
+      }
+      dataStore.edit { preferences -> preferences.remove(preferenceKey) }
+    }
+
+    /**
+     * Removes all value from the storage.
+     */
+    suspend fun clear() {
+      dataStore.edit { preferences -> preferences.clear() }
+    }
+  }
 
   enum class State { IDLE, READY, ONGOING, DISABLED }
+}
+
+class TrackerOptions {
+  private var _notification: Notification? = null
+  val notification: Notification? = _notification
+
+  fun setNotification(notification: Notification): TrackerOptions {
+    this._notification = notification
+    return this
+  }
+
 }

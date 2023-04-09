@@ -39,16 +39,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class TrackerViewModel @Inject constructor(
-  private val tracker: Tracker,
-) : ViewModel(), Store<TrackerUiState, TrackerAction> {
+class TrackerViewModel @Inject constructor() : ViewModel(), Store<TrackerUiState, TrackerAction> {
+  private val tracker: Tracker = Tracker.getInstance()
 
   override val state: StateFlow<TrackerUiState>
-    get() = tracker.state.map { trackerState -> TrackerUiState(trackerState = trackerState) }
+    get() = tracker.state.map { trackerState -> TrackerUiState.Loading }
       .stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = TrackerUiState()
+        initialValue = TrackerUiState.Loading
       )
 
   override fun dispatch(action: TrackerAction) {
@@ -59,6 +58,9 @@ class TrackerViewModel @Inject constructor(
   }
 }
 
-data class TrackerUiState(
-  val trackerState: Tracker.State = Tracker.State.IDLE,
-)
+sealed class TrackerUiState {
+  object Loading : TrackerUiState()
+  data class Success(
+    val trackerState: Tracker.State = Tracker.State.IDLE,
+  )
+}

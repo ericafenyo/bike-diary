@@ -42,7 +42,8 @@ buildscript {
 }
 
 plugins {
-  id("com.osacky.doctor") version "0.8.1"
+//  id("com.osacky.doctor") version "0.8.1"
+//  id "com.github.ben-manes.versions" version "0.44.0"
 }
 
 allprojects {

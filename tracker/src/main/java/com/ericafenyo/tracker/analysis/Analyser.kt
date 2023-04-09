@@ -35,7 +35,6 @@ import com.ericafenyo.tracker.database.analyzed.Trace
 import com.ericafenyo.tracker.database.record.Record
 import com.ericafenyo.tracker.database.record.RecordCache
 import com.ericafenyo.tracker.location.SimpleLocation
-import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.UUID
 import javax.inject.Inject
@@ -93,9 +92,7 @@ class Analyser @Inject constructor(@ApplicationContext val context: Context) {
         geometry = "",
         traces = records.map(::toTrace),
       )
-
-      Timber.d("The resulting data: ${Gson().toJson(result)}")
-
+      
       return result
     }.onFailure {
       Logger.error(context, TAG, "An error occurred while trying to get last record: $it")

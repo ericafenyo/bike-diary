@@ -35,11 +35,6 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-//    Synchronizer.initialize(this.applicationContext)
-
-//    WindowCompat.setDecorFitsSystemWindows(window, false)
-
     setContent { MainContent() }
   }
 }

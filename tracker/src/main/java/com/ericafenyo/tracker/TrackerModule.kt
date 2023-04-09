@@ -35,9 +35,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal abstract class TrackerModule {
 
-  @Binds
-  @Singleton
-  abstract fun bindTracker(impl: TrackerImpl): Tracker
+//  @Binds
+//  @Singleton
+//  abstract fun bindTracker(impl: TrackerImpl): Tracker
 
 //  @Provides
 //  @Singleton
