@@ -4,17 +4,22 @@
 [![GitHub](https://img.shields.io/github/license/ericafenyo/bike-diary)](LICENSE)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ericafenyo/bike-diary?label=version)][version]
 
-An android app that allows users to record their cycling routes, save memorable photos and track their personal improvement goals & statistics while discovering new places.
+An Android cycling tracker app designed to help users reach fitness goals, explore new destinations, and capture unforgettable memories.
 
-[version]: https://github.com/ericafenyo/bike-diary/releases
+:construction: I am giving this project a major makeover, tweaking it based on new [user stories](docs/user-stories.md). While I had some features in there already, I decided to review everything to better manage the project. At first, I was adding features on the go, but I now have a complete set of [user stories](docs/user-stories.md) in place. :construction:
+
 
 ## Screenshots
+
 > coming soon
 
 ## Documentation
-### Functional specifications
-* [Authentication portal](docs/functional-specifications/auth-portal.md) &mdash; Access the login and registration page
-* [Login](docs/functional-specifications/login.md) &mdash; Log in to a user account
+
+- [Backlog](docs/backlog.md)
+- [Users stories](docs/user-stories.md)
+- Functional specifications
+  - [Authentication portal](docs/functional-specifications/auth-portal.md) &mdash; Access the login and registration page
+  - [Login](docs/functional-specifications/login.md) &mdash; Log in to a user account
 
 ## Development setup
 
@@ -32,7 +37,7 @@ API_SERVER_URL=<insert>
 
 2. **Mapbox download and public API keys**: You can find information on how to generate these keys via this link:
 
-   https://docs.mapbox.com/android/maps/guides/install/
+   <https://docs.mapbox.com/android/maps/guides/install/>
 
 ```yml
 # ./gradle.properties
@@ -58,3 +63,5 @@ This project uses the Gradle build system. To build or test this project, use th
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+[version]: https://github.com/ericafenyo/bike-diary/releases
