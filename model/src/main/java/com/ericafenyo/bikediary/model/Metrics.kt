@@ -29,7 +29,7 @@ package com.ericafenyo.bikediary.model
  */
 data class Metrics(
   val speed: Double,
-  val duration: Double,
+  val duration: Long,
   val distance: Double,
   val calories: Int,
   val startedAt: String,
@@ -38,7 +38,7 @@ data class Metrics(
   companion object {
     fun default() = Metrics(
       speed = 0.0,
-      duration = 0.0,
+      duration = 0,
       distance = 0.0,
       calories = 0,
       startedAt = "1970-01-01T00:00:00Z",

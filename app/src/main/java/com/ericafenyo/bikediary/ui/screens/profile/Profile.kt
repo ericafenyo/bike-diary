@@ -36,9 +36,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -51,15 +52,22 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ericafenyo.bikediary.model.Settings
-import com.ericafenyo.bikediary.theme.AppTheme
-import com.ericafenyo.bikediary.theme.titleMedium
+import com.ericafenyo.bikediary.ui.theme.AppTheme
+import com.ericafenyo.bikediary.ui.theme.titleMedium
 import com.ericafenyo.bikediary.ui.components.inputs.TextField
+import com.ericafenyo.bikediary.ui.screens.auth.login.LoginNavigation
 import timber.log.Timber
 
 @Composable
-fun ProfileContent() {
-  Text(text = "Profile")
+fun ProfileContent(navigateToLogin: () -> Unit) {
+  Button(onClick = {
+    navigateToLogin()
+  }) {
+    Text(text = "Login")
+  }
 }
 
 @Composable
@@ -69,6 +77,7 @@ internal fun Profile(
 ) {
   var isDarkTheme by remember { mutableStateOf(false) }
 
+
   val settings = state.value.settings
   val isLoading = state.value.isLoading
 
@@ -77,7 +86,7 @@ internal fun Profile(
 
   Column(
     modifier = Modifier
-      .background(MaterialTheme.colors.background)
+      .background(MaterialTheme.colorScheme.background)
       .fillMaxSize()
       .padding(horizontal = 8.dp)
   ) {
@@ -141,7 +150,7 @@ private fun NumberPickerModel(
       modifier = modifier
         .fillMaxWidth()
         .clip(MaterialTheme.shapes.medium)
-        .background(MaterialTheme.colors.surface)
+        .background(MaterialTheme.colorScheme.surface)
         .padding(16.dp)
     ) {
 

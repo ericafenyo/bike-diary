@@ -30,7 +30,7 @@ import com.ericafenyo.bikediary.model.Gender
 import com.ericafenyo.bikediary.model.Quests
 
 @Entity(tableName = "settings")
-class SettingsEntity(
+data class SettingsEntity(
   @PrimaryKey val id: String,
   val gender: Gender,
   val height: Double,

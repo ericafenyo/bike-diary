@@ -38,5 +38,3 @@ class ExplicitIntent(
     setPackage(context.packageName)
   }
 }
-
-fun Context.getExplicitIntent(@StringRes actionId: Int) = ExplicitIntent(this, actionId)

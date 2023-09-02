@@ -28,9 +28,33 @@ package com.ericafenyo.bikediary.network
 import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.api.Operation
 import com.apollographql.apollo3.exception.ApolloException
+import com.ericafenyo.bikediary.model.HttpException
+import com.ericafenyo.libs.serialization.KotlinJsonSerializer
+import org.json.JSONObject
 
-fun toHttpException(exception: ApolloException) {
-//  val jsonSerializer = ReflectionJsonSerializer.getInstance()
+fun toHttpException(exception: ApolloException): HttpException {
+  val error: HttpException = when (exception) {
+    is ApolloHttpException -> {
+      val map = exception.error.extensions ?: mutableMapOf()
+      val json = JSONObject(map).toString()
+      KotlinJsonSerializer.getInstance().fromJson(json, ApolloErrorResponse.serializer()).run {
+        HttpException(
+          status = this.exception.status,
+          message = this.exception.message
+        )
+      }
+    }
+
+    is UnexpectedNetworkException -> {
+      HttpException(message = exception.message, status = 500)
+    }
+
+    else -> {
+      HttpException(message = exception.message, status = 500)
+    }
+  }
+
+  return error
 }
 
 /**
@@ -40,9 +64,9 @@ suspend fun <T : Operation.Data> ApolloCall<T>.invoke(): T {
   return execute().run {
     if (hasErrors()) {
       throw errors?.firstOrNull()?.let { ApolloHttpException(it) }
-        ?: ApolloException("The server did not return errors")
+        ?: UnexpectedNetworkException("The server did not return errors")
     } else {
-      data ?: throw  ApolloException("The server did not return any data")
+      data ?: throw UnexpectedNetworkException("The server did not return any data")
     }
   }
 }

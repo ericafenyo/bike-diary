@@ -26,18 +26,50 @@ package com.ericafenyo.bikediary.model
 
 import java.time.Instant
 
+/**
+ * An `Adventure` represents a cycling trip.
+ */
 data class Adventure(
+  /**
+   * A unique identifier for the adventure.
+   */
   val id: String,
+  /**
+   * Represents the name or title of the adventure.
+   */
   val title: String,
+  /**
+   * A statement describing the adventure.
+   */
   val description: String,
-  val altitude: Double,
-  val distance: Double,
-  val duration: Int,
-  val speed: Double,
-  val calories: Int,
+  /**
+   * Represents the start date and time of the adventure.
+   */
   val startTime: Instant,
+  /**
+   * Represents the end date and time of the adventure.
+   */
   val endTime: Instant,
+  /**
+   * Maximum altitude reached during the adventure.
+   */
+  val altitude: Double,
+  /**
+   * Distance traveled during the adventure
+   */
+  val distance: Double,
+  /**
+   * duration of the adventure in seconds
+   */
+  val duration: Long,
+  /**
+   * Average speed during the adventure
+   */
+  val speed: Double,
+  /**
+   * Estimated number of calories burned during the adventure
+   */
+  val calories: Int,
+
   val image: String,
-) {
-  fun isPushed() = !id.contains("Unprocessed")
-}
+)

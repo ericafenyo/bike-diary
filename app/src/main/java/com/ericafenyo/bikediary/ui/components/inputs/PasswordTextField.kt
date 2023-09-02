@@ -30,11 +30,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -92,8 +92,8 @@ fun PasswordTextField(
       {
         Text(
           text = error,
-          style = MaterialTheme.typography.body1,
-          color = MaterialTheme.colors.error
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.error
         )
       }
     },
@@ -102,7 +102,7 @@ fun PasswordTextField(
         {
           Text(
             text = info,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyMedium,
             color = Color.Blue
           )
         }

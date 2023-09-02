@@ -24,25 +24,25 @@
 
 package com.ericafenyo.bikediary.network.analysis
 
+import com.ericafenyo.libs.serialization.KotlinJsonSerializer
+import kotlinx.serialization.Serializable
+
+@Serializable
 class AnalyzedAdventureRequest(
   val uuid: String,
   val calories: Int,
   val distance: Double,
-  val duration: Int,
+  val duration: Long,
   val startTime: String,
   val endTime: String,
   val speed: Double,
-  val polyline: String,
-  val traces: List<Trace>
+  val locations: List<Location>
 )
 
-class Trace(
+@Serializable
+class Location(
   val timezone: String,
-  val writeTime: String,
-  val location: SensorLocation,
-)
-
-class SensorLocation(
+  val writeTime: Double,
   val latitude: Double,
   val longitude: Double,
   val altitude: Double,
@@ -50,4 +50,4 @@ class SensorLocation(
   val speed: Double,
   val accuracy: Double,
   val bearing: Double,
-  )
+)

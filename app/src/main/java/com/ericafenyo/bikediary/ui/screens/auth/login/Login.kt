@@ -34,15 +34,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,9 +58,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ericafenyo.bikediary.R.string
 import com.ericafenyo.bikediary.model.UIState
-import com.ericafenyo.bikediary.theme.AppTheme
+import com.ericafenyo.bikediary.ui.theme.AppTheme
 import com.ericafenyo.bikediary.ui.components.buttons.Button
 import com.ericafenyo.bikediary.ui.components.dialog.Alert
 import com.ericafenyo.bikediary.ui.components.dialog.AlertMessage
@@ -71,6 +74,7 @@ import com.ericafenyo.bikediary.ui.screens.auth.login.ValidationRule.REQUIRE_EMA
 import com.ericafenyo.bikediary.ui.screens.auth.login.ValidationRule.REQUIRE_PASSWORD
 import com.ericafenyo.bikediary.ui.screens.auth.login.ValidationRule.UNSPECIFIED
 import com.ericafenyo.bikediary.util.Validator
+import kotlinx.coroutines.flow.StateFlow
 
 enum class ValidationRule {
   REQUIRE_EMAIL,
@@ -80,10 +84,22 @@ enum class ValidationRule {
 }
 
 @Composable
+fun LoginContent(
+  viewModel: LoginViewModel = hiltViewModel()
+) {
+  val state: UIState by viewModel.state.collectAsState()
+  Login(
+    onAction = { action -> viewModel.dispatch(action) },
+    onNavigateUp = { },
+    state = state
+  )
+}
+
+@Composable
 fun Login(
-  onAction: (LoginAction) -> Unit,
   onNavigateUp: () -> Unit,
-  state: State<UIState> = mutableStateOf(UIState()),
+  onAction: (LoginAction) -> Unit,
+  state: UIState = UIState(),
   message: State<AlertMessage?> = mutableStateOf(null)
 ) {
   var password by remember { mutableStateOf("") }
@@ -119,10 +135,12 @@ fun Login(
   Column(
     modifier = Modifier
       .fillMaxSize()
-      .background(MaterialTheme.colors.background)
+      .background(MaterialTheme.colorScheme.background)
   ) {
     TopAppBar(
-      backgroundColor = MaterialTheme.colors.surface,
+      colors = TopAppBarDefaults.topAppBarColors(
+        containerColor = MaterialTheme.colorScheme.background
+      ),
       title = { Text(text = stringResource(id = string.title_login)) },
       navigationIcon = {
         IconButton(onClick = onNavigateUp) { Icon(Icons.Filled.ArrowBack, null) }
@@ -134,7 +152,7 @@ fun Login(
       Alert(
         title = stringResource(id = value.titleId),
         message = stringResource(id = value.messageId),
-        appearance = if (state.value.success) SUCCESS else CRITICAL,
+        appearance = if (state.success) SUCCESS else CRITICAL,
         modifier = Modifier.padding(horizontal = 24.dp),
         onDismissed = { isAlertVisible = false }
       )
@@ -148,7 +166,7 @@ fun Login(
         .fillMaxWidth()
         .padding(horizontal = 24.dp),
       value = email,
-      enabled = !state.value.loading,
+      enabled = !state.loading,
       onChange = { value ->
         email = value
         if (rule != UNSPECIFIED) {
@@ -170,7 +188,7 @@ fun Login(
     PasswordTextField(
       label = stringResource(id = string.input_hint_password),
       value = password,
-      enabled = !state.value.loading,
+      enabled = !state.loading,
       onChange = { value ->
         password = value
         if (rule != UNSPECIFIED) {
@@ -192,8 +210,8 @@ fun Login(
 
     Button(
       text = stringResource(id = string.action_login),
-      isLoading = state.value.loading,
-      enabled = !state.value.loading,
+      isLoading = state.loading,
+      enabled = !state.loading,
       onClick = {
         if (hasValidInputs(email, password)) {
           onAction.invoke(LoginAction.Authenticate(email, password))

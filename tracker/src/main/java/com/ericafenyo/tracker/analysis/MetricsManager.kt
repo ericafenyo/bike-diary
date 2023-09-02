@@ -25,7 +25,7 @@
 package com.ericafenyo.tracker.analysis
 
 import com.ericafenyo.bikediary.model.SimpleMetrics
-import com.ericafenyo.tracker.location.SimpleLocation
+import com.ericafenyo.tracker.data.model.SimpleLocation
 import kotlin.math.roundToInt
 
 /**

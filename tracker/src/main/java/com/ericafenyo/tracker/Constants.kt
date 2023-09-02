@@ -29,6 +29,4 @@ object Constants {
   const val TRACKER_STATE_READY = "tracker.state.ready"
   const val TRACKER_STATE_ONGOING = "tracker.state.ongoing"
   const val TRACKER_STATE_DISABLED = "tracker.state.disabled"
-
-  const val TRACKER_CURRENT_STATE_KEY = "com.ericafenyo.tracker.TRACKER_CURRENT_STATE"
 }

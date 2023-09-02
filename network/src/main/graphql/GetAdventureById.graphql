@@ -1,32 +1,14 @@
 query GetAdventureById($adventureId: String!) {
   adventure(id: $adventureId) {
-    id
-    uuid
-    title
-    description
-    traces {
-      timezone
-      writeTime
-      location {
-        latitude
-        longitude
-        altitude
-        time
-        speed
-        accuracy
-        bearing
-      }
-    }
-    altitude
-    calories
-    distance
-    duration
-    startTime
-    endTime
-    speed
-    polyline
-    image
-    createdAt
-    updatedAt
+     id
+     title
+     description
+     startTime
+     endTime
+     distance
+     duration
+     speed
+     calories
+     polyline
   }
 }

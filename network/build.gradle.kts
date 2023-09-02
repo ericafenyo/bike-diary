@@ -39,18 +39,19 @@ android {
     buildConfigField("String", "API_SERVER_URL", "\"${findProperty("API_SERVER_URL")}\"")
   }
 
-
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
-  kotlinOptions {
-    jvmTarget = "1.8"
+
+  kotlin {
+//    jvmToolchain(11)
   }
 
   buildFeatures {
     buildConfig = true
   }
+  namespace = "com.ericafenyo.bikediary.network"
 }
 
 dependencies {
@@ -72,10 +73,16 @@ dependencies {
 }
 
 apollo {
-  packageName.set("com.ericafenyo.bikediary")
+  service("service") {
+    packageName.set("com.ericafenyo.bikediary.graphql")
 
-  // Mapping for GraphQL custom scalars
-  mapScalarToKotlinString("DateTime")
-  mapScalarToKotlinLong("Timestamp")
-//  mapScalarToKotlinLong("Long")
+    // Mapping for GraphQL custom scalars
+    mapScalarToKotlinString("DateTime")
+    mapScalarToKotlinLong("Timestamp")
+    mapScalarToKotlinLong("BigInt")
+  }
+}
+
+kapt {
+  correctErrorTypes = true
 }

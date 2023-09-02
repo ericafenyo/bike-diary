@@ -28,6 +28,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
+import com.ericafenyo.bikediary.app.LocationProvider
+import com.ericafenyo.bikediary.app.internal.LocationProviderImpl
 import com.ericafenyo.bikediary.data.settings.PreferenceStorage
 import com.ericafenyo.bikediary.data.settings.SharedPreferenceStorage
 import com.ericafenyo.bikediary.model.CredentialsManager
@@ -71,5 +73,8 @@ abstract class AppModule {
       context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
           as ClipboardManager
 
+    @Provides
+    @Singleton
+    fun provideLocationProvider(instance: LocationProviderImpl): LocationProvider = instance
   }
 }

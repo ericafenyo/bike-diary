@@ -1,5 +1,5 @@
 mutation authenticateUser($email: String!, $password: String!) {
-  tokens(email: $email, password: $password) {
+  login(email: $email, password: $password) {
     access_token
     refresh_token
   }

@@ -1,15 +1,14 @@
-query getAdventures {
-	adventures {
-	    id
-		uuid
-		title
-		altitude
-		distance
-		duration
-		speed
-		calories
-		startTime
-		endTime
-		image
-	}
+query GetAdventures {
+  adventures {
+    id
+    title
+    description
+    startTime
+    endTime
+    distance
+    duration
+    speed
+    calories
+    polyline
+  }
 }

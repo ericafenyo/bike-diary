@@ -26,6 +26,9 @@ package com.ericafenyo.bikediary.network.adventure
 
 import com.ericafenyo.bikediary.model.Adventure
 
+/**
+ *
+ */
 interface AdventureService {
   suspend fun getAdventures(): List<Adventure>
 

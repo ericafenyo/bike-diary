@@ -33,12 +33,14 @@ plugins {
 }
 
 android {
+  namespace = "com.ericafenyo.bikediary"
+
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
     applicationId = "com.ericafenyo.bikediary"
     minSdk = libs.versions.minSdk.get().toInt()
-    targetSdk = 31
+    targetSdk = 33
     versionName = findProperty("VERSION_NAME").toString()
     versionCode = 1
 
@@ -68,15 +70,18 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+
+  kotlin {
+    jvmToolchain(17)
   }
 
   kotlinOptions {
-    jvmTarget = "1.8"
-//    allWarningsAsErrors = true
     freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
       add("-Xopt-in=kotlin.RequiresOptIn")
+      add("-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api")
     }.toList()
   }
 
@@ -87,7 +92,7 @@ android {
   }
 
   composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.get()
+    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
 }
 
@@ -124,15 +129,13 @@ dependencies {
   implementation(libs.androidx.work.runtime)
   kapt(libs.androidx.work.hiltCompiler)
 
+
   implementation(libs.compose.activity)
   implementation(libs.compose.coil)
   implementation(libs.compose.constraintlayout)
-  implementation(libs.compose.foundation)
   implementation(libs.compose.material)
-  implementation(libs.compose.runtime)
-  implementation(libs.compose.tooling)
-  implementation(libs.compose.ui)
   implementation(libs.androidx.compose.navigation)
+  debugImplementation(libs.compose.tooling.ui)
 
   implementation(libs.databinding)
 
@@ -162,13 +165,19 @@ dependencies {
 
   implementation(libs.timber)
 
+  implementation(libs.timber)
+
+  implementation(libs.google.gms.location)
+
 //   debugImplementation(libs.leakCanary)
 
-  implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
-  
-  implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+  implementation(libs.compose.viewmodel)
+
+  implementation(libs.compose.hilt)
 
 //  implementation(libs.accompanist.pager)
+  implementation(libs.arrow.core)
+  implementation(libs.arrow.fx)
 }
 
 hilt {

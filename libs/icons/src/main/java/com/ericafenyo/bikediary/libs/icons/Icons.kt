@@ -92,4 +92,16 @@ object Icons {
 
   val ArrowLeft: Painter
     @Composable get() = painterResource(R.drawable.ic_arrow_left)
+
+  val Pause: Painter
+    @Composable get() = painterResource(R.drawable.ic_pause)
+
+  val Lock: Painter
+    @Composable get() = painterResource(R.drawable.ic_lock)
+
+  val LockOpen: Painter
+    @Composable get() = painterResource(R.drawable.ic_lock_open)
+
+  val Stop: Painter
+    @Composable get() = painterResource(R.drawable.ic_stop)
 }

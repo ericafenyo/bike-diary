@@ -25,6 +25,7 @@
 package com.ericafenyo.bikediary.database
 
 import androidx.room.TypeConverter
+import com.ericafenyo.bikediary.model.Coordinate
 import com.ericafenyo.bikediary.model.Quests
 import com.ericafenyo.libs.serialization.KotlinJsonSerializer
 import java.time.Instant
@@ -59,5 +60,17 @@ object Converters {
   @TypeConverter
   fun toQuests(quests: Quests): String {
     return serializer.toJson(quests, Quests.serializer())
+  }
+}
+
+class CoordinateConverter {
+  @TypeConverter
+  fun fromCoordinate(coordinate: Coordinate): String {
+    return KotlinJsonSerializer.getInstance().toJson(coordinate, Coordinate.serializer())
+  }
+
+  @TypeConverter
+  fun toCoordinate(json: String): Coordinate {
+    return KotlinJsonSerializer.getInstance().fromJson(json, Coordinate.serializer())
   }
 }

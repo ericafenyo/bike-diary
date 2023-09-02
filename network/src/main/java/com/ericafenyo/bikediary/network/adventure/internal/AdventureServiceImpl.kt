@@ -26,49 +26,23 @@ package com.ericafenyo.bikediary.network.adventure.internal
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
-import com.ericafenyo.bikediary.GetAdventureByIdQuery
-import com.ericafenyo.bikediary.GetAdventuresQuery
+import com.ericafenyo.bikediary.graphql.CreateAdventuresMutation
+import com.ericafenyo.bikediary.graphql.GetAdventureByIdQuery
+import com.ericafenyo.bikediary.graphql.GetAdventuresQuery
 import com.ericafenyo.bikediary.model.Adventure
-import com.ericafenyo.bikediary.network.ApolloHttpException
 import com.ericafenyo.bikediary.network.adventure.AdventureService
 import com.ericafenyo.bikediary.network.invoke
-import com.ericafenyo.libs.serialization.ReflectionJsonSerializer
+import com.ericafenyo.bikediary.network.toHttpException
+import com.ericafenyo.bikediary.graphql.type.AdventureInput
 import java.time.Instant
-import javax.inject.Inject
-import javax.inject.Singleton
-import timber.log.Timber
 
-@Singleton
-internal class AdventureServiceImpl @Inject constructor(
-  private val apolloClient: ApolloClient,
-) : AdventureService {
-  private val jsonSerializer = ReflectionJsonSerializer.getInstance()
+fun adventureService(apolloClient: ApolloClient) = object : AdventureService {
 
   override suspend fun getAdventures(): List<Adventure> {
-
     try {
-      val response = apolloClient.query(GetAdventuresQuery()).invoke()
-      return response.adventures.map {
-        Adventure(
-          id = it.id,
-          title = it.title,
-          description = "",
-          speed = it.speed,
-          altitude = it.altitude,
-          duration = it.duration,
-          distance = it.distance,
-          calories = it.calories,
-          startTime = Instant.parse(it.startTime),
-          endTime = Instant.parse(it.endTime),
-          image = it.image,
-        )
-      }
+      return apolloClient.query(GetAdventuresQuery()).invoke().adventures.map(::toAdventureModel)
     } catch (exception: ApolloException) {
-      if (exception is ApolloHttpException) {
-        Timber.e("${exception.error.nonStandardFields}")
-      }
-//      throw toHttpException(exception)
-      throw exception
+      throw toHttpException(exception)
     }
   }
 
@@ -80,69 +54,75 @@ internal class AdventureServiceImpl @Inject constructor(
         title = response.adventure.title,
         description = response.adventure.description,
         speed = response.adventure.speed,
-        altitude = response.adventure.altitude,
+        altitude = 0.0,
         duration = response.adventure.duration,
         distance = response.adventure.distance,
         calories = response.adventure.calories,
         startTime = Instant.parse(response.adventure.startTime),
         endTime = Instant.parse(response.adventure.endTime),
-        image = response.adventure.image,
+        image = "response.adventure.image",
       )
     } catch (exception: ApolloException) {
-      if (exception is ApolloHttpException) {
-        Timber.e("${exception.error.nonStandardFields}")
-      }
-//      throw toHttpException(exception)
-      throw exception
+      throw toHttpException(exception)
     }
   }
 
   override suspend fun synchronizeAdventures(adventures: List<Adventure>): List<Adventure> {
-//    val input = adventures.map { adventure ->
-//      AdventureInput(
-//        uuid = adventure.id,
-//        title = adventure.title,
-//        speed = adventure.speed,
-//        duration = adventure.duration,
-//        distance = adventure.distance,
-//        calories = adventure.calories,
-//        startedAt = adventure.startTime,
-//        completedAt = adventure.endTime,
-//        geojson = "",
-//        images = listOf(),
-//      )
-//    }
+    try {
+      val inputs = adventures.map { adventure -> createAdventureInput(adventure) }
+      val response = apolloClient.mutation(CreateAdventuresMutation(inputs)).invoke()
+        .createAdventures.map {
+          Adventure(
+            id = it.id,
+            title = it.title,
+            speed = it.speed,
+            duration = it.duration,
+            distance = it.distance,
+            calories = it.calories,
+            startTime = Instant.now(),
+            endTime = Instant.now(),
+            image = "",
+            altitude = 0.0,
+            description = it.description
+          )
+        }
 
-//    val response = apolloClient.mutate(AddAdventuresMutation(input)).await()
-//
-//    if (response.hasErrors()) {
-//      val map = response.errors?.first()?.customAttributes?.toMutableMap() ?: mutableMapOf()
-//      val json = JSONObject(map).toString()
-//      val apolloError = jsonSerializer.fromJson(json, ApolloErrorResponse::class)
-//
-//      throw HttpException(
-//        status = apolloError.extensions.exception.status,
-//        message = apolloError.extensions.exception.message
-//      )
-//    }
-//
-//    val data =
-//      response.data?.addAdventures ?: throw HttpException(HttpURLConnection.HTTP_INTERNAL_ERROR)
-
-//    return data.map {
-//      Adventure(
-//        id = it.id,
-//        title = it.title,
-//        speed = it.speed,
-//        duration = it.duration,
-//        distance = it.distance,
-//        calories = it.calories,
-//        startTime = Instant.now(),
-//        endTime = Instant.now(),
-//        image = "",
-//      )
-//    }
-
-    return emptyList()
+      return response
+    } catch (exception: ApolloException) {
+      throw toHttpException(exception)
+    }
   }
+
 }
+
+private fun createAdventureInput(adventure: Adventure) = AdventureInput(
+  uuid = adventure.id,
+  title = adventure.title,
+  speed = adventure.speed,
+  duration = adventure.duration,
+  distance = adventure.distance,
+  calories = adventure.calories,
+  startTime = "${adventure.startTime}",
+  endTime = "${adventure.endTime}",
+  polyline = "",
+  image = adventure.image,
+  locations = emptyList(),
+  altitude = adventure.altitude,
+  description = adventure.description
+)
+
+@Suppress("NOTHING_TO_INLINE")
+private inline fun toAdventureModel(response: GetAdventuresQuery.Adventure) = Adventure(
+  id = response.id,
+  title = response.title,
+  description = "",
+  speed = response.speed,
+  altitude = 0.0,
+  duration = response.duration,
+  distance = response.distance,
+  calories = response.calories,
+  startTime = Instant.parse(response.startTime),
+  endTime = Instant.parse(response.endTime),
+  image = "response.image",
+)
+

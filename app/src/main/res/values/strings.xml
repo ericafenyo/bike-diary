@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   The MIT License (MIT)
 
   Copyright (C) 2021 Eric Afenyo
@@ -32,6 +31,7 @@
   <string name="a11y_add_trip">Add trip</string>
   <string name="a11y_profile_disable_dark_mode">Disable mode</string>
   <string name="a11y_profile_enable_dark_mode">Enable dark mode</string>
+  <string name="a11y_start_adventure">Start recording adventure</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Action strings                                                                              -
@@ -43,6 +43,7 @@
   <string name="action_start_adventure">Start adventure</string>
   <string name="action_stop_adventure">End adventure</string>
   <string name="action_upload_picture">Upload picture</string>
+  <string name="action_save">Save</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Dashboard page strings                                                                      -
@@ -113,6 +114,7 @@
   <string name="label_adventure_title">Adventure title</string>
   <string name="label_calories">Calories</string>
   <string name="label_email">Email</string>
+  <string name="label_caption">Caption</string>
   <string name="label_end_time">End time</string>
   <string name="label_kilometers">Kilometers</string>
   <string name="label_login">Login</string>
@@ -160,6 +162,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Title strings                                                                               -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="title_add_photo">Add Photo</string>
   <string name="title_dashboard">Dashboard</string>
   <string name="title_diary">Diary</string>
   <string name="title_edit_adventure">Edit adventure</string>
@@ -168,8 +171,11 @@
   <string name="title_profile">Profile</string>
   <string name="title_save">Save</string>
   <string name="title_settings">settings</string>
- -  Generic error message texts                                                                -
- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="title_explore">Explore</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   -  Generic error message texts                                                                -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <string name="enter_verification_code">Verification</string>
   <string name="enter_sent_verification_code">Enter the verification code sent to: <b>%s</b> </string>
   <string name="a11y_navigate_back">Navigate back</string>
@@ -177,4 +183,13 @@
   <string name="auth_portal_page_description">Explore and share your bike adventures</string>
   <string name="label_close">close</string>
   <string name="tracking_active">Tracking…</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Difficulty level labels                                                                     -
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="label_easy">Easy</string>
+  <string name="label_moderate">Moderate</string>
+  <string name="label_challenging">Challenging</string>
+  <string name="label_difficult">Difficult</string>
+  <string name="label_extreme">Extreme</string>
 </resources>

@@ -24,10 +24,10 @@
 
 package com.ericafenyo.bikediary.ui.navigation
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -43,8 +43,14 @@ import com.ericafenyo.bikediary.ui.screens.adventure.AdventuresNavigation
 import com.ericafenyo.bikediary.ui.screens.adventure.adventuresGraph
 import com.ericafenyo.bikediary.ui.screens.adventure.details.AdventureDetailsNavigation
 import com.ericafenyo.bikediary.ui.screens.adventure.details.adventureDetailsGraph
+import com.ericafenyo.bikediary.ui.screens.auth.login.LoginNavigation
+import com.ericafenyo.bikediary.ui.screens.auth.login.loginGraph
 import com.ericafenyo.bikediary.ui.screens.dashboard.DashboardNavigation
 import com.ericafenyo.bikediary.ui.screens.dashboard.dashboardGraph
+import com.ericafenyo.bikediary.ui.screens.explore.ExploreNavigation
+import com.ericafenyo.bikediary.ui.screens.explore.exploreGraph
+import com.ericafenyo.bikediary.ui.screens.map.MapNavigation
+import com.ericafenyo.bikediary.ui.screens.map.mapGraph
 import com.ericafenyo.bikediary.ui.screens.profile.ProfileNavigation
 import com.ericafenyo.bikediary.ui.screens.profile.profileGraph
 
@@ -66,7 +72,12 @@ fun NavigationHost(
       }
     )
     adventureDetailsGraph(onBackPressed = { navController.popBackStack() })
-    profileGraph()
+    profileGraph(navigateToLogin = {
+      navController.navigate(LoginNavigation.ROUTE)
+    })
+    loginGraph()
+    mapGraph()
+    exploreGraph { navController.navigate(MapNavigation.ROUTE) }
   }
 }
 
@@ -76,6 +87,13 @@ val bottomNavigationItems = listOf(
     activeIcon = R.drawable.ic_chart_pie,
     inactiveIcon = R.drawable.ic_chart_pie,
     label = R.string.title_dashboard
+  ),
+
+  NavigationDestination(
+    route = ExploreNavigation.ROUTE,
+    activeIcon = R.drawable.ic_explore,
+    inactiveIcon = R.drawable.ic_explore,
+    label = R.string.title_explore
   ),
 
   NavigationDestination(
@@ -121,15 +139,16 @@ fun BottomNavigationBar(
   currentDestination: NavDestination?,
   onItemClicked: (NavigationDestination) -> Unit,
 ) {
-  BottomNavigation(
+
+  NavigationBar(
     modifier = modifier,
-    backgroundColor = MaterialTheme.colors.background,
+    containerColor = MaterialTheme.colorScheme.background,
   ) {
 
     bottomNavigationItems.forEach { item ->
       val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
 
-      BottomNavigationItem(
+      NavigationBarItem(
         selected = false,
         icon = {
           Icon(

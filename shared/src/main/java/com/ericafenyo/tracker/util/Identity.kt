@@ -28,24 +28,7 @@ import com.ericafenyo.tracker.util.bson.ObjectId
 import java.util.UUID
 
 object Identity {
-  /**
-   * Returns a UUID string without the middle dash
-   * Example f8ebf0384bc64ed0844b4a1a445fc3e1
-   */
-  fun generateId(): String = UUID.randomUUID().toString().replace("-", "")
-
-  /**
-   * Returns a UUID string
-   * Example: cfa0ddd7-9759-41c9-8226-2f7c208bedd4
-   */
-  fun generateUUID(): String = UUID.randomUUID().toString()
-
-  /**
-   * Returns a UUID string
-   * Example: cfa0ddd7-9759-41c9-8226-2f7c208bedd4
-   */
-  fun generateShortIt(): String = UUID.randomUUID().toString().split("-").last()
-
+  fun md5hex(): String = UUID.randomUUID().toString().replace("-", "")
 
   fun generateObjectId(): String = ObjectId().toString()
 }

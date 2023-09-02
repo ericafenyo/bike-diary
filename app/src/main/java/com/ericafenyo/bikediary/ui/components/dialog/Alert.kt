@@ -33,11 +33,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Colors
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -50,14 +50,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.ericafenyo.bikediary.R.string
 import com.ericafenyo.bikediary.libs.icons.Icons
-import com.ericafenyo.bikediary.theme.AppTheme
-import com.ericafenyo.bikediary.theme.LocalColors
-import com.ericafenyo.bikediary.theme.bodyMedium
-import com.ericafenyo.bikediary.theme.titleMedium
-import com.ericafenyo.bikediary.theme.toCritical
-import com.ericafenyo.bikediary.theme.toInfo
-import com.ericafenyo.bikediary.theme.toSuccess
-import com.ericafenyo.bikediary.theme.toWarning
+import com.ericafenyo.bikediary.ui.theme.AppTheme
+import com.ericafenyo.bikediary.ui.theme.LocalColors
+import com.ericafenyo.bikediary.ui.theme.toCritical
+import com.ericafenyo.bikediary.ui.theme.toInfo
+import com.ericafenyo.bikediary.ui.theme.toSuccess
+import com.ericafenyo.bikediary.ui.theme.toWarning
 import com.ericafenyo.bikediary.ui.components.dialog.ColorTheme.CRITICAL
 import com.ericafenyo.bikediary.ui.components.dialog.ColorTheme.INFO
 import com.ericafenyo.bikediary.ui.components.dialog.ColorTheme.SUCCESS
@@ -73,11 +71,11 @@ fun Alert(
   appearance: ColorTheme = INFO,
   isInline: Boolean = false,
 ) {
-  val (themeColor: Colors, icon: Painter) = when (appearance) {
-    INFO -> MaterialTheme.colors.toInfo() to Icons.InformationCircle
-    SUCCESS -> MaterialTheme.colors.toSuccess() to Icons.CheckCircle
-    WARNING -> MaterialTheme.colors.toWarning() to Icons.Exclamation
-    CRITICAL -> MaterialTheme.colors.toCritical() to Icons.ExclamationCircle
+  val (themeColor: ColorScheme, icon: Painter) = when (appearance) {
+    INFO -> MaterialTheme.colorScheme.toInfo() to Icons.InformationCircle
+    SUCCESS -> MaterialTheme.colorScheme.toSuccess() to Icons.CheckCircle
+    WARNING -> MaterialTheme.colorScheme.toWarning() to Icons.Exclamation
+    CRITICAL -> MaterialTheme.colorScheme.toCritical() to Icons.ExclamationCircle
   }
 
   CompositionLocalProvider(
@@ -97,13 +95,12 @@ fun Alert(
         .padding(16.dp)
     ) {
       ConstraintLayout(
-        Modifier
-          .fillMaxWidth()
+        Modifier.fillMaxWidth()
       ) {
         val (iconRef, dismissRef, titleRef, messageRef, actionRef) = createRefs()
 
-        Icon(
-          painter = icon, contentDescription = null,
+        Icon(painter = icon,
+          contentDescription = null,
           tint = mainColor,
           modifier = Modifier
             .padding(end = 8.dp)
@@ -111,29 +108,24 @@ fun Alert(
             .constrainAs(iconRef) {
               start.linkTo(parent.start)
               top.linkTo(parent.top)
-            }
-        )
+            })
 
         Text(
-          text = title,
-          modifier = Modifier.constrainAs(titleRef) {
+          text = title, modifier = Modifier.constrainAs(titleRef) {
             top.linkTo(iconRef.top)
             bottom.linkTo(iconRef.bottom)
             start.linkTo(iconRef.end)
-          },
-          style = MaterialTheme.typography.titleMedium
+          }, style = MaterialTheme.typography.titleMedium
         )
 
         if (onDismissed != null) {
-          IconButton(
-            onClick = onDismissed,
+          IconButton(onClick = onDismissed,
             modifier = Modifier
               .offset(x = (16).dp, y = (-16).dp)
               .constrainAs(dismissRef) {
                 end.linkTo(parent.end)
                 top.linkTo(parent.top)
-              }
-          ) {
+              }) {
             Icon(
               painter = Icons.Close,
               contentDescription = stringResource(string.label_close),
@@ -144,16 +136,14 @@ fun Alert(
 
         val barrier = createBottomBarrier(iconRef, titleRef)
         Text(
-          text = message,
-          modifier = Modifier
+          text = message, modifier = Modifier
             .padding(top = 8.dp)
             .constrainAs(messageRef) {
               top.linkTo(barrier)
               start.linkTo(titleRef.start)
               end.linkTo(parent.end)
               width = Dimension.fillToConstraints
-            },
-          style = MaterialTheme.typography.bodyMedium
+            }, style = MaterialTheme.typography.bodyMedium
         )
       }
     }
@@ -181,11 +171,9 @@ data class AlertMessage(
 @Composable
 fun AlertPreview() {
   AppTheme {
-    Alert(
-      title = "Invalid credentials",
+    Alert(title = "Invalid credentials",
       message = "Your email or password is invalid",
-      onDismissed = {}
-    )
+      onDismissed = {})
   }
 }
 

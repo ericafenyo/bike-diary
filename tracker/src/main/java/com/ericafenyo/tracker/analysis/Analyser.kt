@@ -34,12 +34,11 @@ import com.ericafenyo.tracker.database.analyzed.SensorLocation
 import com.ericafenyo.tracker.database.analyzed.Trace
 import com.ericafenyo.tracker.database.record.Record
 import com.ericafenyo.tracker.database.record.RecordCache
-import com.ericafenyo.tracker.location.SimpleLocation
+import com.ericafenyo.tracker.data.model.SimpleLocation
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import timber.log.Timber
 
 /**
  * This class contain methods for reading raw gps data and converting them into a GeoJson data.
@@ -92,7 +91,7 @@ class Analyser @Inject constructor(@ApplicationContext val context: Context) {
         geometry = "",
         traces = records.map(::toTrace),
       )
-      
+
       return result
     }.onFailure {
       Logger.error(context, TAG, "An error occurred while trying to get last record: $it")
@@ -160,7 +159,7 @@ class Analyser @Inject constructor(@ApplicationContext val context: Context) {
      */
     return Metrics(
       speed = speeds.average(),
-      duration = destination.writeTime - origin.writeTime,
+      duration = ((destination.writeTime - origin.writeTime) * 1000).toLong(),
       distance = (distances.sum() * 0.001),
       calories = MetricsManager.getCalories(averageSpeed, duration),
       startedAt = destination.fmt,

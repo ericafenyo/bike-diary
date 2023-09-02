@@ -41,6 +41,9 @@ class PermissionsManager(private val listener: OnPermissionResultListener) {
     private const val FOREGROUND_LOCATION_PERMISSION = ACCESS_FINE_LOCATION
     private const val FOREGROUND_LOCATION_REQUEST_CODE = 6577
 
+
+
+
     @JvmStatic
     fun isPermissionGranted(context: Context, permission: String): Boolean {
       return ContextCompat.checkSelfPermission(context, permission) == PERMISSION_GRANTED
@@ -48,6 +51,12 @@ class PermissionsManager(private val listener: OnPermissionResultListener) {
 
     @JvmStatic
     fun isForegroundLocationPermissionGranted(context: Context): Boolean {
+      return isPermissionGranted(context, FOREGROUND_LOCATION_PERMISSION)
+    }
+
+    @JvmStatic
+    fun isCameraPermissionGranted(context: Context): Boolean {
+
       return isPermissionGranted(context, FOREGROUND_LOCATION_PERMISSION)
     }
   }

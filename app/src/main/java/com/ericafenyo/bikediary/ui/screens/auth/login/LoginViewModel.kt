@@ -27,13 +27,15 @@ package com.ericafenyo.bikediary.ui.screens.auth.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericafenyo.bikediary.R
-import com.ericafenyo.bikediary.domain.user.AuthenticateInteractor
+import com.ericafenyo.bikediary.domain.account.AuthenticateInteractor
+import com.ericafenyo.bikediary.flux.ActionDispatcher
 import com.ericafenyo.bikediary.model.Credentials
 import com.ericafenyo.bikediary.model.HttpException
 import com.ericafenyo.bikediary.model.UIState
 import com.ericafenyo.bikediary.model.isNotFound
 import com.ericafenyo.bikediary.model.isUnauthorized
 import com.ericafenyo.bikediary.ui.components.dialog.AlertMessage
+import com.ericafenyo.bikediary.ui.screens.auth.login.LoginAction.Authenticate
 import com.ericafenyo.bikediary.util.NetworkUtils
 import com.ericafenyo.tracker.data.model.Result
 import com.ericafenyo.tracker.data.model.getOrElse
@@ -43,14 +45,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
   private val networkUtils: NetworkUtils,
   private val authenticateInteractor: AuthenticateInteractor,
   private val credentialsManager: com.ericafenyo.bikediary.model.CredentialsManager
-) : ViewModel() {
-
+) : ViewModel(), ActionDispatcher<LoginAction> {
   // Messages
   private val _message = MutableStateFlow<AlertMessage?>(null)
   val message: StateFlow<AlertMessage?> get() = _message
@@ -59,7 +61,14 @@ class LoginViewModel @Inject constructor(
   private val _state = MutableStateFlow(UIState())
   val state: StateFlow<UIState> = _state.asStateFlow()
 
-  fun authenticate(email: String, password: String) {
+  override fun dispatch(action: LoginAction) {
+    when (action) {
+      is Authenticate -> authenticate(email = action.email, password = action.password)
+    }
+  }
+
+  private fun authenticate(email: String, password: String) {
+    Timber.tag("DEBUGGING_LOG").i("This is authenticate: $email, $password")
     viewModelScope.launch {
       // Check for internet connectivity
       if (!networkUtils.hasNetworkConnection()) {
@@ -72,19 +81,18 @@ class LoginViewModel @Inject constructor(
 
       // Start with a loading state
       _state.value = UIState(loading = true)
-      authenticateInteractor.invoke(email to password)
-        .also { result ->
-          when (result) {
-            is Result.Success -> {
-              credentialsManager.saveCredentials(result.getOrElse { Credentials() })
-              _state.value = UIState(success = true)
-            }
-            is Result.Error -> {
-              _state.value = UIState(error = true)
-              handleLoginErrors(result.exception)
-            }
+      authenticateInteractor.invoke(email to password).also { result ->
+        when (result) {
+          is Result.Success -> {
+            credentialsManager.saveCredentials(result.getOrElse { Credentials() })
+            _state.value = UIState(success = true)
+          }
+          is Result.Error -> {
+            _state.value = UIState(error = true)
+            handleLoginErrors(result.exception)
           }
         }
+      }
     }
   }
 

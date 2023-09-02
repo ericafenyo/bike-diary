@@ -26,5 +26,9 @@ package com.ericafenyo.bikediary.ui.screens.map
 
 sealed class TrackerAction {
   object START : TrackerAction()
+  object PAUSE : TrackerAction()
+  object RESUME : TrackerAction()
   object STOP : TrackerAction()
+  object OPEN_CAMERA : TrackerAction()
+  object TOGGLE_LOCK : TrackerAction()
 }

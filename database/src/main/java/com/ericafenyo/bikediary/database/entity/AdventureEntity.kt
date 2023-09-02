@@ -42,7 +42,7 @@ data class AdventureEntity(
   val speed: Double,
 
   @ColumnInfo(name = "duration")
-  val duration: Int,
+  val duration: Long,
 
   @ColumnInfo(name = "distance")
   val distance: Double,

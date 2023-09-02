@@ -27,14 +27,32 @@ package com.ericafenyo.bikediary.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
 import com.ericafenyo.bikediary.ui.screens.MainContent
+import com.ericafenyo.bikediary.ui.theme.AppTheme
+import com.ericafenyo.tracker.Tracker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContent { MainContent() }
+    setContent {
+      AppTheme {
+        MainContent()
+      }
+    }
+
+    lifecycleScope.launch {
+      Tracker.getInstance().state.collectLatest {
+        Timber.tag("DEBUGGING_LOG").i("Device photo successful: $it")
+      }
+    }
   }
 }

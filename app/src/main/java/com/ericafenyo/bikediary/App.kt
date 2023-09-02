@@ -59,9 +59,7 @@ class App : Application(), Configuration.Provider {
       Timber.plant(Timber.DebugTree())
     }
 
-    Tracker.init(this) { options ->
-      options.setNotification(Notifications.createTrackerNotification(this))
-    }
+    Tracker.initialize(this)
   }
 
   override fun getWorkManagerConfiguration(): Configuration = Configuration.Builder()

@@ -33,7 +33,7 @@ data class AnalyzedData(
   @PrimaryKey val uuid: String,
   val calories: Int,
   val distance: Double,
-  val duration: Double,
+  val duration: Long,
   val startTime: String,
   val endTime: String,
   val speed: Double,

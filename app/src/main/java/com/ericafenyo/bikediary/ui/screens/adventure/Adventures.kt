@@ -26,22 +26,29 @@ package com.ericafenyo.bikediary.ui.screens.adventure
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -49,14 +56,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.ContentScale.Companion
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.ericafenyo.bikediary.theme.contentHigh
-import com.ericafenyo.bikediary.theme.titleLarge
+import coil.request.ImageRequest
+import com.ericafenyo.bikediary.R
+import com.ericafenyo.bikediary.R.drawable
+import com.ericafenyo.bikediary.ui.theme.AppTheme
+import com.ericafenyo.bikediary.ui.theme.titleLarge
 import com.ericafenyo.bikediary.ui.components.LoadingState
 import com.ericafenyo.bikediary.ui.screens.adventure.AdventureUiState.Loading
 import com.ericafenyo.bikediary.ui.screens.adventure.AdventureUiState.Success
@@ -70,7 +86,6 @@ fun AdventuresContent(
   Adventures(modifier, navigateToDetails, viewModel)
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Adventures(
   modifier: Modifier,
@@ -81,29 +96,27 @@ fun Adventures(
   val context = LocalContext.current
 
   Scaffold(
-    modifier = modifier,
+    modifier = modifier
+      .padding(horizontal = 8.dp)
+    ,
     topBar = {
-      val titleStyle = MaterialTheme.typography.titleLarge.copy(
-        fontWeight = FontWeight.Medium
-      )
-
+      val titleStyle = MaterialTheme.typography.titleLarge
       TopAppBar(
-        elevation = 0.dp,
-        backgroundColor = MaterialTheme.colors.background
-      ) {
-        Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+        colors = TopAppBarDefaults.topAppBarColors(
+          containerColor = MaterialTheme.colorScheme.background
+        ),
+        title = {
           Text(
             text = "Adventures",
             style = titleStyle,
-            color = MaterialTheme.colors.contentHigh
           )
         }
-      }
+      )
     }
   ) { paddingValues ->
     val isLoading = state is Loading
 
-    AnimatedContent(targetState = isLoading) { targetEmpty ->
+    AnimatedContent(targetState = isLoading, label = "") { targetEmpty ->
       if (targetEmpty) {
         LoadingState()
       } else {
@@ -114,24 +127,20 @@ fun Adventures(
               modifier = Modifier.fillMaxWidth()
             ) {
               (state as Success).adventures.forEach { adventure ->
-
                 item {
-                  AdventureItem(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    metrics = "${adventure.distance} - ${adventure.duration}",
-                    title = adventure.title,
-                    time = "${adventure.startTime} - ${adventure.endTime}",
-                    image = loadImage(
-                      context = context,
-                      key = adventure.image,
-                      viewModel = viewModel
-                    ).value,
-                    onClick = navigateToDetails
-                  )
+//                  AdventureItem(
+//                    modifier = Modifier.padding(vertical = 4.dp),
+//                    distance = adventure.distance,
+//                    title = adventure.title,
+//                    location = "Nantes",
+//                    image = "https://plus.unsplash.com/premium_photo-1670963025394-5cd71a3ae967?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80",
+//                    onClick = navigateToDetails
+//                  )
                 }
               }
             }
           }
+
           else -> {}
         }
       }
@@ -148,47 +157,4 @@ fun loadImage(
   return produceState<Drawable?>(initialValue = null) {
     value = viewModel.loadImage(context, key)
   }
-}
-
-@Composable
-fun AdventureItem(
-  title: String,
-  time: String,
-  metrics: String,
-  image: Drawable?,
-  modifier: Modifier = Modifier,
-  onClick: (String) -> Unit
-) {
-  Card(
-    shape = RectangleShape,
-    modifier = modifier.clickable { onClick("This should be an id") },
-    elevation = 0.dp,
-  ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-      AsyncImage(
-        model = image,
-        contentDescription = null,
-        modifier = Modifier.fillMaxWidth()
-      )
-      Box(
-        modifier = Modifier
-          .padding(16.dp)
-          .clip(MaterialTheme.shapes.large)
-      ) {
-        Column {
-          Text(text = time)
-          Text(text = title)
-          Text(text = metrics)
-        }
-      }
-      Spacer(modifier = Modifier.height(24.dp))
-    }
-  }
-}
-
-sealed class UIState {
-  object Loading : UIState()
-  object Success : UIState()
-  object Error : UIState()
-  object Empty : UIState()
 }

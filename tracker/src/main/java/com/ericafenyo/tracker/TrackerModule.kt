@@ -24,7 +24,6 @@
 
 package com.ericafenyo.tracker
 
-import com.ericafenyo.tracker.internal.TrackerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

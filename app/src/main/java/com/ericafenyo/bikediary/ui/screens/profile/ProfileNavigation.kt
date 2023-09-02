@@ -27,8 +27,8 @@ package com.ericafenyo.bikediary.ui.screens.profile
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.profileGraph() {
-  composable(route = ProfileNavigation.ROUTE, content = { ProfileContent() })
+fun NavGraphBuilder.profileGraph(navigateToLogin: () -> Unit) {
+  composable(route = ProfileNavigation.ROUTE, content = { ProfileContent(navigateToLogin) })
 }
 
 object ProfileNavigation {

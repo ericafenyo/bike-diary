@@ -24,14 +24,18 @@
 
 package com.ericafenyo.bikediary.di
 
+import com.ericafenyo.bikediary.di.qualifier.ApplicationScope
 import com.ericafenyo.bikediary.di.qualifier.DefaultDispatcher
 import com.ericafenyo.bikediary.di.qualifier.IODispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 
 @InstallIn(SingletonComponent::class)
@@ -45,4 +49,12 @@ object CoroutinesModule {
   @IODispatcher
   @Provides
   fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+
+  @Singleton
+  @Provides
+  fun providesApplicationScope(
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+  ): CoroutineScope = CoroutineScope(SupervisorJob() + defaultDispatcher)
+
 }

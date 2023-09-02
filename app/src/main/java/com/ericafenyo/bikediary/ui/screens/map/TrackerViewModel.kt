@@ -27,6 +27,8 @@ package com.ericafenyo.bikediary.ui.screens.map
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericafenyo.bikediary.ui.Store
+import com.ericafenyo.bikediary.ui.screens.map.TrackerAction.PAUSE
+import com.ericafenyo.bikediary.ui.screens.map.TrackerAction.RESUME
 import com.ericafenyo.bikediary.ui.screens.map.TrackerAction.START
 import com.ericafenyo.bikediary.ui.screens.map.TrackerAction.STOP
 import com.ericafenyo.tracker.Tracker
@@ -43,24 +45,26 @@ class TrackerViewModel @Inject constructor() : ViewModel(), Store<TrackerUiState
   private val tracker: Tracker = Tracker.getInstance()
 
   override val state: StateFlow<TrackerUiState>
-    get() = tracker.state.map { trackerState -> TrackerUiState.Loading }
-      .stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = TrackerUiState.Loading
-      )
+    get() = tracker.state.map {
+      TrackerUiState.Success(it)
+    }.stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.Eagerly,
+      initialValue = TrackerUiState.Loading
+    )
 
   override fun dispatch(action: TrackerAction) {
     when (action) {
-      START -> viewModelScope.launch { tracker.start() }
-      STOP -> viewModelScope.launch { tracker.stop() }
+      START -> tracker.start()
+      STOP -> tracker.stop()
+      PAUSE -> tracker.pause()
+      RESUME -> tracker.resume()
+      else -> {}
     }
   }
 }
 
 sealed class TrackerUiState {
   object Loading : TrackerUiState()
-  data class Success(
-    val trackerState: Tracker.State = Tracker.State.IDLE,
-  )
+  data class Success(val trackerState: Tracker.State) : TrackerUiState()
 }

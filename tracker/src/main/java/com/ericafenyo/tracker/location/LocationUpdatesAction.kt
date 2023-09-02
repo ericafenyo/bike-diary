@@ -49,9 +49,7 @@ class LocationUpdatesAction(private val context: Context) {
       return client.requestLocationUpdates(locationRequest, getPendingIntent())
     } catch (exception: SecurityException) {
       Logger.error(
-        context,
-        TAG,
-        "Security error: ${exception.message} while starting location updates"
+        context, TAG, "Security error: ${exception.message} while starting location updates"
       )
       return null
     }

@@ -32,4 +32,8 @@ data class Credentials(
   val refreshToken: String = "",
 ) {
   fun isValid() = accessToken.isNotBlank()
+
+  companion object {
+    val Empty = Credentials(accessToken = "", refreshToken = "")
+  }
 }

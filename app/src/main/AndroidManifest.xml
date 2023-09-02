@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.ericafenyo.bikediary">
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <uses-permission android:name="android.permission.CAMERA" />
+
+  <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+
+  <uses-feature
+      android:name="android.hardware.camera"
+      android:required="false" />
 
   <application
       android:name=".App"
@@ -13,10 +21,12 @@
       android:supportsRtl="true"
       android:theme="@style/Theme.HabitDiary"
       android:usesCleartextTraffic="true">
-    <meta-data android:name="io.sentry.auto-init" android:value="false" />
+    <meta-data
+        android:name="io.sentry.auto-init"
+        android:value="false" />
 
     <activity android:name=".ui.authentication.AuthenticationActivity" />
-    <activity android:name=".ui.diary.EditAdventureActivity" />
+    <activity android:name=".ui.screens.diary.EditAdventureActivity" />
     <activity android:name=".SettingsActivity" />
     <activity
         android:name=".ui.MainActivity"
@@ -57,6 +67,15 @@
           tools:node="remove" />
     </provider>
 
+    <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.provider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/file_paths" />
+    </provider>
   </application>
 
 </manifest>

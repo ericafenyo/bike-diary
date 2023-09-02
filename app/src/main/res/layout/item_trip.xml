@@ -36,7 +36,7 @@
 
     <variable
         name="listener"
-        type="com.ericafenyo.bikediary.ui.diary.DiaryAdapter.OnItemClickListener" />
+        type="com.ericafenyo.bikediary.ui.screens.diary.DiaryAdapter" />
   </data>
 
   <FrameLayout
@@ -44,8 +44,7 @@
       android:layout_height="wrap_content"
       android:background="?android:attr/selectableItemBackground"
       android:clickable="true"
-      android:focusable="true"
-      android:onClick="@{(view)-> listener.onItemClick(view, adventure.id)}">
+      android:focusable="true">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_trip_item"

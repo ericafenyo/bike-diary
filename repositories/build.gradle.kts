@@ -29,6 +29,8 @@ plugins {
 }
 
 android {
+  namespace = "com.ericafenyo.bikediary.repositories"
+
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
@@ -36,28 +38,25 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
-  kotlinOptions {
-    jvmTarget = "1.8"
+
+  dependencies {
+    implementation(projects.database)
+    implementation(projects.model)
+    implementation(projects.network)
+    implementation(projects.shared)
+    implementation(projects.libs.storage)
+
+    implementation(libs.androidx.core)
+
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlin.coroutines.core)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    implementation(libs.timber)
   }
-}
-
-dependencies {
-  implementation(projects.database)
-  implementation(projects.model)
-  implementation(projects.network)
-  implementation(projects.shared)
-  implementation(projects.libs.storage)
-
-  implementation(libs.androidx.core)
-
-  implementation(libs.kotlin.stdlib)
-  implementation(libs.kotlin.coroutines.core)
-
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-
-  implementation(libs.timber)
 }

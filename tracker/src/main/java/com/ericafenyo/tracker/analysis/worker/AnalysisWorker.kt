@@ -34,11 +34,14 @@ import com.ericafenyo.bikediary.di.qualifier.Dispatcher
 import com.ericafenyo.bikediary.di.qualifier.DispatcherType.IO
 import com.ericafenyo.bikediary.logger.Logger
 import com.ericafenyo.bikediary.network.analysis.AnalysisService
+import com.ericafenyo.bikediary.network.analysis.AnalyzedAdventureRequest
+import com.ericafenyo.bikediary.network.analysis.Location
 import com.ericafenyo.tracker.analysis.Analyser
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 @HiltWorker
 class AnalysisWorker @AssistedInject constructor(
@@ -54,12 +57,33 @@ class AnalysisWorker @AssistedInject constructor(
     val successful = analyser.startAnalysis()
 
     if (successful) {
-//      val data = analyser.getAnalysedAdventures()
-//      val json = Gson().toJson(data)
-//
-//      val request = Test.parse(json)
-//      Timber.d("The graphql request: $request")
-//      service.synchronize(request)
+      val data = analyser.getAnalysedAdventures()
+
+      val request = data.map { adventure ->
+        AnalyzedAdventureRequest(uuid = adventure.uuid,
+          calories = adventure.calories,
+          distance = adventure.distance,
+          startTime = adventure.startTime,
+          endTime = adventure.endTime,
+          duration = adventure.duration,
+          speed = adventure.speed,
+          locations = adventure.traces.map { trace ->
+            Location(
+              timezone = trace.timezone,
+              writeTime = trace.writeTime,
+              latitude = trace.location.latitude,
+              longitude = trace.location.longitude,
+
+              altitude = trace.location.altitude,
+              time = trace.location.time,
+              speed = trace.location.speed,
+              accuracy = trace.location.accuracy,
+              bearing = trace.location.bearing,
+            )
+          })
+      }
+      Timber.d("The graphql request: $request")
+      service.synchronize(request)
     }
 
     Result.success()

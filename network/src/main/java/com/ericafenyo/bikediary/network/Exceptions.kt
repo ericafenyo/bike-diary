@@ -29,4 +29,7 @@ import com.apollographql.apollo3.exception.ApolloException
 
 class ApolloHttpException(val error: Error) : ApolloException(error.message)
 
-class ApolloGraphQLException(message: String = "") : ApolloException(message)
+class UnexpectedNetworkException(
+  message: String? = null,
+  cause: Throwable? = null
+) : ApolloException(message, cause)

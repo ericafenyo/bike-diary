@@ -39,7 +39,7 @@
 
     <variable
         name="model"
-        type="com.ericafenyo.bikediary.ui.diary.EditAdventureViewModel" />
+        type="com.ericafenyo.bikediary.ui.screens.diary.EditAdventureViewModel" />
   </data>
 
   <LinearLayout
@@ -67,7 +67,7 @@
           android:clickable="true"
           android:focusable="true"
           android:focusableInTouchMode="true"
-          tools:context=".ui.diary.EditAdventureActivity">
+          tools:context=".ui.screens.diary.EditAdventureActivity">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/frame_image"

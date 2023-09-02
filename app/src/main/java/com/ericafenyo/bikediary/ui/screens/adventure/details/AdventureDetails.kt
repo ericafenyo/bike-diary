@@ -37,12 +37,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -56,14 +58,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.ericafenyo.bikediary.libs.icons.Icons
-import com.ericafenyo.bikediary.theme.AppTheme
-import com.ericafenyo.bikediary.theme.headlineSmall
+import com.ericafenyo.bikediary.ui.theme.AppTheme
+import com.ericafenyo.bikediary.ui.theme.headlineSmall
 import com.ericafenyo.bikediary.ui.screens.adventure.details.AdventureDetailsUiState.Loading
 import com.ericafenyo.bikediary.ui.screens.adventure.details.AdventureDetailsUiState.Success
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import java.time.Duration
+import timber.log.Timber
 
 @Composable
 fun AdventureDetailsContent(
@@ -93,22 +96,27 @@ fun AdventureDetails(
             Icon(painter = Icons.ArrowLeft, contentDescription = null)
           }
         },
-        backgroundColor = MaterialTheme.colors.surface
+        colors = TopAppBarDefaults.topAppBarColors(
+          containerColor = MaterialTheme.colorScheme.surface
+        )
       )
     }
-  ) {
+  ) { padding ->
     val state by viewModel.state.collectAsState()
+
+    Timber.tag("DEBUGGING_LOG").i("$padding")
 
     when (state) {
       is Loading -> {
         Text(text = "Loading...")
       }
+
       is Success -> {
         val adventure = (state as Success).adventure
         Box(
           modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colors.surface)
+            .background(color = MaterialTheme.colorScheme.surface)
         ) {
           Column {
             ImageCarousel(imageUrl = adventure.image)

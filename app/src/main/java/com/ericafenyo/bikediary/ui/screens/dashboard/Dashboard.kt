@@ -24,67 +24,62 @@
 
 package com.ericafenyo.bikediary.ui.screens.dashboard
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.ericafenyo.bikediary.R
 import com.ericafenyo.bikediary.R.drawable
 import com.ericafenyo.bikediary.libs.icons.Icons
 import com.ericafenyo.bikediary.model.Quests
-import com.ericafenyo.bikediary.theme.AppTheme
-import com.ericafenyo.bikediary.theme.contentHigh
-import com.ericafenyo.bikediary.theme.labelMedium
-import com.ericafenyo.bikediary.theme.titleMedium
-import com.ericafenyo.bikediary.theme.titleSmall
+import com.ericafenyo.bikediary.ui.components.ToolBar
+import com.ericafenyo.bikediary.ui.theme.AppTheme
 
 @Composable
-fun DashboardContent() {
-  Text(text = "Dashboard")
+fun DashboardContent(viewModel: DashboardViewModel = hiltViewModel()) {
+  Dashboard(viewModel)
 }
 
 @Composable
-fun Dashboard(
-  state: DashboardViewState,
-  dispatch: (DashboardAction) -> Unit,
-) {
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .background(MaterialTheme.colors.background)
-  ) {
-    LevelBadge(
-      modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-      onClick = { dispatch(DashboardAction.LogTest("This is a test message")) }
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    DailyQuests(quests = state.quests)
+fun Dashboard(viewModel: DashboardViewModel) {
+  Scaffold(
+    topBar = { ToolBar(title = stringResource(id = R.string.title_dashboard)) }
+  ) { contentPadding ->
+    contentPadding
+
+    val state by viewModel.state.collectAsState()
+    val context: Context = LocalContext.current
   }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun LevelBadge(
   modifier: Modifier = Modifier,
@@ -92,7 +87,6 @@ private fun LevelBadge(
 ) {
   Card(
     modifier = modifier.fillMaxWidth(),
-    elevation = 0.dp,
     onClick = onClick
   ) {
     ConstraintLayout(
@@ -116,7 +110,6 @@ private fun LevelBadge(
 
       Text(
         text = "Level 2",
-        color = MaterialTheme.colors.contentHigh,
         style = MaterialTheme.typography.titleMedium,
 
         modifier = Modifier.constrainAs(textNextLevel) {
@@ -223,7 +216,7 @@ fun DailyQuestItem(
   percentage: String,
   modifier: Modifier = Modifier
 ) {
-  Card(elevation = 0.dp) {
+  Card() {
     Column(modifier = modifier.padding(8.dp)) {
       Box(
         modifier = Modifier
@@ -248,7 +241,7 @@ fun DailyQuestItem(
         color = Color(0xff111827)
       )
       LinearProgressIndicator(
-        backgroundColor = background,
+//        backgroundColor = background,
         color = color,
         progress = progress
       )
@@ -274,9 +267,6 @@ fun DailyQuestItem(
 @Composable
 fun DashboardPreview() {
   AppTheme {
-    Dashboard(
-      state = DashboardViewState(),
-      dispatch = {}
-    )
+    DashboardContent()
   }
 }

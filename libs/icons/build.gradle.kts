@@ -28,6 +28,8 @@ plugins {
 }
 
 android {
+  namespace = "com.ericafenyo.bikediary.libs.icons"
+
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
@@ -35,18 +37,22 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+
+  kotlin {
+//    jvmToolchain(11)
+  }
+
   buildFeatures {
     compose = true
     buildConfig = false
   }
 
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-
   composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.get()
+    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
 
   lint {
@@ -54,6 +60,7 @@ android {
 //    abortOnError = true
 //    warningsAsErrors = true
   }
+
 }
 
 dependencies {

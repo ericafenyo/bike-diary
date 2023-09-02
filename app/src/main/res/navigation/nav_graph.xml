@@ -41,7 +41,7 @@
 
   <fragment
       android:id="@+id/diary"
-      android:name="com.ericafenyo.bikediary.ui.diary.DiaryFragment"
+      android:name="com.ericafenyo.bikediary.ui.screens.diary.DiaryFragment"
       android:label="DiaryFragment" />
 
   <fragment

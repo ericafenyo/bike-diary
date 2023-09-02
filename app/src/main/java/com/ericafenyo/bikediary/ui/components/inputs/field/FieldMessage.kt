@@ -32,13 +32,14 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideTextStyle
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +50,6 @@ import com.ericafenyo.bikediary.libs.icons.Icons
 import com.ericafenyo.bikediary.ui.components.inputs.field.Message.Error
 import com.ericafenyo.bikediary.ui.components.inputs.field.Message.Info
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun FieldMessage(
   modifier: Modifier = Modifier,
@@ -62,38 +62,41 @@ fun FieldMessage(
     else -> null
   }
 
-  AnimatedContent(targetState = state, transitionSpec = {
-    if (targetState == null || initialState == null) {
-      val enter = slideInVertically(animationSpec = tween(AnimationDuration)) + fadeIn(
-        animationSpec = tween(AnimationDuration)
-      )
+  AnimatedContent(
+    targetState = state,
+    label = "Animated Input Field Message",
+    transitionSpec = {
+      if (targetState == null || initialState == null) {
+        val enter = slideInVertically(animationSpec = tween(ANIMATION_DURATION)) + fadeIn(
+          animationSpec = tween(ANIMATION_DURATION)
+        )
 
-      val exit = slideOutVertically(animationSpec = tween(AnimationDuration)) + fadeOut(
-        animationSpec = tween(AnimationDuration)
-      )
+        val exit = slideOutVertically(animationSpec = tween(ANIMATION_DURATION)) + fadeOut(
+          animationSpec = tween(ANIMATION_DURATION)
+        )
 
-      val size = SizeTransform(clip = false) { _, _ -> tween(AnimationDuration) }
+        val size = SizeTransform(clip = false) { _, _ -> tween(ANIMATION_DURATION) }
 
-      // This uses kotlin infix function for composing animations
-      enter with exit using size
-    } else {
-      val enter = fadeIn(animationSpec = tween(AnimationDuration))
-      val exit = fadeOut(animationSpec = tween(AnimationDuration))
-      val size = SizeTransform(clip = false) { _, _ -> tween(AnimationDuration) }
+        // This uses kotlin infix function for composing animations
+        enter togetherWith exit using size
+      } else {
+        val enter = fadeIn(animationSpec = tween(ANIMATION_DURATION))
+        val exit = fadeOut(animationSpec = tween(ANIMATION_DURATION))
+        val size = SizeTransform(clip = false) { _, _ -> tween(ANIMATION_DURATION) }
 
-      // This uses kotlin infix function for composing animations
-      enter with exit using size
-    }
-  }) { message: Message? ->
+        // This uses kotlin infix function for composing animations
+        enter togetherWith exit using size
+      }
+    }) { message: Message? ->
     if (message != null) {
       Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
           .padding(top = 6.dp)
           .then(modifier)
-        ) {
+      ) {
         val (icon, tint) = when (message) {
-          is Error -> Icons.Exclamation to MaterialTheme.colors.error
+          is Error -> Icons.Exclamation to MaterialTheme.colorScheme.error
           is Info -> Icons.InformationCircle to Color.Blue
         }
 
@@ -119,7 +122,7 @@ private sealed class Message(
   data class Info(override val content: @Composable () -> Unit) : Message(content)
 }
 
-private const val AnimationDuration = 150
+private const val ANIMATION_DURATION = 150
 
 @Composable
 fun MergedTextStyle(value: TextStyle, content: @Composable () -> Unit) {

@@ -24,19 +24,19 @@
 
 package com.ericafenyo.bikediary.network
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
 @Serializable
 data class ApolloErrorResponse(
-  val extensions: Extensions = Extensions()
+  @SerialName("response")
+  val exception: Exception = Exception()
 ) {
-  @Serializable
-  data class Extensions(val exception: Exception = Exception())
 
   @Serializable
   data class Exception(
-    val status: Int = 500,
-    val message: String = "Internal Server error"
+    @SerialName("statusCode") val status: Int = 500,
+    @SerialName("message") val message: String = "Internal Server error"
   )
 }

@@ -27,12 +27,11 @@ package com.ericafenyo.bikediary.ui.screens.profile
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -40,9 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.ericafenyo.bikediary.R.string
 import com.ericafenyo.bikediary.libs.icons.Icons
-import com.ericafenyo.bikediary.theme.titleMedium
+import com.ericafenyo.bikediary.ui.theme.titleMedium
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ThemeSwitcher(
   isChecked: Boolean,
@@ -50,7 +48,6 @@ fun ThemeSwitcher(
 ) {
   Card(
     modifier = Modifier.fillMaxWidth(),
-    elevation = 0.dp,
     onClick = { onChecked.invoke(!isChecked) }
   ) {
     ConstraintLayout(modifier = Modifier.padding(horizontal = 16.dp)) {

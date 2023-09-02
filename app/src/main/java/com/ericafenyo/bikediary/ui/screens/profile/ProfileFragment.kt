@@ -33,7 +33,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.ericafenyo.bikediary.theme.AppTheme
+import com.ericafenyo.bikediary.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
@@ -58,14 +58,14 @@ class ProfileFragment : Fragment() {
     return ComposeView(requireContext()).apply {
       setContent {
         AppTheme {
-          Profile(
-            state = viewModel.state.collectAsState(initial = ProfileViewState.Default),
-            dispatch = { action ->
-              when(action){
-               is ProfileAction.UpdateSettings -> viewModel.updateSettings(action.settings)
-              }
-            }
-          )
+//          ProfileContent(
+////            state = viewModel.state.collectAsState(initial = ProfileViewState.Default),
+////            dispatch = { action ->
+////              when(action){
+////               is ProfileAction.UpdateSettings -> viewModel.updateSettings(action.settings)
+////              }
+////            }
+//          )
         }
       }
     }

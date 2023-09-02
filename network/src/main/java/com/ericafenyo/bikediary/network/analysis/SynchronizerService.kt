@@ -24,7 +24,58 @@
 
 package com.ericafenyo.bikediary.network.analysis
 
+import com.apollographql.apollo3.ApolloClient
+import com.ericafenyo.bikediary.graphql.CreateAdventuresMutation
+import com.ericafenyo.bikediary.network.invoke
+import com.ericafenyo.bikediary.graphql.type.AdventureInput
+import com.ericafenyo.bikediary.graphql.type.LocationInput
+import timber.log.Timber
+
 
 interface AnalysisService {
   suspend fun synchronize(requests: List<AnalyzedAdventureRequest>): Boolean
+}
+
+fun analysisService(client: ApolloClient) = object : AnalysisService {
+
+  override suspend fun synchronize(requests: List<AnalyzedAdventureRequest>): Boolean {
+    return runCatching {
+      client.mutation(CreateAdventuresMutation(requests.map(this::toInput))).invoke()
+      true
+    }.getOrElse { error ->
+      Timber.d(error)
+      false
+    }
+  }
+
+  @Suppress("NOTHING_TO_INLINE")
+  private inline fun toInput(request: AnalyzedAdventureRequest): AdventureInput {
+    return AdventureInput(
+      uuid = request.uuid,
+      title = "",
+      description = "",
+      altitude = 0.0,
+      calories = request.calories,
+      distance = request.distance,
+      duration = request.duration,
+      startTime = request.startTime,
+      endTime = request.endTime,
+      speed = request.speed,
+      polyline = "",
+      image = "",
+      locations = request.locations.map { location ->
+        LocationInput(
+          timezone = location.timezone,
+          writeTime = location.writeTime,
+          latitude = location.latitude,
+          longitude = location.longitude,
+          altitude = location.altitude,
+          time = location.time,
+          speed = location.speed,
+          accuracy = location.accuracy,
+          bearing = location.bearing,
+        )
+      },
+    )
+  }
 }

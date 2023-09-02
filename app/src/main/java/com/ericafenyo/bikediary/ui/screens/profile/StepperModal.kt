@@ -27,11 +27,11 @@ package com.ericafenyo.bikediary.ui.screens.profile
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,9 +47,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.ericafenyo.bikediary.R.string
 import com.ericafenyo.bikediary.libs.icons.Icons
-import com.ericafenyo.bikediary.theme.AppTheme
-import com.ericafenyo.bikediary.theme.titleLarge
-import com.ericafenyo.bikediary.theme.titleMedium
+import com.ericafenyo.bikediary.ui.theme.AppTheme
+import com.ericafenyo.bikediary.ui.theme.titleLarge
+import com.ericafenyo.bikediary.ui.theme.titleMedium
 
 @Composable
 fun StepperModal(
@@ -80,7 +80,7 @@ fun StepperModal(
       modifier = modifier
         .fillMaxWidth()
         .clip(MaterialTheme.shapes.medium)
-        .background(MaterialTheme.colors.surface)
+        .background(MaterialTheme.colorScheme.surface)
         .padding(16.dp)
     ) {
       val (titleRef, increaseRef, decreaseRef, valueRef, buttonCancelRef, buttonSaveRef) = createRefs()

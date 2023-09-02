@@ -26,9 +26,8 @@ package com.ericafenyo.tracker.database
 
 import androidx.room.TypeConverter
 import com.ericafenyo.tracker.database.analyzed.Trace
-import com.ericafenyo.tracker.location.SimpleLocation
+import com.ericafenyo.tracker.data.model.SimpleLocation
 import com.ericafenyo.tracker.util.JsonSerializerManager
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 
 class TracesConverter() {

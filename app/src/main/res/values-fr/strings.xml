@@ -7,6 +7,7 @@
   <string name="a11y_add_trip">Ajouter un trajet</string>
   <string name="a11y_profile_disable_dark_mode">Désactiver le mode sombre</string>
   <string name="a11y_profile_enable_dark_mode">Activer le mode sombre</string>
+  <string name="a11y_start_adventure">Commencer l\'aventure</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Action strings                                                                              -
@@ -18,6 +19,7 @@
   <string name="action_start_adventure">Commencer l\'aventure</string>
   <string name="action_stop_adventure">Terminer l\'aventure</string>
   <string name="action_upload_picture">Télécharger une image</string>
+  <string name="action_save">Sauvegarder</string>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Dashboard page strings                                                                      -
@@ -81,6 +83,7 @@
   <string name="label_calories">Calories</string>
   <string name="label_distance">Distance</string>
   <string name="label_email">Email</string>
+  <string name="label_caption">Légende</string>
   <string name="label_end_time">Heure d\'arrivée</string>
   <string name="label_kilometers">Kilomètres</string>
   <string name="label_login">Se connecter</string>
@@ -127,6 +130,7 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    - Title strings                                                                               -
    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="title_add_photo">Ajouter une photo</string>
   <string name="title_dashboard">Tableau de bord</string>
   <string name="title_diary">Journal</string>
   <string name="title_edit_adventure">Modifier l\'aventure</string>
@@ -135,4 +139,16 @@
   <string name="title_profile">Profil</string>
   <string name="title_save">Sauvegarder</string>
   <string name="title_settings">Paramètres</string>
+  <string name="title_explore">Explorer</string>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - Difficulty level labels                                                                     -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <string name="enter_verification_code">Vérification</string>
+  <string name="enter_sent_verification_code">"Enter the verification code sent to: <b>%s</b> "</string>
+  <string name="label_easy">Facile</string>
+  <string name="label_moderate">Modéré</string>
+  <string name="label_challenging">Défi</string>
+  <string name="label_difficult">Difficile</string>
+  <string name="label_extreme">Extrême</string>
 </resources>

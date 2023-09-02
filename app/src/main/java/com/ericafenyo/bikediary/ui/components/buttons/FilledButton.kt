@@ -27,16 +27,15 @@ package com.ericafenyo.bikediary.ui.components.buttons
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ButtonElevation
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.ericafenyo.bikediary.theme.labelLarge
 
 @Composable
 fun Button(
@@ -45,13 +44,12 @@ fun Button(
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
   isLoading: Boolean = false,
-  elevation: ButtonElevation = ButtonDefaults.elevation()
+  elevation: ButtonElevation = ButtonDefaults.buttonElevation()
 ) {
-  androidx.compose.material.Button(
+  androidx.compose.material3.Button(
     onClick = onClick,
-    modifier = Modifier
-      .height(48.dp)
-      .then(modifier),
+    modifier = modifier
+      .height(48.dp),
     shape = RoundedCornerShape(4.dp),
     enabled = enabled,
     elevation = elevation

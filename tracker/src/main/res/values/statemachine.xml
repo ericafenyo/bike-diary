@@ -28,6 +28,7 @@
   <string name="tracker_state_start" translatable="false">tracker.state.start</string>
   <string name="tracker_state_ready" translatable="false">tracker.state.ready</string>
   <string name="tracker_state_ongoing" translatable="false">tracker.state.ongoing</string>
+  <string name="tracker_state_paused" translatable="false">tracker.state.paused</string>
   <string name="tracker_state_disabled" translatable="false">tracker.state.disabled</string>
 
   <!-- Machine actions -->

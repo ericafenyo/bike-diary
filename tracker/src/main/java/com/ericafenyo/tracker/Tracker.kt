@@ -24,72 +24,58 @@
 
 package com.ericafenyo.tracker
 
-import android.app.Application
 import android.app.Notification
 import android.content.Context
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.ericafenyo.libs.serialization.KotlinJsonSerializer
-import com.ericafenyo.tracker.R.string
+import com.ericafenyo.tracker.R
+import com.ericafenyo.tracker.Tracker.State.IDLE
 import com.ericafenyo.tracker.util.ExplicitIntent
-import kotlin.reflect.KClass
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
-class Tracker private constructor(val options: TrackerOptions) {
+class Tracker private constructor(private val context: Context) {
+  private val storage = Storage.getInstance(context.applicationContext)
 
-  companion object {
-    private val currentOptions: ThreadLocal<TrackerOptions> = ThreadLocal<TrackerOptions>()
-
-    private fun getTrackerOptions(): TrackerOptions {
-      var options = currentOptions.get()
-
-      if (options == null) {
-        options = TrackerOptions()
-        currentOptions.set(options)
-      }
-
-      return options
+  val state: Flow<State> = storage.retrieve(TRACKER_CURRENT_STATE_KEY)
+    .map { value ->
+      value?.let { State.valueOf(it) } ?: IDLE
     }
 
-    fun init(application: Application, optionsConfiguration: (TrackerOptions) -> TrackerOptions) {
-      val defaultOptions = TrackerOptions()
-      currentOptions.set(optionsConfiguration(defaultOptions))
-    }
+  fun getState(): State = runBlocking { state.first() }
 
-    @Volatile
-    private var INSTANCE: Tracker? = null
-
-    @JvmStatic
-    fun getInstance(): Tracker {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: Tracker(getTrackerOptions())
-          .also { INSTANCE = it }
-      }
-    }
+  suspend fun updateState(state: State): State {
+    storage.store(TRACKER_CURRENT_STATE_KEY, "$state")
+    return getState()
   }
 
-  val state: Flow<State> = TODO()
-
-  suspend fun start() {
-//    application.sendBroadcast(ExplicitIntent(context, string.tracker_action_start))
+  fun start() {
+    Timber.d("Tracker start() called. Current state = ${getState()}")
+    context.sendBroadcast(ExplicitIntent(context, R.string.tracker_action_start))
   }
 
-  suspend fun pause() {
-    TODO("Not implemented")
+  fun pause() {
+    Timber.d("Tracker pause() called. Current state = ${getState()}")
+    context.sendBroadcast(ExplicitIntent(context, R.string.tracker_action_pause))
   }
 
-  suspend fun resume() {
-    TODO("Not implemented")
+  fun resume() {
+    Timber.d("Tracker resume() called. Current state = ${getState()}")
+    context.sendBroadcast(ExplicitIntent(context, R.string.tracker_action_resume))
   }
 
-  suspend fun stop() {
-    TODO("Not implemented")
+  fun stop() {
+    Timber.d("Tracker stop() called. Current state = ${getState()}")
+    context.sendBroadcast(ExplicitIntent(context, R.string.tracker_action_stop))
   }
 
   class Storage private constructor(context: Context) {
     companion object {
+
       @Volatile
       private var INSTANCE: Storage? = null
 
@@ -111,37 +97,27 @@ class Tracker private constructor(val options: TrackerOptions) {
      * @param key  the key of the value to store.
      * @param value the value to store.
      */
-    suspend fun <T : Any> store(key: String, value: T) {
-      val json = KotlinJsonSerializer.getInstance().toJson(value, value::class)
-      dataStore.edit { preference -> preference[stringPreferencesKey(key)] = json }
+    suspend fun store(key: String, value: String) {
+      dataStore.edit { preference -> preference[stringPreferencesKey(key)] = value }
     }
 
-
     /**
-     * Retrieve a value from the Storage.
+     * Retrieve a string value from the Storage.
      *
      * @param key the key of the value to retrieve.
      * @return the value that was previously saved.
      */
-    fun <T : Any> retrieve(key: String, clazz: KClass<T>): Flow<T?> {
-      TODO()
+    fun retrieve(key: String): Flow<String?> {
+      return dataStore.data.map { preference -> preference[stringPreferencesKey(key)] }
     }
-
 
     /**
      * Removes a value from the storage.
      *
      * @param key the key of the value to remove.
      */
-    suspend fun <T : Any> remove(key: String, clazz: KClass<T>) {
-      val preferenceKey = when (clazz) {
-        Int::class -> intPreferencesKey(key)
-        Long::class -> intPreferencesKey(key)
-        String::class -> intPreferencesKey(key)
-        Boolean::class -> intPreferencesKey(key)
-        else -> throw UnsupportedOperationException("Key type $clazz not supported")
-      }
-      dataStore.edit { preferences -> preferences.remove(preferenceKey) }
+    suspend fun remove(key: String) {
+      dataStore.edit { preferences -> preferences.remove(stringPreferencesKey(key)) }
     }
 
     /**
@@ -152,16 +128,35 @@ class Tracker private constructor(val options: TrackerOptions) {
     }
   }
 
-  enum class State { IDLE, READY, ONGOING, DISABLED }
-}
 
-class TrackerOptions {
-  private var _notification: Notification? = null
-  val notification: Notification? = _notification
+  enum class State { IDLE, ONGOING, PAUSE }
 
-  fun setNotification(notification: Notification): TrackerOptions {
-    this._notification = notification
-    return this
+  companion object {
+    const val TRACKER_CURRENT_STATE_KEY = "com.ericafenyo.tracker.TRACKER_CURRENT_STATE"
+
+    private var tracker: Tracker? = null
+
+    fun initialize(context: Context) {
+      tracker = Tracker(context)
+    }
+
+    @Volatile
+    private var INSTANCE: Tracker? = null
+
+    @JvmStatic
+    fun getInstance(): Tracker {
+      return INSTANCE ?: synchronized(this) {
+        INSTANCE ?: currentTracker
+          .also { INSTANCE = it }
+      }
+    }
+
+    private val currentTracker: Tracker
+      get() {
+        return tracker ?: throw RuntimeException()
+      }
   }
 
+  data class Configuration(val notification: Notification)
 }
+

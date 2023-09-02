@@ -1,5 +1,14 @@
-mutation AddAdventures($params: [AdventureInput!]!) {
-  addAdventures(params: $params) {
+mutation CreateAdventures($params: [AdventureInput!]!) {
+  createAdventures(params: $params) {
     id
+    description
+    title
+    calories
+    distance
+    duration
+    startTime
+    endTime
+    speed
+    polyline
   }
 }

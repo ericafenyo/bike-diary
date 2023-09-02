@@ -28,6 +28,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.ericafenyo.bikediary.logger.Logger
+import com.ericafenyo.tracker.data.model.simplify
 import com.ericafenyo.tracker.database.record.Record
 import com.ericafenyo.tracker.database.record.RecordCache
 import com.google.android.gms.location.LocationResult
@@ -44,8 +45,10 @@ class LocationUpdatesReceiver : BroadcastReceiver() {
     Logger.debug(context, TAG, "onReceive(context: $context, intent: $intent)")
 
     val locations = if (LocationResult.hasResult(intent)) {
-      LocationResult.extractResult(intent).locations
+      Logger.debug(context, TAG, "intent has location results, extracting it")
+      LocationResult.extractResult(intent)?.locations
     } else {
+      Logger.debug(context, TAG, "intent has not location results, returning null")
       null
     }
 

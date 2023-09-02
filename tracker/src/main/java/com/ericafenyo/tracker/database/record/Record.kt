@@ -26,7 +26,7 @@ package com.ericafenyo.tracker.database.record
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ericafenyo.tracker.location.SimpleLocation
+import com.ericafenyo.tracker.data.model.SimpleLocation
 import java.time.LocalDateTime
 import java.util.TimeZone
 

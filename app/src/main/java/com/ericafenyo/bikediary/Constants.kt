@@ -26,4 +26,6 @@ package com.ericafenyo.bikediary
 
 object Constants {
   const val ARGUMENT_ADVENTURE_ID = "com.ericafenyo.habitdiary.ARGUMENT_ADVENTURE_ID"
+
+  const val FILE_PROVIDER_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
 }

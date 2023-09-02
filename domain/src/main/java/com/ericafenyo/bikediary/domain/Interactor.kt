@@ -27,6 +27,7 @@ package com.ericafenyo.bikediary.domain
 
 import com.ericafenyo.tracker.data.model.Result
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -79,5 +80,6 @@ abstract class SubjectInteractor<P, R> {
 
   protected abstract fun execute(params: P): Flow<R>
 
+  @OptIn(ExperimentalCoroutinesApi::class)
   fun asFlow(): Flow<R> = sharedFlow.flatMapLatest { params -> execute(params) }
 }

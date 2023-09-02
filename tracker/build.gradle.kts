@@ -31,6 +31,8 @@ plugins {
 }
 
 android {
+  namespace = "com.ericafenyo.tracker"
+
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
@@ -38,12 +40,12 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
 
-  kotlinOptions {
-    jvmTarget = "1.8"
+  kotlin {
+//    jvmToolchain(11)
   }
 }
 
@@ -60,7 +62,9 @@ dependencies {
   implementation(libs.androidx.room.runtime)
   kapt(libs.androidx.room.compiler)
 
-  implementation(libs.androidx.work.ktx)
+  implementation(libs.androidx.startup)
+
+  implementation(libs.androidx.work.runtime)
   implementation(libs.androidx.work.hilt)
   implementation((libs.hilt.android))
   kapt(libs.hilt.compiler)

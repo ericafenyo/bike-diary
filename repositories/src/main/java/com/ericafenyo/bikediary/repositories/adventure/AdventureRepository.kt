@@ -53,6 +53,4 @@ interface AdventureRepository {
    * @return 'true' if the update was successful.
    */
   suspend fun updateAdventures(refresh: Boolean): Boolean
-
-  suspend fun synchronizeAdventures()
 }

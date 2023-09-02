@@ -50,7 +50,6 @@ allprojects {
   repositories {
     google()
     mavenCentral()
-    jcenter()
     maven {
       url = uri("https://api.mapbox.com/downloads/v2/releases/maven")
       authentication {
