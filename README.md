@@ -1,12 +1,12 @@
 # Bike diary
 
-🚧 THIS PROJECT IS ON PAUSE IN FAVOUR OF MY [SCHOOL PROJECTS](https://github.com/ericafenyo/project-cda/)🚧
+🚧 THIS PROJECT IS ON PAUSE IN FAVOUR OF MY [SCHOOL PROJECTS](https://github.com/ericafenyo/time-master)🚧
 
 ![GitHub workflow build](https://github.com/ericafenyo/bike-diary/actions/workflows/android.yml/badge.svg)
 [![GitHub](https://img.shields.io/github/license/ericafenyo/bike-diary)](LICENSE)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ericafenyo/bike-diary?label=version)][version]
 
-An android app that allows users to record their cycling routes, save memorable photos and track their personal improvement goals & statistics while discovering new places.
+An Android app that allows users to record their cycling routes, save memorable photos, and track their personal improvement goals & statistics while discovering new places.
 
 [version]: https://github.com/ericafenyo/bike-diary/releases
 
