@@ -40,7 +40,7 @@ android {
   defaultConfig {
     applicationId = "com.ericafenyo.bikediary"
     minSdk = libs.versions.minSdk.get().toInt()
-    targetSdk = 33
+    targetSdk = 34
     versionName = findProperty("VERSION_NAME").toString()
     versionCode = 1
 

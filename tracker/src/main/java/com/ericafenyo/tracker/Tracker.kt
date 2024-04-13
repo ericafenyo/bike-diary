@@ -29,7 +29,6 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.ericafenyo.tracker.R
 import com.ericafenyo.tracker.Tracker.State.IDLE
 import com.ericafenyo.tracker.util.ExplicitIntent
 import kotlinx.coroutines.flow.Flow

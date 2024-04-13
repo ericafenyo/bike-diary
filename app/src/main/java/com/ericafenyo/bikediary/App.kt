@@ -27,7 +27,6 @@ package com.ericafenyo.bikediary
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.ericafenyo.bikediary.util.Notifications
 import com.ericafenyo.tracker.Tracker
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.mapbox.maps.ResourceOptionsManager
@@ -38,8 +37,7 @@ import javax.inject.Inject
 import timber.log.Timber
 
 @HiltAndroidApp
-class App : Application(), Configuration.Provider {
-  @Inject lateinit var workerFactory: HiltWorkerFactory
+class App : Application() {
 
   override fun onCreate() {
     super.onCreate()
@@ -61,8 +59,4 @@ class App : Application(), Configuration.Provider {
 
     Tracker.initialize(this)
   }
-
-  override fun getWorkManagerConfiguration(): Configuration = Configuration.Builder()
-    .setWorkerFactory(workerFactory)
-    .build()
 }

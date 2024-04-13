@@ -23,12 +23,29 @@
  */
 
 plugins {
-  id("java-library")
-  id("kotlin")
+  id("com.android.library")
+  id("kotlin-android")
   id("kotlinx-serialization")
+}
+
+android {
+  namespace = "com.ericafenyo.bikediary.model"
+
+  compileSdk = libs.versions.compileSdk.get().toInt()
+
+  defaultConfig {
+    minSdk = libs.versions.minSdk.get().toInt()
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
 }
 
 dependencies {
   implementation(libs.kotlin.serialization.json)
   implementation(libs.kotlin.stdlib)
 }
+
+

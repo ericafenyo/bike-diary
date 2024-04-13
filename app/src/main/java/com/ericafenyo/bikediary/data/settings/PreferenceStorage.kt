@@ -29,12 +29,11 @@ import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import androidx.core.content.edit
 import com.ericafenyo.bikediary.model.Theme
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
 
 interface PreferenceStorage {
   var selectedTheme: String
@@ -68,7 +67,7 @@ class SharedPreferenceStorage(context: Context) : PreferenceStorage {
   )
 
   override var observableSelectedTheme: Flow<String>
-    get() = selectedThemeChannel.asFlow()
+    get() = throw Error()
     set(_) = throw IllegalAccessException("This property can't be changed")
 
   companion object {
